@@ -103,7 +103,7 @@ namespace RiscVCpu {
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public RV32_AbstractCalculator Alu(Type type){return alu.GetInstance(type); }
+        public RV32_AbstractCalculator Alu(Type type) { return alu.GetInstance(type); }
 
         /// <summary>
         /// ロードストアユニットを返す
@@ -158,26 +158,36 @@ namespace RiscVCpu {
         /// </summary>
         /// <returns>正常時:0, 異常時:0以外</returns>
         public int Run() {
-            try {
+            int ret = 0;
+            //try {
                 while (true) {
                     UInt32 ins = BitConverter.ToUInt32(mem, (int)registerSet.PC);
                     if (ins == 0) {
-                        return 0;
+                        break;
                     }
                     Decode(ins);
                     registerSet.IncrementCycle();
                 }
-            } catch (RiscvCpuException e) {
-                if (typeof(RiscvEnvironmentCallException).IsInstanceOfType(e)) {
-                    return 0;
-                } else if (typeof(RiscvBreakpointException).IsInstanceOfType(e)) {
-                    return 0;
-                } else {
-                    Console.Error.WriteLine(e);
-                    return -1;
+            /*
+            } catch (RiscvException e) {
+                switch (e.Cause) {
+                    case RiscvExceptionCause.Breakpoint:
+                        break;
+                    case RiscvExceptionCause.EnvironmentCallFromUMode:
+                        break;
+                    case RiscvExceptionCause.EnvironmentCallFromSMode:
+                        break;
+                    case RiscvExceptionCause.EnvironmentCallFromMMode:
+                        break;
+                    default:
+                        Console.Error.WriteLine(e);
+                        ret = -1;
+                        throw;
                 }
-            }
+            }*/
+            return ret;
         }
+
 
         /// <summary>
         /// 引数で指定した命令をデコード、実行する

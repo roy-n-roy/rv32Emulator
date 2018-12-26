@@ -66,7 +66,7 @@
     <Compile Include="Decoder\RV32M_Decoder.cs" />
     <Compile Include="Decoder\RV32_Decoder.cs" />
     <Compile Include="RV32_Cpu.cs" />
-    <Compile Include="MainProgram.cs" />
+    <Compile Include="Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

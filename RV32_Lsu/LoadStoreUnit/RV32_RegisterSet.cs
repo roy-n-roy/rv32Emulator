@@ -145,13 +145,13 @@ namespace RiscVCpu.LoadStoreUnit {
                         CSRArray[name] &= ~value;
                         break;
                     default:
-                        throw new RiscvCpuException();
+                        throw new RiscvException(RiscvExceptionCause.IllegalInstruction);
                 }
             } else {
                 //実行モードがアドレスの権限より小さい場合
                 //アドレス上位2bitが 0b11(= 読み取り専用)の場合は
                 //不正命令例外が発生する
-                throw new RiscvCpuException("不正命令例外");
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction);
             }
         }
 
@@ -172,7 +172,7 @@ namespace RiscVCpu.LoadStoreUnit {
                     return (UInt32)status;
                 } else if ((CSR)name == CSR.sie || (CSR)name == CSR.sip) {
                     // マシンモードCSRに読み替える
-                    InterruptCSR interrupt = (InterruptCSR)CSRArray[name | (CSR)0x200U];
+                    InterruptPendingCSR interrupt = (InterruptPendingCSR)CSRArray[name | (CSR)0x200U];
                     interrupt.Mode = currentMode;
                     return (UInt32)interrupt;
                 } else {
@@ -181,7 +181,7 @@ namespace RiscVCpu.LoadStoreUnit {
 
             } else {
                 //実行モードがアドレスの権限より小さい場合は不正命令例外が発生する
-                throw new RiscvCpuException("不正命令例外");
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction);
             }
         }
 

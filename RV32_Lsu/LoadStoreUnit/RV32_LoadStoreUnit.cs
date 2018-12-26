@@ -343,7 +343,18 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <returns>処理の成否</returns>
         public bool Ecall() {
             reg.IncrementPc();
-            throw new RiscvEnvironmentCallException("環境呼び出し例外");
+            switch (reg.CurrentMode) {
+                case PrivilegeLevels.UserMode:
+
+                    reg.CurrentMode = PrivilegeLevels.SupervisorMode;
+                    throw new RiscvException(RiscvExceptionCause.EnvironmentCallFromUMode);
+                case PrivilegeLevels.SupervisorMode:
+                    reg.CurrentMode = PrivilegeLevels.MachineMode;
+                    throw new RiscvException(RiscvExceptionCause.EnvironmentCallFromSMode);
+                case PrivilegeLevels.MachineMode:
+                    throw new RiscvException(RiscvExceptionCause.EnvironmentCallFromMMode);
+            }
+            return true;
         }
 
         /// <summary>
@@ -353,7 +364,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <returns>処理の成否</returns>
         public bool Ebreak() {
             reg.IncrementPc();
-            throw new RiscvBreakpointException("ブレークポイント例外");
+            throw new RiscvException(RiscvExceptionCause.Breakpoint);
         }
 
         /// <summary>
