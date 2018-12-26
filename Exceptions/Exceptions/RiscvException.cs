@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace RiscVCpu.Exceptions {
+namespace RiscVCpu.Constants.Exceptions {
     /// <summary>Risc-V CPUで発生した例外を表します</summary>
     public class RiscvException : Exception {
-        /// <summary>
-        /// 割り込み・例外要因
-        /// </summary>
+
+        /// <summary>割り込み・例外要因</summary>
         public RiscvExceptionCause Cause { get; }
 
         /// <summary>Risc-V CPU例外のインスタンスを初期化します</summary>
@@ -21,6 +20,36 @@ namespace RiscVCpu.Exceptions {
         /// <summary>指定したメッセージおよびこの例外の原因となった内部例外への参照を使用して、Risc-V CPU例外のインスタンスを初期化します</summary>
         public RiscvException(RiscvExceptionCause cause, string message, Exception inner) : base(Enum.GetName(typeof(RiscvExceptionCause), cause) + "\r\n" + message, inner) {
             this.Cause = cause;
+        }
+    }
+
+    /// <summary>Risc-V CPUで発生した環境呼び出し例外を表します</summary>
+    public class RiscvEnvironmentCallException : RiscvException {
+        /// <summary>Risc-V CPU 環境呼び出し例外のインスタンスを初期化します</summary>
+        public RiscvEnvironmentCallException(PrivilegeLevels currentLevel) : base((RiscvExceptionCause)(((UInt16)currentLevel >> 8) & 0x8)) {
+        }
+
+        /// <summary>指定したメッセージを使用して、Risc-V CPU 環境呼び出し例外のインスタンスを初期化します</summary>
+        public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, string message) : base((RiscvExceptionCause)(((UInt16)currentLevel >> 8) & 0x8), message) {
+        }
+
+        /// <summary>指定したメッセージおよびこの例外の原因となった内部例外への参照を使用して、Risc-V CPU 環境呼び出し例外のインスタンスを初期化します</summary>
+        public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, string message, Exception inner) : base((RiscvExceptionCause)(((UInt16)currentLevel >> 8) & 0x8), message, inner) {
+        }
+    }
+
+    /// <summary>Risc-V CPUで発生したブレークポイント例外を表します</summary>
+    public class RiscvBreakpointException : RiscvException {
+        /// <summary>Risc-V CPU ブレークポイント例外のインスタンスを初期化します</summary>
+        public RiscvBreakpointException() : base(RiscvExceptionCause.Breakpoint) {
+        }
+
+        /// <summary>指定したメッセージを使用して、Risc-V CPU ブレークポイント例外のインスタンスを初期化します</summary>
+        public RiscvBreakpointException(string message) : base(RiscvExceptionCause.Breakpoint, message) {
+        }
+
+        /// <summary>指定したメッセージおよびこの例外の原因となった内部例外への参照を使用して、Risc-V CPU ブレークポイント例外のインスタンスを初期化します</summary>
+        public RiscvBreakpointException(string message, Exception inner) : base(RiscvExceptionCause.Breakpoint, message, inner) {
         }
     }
 
@@ -48,33 +77,33 @@ namespace RiscVCpu.Exceptions {
 
         // 例外
         /// <summary>命令アドレス非整列化例外</summary>
-        InstructionAddressMisaligned = 0x0u,
+        InstructionAddressMisaligned = 0x00000000u,
         /// <summary>命令アクセス・フォールト例外</summary>
-        InstructionAccessFault = 0x1u,
+        InstructionAccessFault = 0x00000001u,
         /// <summary>不正命令例外</summary>
-        IllegalInstruction = 0x2u,
+        IllegalInstruction = 0x00000002u,
         /// <summary>ブレークポイント例外</summary>
-        Breakpoint = 0x3u,
+        Breakpoint = 0x00000003u,
         /// <summary>ロードアドレス非整列化例外</summary>
-        LoadAddressMisaligned = 0x4u,
+        LoadAddressMisaligned = 0x00000004u,
         /// <summary>ロードアクセス・フォールト例外</summary>
-        LoadAccessFault = 0x5u,
+        LoadAccessFault = 0x00000005u,
         /// <summary>ストアアドレス非整列化例外</summary>
-        AMOAddressMisaligned = 0x6u,
+        AMOAddressMisaligned = 0x00000006u,
         /// <summary>ストアアクセス・フォールト例外</summary>
-        StoreAMOAccessFault = 0x7u,
+        StoreAMOAccessFault = 0x00000007u,
         /// <summary>ユーザモードからの環境呼び出し例外</summary>
-        EnvironmentCallFromUMode = 0x8u,
+        EnvironmentCallFromUMode = 0x00000008u,
         /// <summary>スーパーバイザモードからの環境呼び出し例外</summary>
-        EnvironmentCallFromSMode = 0x9u,
+        EnvironmentCallFromSMode = 0x00000009u,
         /// <summary>マシンモードからの環境呼び出し例外</summary>
-        EnvironmentCallFromMMode = 0xbu,
+        EnvironmentCallFromMMode = 0x0000000bu,
         /// <summary>命令ページ・フォールト例外</summary>
-        InstructionPageFault = 0xcu,
+        InstructionPageFault = 0x0000000cu,
         /// <summary>ロードページ・フォールト例外</summary>
-        LoadPageFault = 0x1du,
+        LoadPageFault = 0x0000000du,
         /// <summary>ストアページ・フォールト例外</summary>
-        StoreAMOPageFault = 0xfu,
+        StoreAMOPageFault = 0x0000000fu,
     }
 }
 

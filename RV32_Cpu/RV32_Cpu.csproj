@@ -61,7 +61,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitByteConverter.cs" />
-    <Compile Include="Decoder\Constants.cs" />
     <Compile Include="Decoder\RV32I_Decoder.cs" />
     <Compile Include="Decoder\RV32M_Decoder.cs" />
     <Compile Include="Decoder\RV32_Decoder.cs" />
@@ -92,9 +91,9 @@
       <Project>{28e3a2c3-67de-4542-803b-5db07a3bc6bb}</Project>
       <Name>ElfLoader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Exceptions\Exceptions.csproj">
+    <ProjectReference Include="..\Exceptions\Constants.csproj">
       <Project>{93868cf5-de52-462d-be72-1c70b0ae987c}</Project>
-      <Name>Exceptions</Name>
+      <Name>Constants</Name>
     </ProjectReference>
     <ProjectReference Include="..\RV32_Alu\RV32_Calculator.csproj">
       <Project>{28c36aee-cd6d-4185-80c9-142d86e5b585}</Project>

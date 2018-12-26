@@ -1,4 +1,4 @@
-﻿namespace RiscVCpu.Decoder {
+﻿namespace RiscVCpu.Constants {
 
     #region RV32命令定義
     public enum Opcode : byte {

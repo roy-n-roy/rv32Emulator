@@ -1,4 +1,5 @@
-﻿using RiscVCpu.Exceptions;
+﻿using RiscVCpu.Constants;
+using RiscVCpu.Constants.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

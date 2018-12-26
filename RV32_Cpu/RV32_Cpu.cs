@@ -1,7 +1,7 @@
 ﻿using ElfLoader;
 using RiscVCpu.ArithmeticLogicUnit;
+using RiscVCpu.Constants.Exceptions;
 using RiscVCpu.Decoder;
-using RiscVCpu.Exceptions;
 using RiscVCpu.LoadStoreUnit;
 using System;
 using System.IO;
@@ -103,7 +103,7 @@ namespace RiscVCpu {
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public RV32_AbstractCalculator Alu(Type type) { return alu.GetInstance(type); }
+        public RV32_AbstractCalculator Alu(Type type){return alu.GetInstance(type); }
 
         /// <summary>
         /// ロードストアユニットを返す
@@ -141,7 +141,7 @@ namespace RiscVCpu {
 
             UInt32 entryAddr = 0;
 
-            foreach (Elf32_Phdr ph in elf.ep_header) {
+            foreach (Elf32_Phdr ph in elf.e_phdrtab) {
                 if ((ph.p_flags & 0x1) > 0) {
                     entryAddr = ph.p_offset;
                     break;
@@ -158,36 +158,15 @@ namespace RiscVCpu {
         /// </summary>
         /// <returns>正常時:0, 異常時:0以外</returns>
         public int Run() {
-            int ret = 0;
-            //try {
-                while (true) {
-                    UInt32 ins = BitConverter.ToUInt32(mem, (int)registerSet.PC);
-                    if (ins == 0) {
-                        break;
-                    }
-                    Decode(ins);
-                    registerSet.IncrementCycle();
+            while (true) {
+                UInt32 ins = BitConverter.ToUInt32(mem, (int)registerSet.PC);
+                if (ins == 0) {
+                    return 0;
                 }
-            /*
-            } catch (RiscvException e) {
-                switch (e.Cause) {
-                    case RiscvExceptionCause.Breakpoint:
-                        break;
-                    case RiscvExceptionCause.EnvironmentCallFromUMode:
-                        break;
-                    case RiscvExceptionCause.EnvironmentCallFromSMode:
-                        break;
-                    case RiscvExceptionCause.EnvironmentCallFromMMode:
-                        break;
-                    default:
-                        Console.Error.WriteLine(e);
-                        ret = -1;
-                        throw;
-                }
-            }*/
-            return ret;
+                Decode(ins);
+                registerSet.IncrementCycle();
+            }
         }
-
 
         /// <summary>
         /// 引数で指定した命令をデコード、実行する

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace ElfLoader {
     /// <summary>符号無しの32bit長プログラムアドレス</summary>
@@ -144,13 +145,16 @@ namespace ElfLoader {
         public Elf32_Half e_shentsize;
         /// <summary>セクションヘッダテーブル エントリ数</summary>
         public Elf32_Half e_shnum;
-        /// <summary>セクションヘッダテーブル 文字列インデックス</summary>
+        /// <summary>セクションヘッダテーブル 文字列テーブルインデックス</summary>
         public Elf32_Half e_shstrndx;
 
         /// <summary>セクションヘッダテーブル</summary>
-        public Elf32_Shdr[] es_header;
+        public Elf32_Shdr[] e_shdrtab;
         /// <summary>プログラムヘッダテーブル</summary>
-        public Elf32_Phdr[] ep_header;
+        public Elf32_Phdr[] e_phdrtab;
+
+        /// <summary>シンボルテーブル</summary>
+        public Elf32_Sym[] e_symtab;
 
         /// <summary>ELFヘッダ情報</summary>
         public Elf32_Header(IEnumerable<byte> bytes) : this() {
@@ -180,13 +184,52 @@ namespace ElfLoader {
             e_shnum = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
             e_shstrndx = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
 
-            es_header = new Elf32_Shdr[e_shnum];
+            // セクションヘッダテーブル
+            e_shdrtab = new Elf32_Shdr[e_shnum];
             for (int i = 0; i < e_shnum; i++) {
-                es_header[i] = new Elf32_Shdr(bytes.Skip((int)(e_shoff + (e_shentsize * i))).Take((int)e_shentsize));
+                e_shdrtab[i] = new Elf32_Shdr(bytes.Skip((int)(e_shoff + (e_shentsize * i))).Take((int)e_shentsize));
             }
-            ep_header = new Elf32_Phdr[e_phnum];
+
+
+            char[] sh_strtab = null;
+            // セクションヘッダ名文字列テーブルを検索
+            Encoding enc = Encoding.ASCII;
+            foreach (Elf32_Shdr shdr in e_shdrtab) {
+                if (shdr.sh_type == ShType.SHT_STRTAB) {
+                    sh_strtab = enc.GetChars(bytes.Skip((int)shdr.sh_offset).Take((int)shdr.sh_size).ToArray());
+
+                    if (new string(sh_strtab.Skip((int)shdr.sh_nameidx).TakeWhile(c => c != '\0').ToArray()).Equals(".shstrtab")) {
+                        break;
+                    }
+                    sh_strtab = null;
+                }
+            }
+
+            // 各セクションテーブルにセクション名を付与
+            if (sh_strtab != null) { 
+                for (int i = 0; i < e_shdrtab.Length; i++) {
+                    e_shdrtab[i].sh_name = new string(sh_strtab.Skip((int)e_shdrtab[i].sh_nameidx).TakeWhile(c => c != '\0').ToArray());
+                }
+            }
+
+            // シンボルテーブル
+            foreach (Elf32_Shdr shdr in e_shdrtab) {
+                if (shdr.sh_type == ShType.SHT_SYMTAB) {
+                    char[] sym_strtab = null;
+                    foreach (Elf32_Shdr shdr_strtab in e_shdrtab) {
+                    }
+
+                    e_symtab = new Elf32_Sym[shdr.sh_size / shdr.sh_entsize];
+                    for (int i = 0; i < shdr.sh_size / shdr.sh_entsize; i++) {
+                        e_symtab[i] = new Elf32_Sym(bytes.Skip((int)(shdr.sh_offset + (shdr.sh_entsize * i))).Take((int)shdr.sh_entsize).ToArray(), sym_strtab);
+                    }
+                }
+            }
+
+            // プログラムヘッダテーブル
+            e_phdrtab = new Elf32_Phdr[e_phnum];
             for (int i = 0; i < e_phnum; i++) {
-                ep_header[i] = new Elf32_Phdr(bytes.Skip((int)(e_phoff + (e_phentsize * i))).Take((int)e_phentsize));
+                e_phdrtab[i] = new Elf32_Phdr(bytes.Skip((int)(e_phoff + (e_phentsize * i))).Take((int)e_phentsize));
             }
         }
 
@@ -249,8 +292,10 @@ namespace ElfLoader {
 
     /// <summary>セクションヘッダテーブル</summary>
     public struct Elf32_Shdr {
+        /// <summary>セクション名インデックス</summary>
+        public Elf32_Word sh_nameidx;
         /// <summary>セクション名</summary>
-        public Elf32_Word sh_name;
+        public string sh_name;
         /// <summary>セクションタイプ</summary>
         public ShType sh_type;
         /// <summary>セクションフラグ</summary>
@@ -275,7 +320,7 @@ namespace ElfLoader {
             int ptr = 0;
             byte[] sHeader = bytes.ToArray();
 
-            sh_name = BitConverter.ToUInt32(sHeader, ptr); ptr += 4;
+            sh_nameidx = BitConverter.ToUInt32(sHeader, ptr); ptr += 4;
             sh_type = (ShType)BitConverter.ToUInt32(sHeader, ptr); ptr += 4;
             sh_flags = (ShFlag)BitConverter.ToUInt32(sHeader, ptr); ptr += 4;
             sh_addr = BitConverter.ToUInt32(sHeader, ptr); ptr += 4;
@@ -346,5 +391,36 @@ namespace ElfLoader {
         }
     }
 
+    /// <summary>シンボルテーブル</summary>
+    public struct Elf32_Sym {
+        /// <summary>シンボル名</summary>
+        public Elf32_Word st_nameidx;
+        /// <summary>シンボル名</summary>
+        public string st_name;
+        /// <summary>値</summary>
+        public Elf32_Addr st_value;
+        /// <summary>値のサイズ</summary>
+        public Elf32_Word st_size;
+        /// <summary>シンボルのタイプと属性情報</summary>
+        public byte st_info;
+        /// <summary>定義なし</summary>
+        public byte st_other;
+        /// <summary>関連するセクションヘッダーテーブルインデックス値</summary>
+        public Elf32_Half st_shndx;
 
+        /// <summary>シンボルテーブル</summary>
+        public Elf32_Sym(IEnumerable<byte> bytes, char[] sym_strtab) : this() {
+            int ptr = 0;
+            byte[] symTable = bytes.ToArray();
+
+            st_nameidx = BitConverter.ToUInt32(symTable, ptr); ptr += 4;
+            st_value = BitConverter.ToUInt32(symTable, ptr); ptr += 4;
+            st_size = BitConverter.ToUInt32(symTable, ptr); ptr += 4;
+            st_info = symTable[ptr++];
+            st_other = symTable[ptr++];
+            st_shndx = BitConverter.ToUInt16(symTable, ptr); ptr += 2;
+
+            st_name = new string(sym_strtab?.Skip((int)st_nameidx).TakeWhile(c => c != '\0').ToArray());
+        }
+    }
 }

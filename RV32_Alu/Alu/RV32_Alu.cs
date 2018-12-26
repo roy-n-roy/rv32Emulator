@@ -1,4 +1,4 @@
-﻿using RiscVCpu.Exceptions;
+﻿using RiscVCpu.Constants.Exceptions;
 using RiscVCpu.LoadStoreUnit;
 using System;
 

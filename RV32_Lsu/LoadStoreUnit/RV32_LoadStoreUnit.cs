@@ -1,4 +1,5 @@
-﻿using RiscVCpu.Exceptions;
+﻿using RiscVCpu.Constants;
+using RiscVCpu.Constants.Exceptions;
 using System;
 
 namespace RiscVCpu.LoadStoreUnit {
@@ -343,18 +344,9 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <returns>処理の成否</returns>
         public bool Ecall() {
             reg.IncrementPc();
-            switch (reg.CurrentMode) {
-                case PrivilegeLevels.UserMode:
-
-                    reg.CurrentMode = PrivilegeLevels.SupervisorMode;
-                    throw new RiscvException(RiscvExceptionCause.EnvironmentCallFromUMode);
-                case PrivilegeLevels.SupervisorMode:
-                    reg.CurrentMode = PrivilegeLevels.MachineMode;
-                    throw new RiscvException(RiscvExceptionCause.EnvironmentCallFromSMode);
-                case PrivilegeLevels.MachineMode:
-                    throw new RiscvException(RiscvExceptionCause.EnvironmentCallFromMMode);
-            }
-            return true;
+            PrivilegeLevels prevMode = reg.CurrentMode;
+            reg.CurrentMode = PrivilegeLevels.MachineMode;
+            throw new RiscvEnvironmentCallException(prevMode);
         }
 
         /// <summary>
@@ -364,7 +356,8 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <returns>処理の成否</returns>
         public bool Ebreak() {
             reg.IncrementPc();
-            throw new RiscvException(RiscvExceptionCause.Breakpoint);
+            reg.CurrentMode = PrivilegeLevels.MachineMode;
+            throw new RiscvBreakpointException();
         }
 
         /// <summary>

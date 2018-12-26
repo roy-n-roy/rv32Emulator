@@ -1,4 +1,5 @@
 ﻿using RiscVCpu.ArithmeticLogicUnit;
+using RiscVCpu.Constants;
 using RiscVCpu.LoadStoreUnit;
 using System;
 

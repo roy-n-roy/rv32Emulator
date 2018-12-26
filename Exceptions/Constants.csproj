@@ -7,8 +7,8 @@
     <ProjectGuid>{93868CF5-DE52-462D-BE72-1C70B0AE987C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Exceptions</RootNamespace>
-    <AssemblyName>Exceptions</AssemblyName>
+    <RootNamespace>Constants</RootNamespace>
+    <AssemblyName>Constants</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -43,8 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InstructionConstants.cs" />
+    <Compile Include="ControlStatusRegisterConstants.cs" />
     <Compile Include="Exceptions\RiscvException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterConstants.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
