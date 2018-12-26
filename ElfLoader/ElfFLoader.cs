@@ -215,14 +215,34 @@ namespace ElfLoader {
             // シンボルテーブル
             foreach (Elf32_Shdr shdr in e_shdrtab) {
                 if (shdr.sh_type == ShType.SHT_SYMTAB) {
+
+                    // シンボル名文字列テーブル
                     char[] sym_strtab = null;
                     foreach (Elf32_Shdr shdr_strtab in e_shdrtab) {
+                        if (shdr_strtab.sh_name.Equals(".strtab")) {
+                            sym_strtab = enc.GetChars(bytes.Skip((int)shdr_strtab.sh_offset).Take((int)shdr_strtab.sh_size).ToArray());
+                        }
+                        
                     }
 
-                    e_symtab = new Elf32_Sym[shdr.sh_size / shdr.sh_entsize];
+                    // シンボルを各セクションにひもづけ
+                    List<Elf32_Sym> symtab = new List<Elf32_Sym>();
                     for (int i = 0; i < shdr.sh_size / shdr.sh_entsize; i++) {
-                        e_symtab[i] = new Elf32_Sym(bytes.Skip((int)(shdr.sh_offset + (shdr.sh_entsize * i))).Take((int)shdr.sh_entsize).ToArray(), sym_strtab);
+                        symtab.Add(new Elf32_Sym(bytes.Skip((int)(shdr.sh_offset + (shdr.sh_entsize * i))).Take((int)shdr.sh_entsize).ToArray(), sym_strtab));
                     }
+
+                    List<Elf32_Sym> l = new List<Elf32_Sym>();
+                    for (int i = 0; i < e_shdrtab.Length; i++) {
+                        for (int j = 0; j < symtab.Count(); j++) {
+                            if (symtab[j].st_shndx == i) {
+                                l.Add(symtab[j]);
+                                symtab.RemoveAt(j--);
+                            }
+                        }
+                        e_shdrtab[i].sh_symtab = l.ToArray();
+                        l.Clear();
+                    }
+                    e_symtab = symtab.ToArray();
                 }
             }
 
@@ -315,6 +335,9 @@ namespace ElfLoader {
         /// <summary>エントリーサイズ</summary>
         public Elf32_Word sh_entsize;
 
+        /// <summary>シンボルテーブル</summary>
+        public Elf32_Sym[] sh_symtab;
+
         /// <summary>セクションヘッダテーブル</summary>
         public Elf32_Shdr(IEnumerable<byte> bytes) : this() {
             int ptr = 0;
@@ -330,6 +353,8 @@ namespace ElfLoader {
             sh_info = BitConverter.ToUInt32(sHeader, ptr); ptr += 4;
             sh_addralign = BitConverter.ToUInt32(sHeader, ptr); ptr += 4;
             sh_entsize = BitConverter.ToUInt32(sHeader, ptr); ptr += 4;
+
+            sh_symtab = new Elf32_Sym[1];
         }
 
     }
@@ -391,6 +416,31 @@ namespace ElfLoader {
         }
     }
 
+    public enum Elf32_StBind : byte {
+        /// <summary>ローカルシンボル</summary>
+        STB_LOCAL = 0,
+        /// <summary>グローバルシンボル</summary>
+        STB_GLOBAL = 1,
+        /// <summary>ウィークシンボル</summary>
+        STB_WEAK = 2,
+        STB_LOPROC = 13,
+        STB_HIPROC = 15,
+    }
+    public enum ELF32_StType : byte {
+        /// <summary>未定義</summary>
+        STT_NOTYPE = 0,
+        /// <summary>データオブジェクト</summary>
+        STT_OBJECT = 1,
+        /// <summary>関数または実行コード</summary>
+        STT_FUNC = 2,
+        /// <summary>セクション</summary>
+        STT_SECTION = 3,
+        /// <summary>ファイル</summary>
+        STT_FILE = 4,
+        STT_LOPROC = 13,
+        STT_HIPROC = 15,
+    }
+
     /// <summary>シンボルテーブル</summary>
     public struct Elf32_Sym {
         /// <summary>シンボル名</summary>
@@ -401,8 +451,10 @@ namespace ElfLoader {
         public Elf32_Addr st_value;
         /// <summary>値のサイズ</summary>
         public Elf32_Word st_size;
-        /// <summary>シンボルのタイプと属性情報</summary>
-        public byte st_info;
+        /// <summary>シンボル属性情報</summary>
+        public Elf32_StBind st_info_bind;
+        /// <summary>シンボルタイプ</summary>
+        public ELF32_StType st_info_type;
         /// <summary>定義なし</summary>
         public byte st_other;
         /// <summary>関連するセクションヘッダーテーブルインデックス値</summary>
@@ -416,7 +468,9 @@ namespace ElfLoader {
             st_nameidx = BitConverter.ToUInt32(symTable, ptr); ptr += 4;
             st_value = BitConverter.ToUInt32(symTable, ptr); ptr += 4;
             st_size = BitConverter.ToUInt32(symTable, ptr); ptr += 4;
-            st_info = symTable[ptr++];
+            byte st_info = symTable[ptr++];
+            st_info_bind = (Elf32_StBind)(st_info >> 4);
+            st_info_type = (ELF32_StType)(st_info & 0x0f);
             st_other = symTable[ptr++];
             st_shndx = BitConverter.ToUInt16(symTable, ptr); ptr += 2;
 
