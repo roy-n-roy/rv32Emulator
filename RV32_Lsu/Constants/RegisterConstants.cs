@@ -1,4 +1,4 @@
-﻿namespace Constants {
+﻿namespace RiscVCpu.LoadStoreUnit.Constants {
     #region RV32レジスタ名定義
 
     /// <summary>

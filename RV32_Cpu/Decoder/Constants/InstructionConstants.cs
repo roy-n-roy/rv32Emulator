@@ -1,6 +1,8 @@
-﻿namespace RiscVCpu.Constants {
+﻿namespace RiscVCpu.Decoder.Constants {
 
     #region RV32命令定義
+
+    /// <summary>RV32命令の0～6bit部分</summary>
     public enum Opcode : byte {
         #region RV32I 命令定義
         /// <summary>Load Upper Immediate命令</summary>
@@ -27,8 +29,15 @@
         privilege = 0b1110011,
 
         #endregion
+
+        #region RV32A拡張 命令定義
+        /// <summary>不可分命令</summary>
+        amo = 0b0101111,
+
+        #endregion
     }
 
+    /// <summary>RV32命令の12～14bit部分</summary>
     public enum Funct3 : byte {
         #region RV32I 命令定義
         /// <summary>Jump and Link Register命令</summary>
@@ -139,9 +148,16 @@
         remu = 0b111,
 
         #endregion
+
+        #region RV32A拡張 命令定義
+        /// <summary>不可分命令</summary>
+        amo = 0b010,
+
+        #endregion
     }
 
-     public enum Funct7 : byte {
+    /// <summary>RV32命令の25～31bit部分</summary>
+    public enum Funct7 : byte {
         #region RV32I 命令定義
         /// <summary>命令</summary>
         slli = 0b0000000,
@@ -183,6 +199,7 @@
         #endregion
     }
 
+    /// <summary>RV32命令の20～31bit部分</summary>
     public enum Funct12 : ushort {
         #region RV32I 命令定義
         /// <summary>Supervisor-Mode Exception Return</summary>
@@ -199,5 +216,59 @@
         #endregion
     }
 
+    /// <summary>RV32命令の27～31bit部分</summary>
+    public enum Funct5 : ushort {
+        #region RV32A拡張 命令定義
+        /// <summary>Load Reserved命令</summary>
+        lr = 0b00010,
+        /// <summary>Store Conditional命令</summary>
+        sc = 0b00011,
+        /// <summary>Atomic Memory Operation Swap Word命令</summary>
+        amo_swap = 0b00001,
+        /// <summary>Atomic Memory Operation Add Word命令</summary>
+        amo_add = 0b00000,
+        /// <summary>Atomic Memory Operation XOR Word命令</summary>
+        amo_xor = 0b00100,
+        /// <summary>Atomic Memory Operation And Word命令</summary>
+        amo_and = 0b01100,
+        /// <summary>Atomic Memory Operation OR Word命令</summary>
+        amo_or = 0b1000,
+        /// <summary>Atomic Memory Operation Minimum Word命令</summary>
+        amo_min = 0b10000,
+        /// <summary>Atomic Memory Operation Maximum Word命令</summary>
+        amo_max = 0b10100,
+        /// <summary>Atomic Memory Operation Minimum, Unsigned Word命令</summary>
+        amo_minu = 0b11000,
+        /// <summary>Atomic Memory Operation Maximum, Unsigned Word命令</summary>
+        amo_maxu = 0b11100,
+
+        #endregion
+    }
+
+    public enum CompressedOpcode : byte {
+        lwsp = 0b01010,
+        flwsp = 0b01110,
+        fldsp = 0b00110,
+        swsp = 0b11010,
+        fswsp = 0b11110,
+        fsdsp = 0b10110,
+        lw = 0b01000,
+        flw = 0b01100,
+        fld = 0b00100,
+        sw = 0b10000,
+        fsw = 0b11100,
+        fsd = 0b10100,
+        j = 0b10101,
+        jal = 0b00101,
+        beqz = 0b11001,
+        bnez = 0b11101,
+        li = 0b01001,
+        lui_addi16sp = 0b01101,
+        addi = 0b00001,
+        addi4spn = 0b00000,
+        slli = 0b00010,
+        jr_mv_add_ebreak = 0b10010,
+        op = 0b10001,
+    }
     #endregion
 }

@@ -1,6 +1,6 @@
 ﻿using RiscVCpu.ArithmeticLogicUnit;
-using RiscVCpu.Constants;
-using RiscVCpu.LoadStoreUnit;
+using RiscVCpu.Decoder.Constants;
+using RiscVCpu.LoadStoreUnit.Constants;
 using System;
 
 namespace RiscVCpu.Decoder {
@@ -12,10 +12,8 @@ namespace RiscVCpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        /// <summary>
-        internal protected override bool Exec(UInt32 instruction, RV32_Cpu cpu) {
+        internal protected override bool Exec(byte[] ins, RV32_Cpu cpu) {
             bool result = false;
-            byte[] ins = SplitInstruction(instruction);
             Register rd = (Register)ins[1],
                         rs1 = (Register)ins[3],
                         rs2 = (Register)ins[4];
@@ -25,37 +23,34 @@ namespace RiscVCpu.Decoder {
             Int32 immediate = 0;
             RV32_Alu alu;
 
-
-
-#if DEBUG
-            string debugStr = cpu.registerSet.PC.ToString("X") + "  " + opcode.ToString() + " ";
-#endif
             switch (opcode) {
                 case Opcode.lui: // lui命令
-                    immediate = GetImmediate("U", ins);
-                    result = cpu.Lsu.Lui(rd, immediate);
+                    immediate = GetImmediate('U', ins);
+                    alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                    result = alu.Lui(rd, immediate);
                     break;
 
 
                 case Opcode.auipc: // auipc命令
-                    immediate = GetImmediate("U", ins);
-                    result = cpu.Lsu.Auipc(rd, immediate);
+                    immediate = GetImmediate('U', ins);
+                    alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                    result = alu.Auipc(rd, immediate);
                     break;
 
                 case Opcode.jal: // jal命令
-                    immediate = GetImmediate("J", ins);
+                    immediate = GetImmediate('J', ins);
                     result = cpu.Lsu.Jal(rd, immediate);
                     break;
 
                 case Opcode.jalr: // jalr命令
                     if (funct3 == Funct3.jalr) {
-                        immediate = GetImmediate("I", ins);
+                        immediate = GetImmediate('I', ins);
                         result = cpu.Lsu.Jalr(rd, rs1, immediate);
                     }
                     break;
 
                 case Opcode.branch: // Branch系命令
-                    immediate = GetImmediate("B", ins);
+                    immediate = GetImmediate('B', ins);
                     switch (funct3) {
                         case Funct3.beq: // beq命令
                             result = cpu.Lsu.Beq(rs1, rs2, immediate);
@@ -84,7 +79,7 @@ namespace RiscVCpu.Decoder {
                     break;
 
                 case Opcode.load: // Load系命令
-                    immediate = GetImmediate("I", ins);
+                    immediate = GetImmediate('I', ins);
                     switch (funct3) {
 
                         case Funct3.lb: // lb命令
@@ -110,7 +105,7 @@ namespace RiscVCpu.Decoder {
                     break;
 
                 case Opcode.store: // Store系命令
-                    immediate = GetImmediate("S", ins);
+                    immediate = GetImmediate('S', ins);
                     switch (funct3) {
                         case Funct3.sb: // sb命令
                             result = cpu.Lsu.Sb(rs1, rs2, immediate);
@@ -127,7 +122,7 @@ namespace RiscVCpu.Decoder {
                     break;
 
                 case Opcode.opimm: // Op-imm系命令(即値算術論理演算)
-                    immediate = GetImmediate("I", ins);
+                    immediate = GetImmediate('I', ins);
                     alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
                     switch (funct3) {
                         case Funct3.addi: // addi命令
@@ -223,7 +218,7 @@ namespace RiscVCpu.Decoder {
                 case Opcode.miscMem: // 同期命令
                     switch (funct3) {
                         case Funct3.fence: // fence命令
-                            result = cpu.Lsu.Fence(BitConverter.GetBytes(instruction << 4)[3]);
+                            result = cpu.Lsu.Fence((byte)(((ins[5] & 0x7 ) << 5) + ins[4]));
                             break;
 
                         case Funct3.fenceI: // fence.i命令
@@ -266,57 +261,37 @@ namespace RiscVCpu.Decoder {
                             break;
 
                         case Funct3.csrrw: // csrrw命令
-                            immediate = (GetImmediate("I", ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xFFF);
                             result = cpu.Lsu.Csrrw(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrs: // csrrs命令
-                            immediate = (GetImmediate("I", ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xFFF);
                             result = cpu.Lsu.Csrrs(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrc: // csrrc命令
-                            immediate = (GetImmediate("I", ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xFFF);
                             result = cpu.Lsu.Csrrc(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrwi: // csrrwi命令
-                            immediate = (GetImmediate("I", ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xFFF);
                             result = cpu.Lsu.Csrrwi(rd, ins[3], (CSR)immediate);
                             break;
 
                         case Funct3.csrrsi: // csrrsi命令
-                            immediate = (GetImmediate("I", ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xFFF);
                             result = cpu.Lsu.Csrrsi(rd, ins[3], (CSR)immediate);
                             break;
 
                         case Funct3.csrrci: // csrrci命令
-                            immediate = (GetImmediate("I", ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xFFF);
                             result = cpu.Lsu.Csrrci(rd, ins[3], (CSR)immediate);
                             break;
                     }
                     break;
             }
-
-#if DEBUG
-            if ((ins[0] & 0b111) == 0b111 && opcode != Opcode.jalr) {
-                //U,J形式
-                debugStr += rd + ", " + immediate.ToString("X");
-            } else {
-                debugStr += funct3 + " ";
-                if ((ins[0] & 0b100011) == 0b100011) {
-                    //B,S形式
-                    debugStr += rs1 + ", " + rs2 + " " + immediate.ToString("X");
-                } else if (ins[0] == 0b0110011) {
-                    //R形式
-                    debugStr += funct7 + " " + rd + ", " + rs1 + ", " + rs2;
-                } else {
-                    //I形式
-                    debugStr += rd + ", " + rs1 + ", " + immediate.ToString("X");
-                }
-            }
-            Console.WriteLine(debugStr);
-#endif
             return result;
         }
     }

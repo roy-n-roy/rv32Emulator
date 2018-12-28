@@ -1,4 +1,5 @@
 ﻿using RiscVCpu.LoadStoreUnit;
+using RiscVCpu.LoadStoreUnit.Constants;
 using System;
 
 namespace RiscVCpu.ArithmeticLogicUnit {
@@ -25,9 +26,9 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool Mul(Register rd, Register rs1, Register rs2) {
+        public bool Mul(Register rd, Register rs1, Register rs2, UInt32 insLength = 4U) {
             reg.SetValue(rd, reg.GetValue(rs1) * reg.GetValue(rs2));
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -38,9 +39,9 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool Mulh(Register rd, Register rs1, Register rs2) {
+        public bool Mulh(Register rd, Register rs1, Register rs2, UInt32 insLength = 4U) {
             reg.SetValue(rd, (UInt32)(((Int64)(Int32)reg.GetValue(rs1) * (Int64)(Int32)reg.GetValue(rs2)) >> 32));
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -51,10 +52,10 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool Mulhsu(Register rd, Register rs1, Register rs2) {
+        public bool Mulhsu(Register rd, Register rs1, Register rs2, UInt32 insLength = 4U) {
             bool minus = (Int32)reg.GetValue(rs2) < 0;
             reg.SetValue(rd, (UInt32)(((Int64)(Int32)reg.GetValue(rs1) * (Int64)(UInt64)reg.GetValue(rs2)) >> 32));
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -65,9 +66,9 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool Mulhu(Register rd, Register rs1, Register rs2) {
+        public bool Mulhu(Register rd, Register rs1, Register rs2, UInt32 insLength = 4U) {
             reg.SetValue(rd, (UInt32)(((UInt64)reg.GetValue(rs1) * (UInt64)reg.GetValue(rs2)) >> 32));
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -78,14 +79,14 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool Div(Register rd, Register rs1, Register rs2) {
+        public bool Div(Register rd, Register rs1, Register rs2, UInt32 insLength = 4U) {
             if (reg.GetValue(rs2) == 0U) {
                 reg.SetValue(rd, 0xFFFFFFFFU);
             } else {
                 bool minus = (Int32)reg.GetValue(rs2) < 0;
                 reg.SetValue(rd, (UInt32)(((Int32)reg.GetValue(rs1) * (minus ? -1L : 1L)) / ((Int32)reg.GetValue(rs2)) * (minus ? -1L : 1L)));
             }
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -96,13 +97,13 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool Divu(Register rd, Register rs1, Register rs2) {
+        public bool Divu(Register rd, Register rs1, Register rs2, UInt32 insLength = 4U) {
             if (reg.GetValue(rs2) == 0U) {
                 reg.SetValue(rd, 0xFFFFFFFFU);
             } else {
                 reg.SetValue(rd, reg.GetValue(rs1) / reg.GetValue(rs2));
             }
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -113,14 +114,14 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool Rem(Register rd, Register rs1, Register rs2) {
+        public bool Rem(Register rd, Register rs1, Register rs2, UInt32 insLength = 4U) {
             if (reg.GetValue(rs2) == 0U) {
                 reg.SetValue(rd, reg.GetValue(rs1));
             } else {
                 bool minus = (Int32)reg.GetValue(rs2) < 0;
                 reg.SetValue(rd, (UInt32)(((Int32)reg.GetValue(rs1) * (minus ? -1L : 1L)) % ((Int32)reg.GetValue(rs2)) * (minus ? -1L : 1L)));
             }
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -131,13 +132,13 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool Remu(Register rd, Register rs1, Register rs2) {
+        public bool Remu(Register rd, Register rs1, Register rs2, UInt32 insLength = 4U) {
             if (reg.GetValue(rs2) == 0U) {
                 reg.SetValue(rd, reg.GetValue(rs1));
             } else {
                 reg.SetValue(rd, reg.GetValue(rs1) % (UInt32)reg.GetValue(rs2));
             }
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
         #endregion

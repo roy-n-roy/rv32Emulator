@@ -1,5 +1,5 @@
-﻿using RiscVCpu.Constants;
-using RiscVCpu.Constants.Exceptions;
+﻿using RiscVCpu.LoadStoreUnit.Constants;
+using RiscVCpu.LoadStoreUnit.Exceptions;
 using System;
 
 namespace RiscVCpu.LoadStoreUnit {
@@ -16,7 +16,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// </summary>
         /// <param name="registerSet">入出力用レジスタ</param>
         /// <param name="mainMemory">メインメモリ</param>
-        public RV32_Lsu(RV32_RegisterSet registerSet, byte[] mainMemory) {
+        public RV32_Lsu(RV32_RegisterSet registerSet, byte[] mainMemory, UInt32 insLength = 4U) {
             reg = registerSet;
             mem = mainMemory;
         }
@@ -24,36 +24,12 @@ namespace RiscVCpu.LoadStoreUnit {
         #region Risc-V CPU命令
 
         /// <summary>
-        /// Load Upper Immediate
-        /// 引数の即値を12ビット左シフトし、レジスタに格納する
-        /// </summary>
-        /// <param name="rd">結果を格納するレジスタ番号</param>
-        /// <param name="immediate">格納する数値(即値)</param>
-        public bool Lui(Register rd, Int32 immediate) {
-            reg.SetValue(rd, (UInt32)immediate << 12);
-            reg.IncrementPc();
-            return true;
-        }
-
-        /// <summary>
-        /// Add Upper Immediate to PC命令
-        /// 符号拡張された即値を12bit左シフトしてレジスタrdに書き込む
-        /// </summary>
-        /// <param name="rd">結果を格納するレジスタ番号</param>
-        /// <param name="immediate">即値</param>
-        public bool Auipc(Register rd, Int32 immediate) {
-            reg.SetValue(rd, reg.PC + ((UInt32)immediate << 12));
-            reg.IncrementPc();
-            return true;
-        }
-
-        /// <summary>
         /// Jump And Link命令
         /// 次の命令アドレス(pc+4)をレジスタrdに書き込み、現在のpcにoffsetを加えてpcに設定する
         /// </summary>
         /// <param name="rd">次の命令アドレスを格納するレジスタ番号</param>
         /// <param name="offset">ジャンプする現在のpcからの相対アドレス位置</param>
-        public bool Jal(Register rd, Int32 offset) {
+        public bool Jal(Register rd, Int32 offset, UInt32 insLength = 4U) {
             reg.SetValue(rd, reg.PC + 4u);
             reg.SetPc(reg.PC + (UInt32)offset);
             return true;
@@ -67,7 +43,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ベースのアドレス</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Jalr(Register rd, Register rs1, Int32 offset) {
+        public bool Jalr(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
             UInt32 t = reg.PC + 4u;
             reg.SetPc((reg.GetValue(rs1) + (UInt32)offset) & ~1u);
             reg.SetValue(rd, t);
@@ -83,11 +59,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Beq(Register rs1, Register rs2, Int32 offset) {
+        public bool Beq(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if (reg.GetValue(rs1) == reg.GetValue(rs2)) {
                 reg.SetPc(reg.PC + (UInt32)offset);
             } else {
-                reg.IncrementPc();
+                reg.IncrementPc(insLength);
             }
             return true;
         }
@@ -99,11 +75,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bne(Register rs1, Register rs2, Int32 offset) {
+        public bool Bne(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if (reg.GetValue(rs1) != reg.GetValue(rs2)) {
                 reg.SetPc(reg.PC + (UInt32)offset);
             } else {
-                reg.IncrementPc();
+                reg.IncrementPc(insLength);
             }
             return true;
         }
@@ -115,11 +91,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Blt(Register rs1, Register rs2, Int32 offset) {
+        public bool Blt(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if ((Int32)reg.GetValue(rs1) < (Int32)reg.GetValue(rs2)) {
                 reg.SetPc(reg.PC + (UInt32)offset);
             } else {
-                reg.IncrementPc();
+                reg.IncrementPc(insLength);
             }
             return true;
         }
@@ -131,11 +107,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bge(Register rs1, Register rs2, Int32 offset) {
+        public bool Bge(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if ((Int32)reg.GetValue(rs1) >= (Int32)reg.GetValue(rs2)) {
                 reg.SetPc(reg.PC + (UInt32)offset);
             } else {
-                reg.IncrementPc();
+                reg.IncrementPc(insLength);
             }
             return true;
         }
@@ -147,11 +123,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bltu(Register rs1, Register rs2, Int32 offset) {
+        public bool Bltu(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if (reg.GetValue(rs1) < reg.GetValue(rs2)) {
                 reg.SetPc(reg.PC + (UInt32)offset);
             } else {
-                reg.IncrementPc();
+                reg.IncrementPc(insLength);
             }
             return true;
         }
@@ -163,11 +139,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bgeu(Register rs1, Register rs2, Int32 offset) {
+        public bool Bgeu(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if (reg.GetValue(rs1) >= reg.GetValue(rs2)) {
                 reg.SetPc(reg.PC + (UInt32)offset);
             } else {
-                reg.IncrementPc();
+                reg.IncrementPc(insLength);
             }
             return true;
         }
@@ -183,14 +159,15 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Lb(Register rd, Register rs1, Int32 offset) {
+        public virtual bool Lb(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
+            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             byte[] bytes = new byte[4];
-            bytes[0] = mem[reg.GetValue(rs1) + offset];
-            bytes[1] = (byte)((bytes[0] & 128) > 1 ? 255 : 0);
-            bytes[2] = (byte)((bytes[0] & 128) > 1 ? 255 : 0);
-            bytes[3] = (byte)((bytes[0] & 128) > 1 ? 255 : 0);
+            bytes[0] = mem[addr];
+            bytes[1] = (byte)((bytes[0] & 128) > 1 ? 0xff : 0);
+            bytes[2] = (byte)((bytes[0] & 128) > 1 ? 0xff : 0);
+            bytes[3] = (byte)((bytes[0] & 128) > 1 ? 0xff : 0);
             reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
         /// <summary>
@@ -200,14 +177,15 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Lbu(Register rd, Register rs1, Int32 offset) {
+        public virtual bool Lbu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
+            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             byte[] bytes = new byte[4];
-            bytes[0] = mem[reg.GetValue(rs1) + offset];
+            bytes[0] = mem[addr];
             bytes[1] = 0;
             bytes[2] = 0;
             bytes[3] = 0;
             reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -218,14 +196,15 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Lh(Register rd, Register rs1, Int32 offset) {
+        public virtual bool Lh(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
+            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             byte[] bytes = new byte[4];
-            bytes[0] = mem[reg.GetValue(rs1) + offset + 0];
-            bytes[1] = mem[reg.GetValue(rs1) + offset + 1];
-            bytes[2] = (byte)((bytes[1] & 128) > 1 ? 255 : 0);
-            bytes[3] = (byte)((bytes[1] & 128) > 1 ? 255 : 0);
+            bytes[0] = mem[addr + 0];
+            bytes[1] = mem[addr + 1];
+            bytes[2] = (byte)((bytes[1] & 128) > 1 ? 0xff : 0);
+            bytes[3] = (byte)((bytes[1] & 128) > 1 ? 0xff : 0);
             reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -236,14 +215,15 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Lhu(Register rd, Register rs1, Int32 offset) {
+        public virtual bool Lhu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
+            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             byte[] bytes = new byte[4];
-            bytes[0] = mem[reg.GetValue(rs1) + offset + 0];
-            bytes[1] = mem[reg.GetValue(rs1) + offset + 1];
+            bytes[0] = mem[addr + 0];
+            bytes[1] = mem[addr + 1];
             bytes[2] = 0;
             bytes[3] = 0;
             reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -254,14 +234,15 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のベースアドレスが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Lw(Register rd, Register rs1, Int32 offset) {
+        public virtual bool Lw(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
+            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             byte[] bytes = new byte[4];
-            bytes[0] = mem[reg.GetValue(rs1) + offset + 0];
-            bytes[1] = mem[reg.GetValue(rs1) + offset + 1];
-            bytes[2] = mem[reg.GetValue(rs1) + offset + 2];
-            bytes[3] = mem[reg.GetValue(rs1) + offset + 3];
+            bytes[0] = mem[addr + 0];
+            bytes[1] = mem[addr + 1];
+            bytes[2] = mem[addr + 2];
+            bytes[3] = mem[addr + 3];
             reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -276,10 +257,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Sb(Register rs1, Register rs2, Int32 offset) {
+        public virtual bool Sb(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
+            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-            mem[reg.GetValue(rs1) + offset + 0] = bytes[0];
-            reg.IncrementPc();
+            mem[addr + 0] = bytes[0];
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -290,11 +272,12 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Sh(Register rs1, Register rs2, Int32 offset) {
+        public virtual bool Sh(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
+            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-            mem[reg.GetValue(rs1) + offset + 0] = bytes[0];
-            mem[reg.GetValue(rs1) + offset + 1] = bytes[1];
-            reg.IncrementPc();
+            mem[addr + 0] = bytes[0];
+            mem[addr + 1] = bytes[1];
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -305,13 +288,14 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Sw(Register rs1, Register rs2, Int32 offset) {
+        public virtual bool Sw(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
+            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-            mem[reg.GetValue(rs1) + offset + 0] = bytes[0];
-            mem[reg.GetValue(rs1) + offset + 1] = bytes[1];
-            mem[reg.GetValue(rs1) + offset + 2] = bytes[2];
-            mem[reg.GetValue(rs1) + offset + 3] = bytes[3];
-            reg.IncrementPc();
+            mem[addr + 0] = bytes[0];
+            mem[addr + 1] = bytes[1];
+            mem[addr + 2] = bytes[2];
+            mem[addr + 3] = bytes[3];
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -323,8 +307,8 @@ namespace RiscVCpu.LoadStoreUnit {
         /// </summary>
         /// <param name="pred_succ"></param>
         /// <returns>処理の成否</returns>
-        public bool Fence(byte pred_succ) {
-            reg.IncrementPc();
+        public bool Fence(byte pred_succ, UInt32 insLength = 4U) {
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -332,8 +316,8 @@ namespace RiscVCpu.LoadStoreUnit {
         /// Fence Instruction Stream命令
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool FenceI() {
-            reg.IncrementPc();
+        public bool FenceI(UInt32 insLength = 4U) {
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -342,11 +326,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// 環境呼び出し例外を起こして、実行環境を呼び出す
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool Ecall() {
-            reg.IncrementPc();
+        public bool Ecall(UInt32 insLength = 4U) {
+            reg.IncrementPc(insLength);
             PrivilegeLevels prevMode = reg.CurrentMode;
             reg.CurrentMode = PrivilegeLevels.MachineMode;
-            throw new RiscvEnvironmentCallException(prevMode);
+            throw new RiscvEnvironmentCallException(prevMode, reg);
         }
 
         /// <summary>
@@ -354,10 +338,10 @@ namespace RiscVCpu.LoadStoreUnit {
         /// ブレークポイント例外を起こして、実行環境を呼び出す
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool Ebreak() {
-            reg.IncrementPc();
+        public bool Ebreak(UInt32 insLength = 4U) {
+            reg.IncrementPc(insLength);
             reg.CurrentMode = PrivilegeLevels.MachineMode;
-            throw new RiscvBreakpointException();
+            throw new RiscvBreakpointException(reg);
         }
 
         /// <summary>
@@ -368,11 +352,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">書き込む値が格納されているレジスタ</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrw(Register rd, Register rs1, CSR csr) {
+        public bool Csrrw(Register rd, Register rs1, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = reg.GetCSR(csr);
             reg.SetCSR(csr, 'w', rs1);
             reg.SetValue(rd, t);
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
         /// <summary>
@@ -383,11 +367,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">セットする値が格納されているレジスタ</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrs(Register rd, Register rs1, CSR csr) {
+        public bool Csrrs(Register rd, Register rs1, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = reg.GetCSR(csr);
             reg.SetCSR(csr, 's', rs1);
             reg.SetValue(rd, t);
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
         /// <summary>
@@ -398,11 +382,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">クリアする値が格納されているレジスタ</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrc(Register rd, Register rs1, CSR csr) {
+        public bool Csrrc(Register rd, Register rs1, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = reg.GetCSR(csr);
             reg.SetCSR(csr, 'c', rs1);
             reg.SetValue(rd, t);
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
         /// <summary>
@@ -413,11 +397,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="zImmediate">即値</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrwi(Register rd, byte zImmediate, CSR csr) {
+        public bool Csrrwi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = reg.GetCSR(csr);
             reg.SetCSR(csr, 'w', zImmediate);
             reg.SetValue(rd, t);
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -429,11 +413,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="zImmediate">即値</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrsi(Register rd, byte zImmediate, CSR csr) {
+        public bool Csrrsi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = reg.GetCSR(csr);
             reg.SetCSR(csr, 's', zImmediate);
             reg.SetValue(rd, t);
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
         /// <summary>
@@ -444,11 +428,11 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="zImmediate">即値</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrci(Register rd, byte zImmediate, CSR csr) {
+        public bool Csrrci(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = reg.GetCSR(csr);
             reg.SetCSR(csr, 'c', zImmediate);
             reg.SetValue(rd, t);
-            reg.IncrementPc();
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -456,8 +440,8 @@ namespace RiscVCpu.LoadStoreUnit {
         /// Wait For Interrupt命令
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool Wfi() {
-            reg.IncrementPc();
+        public bool Wfi(UInt32 insLength = 4U) {
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -474,8 +458,8 @@ namespace RiscVCpu.LoadStoreUnit {
         /// 0以外: rs2によって識別されるアドレス空間におけるアドレス変換のみが順序付けられる
         /// </param>
         /// <returns>処理の成否</returns>
-        public bool SfenceVma(Register rs1, Register rs2) {
-            reg.IncrementPc();
+        public bool SfenceVma(Register rs1, Register rs2, UInt32 insLength = 4U) {
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -484,7 +468,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// マシンモードの例外ハンドラから戻る
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool Mret() {
+        public bool Mret(UInt32 insLength = 4U) {
             reg.SetPc(reg.GetCSR(CSR.mepc));
             StatusCSR mstatus = (StatusCSR)reg.GetCSR(CSR.mstatus);
             mstatus.MPP = 3;
@@ -503,7 +487,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// スーパーバイザモードの例外ハンドラから戻る
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool Sret() {
+        public bool Sret(UInt32 insLength = 4U) {
             reg.SetPc(reg.GetCSR(CSR.sepc));
             StatusCSR sstatus = (StatusCSR)reg.GetCSR(CSR.sstatus);
             sstatus.SPP = true;
@@ -525,7 +509,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// レジスタを全てクリアし、エントリポイントをPCに設定する
         /// </summary>
         /// <param name="entryPoint"></param>
-        public void ClearAndSetPC(UInt32 entryPoint) {
+        public void ClearAndSetPC(UInt32 entryPoint, UInt32 insLength = 4U) {
             reg.ClearAll();
             reg.SetPc(entryPoint);
         }
@@ -534,7 +518,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// 
         /// </summary>
         /// <param name="option"></param>
-        public void AddMisa(char option) {
+        public void AddMisa(char option, UInt32 insLength = 4U) {
             reg.AddMisa(option);
         }
     }

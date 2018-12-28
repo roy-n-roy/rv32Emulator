@@ -1,6 +1,5 @@
 ﻿using ElfLoader;
 using RiscVCpu.ArithmeticLogicUnit;
-using RiscVCpu.Constants.Exceptions;
 using RiscVCpu.Decoder;
 using RiscVCpu.LoadStoreUnit;
 using System;
@@ -51,15 +50,20 @@ namespace RiscVCpu {
 
             // 拡張命令セット
             foreach (char option in instractureSetOptions.ToCharArray()) {
+                lsu.AddMisa(option);
                 switch (option) {
                     case 'M': // RV32M 拡張命令セット
                         decoder.AddDecoder(typeof(RV32M_Decoder));
-                        lsu.AddMisa(option);
                         break;
 
                     case 'A': // RV32A 拡張命令セット
+                        decoder.AddDecoder(typeof(RV32A_Decoder));
+                        lsu = new RV32_AmoLsu(registerSet, mem);
                         break;
 
+                    case 'C': // RV32C 拡張命令セット
+                        decoder.AddDecoder(typeof(RV32C_Decoder));
+                        break;
                     case 'F': // RV32F 拡張命令セット
                         break;
 
@@ -163,17 +167,9 @@ namespace RiscVCpu {
                 if (ins == 0) {
                     return 0;
                 }
-                Decode(ins);
+                decoder.Decode(ins, this);
                 registerSet.IncrementCycle();
             }
-        }
-
-        /// <summary>
-        /// 引数で指定した命令をデコード、実行する
-        /// </summary>
-        /// <param name="instruction">デコード、実行する命令</param>
-        private void Decode(UInt32 instruction) {
-            decoder.Decode(instruction, this);
         }
 
         /// <summary>

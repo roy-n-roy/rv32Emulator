@@ -1,10 +1,15 @@
-﻿using RiscVCpu.Constants;
-using RiscVCpu.Constants.Exceptions;
+﻿using RiscVCpu.LoadStoreUnit;
+using RiscVCpu.LoadStoreUnit.Constants;
+using RiscVCpu.LoadStoreUnit.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace RiscVCpu.LoadStoreUnit {
+    /// <summary>
+    /// RV32アーキテクチャのレジスタ
+    /// 実データを扱う唯一のクラス
+    /// </summary>
     public class RV32_RegisterSet {
         /// <summary>
         /// レジスタを表す32bit符号付き整数の連想配列
@@ -51,6 +56,7 @@ namespace RiscVCpu.LoadStoreUnit {
             RegisterArray.Select(r => RegisterArray[r.Key] = 0);
             CSRArray.Select(c => CSRArray[c.Key] = 0);
 
+            currentMode = PrivilegeLevels.MachineMode;
             CSRArray[CSR.misa] |= 0x40000000;
         }
 
@@ -61,8 +67,8 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <summary>
         /// プログラムカウントを 4 増加させ、次の命令アドレスを指すように更新する
         /// </summary>
-        public void IncrementPc() {
-            pc += 4U;
+        public void IncrementPc(UInt32 instructionLength = 4U) {
+            pc += instructionLength;
         }
 
         /// <summary>
@@ -146,13 +152,13 @@ namespace RiscVCpu.LoadStoreUnit {
                         CSRArray[name] &= ~value;
                         break;
                     default:
-                        throw new RiscvException(RiscvExceptionCause.IllegalInstruction);
+                        throw new RiscvException(RiscvExceptionCause.IllegalInstruction, this);
                 }
             } else {
                 //実行モードがアドレスの権限より小さい場合
                 //アドレス上位2bitが 0b11(= 読み取り専用)の場合は
                 //不正命令例外が発生する
-                throw new RiscvException(RiscvExceptionCause.IllegalInstruction);
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, this);
             }
         }
 
@@ -182,7 +188,7 @@ namespace RiscVCpu.LoadStoreUnit {
 
             } else {
                 //実行モードがアドレスの権限より小さい場合は不正命令例外が発生する
-                throw new RiscvException(RiscvExceptionCause.IllegalInstruction);
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, this);
             }
         }
 
@@ -193,6 +199,21 @@ namespace RiscVCpu.LoadStoreUnit {
         public void AddMisa(char isa) {
             CSRArray[CSR.misa] += (UInt32)(1 << (Char.ToUpper(isa) - 'A' - 1));
         }
+
+        public void SetCause(RiscvExceptionCause cause) {
+            switch (currentMode) {
+                case PrivilegeLevels.MachineMode:
+                    CSRArray[CSR.mcause] = (UInt32)cause;
+                    break;
+                case PrivilegeLevels.SupervisorMode:
+                    CSRArray[CSR.scause] = (UInt32)cause;
+                    break;
+                case PrivilegeLevels.UserMode:
+                    CSRArray[CSR.ucause] = (UInt32)cause;
+                    break;
+            }
+        }
+
 
         /// <summary>
         /// レジスタ(x0～x31 + pc)の内容をレジスタ名と16進形式の文字列に変換して返す

@@ -43,16 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoadStoreUnit\Constants.cs" />
-    <Compile Include="LoadStoreUnit\RV32_LoadStoreUnit.cs" />
+    <Compile Include="Constants\ControlStatusRegisterConstants.cs" />
+    <Compile Include="Constants\RegisterConstants.cs" />
+    <Compile Include="Exceptions\RiscvException.cs" />
+    <Compile Include="LoadStoreUnit\RV32_AmoLsu.cs" />
+    <Compile Include="LoadStoreUnit\RV32_Lsu.cs" />
     <Compile Include="LoadStoreUnit\RV32_RegisterSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Exceptions\Constants.csproj">
-      <Project>{93868cf5-de52-462d-be72-1c70b0ae987c}</Project>
-      <Name>Constants</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
