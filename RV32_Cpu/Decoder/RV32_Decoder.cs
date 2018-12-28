@@ -84,34 +84,33 @@ namespace RiscVCpu.Decoder {
         /// <param name="ins">SplitInstructionメソッドで分割したbyte[]のRisc-V命令</param>
         /// <returns>Int32型即値</returns>
         private protected Int32 GetImmediate(char format, byte[] ins) {
-            int result;
+            UInt32 result;
+            UInt32[] i = ins.Select(b => (UInt32)b).ToArray();
             switch (format) {
                 case 'U':
-                    result = (ins[2] << 12) + (ins[3] << 15) + (ins[4] << 20) + (ins[5] << 25);
-                    result += ins[6] == 0 ? 0 : -(1 << 19);
+                    result = (UInt32)((i[2] << 12) + (i[3] << 15) + (i[4] << 20) + (i[5] << 25));
                     break;
                 case 'J':
-                    //result = (ins[2] << 11) + (ins[3] << 14) + (ins[4] & 0b11110) + (ins[5] << 5);
-                    result = ((ins[4] & 0b1) << 10) + (ins[2] << 12) + (ins[3] << 15) + (ins[4] & 0b11110) + (ins[5] << 5);
-                    result += ins[6] == 0 ? 0 : -(1 << 19) - 1;
+                    result = ((UInt32)i[4] & 0b11110u) + ((UInt32)i[5] << 5) + (((UInt32)i[4] & 0b1u) << 10) + ((UInt32)i[2] << 12) + ((UInt32)i[3] << 15);
+                    result += i[6] == 0u ? 0u : 0xFFF8u;
                     break;
                 case 'B':
-                    result = ins[1] + (ins[5] << 5);
-                    result += ins[6] == 0 ? 0 : -(1 << 11) - 1;
+                    result = (i[1] & 0b11110) + (i[5] << 5) + ((i[1] & 0b1) << 11);
+                    result += i[6] == 0u ? 0u : 0xFFFFF000u;
                     break;
                 case 'I':
-                    result = ins[4] + (ins[5] << 5);
-                    result += ins[6] == 0 ? 0 : -(1 << 11);
+                    result = i[4] + (i[5] << 5);
+                    result += i[6] == 0u ? 0u : 0xFFFFF800u;
                     break;
                 case 'S':
-                    result = ins[1] + (ins[5] << 5);
-                    result += ins[6] == 0 ? 0 : -(1 << 11);
+                    result = i[1] + (i[5] << 5);
+                    result += i[6] == 0u ? 0u : 0xFFFFF800u;
                     break;
                 default:
                     result = 0;
                     break;
             }
-            return result;
+            return (Int32)result;
         }
         #endregion
     }
