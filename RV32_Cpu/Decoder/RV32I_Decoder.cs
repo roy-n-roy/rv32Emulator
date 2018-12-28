@@ -19,7 +19,7 @@ namespace RiscVCpu.Decoder {
                         rs2 = (Register)ins[4];
             Opcode opcode = (Opcode)ins[0];
             Funct3 funct3 = (Funct3)ins[2];
-            Funct7 funct7 = (Funct7)(ins[5] + (ins[6] << 6));
+            Funct7 funct7 = (Funct7)(ins[5] | (ins[6] << 6));
             Int32 immediate = 0;
             RV32_Alu alu;
 
@@ -152,17 +152,17 @@ namespace RiscVCpu.Decoder {
 
 
                         case Funct3.slli: // slli命令
-                            result = alu.Slli(rd, rs1, ins[4] + ((ins[5] & 0b1) << 5));
+                            result = alu.Slli(rd, rs1, ins[4] | ((ins[5] & 0b1) << 5));
                             break;
 
                         case Funct3.srli_srai: // srli/srai命令
                             switch (funct7) {
                                 case Funct7.srli:
-                                    result = alu.Srli(rd, rs1, ins[4] + ((ins[5] & 0b1) << 5));
+                                    result = alu.Srli(rd, rs1, ins[4] | ((ins[5] & 0b1) << 5));
                                     break;
 
                                 case Funct7.srai:
-                                    result = alu.Srai(rd, rs1, ins[4] + ((ins[5] & 0b1) << 5));
+                                    result = alu.Srai(rd, rs1, ins[4] | ((ins[5] & 0b1) << 5));
                                     break;
                             }
                             break;
@@ -171,44 +171,44 @@ namespace RiscVCpu.Decoder {
 
                 case Opcode.op: // Op系命令(算術論理演算)
                     alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
-                    switch (((UInt16)funct3 + ((UInt16)funct7 << 3))) {
-                        case (UInt16)Funct3.add_sub + ((UInt16)Funct7.add << 3): // add命令
+                    switch (((UInt16)funct3 | ((UInt16)funct7 << 3))) {
+                        case (UInt16)Funct3.add_sub | ((UInt16)Funct7.add << 3): // add命令
                             result = alu.Add(rd, rs1, rs2);
                             break;
 
-                        case (UInt16)Funct3.add_sub + ((UInt16)Funct7.sub << 3): // sub命令
+                        case (UInt16)Funct3.add_sub | ((UInt16)Funct7.sub << 3): // sub命令
                             result = alu.Sub(rd, rs1, rs2);
                             break;
 
-                        case (UInt16)Funct3.xor + ((UInt16)Funct7.xor << 3): // xor命令
+                        case (UInt16)Funct3.xor | ((UInt16)Funct7.xor << 3): // xor命令
                             result = alu.Xor(rd, rs1, rs2);
                             break;
 
-                        case (UInt16)Funct3.or + ((UInt16)Funct7.or << 3): // or命令
+                        case (UInt16)Funct3.or | ((UInt16)Funct7.or << 3): // or命令
                             result = alu.Or(rd, rs1, rs2);
                             break;
 
-                        case (UInt16)Funct3.and + ((UInt16)Funct7.and << 3): // and命令
+                        case (UInt16)Funct3.and | ((UInt16)Funct7.and << 3): // and命令
                             result = alu.And(rd, rs1, rs2);
                             break;
 
-                        case (UInt16)Funct3.slt + ((UInt16)Funct7.slt << 3): // slt命令
+                        case (UInt16)Funct3.slt | ((UInt16)Funct7.slt << 3): // slt命令
                             result = alu.Slt(rd, rs1, rs2);
                             break;
 
-                        case (UInt16)Funct3.sltu + ((UInt16)Funct7.sltu << 3): // sltu命令
+                        case (UInt16)Funct3.sltu | ((UInt16)Funct7.sltu << 3): // sltu命令
                             result = alu.Sltu(rd, rs1, rs2);
                             break;
 
-                        case (UInt16)Funct3.sll + ((UInt16)Funct7.sll << 3): // sll命令
+                        case (UInt16)Funct3.sll | ((UInt16)Funct7.sll << 3): // sll命令
                             result = alu.Sll(rd, rs1, rs2);
                             break;
 
-                        case (UInt16)Funct3.srl_sra + ((UInt16)Funct7.srl << 3): // srl命令
+                        case (UInt16)Funct3.srl_sra | ((UInt16)Funct7.srl << 3): // srl命令
                             result = alu.Srl(rd, rs1, rs2);
                             break;
 
-                        case (UInt16)Funct3.srl_sra + ((UInt16)Funct7.sra << 3): // sra命令
+                        case (UInt16)Funct3.srl_sra | ((UInt16)Funct7.sra << 3): // sra命令
                             result = alu.Sra(rd, rs1, rs2);
                             break;
                     }
@@ -218,7 +218,7 @@ namespace RiscVCpu.Decoder {
                 case Opcode.miscMem: // 同期命令
                     switch (funct3) {
                         case Funct3.fence: // fence命令
-                            result = cpu.Lsu.Fence((byte)(((ins[5] & 0x7 ) << 5) + ins[4]));
+                            result = cpu.Lsu.Fence((byte)(((ins[5] & 0x7 ) << 5) | ins[4]));
                             break;
 
                         case Funct3.fenceI: // fence.i命令
@@ -233,7 +233,7 @@ namespace RiscVCpu.Decoder {
                                 if (funct7 == Funct7.sfenceVma) {
                                     result = cpu.Lsu.SfenceVma(rs1, rs2);
                                 } else {
-                                    Funct12 funct12 = (Funct12)(ins[4] + (ins[5] << 5) + (ins[6] << 11)); ;
+                                    Funct12 funct12 = (Funct12)(ins[4] | (ins[5] << 5) | (ins[6] << 11)); ;
                                     switch (funct12) {
                                         case Funct12.ecall:
                                             result = cpu.Lsu.Ecall();
