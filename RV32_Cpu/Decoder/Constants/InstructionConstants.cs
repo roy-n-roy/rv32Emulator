@@ -246,29 +246,32 @@
     }
 
     public enum CompressedOpcode : byte {
-        lwsp = 0b01010,
-        flwsp = 0b01110,
-        fldsp = 0b00110,
-        swsp = 0b11010,
-        fswsp = 0b11110,
-        fsdsp = 0b10110,
-        lw = 0b01000,
-        flw = 0b01100,
-        fld = 0b00100,
-        sw = 0b10000,
-        fsw = 0b11100,
-        fsd = 0b10100,
-        j = 0b10101,
-        jal = 0b00101,
-        beqz = 0b11001,
-        bnez = 0b11101,
-        li = 0b01001,
-        lui_addi16sp = 0b01101,
         addi = 0b00001,
+        misc_alu = 0b10001,
         addi4spn = 0b00000,
         slli = 0b00010,
-        jr_mv_add_ebreak = 0b10010,
-        op = 0b10001,
+        jr_mv_add = 0b10010,
+
+        jal = 0b00101,
+        li = 0b01001,
+        lui_addi16sp = 0b01101,
+        j = 0b10101,
+        beqz = 0b11001,
+        bnez = 0b11101,
+
+        fld = 0b00100,
+        lw = 0b01000,
+        flw = 0b01100,
+        fsd = 0b10100,
+        sw = 0b11000,
+        fsw = 0b11100,
+
+        fldsp = 0b00110,
+        lwsp = 0b01010,
+        flwsp = 0b01110,
+        fsdsp = 0b10110,
+        swsp = 0b11010,
+        fswsp = 0b11110,
     }
     #endregion
 }
