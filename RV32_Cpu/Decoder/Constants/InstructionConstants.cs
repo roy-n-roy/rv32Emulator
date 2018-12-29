@@ -245,33 +245,61 @@
         #endregion
     }
 
+    /// <summary>RV32C拡張命令の15～13bit部分+0～1bit部分</summary>
     public enum CompressedOpcode : byte {
+        #region RV32C拡張 命令定義
+        /// <summary>Add Immediate命令</summary>
         addi = 0b00001,
+        /// <summary>算術論理演算命令</summary>
         misc_alu = 0b10001,
+        /// <summary>Add Immediate, Scaled by 4, to Stack Pointer, Nondestructive命令</summary>
         addi4spn = 0b00000,
+        /// <summary>Shift Left Logical命令</summary>
         slli = 0b00010,
+        /// <summary>Jump Register, Move, Add命令</summary>
         jr_mv_add = 0b10010,
 
+        /// <summary>Jump And Link命令</summary>
         jal = 0b00101,
+        /// <summary>Load Immediate命令</summary>
         li = 0b01001,
+        /// <summary>Load Upper Immediate命令</summary>
         lui_addi16sp = 0b01101,
+        /// <summary>Jump命令</summary>
         j = 0b10101,
+        /// <summary>Branch if Equal to Zero命令</summary>
         beqz = 0b11001,
+        /// <summary>Branch if Not Equal to Zero命令</summary>
         bnez = 0b11101,
 
+        /// <summary>Floating-point Load Doubleword命令</summary>
         fld = 0b00100,
+        /// <summary>Load Word命令</summary>
         lw = 0b01000,
+        /// <summary>Float-Point Load Word命令</summary>
         flw = 0b01100,
+        /// <summary>Float-Point Store Word命令</summary>
         fsd = 0b10100,
+        /// <summary>Store Word命令</summary>
         sw = 0b11000,
+        /// <summary>Float-Point Store Word命令</summary>
         fsw = 0b11100,
 
+        /// <summary>Floating-point Load Doubleword, Stack-Pointer Relative命令</summary>
         fldsp = 0b00110,
+        /// <summary>Load Word命令, Stack-Pointer Relative</summary>
         lwsp = 0b01010,
+        /// <summary>Float-Point Load Word, Stack-Pointer Relative命令</summary>
         flwsp = 0b01110,
+        /// <summary>Float-Point Store Word, Stack-Pointer Relative命令</summary>
         fsdsp = 0b10110,
+        /// <summary>Store Word, Stack-Pointer Relative命令</summary>
         swsp = 0b11010,
+        /// <summary>Float-Point Store Word, Stack-Pointer Relative命令</summary>
         fswsp = 0b11110,
+
+        #endregion
     }
+
     #endregion
 }
