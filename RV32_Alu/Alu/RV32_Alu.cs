@@ -192,7 +192,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         }
 
         /// <summary>
-        /// Substract命令
+        /// Subtract命令
         /// レジスタrs1(符号付き)とrs2(符号付き)の差をレジスタrdに書き込む
         /// </summary>
         /// <param name="rd">結果を格納するレジスタ番号</param>
