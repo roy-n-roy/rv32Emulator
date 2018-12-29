@@ -29,9 +29,9 @@ namespace ElfLoader {
         /// <summary>コアファイル</summary>
         ET_CORE = 0x0004,
         /// <summary>プロセッサ依存</summary>
-        ET_LOPROC = 0xFF00,
+        ET_LOPROC = 0xff00,
         /// <summary>プロセッサ依存</summary>
-        ET_HIPROC = 0xFFFF,
+        ET_HIPROC = 0xffff,
     }
 
     /// <summary>マシンアーキテクチャ</summary>
@@ -105,7 +105,7 @@ namespace ElfLoader {
 
         /// <summary>ELF識別子を格納する16のchar配列</summary>
         /// <detail>
-        /// [0] = 0x7F(マジックナンバー)
+        /// [0] = 0x7f(マジックナンバー)
         /// [1] = 'E'(マジックナンバー)
         /// [2] = 'L'(マジックナンバー)
         /// [3] = 'F'(マジックナンバー)
@@ -290,11 +290,11 @@ namespace ElfLoader {
         /// <summary>プロセッサー固有情報範囲 開始アドレス</summary>
         SHT_LOPROC = 0x70000000,
         /// <summary>プロセッサー固有情報範囲 終了アドレス</summary>
-        SHT_HIPROC = 0x7FFFFFFF,
+        SHT_HIPROC = 0x7fffffff,
         /// <summary>アプリケーションプログラム使用範囲 開始アドレス</summary>
         SHT_LOUSER = 0x80000000,
         /// <summary>アプリケーションプログラム使用範囲 終了アドレス</summary>
-        SHT_HIUSER = 0x8FFFFFFF,
+        SHT_HIUSER = 0x8fffffff,
     }
 
     /// <summary></summary>
@@ -306,7 +306,7 @@ namespace ElfLoader {
         /// <summary>実行コードセクション</summary>
         SHF_EXECINSTR = 0x4,
         /// <summary>プロセッサー固有情報セクション</summary>
-        SHF_MASKPROC = 0xF0000000,
+        SHF_MASKPROC = 0xf0000000,
     }
     #endregion
 
@@ -378,7 +378,7 @@ namespace ElfLoader {
         /// <summary>予約</summary>
         PT_LOPROC = 0x70000000,
         /// <summary>予約</summary>
-        PT_HIPROC = 0x7FFFFFFF,
+        PT_HIPROC = 0x7fffffff,
     }
 
     /// <summary>プログラムヘッダテーブル</summary>

@@ -1,4 +1,5 @@
 ﻿namespace RiscVCpu.LoadStoreUnit.Constants {
+
     #region RV32レジスタ名定義
 
     /// <summary>
@@ -7,6 +8,7 @@
     /// </summary>
     public enum Register : byte {
         #region RV32I 番号表記形式
+        /*
         x0 = 0,
         x1 = 1,
         x2 = 2,
@@ -39,7 +41,7 @@
         x29 = 29,
         x30 = 30,
         x31 = 31,
-
+        */
         #endregion
 
         #region RV32I 名称表記形式
@@ -51,7 +53,7 @@
         t0 = 5,
         t1 = 6,
         t2 = 7,
-        s0 = 8,
+        //s0 = 8,
         fp = 8,
         s1 = 9,
         a0 = 10,
@@ -79,7 +81,6 @@
 
         #endregion
     }
-
 
     /// <summary>
     /// RV32I基本命令セットで使用するコントロール・ステータスレジスタのアドレスを表す
@@ -340,79 +341,5 @@
         #endregion
     }
 
-    public enum RegisterFD : byte {
-        #region RV32FD拡張 番号表記形式
-        f0 = 0,
-        f1 = 1,
-        f2 = 2,
-        f3 = 3,
-        f4 = 4,
-        f5 = 5,
-        f6 = 6,
-        f7 = 7,
-        f8 = 8,
-        f9 = 9,
-        f10 = 10,
-        f11 = 11,
-        f12 = 12,
-        f13 = 13,
-        f14 = 14,
-        f15 = 15,
-        f16 = 16,
-        f17 = 17,
-        f18 = 18,
-        f19 = 19,
-        f20 = 20,
-        f21 = 21,
-        f22 = 22,
-        f23 = 23,
-        f24 = 24,
-        f25 = 25,
-        f26 = 26,
-        f27 = 27,
-        f28 = 28,
-        f29 = 29,
-        f30 = 30,
-        f31 = 31,
-
-        #endregion
-
-        #region RV32FD拡張 名称表記形式
-        ft0 = 0,
-        ft1 = 1,
-        ft2 = 2,
-        ft3 = 3,
-        ft4 = 4,
-        ft5 = 5,
-        ft6 = 6,
-        ft7 = 7,
-        fs0 = 8,
-        fs1 = 9,
-        fa0 = 10,
-        fa1 = 11,
-        fa2 = 12,
-        fa3 = 13,
-        fa4 = 14,
-        fa5 = 15,
-        fa6 = 16,
-        fa7 = 17,
-        fs2 = 18,
-        fs3 = 29,
-        fs4 = 20,
-        fs5 = 21,
-        fs6 = 22,
-        fs7 = 23,
-        fs8 = 24,
-        fs9 = 25,
-        fs10 = 26,
-        fs11 = 27,
-        ft8 = 28,
-        ft9 = 29,
-        ft10 = 30,
-        ft11 = 31,
-
-        #endregion
-    }
     #endregion
-
 }

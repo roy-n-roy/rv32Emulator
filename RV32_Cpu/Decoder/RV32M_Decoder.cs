@@ -23,7 +23,7 @@ namespace RiscVCpu.Decoder {
             RV32_Mac alu;
 
 
-            if (opcode == Opcode.op && funct7 == Funct7.mul_div) { // Op系命令(算術論理演算)
+            if (opcode == Opcode.miscOp && funct7 == Funct7.mul_div) { // Op系命令(算術論理演算)
                 alu = (RV32_Mac)cpu.Alu(typeof(RV32_Mac));
                 switch (funct3) {
 

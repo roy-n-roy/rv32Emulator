@@ -31,7 +31,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool LrW(Register rd, Register rs1, bool acquire, bool release, UInt32 insLength = 4U) {
+        public bool LrW(Register rd, Register rs1, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
             if (!ReservedAddress.Contains(addr)) {
                 ReservedAddress.Add(addr);
@@ -49,7 +49,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool ScW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4U) {
+        public bool ScW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
             if (ReservedAddress.Contains(addr)) {
                 base.Sw(rs1, rs2, 0);
@@ -70,7 +70,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool AmoSwapW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4U) {
+        public bool AmoSwapW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
@@ -109,7 +109,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool AmoAddW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4U) {
+        public bool AmoAddW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
@@ -149,7 +149,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool AmoXorW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4U) {
+        public bool AmoXorW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
@@ -189,7 +189,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool AmoAndW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4U) {
+        public bool AmoAndW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
@@ -229,7 +229,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool AmoOrW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4U) {
+        public bool AmoOrW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
@@ -269,7 +269,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool AmoMinW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4U) {
+        public bool AmoMinW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
@@ -309,7 +309,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool AmoMaxW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4U) {
+        public bool AmoMaxW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
@@ -349,7 +349,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool AmoMinuW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4U) {
+        public bool AmoMinuW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
@@ -389,7 +389,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
-        public bool AmoMaxuW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4U) {
+        public bool AmoMaxuW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
@@ -433,7 +433,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public override bool Lb(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
+        public override bool Lb(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             if (!ReservedAddress.Contains(addr)) {
                 base.Lb(rd, rs1, offset);
@@ -449,7 +449,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public override bool Lbu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
+        public override bool Lbu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             if (!ReservedAddress.Contains(addr)) {
                 base.Lbu(rd, rs1, offset);
@@ -466,7 +466,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public override bool Lh(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
+        public override bool Lh(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             if (!ReservedAddress.Contains(addr)) {
                 base.Lh(rd, rs1, offset);
@@ -483,7 +483,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public override bool Lhu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
+        public override bool Lhu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             if (!ReservedAddress.Contains(addr)) {
                 base.Lhu(rd, rs1, offset);
@@ -500,7 +500,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のベースアドレスが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public override bool Lw(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
+        public override bool Lw(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             if (!ReservedAddress.Contains(addr)) {
                 base.Lw(rd, rs1, offset);
@@ -521,7 +521,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public override bool Sb(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
+        public override bool Sb(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             if (!ReservedAddress.Contains(addr)) {
                 base.Sb(rs1, rs2, offset);
@@ -538,7 +538,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public override bool Sh(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
+        public override bool Sh(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             if (!ReservedAddress.Contains(addr)) {
                 base.Sh(rs1, rs2, offset);
@@ -555,7 +555,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public override bool Sw(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
+        public override bool Sw(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             if (!ReservedAddress.Contains(addr)) {
                 base.Sw(rs1, rs2, offset);

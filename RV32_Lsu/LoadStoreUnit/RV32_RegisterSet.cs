@@ -28,10 +28,10 @@ namespace RiscVCpu.LoadStoreUnit {
         public RV32_RegisterSet() {
 
             // レジスタ初期化
-            RegisterArray = new Dictionary<Register, UInt32>(Enumerable.Range(0, 32).ToDictionary(key => (Register)key, value => 0U));
+            RegisterArray = new Dictionary<Register, UInt32>(Enumerable.Range(0, 32).ToDictionary(key => (Register)key, value => 0u));
 
             // コントロール・ステータスレジスタ初期化
-            CSRArray = Enum.GetValues(typeof(CSR)).Cast<CSR>().ToDictionary(key => key, value => 0U);
+            CSRArray = Enum.GetValues(typeof(CSR)).Cast<CSR>().ToDictionary(key => key, value => 0u);
             
             //マシンモードに設定
             currentMode = PrivilegeLevels.MachineMode;
@@ -60,16 +60,18 @@ namespace RiscVCpu.LoadStoreUnit {
             CSRArray[CSR.misa] |= 0x40000000;
         }
 
-        public void IncrementCycle() {
-            CSRArray[CSR.cycle]++;
-        }
 
         /// <summary>
-        /// プログラムカウントを 4 増加させ、次の命令アドレスを指すように更新する
+        /// サイクルカウントを 1 増加させる
         /// </summary>
-        public void IncrementPc(UInt32 instructionLength = 4U) {
-            pc += instructionLength;
-        }
+        public void IncrementCycle() => CSRArray[CSR.cycle]++;
+
+        /// <summary>
+        /// プログラムカウントを 引数で指定した分 増加させ、次の命令アドレスを指すように更新する
+        /// 引数で指定しない場合は 4 増加させる
+        /// </summary>
+        /// <param name="instructionLength">PCの増数 32bit長命令の場合は4、16bit長命令の場合は2を指定する</param>
+        public void IncrementPc(UInt32 instructionLength = 4u) => pc += instructionLength;
 
         /// <summary>
         /// プログラムカウンタに値を設定する
@@ -81,13 +83,13 @@ namespace RiscVCpu.LoadStoreUnit {
         }
 
         /// <summary>
-        /// レジスタに値を設定する
+        /// 整数レジスタに値を設定する
         /// </summary>
         /// <param name="name">設定する対象レジスタ名</param>
         /// <param name="value">設定する値</param>
         public void SetValue(Register name, UInt32 value) {
-            if (name == Register.x0) {
-                //x0レジスタは常に0から変更されないため、なにもしない
+            if (name == Register.zero) {
+                //zeroレジスタは常に0から変更されないため、なにもしない
 
             } else {
                 //値をレジスタに設定
@@ -96,7 +98,7 @@ namespace RiscVCpu.LoadStoreUnit {
         }
 
         /// <summary>
-        /// レジスタから値を取得する
+        /// 整数レジスタから値を取得する
         /// </summary>
         /// <param name="name">取得する対象レジスタ名</param>
         /// <returns>レジスタの値</returns>
@@ -105,7 +107,6 @@ namespace RiscVCpu.LoadStoreUnit {
             return RegisterArray[name];
         }
 
-
         /// <summary>
         /// CSRに値を設定する
         /// </summary>
@@ -113,8 +114,8 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="value">設定する値</param>
         internal void SetCSR(CSR name, char operation, Register reg) {
 
-            //レジスタがx0の場合は何もしない
-            if (reg != Register.x0) {
+            //レジスタがzeroの場合は何もしない
+            if (reg != Register.zero) {
                 SetCSR(name, operation, (UInt32)RegisterArray[reg]);
             }
         }
@@ -128,7 +129,7 @@ namespace RiscVCpu.LoadStoreUnit {
 
             //CSRアドレスの11～12bitで読み書き可能 or 読み取り専用を
             //9～10bitがアクセス権限を表す
-            if (((UInt16)name & 0xC00u) != 0xC00u && (PrivilegeLevels)((UInt16)name & 0x300u) <= currentMode) {
+            if (((UInt16)name & 0xc00u) != 0xc00u && (PrivilegeLevels)((UInt16)name & 0x300u) <= currentMode) {
                 switch (operation) {
                     case 'w':
                         if ((CSR)name == CSR.sstatus) {
@@ -179,7 +180,7 @@ namespace RiscVCpu.LoadStoreUnit {
                     return (UInt32)status;
                 } else if ((CSR)name == CSR.sie || (CSR)name == CSR.sip) {
                     // マシンモードCSRに読み替える
-                    InterruptPendingCSR interrupt = (InterruptPendingCSR)CSRArray[name | (CSR)0x200U];
+                    InterruptPendingCSR interrupt = (InterruptPendingCSR)CSRArray[name | (CSR)0x200u];
                     interrupt.Mode = currentMode;
                     return (UInt32)interrupt;
                 } else {
@@ -216,7 +217,7 @@ namespace RiscVCpu.LoadStoreUnit {
 
 
         /// <summary>
-        /// レジスタ(x0～x31 + pc)の内容をレジスタ名と16進形式の文字列に変換して返す
+        /// レジスタ(zero～x31 + pc)の内容をレジスタ名と16進形式の文字列に変換して返す
         /// </summary>
         /// <returns>レジスタ状態を表す文字列</returns>
         public override string ToString() {

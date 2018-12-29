@@ -20,9 +20,9 @@
         /// <summary>Store系命令</summary>
         store = 0b0100011,
         /// <summary>即値付き算術論理演算命令</summary>
-        opimm = 0b0010011,
+        miscOpImm = 0b0010011,
         /// <summary>算術論理演算命令</summary>
-        op = 0b0110011,
+        miscOp = 0b0110011,
         /// <summary>同期命令</summary>
         miscMem = 0b0001111,
         /// <summary>特権命令</summary>
@@ -31,7 +31,7 @@
         #endregion
 
         #region RV32A拡張 命令定義
-        /// <summary>不可分命令</summary>
+        /// <summary>不可分メモリ操作命令</summary>
         amo = 0b0101111,
 
         #endregion
@@ -90,7 +90,7 @@
         /// <summary>Shift Right Logical/Arithmetic命令</summary>
         srli_srai = 0b101,
 
-        /// <summary>Add/Substract命令</summary>
+        /// <summary>Add/Subtract命令</summary>
         add_sub = 0b000,
         /// <summary>Exclusive-OR命令</summary>
         xor = 0b100,
@@ -168,7 +168,7 @@
 
         /// <summary>Add命令</summary>
         add = 0b0000000,
-        /// <summary>Substract命令</summary>
+        /// <summary>Subtract命令</summary>
         sub = 0b0100000,
         /// <summary>Exclusive-OR命令</summary>
         xor = 0b0000000,

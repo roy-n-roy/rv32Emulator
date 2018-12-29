@@ -121,7 +121,7 @@ namespace RiscVCpu.Decoder {
                     }
                     break;
 
-                case Opcode.opimm: // Op-imm系命令(即値算術論理演算)
+                case Opcode.miscOpImm: // Op-imm系命令(即値算術論理演算)
                     immediate = GetImmediate('I', ins);
                     alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
                     switch (funct3) {
@@ -169,7 +169,7 @@ namespace RiscVCpu.Decoder {
                     }
                     break;
 
-                case Opcode.op: // Op系命令(算術論理演算)
+                case Opcode.miscOp: // Op系命令(算術論理演算)
                     alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
                     switch (((UInt16)funct3 | ((UInt16)funct7 << 3))) {
                         case (UInt16)Funct3.add_sub | ((UInt16)Funct7.add << 3): // add命令
@@ -261,32 +261,32 @@ namespace RiscVCpu.Decoder {
                             break;
 
                         case Funct3.csrrw: // csrrw命令
-                            immediate = (GetImmediate('I', ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xfff);
                             result = cpu.Lsu.Csrrw(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrs: // csrrs命令
-                            immediate = (GetImmediate('I', ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xfff);
                             result = cpu.Lsu.Csrrs(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrc: // csrrc命令
-                            immediate = (GetImmediate('I', ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xfff);
                             result = cpu.Lsu.Csrrc(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrwi: // csrrwi命令
-                            immediate = (GetImmediate('I', ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xfff);
                             result = cpu.Lsu.Csrrwi(rd, ins[3], (CSR)immediate);
                             break;
 
                         case Funct3.csrrsi: // csrrsi命令
-                            immediate = (GetImmediate('I', ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xfff);
                             result = cpu.Lsu.Csrrsi(rd, ins[3], (CSR)immediate);
                             break;
 
                         case Funct3.csrrci: // csrrci命令
-                            immediate = (GetImmediate('I', ins) & 0xFFF);
+                            immediate = (GetImmediate('I', ins) & 0xfff);
                             result = cpu.Lsu.Csrrci(rd, ins[3], (CSR)immediate);
                             break;
                     }

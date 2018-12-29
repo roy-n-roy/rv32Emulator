@@ -92,19 +92,19 @@ namespace RiscVCpu.Decoder {
                     break;
                 case 'J':
                     result = (i[4] & 0b11110u) | (i[5] << 5) | ((i[4] & 0b1u) << 11) | (i[2] << 12) | (i[3] << 15);
-                    result |= i[6] == 0u ? 0u : 0xFFF00000u;
+                    result |= i[6] == 0u ? 0u : 0xfff00000u;
                     break;
                 case 'I':
                     result = i[4] | (i[5] << 5);
-                    result |= i[6] == 0u ? 0u : 0xFFFFF800u;
+                    result |= i[6] == 0u ? 0u : 0xfffff800u;
                     break;
                 case 'S':
                     result = i[1] | (i[5] << 5);
-                    result |= i[6] == 0u ? 0u : 0xFFFFF800u;
+                    result |= i[6] == 0u ? 0u : 0xfffff800u;
                     break;
                 case 'B':
                     result = (i[1] & 0b11110) | (i[5] << 5) | ((i[1] & 0b1) << 11);
-                    result |= i[6] == 0u ? 0u : 0xFFFFF000u;
+                    result |= i[6] == 0u ? 0u : 0xfffff000u;
                     break;
                 default:
                     result = 0;
