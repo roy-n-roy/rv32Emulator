@@ -1,5 +1,6 @@
 ﻿using RiscVCpu.ArithmeticLogicUnit;
 using RiscVCpu.Decoder.Constants;
+using RiscVCpu.LoadStoreUnit;
 using RiscVCpu.LoadStoreUnit.Constants;
 using System;
 
@@ -22,6 +23,7 @@ namespace RiscVCpu.Decoder {
             Funct7 funct7 = (Funct7)(ins[5] | (ins[6] << 6));
             Int32 immediate = 0;
             RV32_Alu alu;
+            RV32_Lsu lsu;
 
             switch (opcode) {
                 case Opcode.lui: // lui命令
@@ -39,84 +41,89 @@ namespace RiscVCpu.Decoder {
 
                 case Opcode.jal: // jal命令
                     immediate = GetImmediate('J', ins);
-                    result = cpu.Lsu.Jal(rd, immediate);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    result = lsu.Jal(rd, immediate);
                     break;
 
                 case Opcode.jalr: // jalr命令
                     if (funct3 == Funct3.jalr) {
                         immediate = GetImmediate('I', ins);
-                        result = cpu.Lsu.Jalr(rd, rs1, immediate);
+                        lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                        result = lsu.Jalr(rd, rs1, immediate);
                     }
                     break;
 
                 case Opcode.branch: // Branch系命令
                     immediate = GetImmediate('B', ins);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
                     switch (funct3) {
                         case Funct3.beq: // beq命令
-                            result = cpu.Lsu.Beq(rs1, rs2, immediate);
+                            result = lsu.Beq(rs1, rs2, immediate);
                             break;
 
                         case Funct3.bne: // bne命令
-                            result = cpu.Lsu.Bne(rs1, rs2, immediate);
+                            result = lsu.Bne(rs1, rs2, immediate);
                             break;
 
                         case Funct3.blt: // blt命令
-                            result = cpu.Lsu.Blt(rs1, rs2, immediate);
+                            result = lsu.Blt(rs1, rs2, immediate);
                             break;
 
                         case Funct3.bge: // bge命令
-                            result = cpu.Lsu.Bge(rs1, rs2, immediate);
+                            result = lsu.Bge(rs1, rs2, immediate);
                             break;
 
                         case Funct3.bltu: // bltu命令
-                            result = cpu.Lsu.Bltu(rs1, rs2, immediate);
+                            result = lsu.Bltu(rs1, rs2, immediate);
                             break;
 
                         case Funct3.bgeu: // bgeu命令
-                            result = cpu.Lsu.Bgeu(rs1, rs2, immediate);
+                            result = lsu.Bgeu(rs1, rs2, immediate);
                             break;
                     }
                     break;
 
                 case Opcode.load: // Load系命令
                     immediate = GetImmediate('I', ins);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
                     switch (funct3) {
 
                         case Funct3.lb: // lb命令
-                            result = cpu.Lsu.Lb(rd, rs1, immediate);
+                            result = lsu.Lb(rd, rs1, immediate);
                             break;
 
                         case Funct3.lh: // lh命令
-                            result = cpu.Lsu.Lh(rd, rs1, immediate);
+                            result = lsu.Lh(rd, rs1, immediate);
                             break;
 
                         case Funct3.lw: //010 lw命令
-                            result = cpu.Lsu.Lw(rd, rs1, immediate);
+                            result = lsu.Lw(rd, rs1, immediate);
                             break;
 
                         case Funct3.lbu: //001 lbu命令
-                            result = cpu.Lsu.Lbu(rd, rs1, immediate);
+                            result = lsu.Lbu(rd, rs1, immediate);
                             break;
 
                         case Funct3.lhu: //101 lhu命令
-                            result = cpu.Lsu.Lhu(rd, rs1, immediate);
+                            result = lsu.Lhu(rd, rs1, immediate);
                             break;
                     }
                     break;
 
                 case Opcode.store: // Store系命令
                     immediate = GetImmediate('S', ins);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
                     switch (funct3) {
                         case Funct3.sb: // sb命令
-                            result = cpu.Lsu.Sb(rs1, rs2, immediate);
+                            result = lsu.Sb(rs1, rs2, immediate);
                             break;
 
                         case Funct3.sh: // sh命令
-                            result = cpu.Lsu.Sh(rs1, rs2, immediate);
+                            result = lsu.Sh(rs1, rs2, immediate);
                             break;
 
                         case Funct3.sw: // sw命令
-                            result = cpu.Lsu.Sw(rs1, rs2, immediate);
+                            result = lsu.Sw(rs1, rs2, immediate);
                             break;
                     }
                     break;
@@ -216,43 +223,45 @@ namespace RiscVCpu.Decoder {
 
 
                 case Opcode.miscMem: // 同期命令
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
                     switch (funct3) {
                         case Funct3.fence: // fence命令
-                            result = cpu.Lsu.Fence((byte)(((ins[5] & 0x7 ) << 5) | ins[4]));
+                            result = lsu.Fence((byte)(((ins[5] & 0x7 ) << 5) | ins[4]));
                             break;
 
                         case Funct3.fenceI: // fence.i命令
-                            result = cpu.Lsu.FenceI();
+                            result = lsu.FenceI();
                             break;
                     }
                     break;
                 case Opcode.privilege: // 特権命令
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
                     switch (funct3) {
                         case Funct3.privilege: // 特権命令
                             if (rd == 0) {
                                 if (funct7 == Funct7.sfenceVma) {
-                                    result = cpu.Lsu.SfenceVma(rs1, rs2);
+                                    result = lsu.SfenceVma(rs1, rs2);
                                 } else {
                                     Funct12 funct12 = (Funct12)(ins[4] | (ins[5] << 5) | (ins[6] << 11)); ;
                                     switch (funct12) {
                                         case Funct12.ecall:
-                                            result = cpu.Lsu.Ecall();
+                                            result = lsu.Ecall();
                                             break;
 
                                         case Funct12.ebreak:
-                                            result = cpu.Lsu.Ebreak();
+                                            result = lsu.Ebreak();
                                             break;
 
                                         case Funct12.sret:
-                                            result = cpu.Lsu.Sret();
+                                            result = lsu.Sret();
                                             break;
 
                                         case Funct12.wfi:
-                                            result = cpu.Lsu.Wfi();
+                                            result = lsu.Wfi();
                                             break;
 
                                         case Funct12.mret:
-                                            result = cpu.Lsu.Mret();
+                                            result = lsu.Mret();
                                             break;
                                     }
 
@@ -262,32 +271,32 @@ namespace RiscVCpu.Decoder {
 
                         case Funct3.csrrw: // csrrw命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.Lsu.Csrrw(rd, rs1, (CSR)immediate);
+                            result = lsu.Csrrw(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrs: // csrrs命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.Lsu.Csrrs(rd, rs1, (CSR)immediate);
+                            result = lsu.Csrrs(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrc: // csrrc命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.Lsu.Csrrc(rd, rs1, (CSR)immediate);
+                            result = lsu.Csrrc(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrwi: // csrrwi命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.Lsu.Csrrwi(rd, ins[3], (CSR)immediate);
+                            result = lsu.Csrrwi(rd, ins[3], (CSR)immediate);
                             break;
 
                         case Funct3.csrrsi: // csrrsi命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.Lsu.Csrrsi(rd, ins[3], (CSR)immediate);
+                            result = lsu.Csrrsi(rd, ins[3], (CSR)immediate);
                             break;
 
                         case Funct3.csrrci: // csrrci命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.Lsu.Csrrci(rd, ins[3], (CSR)immediate);
+                            result = lsu.Csrrci(rd, ins[3], (CSR)immediate);
                             break;
                     }
                     break;

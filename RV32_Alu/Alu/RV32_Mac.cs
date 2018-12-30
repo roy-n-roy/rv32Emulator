@@ -1,5 +1,6 @@
 ﻿using RiscVCpu.LoadStoreUnit;
 using RiscVCpu.LoadStoreUnit.Constants;
+using RiscVCpu.RegisterSet;
 using System;
 
 namespace RiscVCpu.ArithmeticLogicUnit {

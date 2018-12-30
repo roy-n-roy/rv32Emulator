@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alu\RV32_DoubleFpu.cs" />
+    <Compile Include="Alu\RV32_SingleFpu.cs" />
     <Compile Include="Alu\RV32_Alu.cs" />
     <Compile Include="Alu\RV32_Mac.cs" />
     <Compile Include="Alu\RV32_Calculators.cs" />

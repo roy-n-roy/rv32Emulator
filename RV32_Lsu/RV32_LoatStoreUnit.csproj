@@ -43,12 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\ControlStatusRegisterConstants.cs" />
-    <Compile Include="Constants\RegisterConstants.cs" />
-    <Compile Include="Exceptions\RiscvException.cs" />
+    <Compile Include="LoadStoreUnit\Constants\ControlStatusRegisterConstants.cs" />
+    <Compile Include="LoadStoreUnit\Constants\RegisterConstants.cs" />
+    <Compile Include="LoadStoreUnit\Exceptions\RiscvException.cs" />
+    <Compile Include="LoadStoreUnit\RV32_FloatPointLsu.cs" />
+    <Compile Include="MainMemoryHandler\RV32_AtomicMemoryHandler.cs" />
+    <Compile Include="MainMemoryHandler\RV32_MemoryHandler.cs" />
     <Compile Include="LoadStoreUnit\RV32_AmoLsu.cs" />
+    <Compile Include="LoadStoreUnit\RV32_MemoryOperator.cs" />
     <Compile Include="LoadStoreUnit\RV32_Lsu.cs" />
-    <Compile Include="LoadStoreUnit\RV32_RegisterSet.cs" />
+    <Compile Include="RegisterSet\RV32_RegisterSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

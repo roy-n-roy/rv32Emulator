@@ -1,8 +1,8 @@
-﻿using RiscVCpu.LoadStoreUnit;
-using RiscVCpu.LoadStoreUnit.Constants;
+﻿using RiscVCpu.LoadStoreUnit.Constants;
 using RiscVCpu.LoadStoreUnit.Exceptions;
+using RiscVCpu.MemoryHandler;
+using RiscVCpu.RegisterSet;
 using System;
-using System.Collections.Generic;
 
 namespace RiscVCpu.LoadStoreUnit {
     /// <summary>
@@ -10,14 +10,12 @@ namespace RiscVCpu.LoadStoreUnit {
     /// </summary>
     public class RV32_AmoLsu : RV32_Lsu {
 
-        private readonly HashSet<UInt64> ReservedAddress;
-        
+
         /// <summary>
-        /// Risc-V Atomic Memory Operator
+        /// Risc-V Atomic Memory Operate LSU
         /// </summary>
         /// <param name="registerSet">入出力用レジスタ</param>
-        public RV32_AmoLsu(RV32_RegisterSet reg, byte[] mainMemory) : base(reg, mainMemory) {
-            ReservedAddress = new HashSet<UInt64>();
+        public RV32_AmoLsu(RV32_RegisterSet reg, RV32_AbstractMemoryHandler mainMemory) : base(reg, mainMemory) {
         }
 
         #region Risc-V CPU命令
@@ -33,8 +31,8 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool LrW(Register rd, Register rs1, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-            if (!ReservedAddress.Contains(addr)) {
-                ReservedAddress.Add(addr);
+            if (mem.CanOperate(addr, 4)) {
+                mem.Acquire(addr);
                 base.Lw(rd, rs1, 0);
             } else {
                 reg.IncrementPc(insLength);
@@ -51,9 +49,9 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool ScW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-            if (ReservedAddress.Contains(addr)) {
+            if (mem.CanOperate(addr, 4)) {
                 base.Sw(rs1, rs2, 0);
-                ReservedAddress.Remove(addr);
+                mem.Release(addr);
                 reg.SetValue(rd, 0);
             } else {
                 reg.IncrementPc(insLength);
@@ -78,7 +76,7 @@ namespace RiscVCpu.LoadStoreUnit {
             }
 
             if (acquire) {
-                ReservedAddress.Add(addr);
+                mem.Acquire(addr);
             }
             byte[] bytes = new byte[4];
             bytes[0] = mem[addr + 0];
@@ -96,7 +94,7 @@ namespace RiscVCpu.LoadStoreUnit {
             mem[addr + 3] = bytes[3];
 
             if (release) {
-                ReservedAddress.Remove(addr);
+                mem.Release(addr);
             }
             reg.IncrementPc(insLength);
             return true;
@@ -117,7 +115,7 @@ namespace RiscVCpu.LoadStoreUnit {
             }
 
             if (acquire) {
-                ReservedAddress.Add(addr);
+                mem.Acquire(addr);
             }
             byte[] bytes = new byte[4];
             bytes[0] = mem[addr + 0];
@@ -135,7 +133,7 @@ namespace RiscVCpu.LoadStoreUnit {
             mem[addr + 3] = bytes[3];
 
             if (release) {
-                ReservedAddress.Remove(addr);
+                mem.Release(addr);
             }
             reg.IncrementPc(insLength);
             return true;
@@ -157,7 +155,7 @@ namespace RiscVCpu.LoadStoreUnit {
             }
 
             if (acquire) {
-                ReservedAddress.Add(addr);
+                mem.Acquire(addr);
             }
             byte[] bytes = new byte[4];
             bytes[0] = mem[addr + 0];
@@ -175,7 +173,7 @@ namespace RiscVCpu.LoadStoreUnit {
             mem[addr + 3] = bytes[3];
 
             if (release) {
-                ReservedAddress.Remove(addr);
+                mem.Release(addr);
             }
             reg.IncrementPc(insLength);
             return true;
@@ -197,7 +195,7 @@ namespace RiscVCpu.LoadStoreUnit {
             }
 
             if (acquire) {
-                ReservedAddress.Add(addr);
+                mem.Acquire(addr);
             }
             byte[] bytes = new byte[4];
             bytes[0] = mem[addr + 0];
@@ -215,7 +213,7 @@ namespace RiscVCpu.LoadStoreUnit {
             mem[addr + 3] = bytes[3];
 
             if (release) {
-                ReservedAddress.Remove(addr);
+                mem.Release(addr);
             }
             reg.IncrementPc(insLength);
             return true;
@@ -237,7 +235,7 @@ namespace RiscVCpu.LoadStoreUnit {
             }
 
             if (acquire) {
-                ReservedAddress.Add(addr);
+                mem.Acquire(addr);
             }
             byte[] bytes = new byte[4];
             bytes[0] = mem[addr + 0];
@@ -255,7 +253,7 @@ namespace RiscVCpu.LoadStoreUnit {
             mem[addr + 3] = bytes[3];
 
             if (release) {
-                ReservedAddress.Remove(addr);
+                mem.Release(addr);
             }
             reg.IncrementPc(insLength);
             return true;
@@ -277,7 +275,7 @@ namespace RiscVCpu.LoadStoreUnit {
             }
 
             if (acquire) {
-                ReservedAddress.Add(addr);
+                mem.Acquire(addr);
             }
             byte[] bytes = new byte[4];
             bytes[0] = mem[addr + 0];
@@ -295,7 +293,7 @@ namespace RiscVCpu.LoadStoreUnit {
             mem[addr + 3] = bytes[3];
 
             if (release) {
-                ReservedAddress.Remove(addr);
+                mem.Release(addr);
             }
             reg.IncrementPc(insLength);
             return true;
@@ -317,7 +315,7 @@ namespace RiscVCpu.LoadStoreUnit {
             }
 
             if (acquire) {
-                ReservedAddress.Add(addr);
+                mem.Acquire(addr);
             }
             byte[] bytes = new byte[4];
             bytes[0] = mem[addr + 0];
@@ -335,7 +333,7 @@ namespace RiscVCpu.LoadStoreUnit {
             mem[addr + 3] = bytes[3];
 
             if (release) {
-                ReservedAddress.Remove(addr);
+                mem.Release(addr);
             }
             reg.IncrementPc(insLength);
             return true;
@@ -357,7 +355,7 @@ namespace RiscVCpu.LoadStoreUnit {
             }
 
             if (acquire) {
-                ReservedAddress.Add(addr);
+                mem.Acquire(addr);
             }
             byte[] bytes = new byte[4];
             bytes[0] = mem[addr + 0];
@@ -375,7 +373,7 @@ namespace RiscVCpu.LoadStoreUnit {
             mem[addr + 3] = bytes[3];
 
             if (release) {
-                ReservedAddress.Remove(addr);
+                mem.Release(addr);
             }
             reg.IncrementPc(insLength);
             return true;
@@ -397,7 +395,7 @@ namespace RiscVCpu.LoadStoreUnit {
             }
 
             if (acquire) {
-                ReservedAddress.Add(addr);
+                mem.Acquire(addr);
             }
             byte[] bytes = new byte[4];
             bytes[0] = mem[addr + 0];
@@ -415,157 +413,11 @@ namespace RiscVCpu.LoadStoreUnit {
             mem[addr + 3] = bytes[3];
 
             if (release) {
-                ReservedAddress.Remove(addr);
+                mem.Release(addr);
             }
             reg.IncrementPc(insLength);
             return true;
         }
-
-
-
-
-        #region Risc-V CPU Load系命令
-
-        /// <summary>
-        /// Load Byte命令
-        /// レジスタrs1+offsetのアドレスにあるメモリから、1バイトを符号拡張してレジスタrdに書き込む
-        /// </summary>
-        /// <param name="rd">結果を格納するレジスタ番号</param>
-        /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
-        /// <param name="offset">オフセット</param>
-        public override bool Lb(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (!ReservedAddress.Contains(addr)) {
-                base.Lb(rd, rs1, offset);
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-        /// <summary>
-        /// Load Byte Unsigned命令
-        /// レジスタrs1+offsetのアドレスにあるメモリから、1バイトをゼロ拡張してレジスタrdに書き込む
-        /// </summary>
-        /// <param name="rd">結果を格納するレジスタ番号</param>
-        /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
-        /// <param name="offset">オフセット</param>
-        public override bool Lbu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (!ReservedAddress.Contains(addr)) {
-                base.Lbu(rd, rs1, offset);
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Load Harf word命令
-        /// レジスタrs1+offsetのアドレスにあるメモリから、2バイトを符号拡張してレジスタrdに書き込む
-        /// </summary>
-        /// <param name="rd">結果を格納するレジスタ番号</param>
-        /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
-        /// <param name="offset">オフセット</param>
-        public override bool Lh(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (!ReservedAddress.Contains(addr)) {
-                base.Lh(rd, rs1, offset);
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Load Harf word Unsigned命令
-        /// レジスタrs1+offsetのアドレスにあるメモリから、2バイトをゼロ拡張してレジスタrdに書き込む
-        /// </summary>
-        /// <param name="rd">結果を格納するレジスタ番号</param>
-        /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
-        /// <param name="offset">オフセット</param>
-        public override bool Lhu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (!ReservedAddress.Contains(addr)) {
-                base.Lhu(rd, rs1, offset);
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Load Word命令
-        /// レジスタrs1+offsetのアドレスにあるメモリから、4バイトをレジスタrdに書き込む
-        /// </summary>
-        /// <param name="rd">結果を格納するレジスタ番号</param>
-        /// <param name="rs1">ロードする対象のベースアドレスが格納されているレジスタ番号</param>
-        /// <param name="offset">オフセット</param>
-        public override bool Lw(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (!ReservedAddress.Contains(addr)) {
-                base.Lw(rd, rs1, offset);
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        #endregion
-
-        #region Risc-V CPU Store系命令
-
-        /// <summary>
-        /// Store Byte命令
-        /// レジスタrs2の下位1バイトをレジスタrs1+offsetのアドレスのメモリに格納する
-        /// </summary>
-        /// <param name="rd">結果を格納するレジスタ番号</param>
-        /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
-        /// <param name="offset">オフセット</param>
-        public override bool Sb(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (!ReservedAddress.Contains(addr)) {
-                base.Sb(rs1, rs2, offset);
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Store Harf word命令
-        /// レジスタrs2の下位2バイトをレジスタrs1+offsetのアドレスのメモリに格納する
-        /// </summary>
-        /// <param name="rd">結果を格納するレジスタ番号</param>
-        /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
-        /// <param name="offset">オフセット</param>
-        public override bool Sh(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (!ReservedAddress.Contains(addr)) {
-                base.Sh(rs1, rs2, offset);
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Store Word命令
-        /// レジスタrs2の4バイトをレジスタrs1+offsetのアドレスのメモリに格納する
-        /// </summary>
-        /// <param name="rd">結果を格納するレジスタ番号</param>
-        /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
-        /// <param name="offset">オフセット</param>
-        public override bool Sw(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (!ReservedAddress.Contains(addr)) {
-                base.Sw(rs1, rs2, offset);
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        #endregion
 
         #endregion
 

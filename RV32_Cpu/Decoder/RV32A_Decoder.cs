@@ -24,7 +24,7 @@ namespace RiscVCpu.Decoder {
 
 
             if (opcode == Opcode.amo && funct3 == Funct3.amo) { // 不可分命令
-                lsu = (RV32_AmoLsu)cpu.Lsu;
+                lsu = (RV32_AmoLsu)cpu.Lsu(typeof(RV32_AmoLsu));
                 bool ac = (ins[5] & 0b10) > 0,
                      rl = (ins[5] & 0b01) > 0;
                 switch (funct5) {

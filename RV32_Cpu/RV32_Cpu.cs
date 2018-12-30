@@ -2,6 +2,8 @@
 using RiscVCpu.ArithmeticLogicUnit;
 using RiscVCpu.Decoder;
 using RiscVCpu.LoadStoreUnit;
+using RiscVCpu.MemoryHandler;
+using RiscVCpu.RegisterSet;
 using System;
 using System.IO;
 
@@ -22,7 +24,7 @@ namespace RiscVCpu {
         /// <summary>
         /// ロードストアユニット
         /// </summary>
-        private readonly RV32_Lsu lsu;
+        private readonly RV32_LoadStoreUnit lsu;
         /// <summary>
         /// レジスタ
         /// </summary>
@@ -34,7 +36,7 @@ namespace RiscVCpu {
         /// RISC-Vアーキテクチャの32bitCPUを生成する
         /// </summary>
         /// <param name="mainMemory">メインメモリとして使用するUInt32配列</param>
-        public RV32_Cpu(string instractureSetOptions, byte[] mainMemory) {
+        public RV32_Cpu(string OptionsInstructionSet, byte[] mainMemory) {
             mem = mainMemory;
 
             // 基本命令セットRV32I
@@ -45,11 +47,11 @@ namespace RiscVCpu {
             decoder.AddDecoder(typeof(RV32I_Decoder));
 
             alu = new RV32_Calculators(registerSet);
-            lsu = new RV32_Lsu(registerSet, mem);
+            lsu = new RV32_LoadStoreUnit(registerSet, mem);
 
 
             // 拡張命令セット
-            foreach (char option in instractureSetOptions.ToCharArray()) {
+            foreach (char option in OptionsInstructionSet.ToCharArray()) {
                 lsu.AddMisa(option);
                 switch (option) {
                     case 'M': // RV32M 拡張命令セット
@@ -58,16 +60,19 @@ namespace RiscVCpu {
 
                     case 'A': // RV32A 拡張命令セット
                         decoder.AddDecoder(typeof(RV32A_Decoder));
-                        lsu = new RV32_AmoLsu(registerSet, mem);
+                        lsu.Mem = new RV32_AtomicMemoryHandler(lsu.Mem.GetBytes());
                         break;
 
                     case 'C': // RV32C 拡張命令セット
                         decoder.AddDecoder(typeof(RV32C_Decoder));
                         break;
+
                     case 'F': // RV32F 拡張命令セット
+                        decoder.AddDecoder(typeof(RV32F_Decoder));
                         break;
 
                     case 'D': // RV32D 拡張命令セット
+                        decoder.AddDecoder(typeof(RV32D_Decoder));
                         break;
 
                     default:
@@ -101,21 +106,20 @@ namespace RiscVCpu {
 
         #endregion
 
-        #region プロパティ
+        #region メソッド
+
         /// <summary>
         /// 指定した型の算術演算器を返す
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="type">ALUの型</param>
         /// <returns></returns>
-        public RV32_AbstractCalculator Alu(Type type){return alu.GetInstance(type); }
+        public RV32_AbstractCalculator Alu(Type type){ return alu.GetInstance(type); }
 
         /// <summary>
-        /// ロードストアユニットを返す
+        /// ロード/ストアユニットを返す
         /// </summary>
-        public RV32_Lsu Lsu => lsu;
-        #endregion
-
-        #region メソッド
+        /// <param name="type">LSUの型</param>
+        public RV32_AbstractLoadStoreUnit Lsu(Type type) { return lsu.GetInstance(type); }
 
         /// <summary>
         /// 外部からプログラムをメモリにロードする

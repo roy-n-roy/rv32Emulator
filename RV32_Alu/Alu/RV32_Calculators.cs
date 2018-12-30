@@ -1,4 +1,5 @@
 ﻿using RiscVCpu.LoadStoreUnit;
+using RiscVCpu.RegisterSet;
 using System;
 using System.Collections.Generic;
 

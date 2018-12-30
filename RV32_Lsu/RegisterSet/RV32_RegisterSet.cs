@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RiscVCpu.LoadStoreUnit {
+namespace RiscVCpu.RegisterSet {
     /// <summary>
     /// RV32アーキテクチャのレジスタ
     /// 実データを扱う唯一のクラス
@@ -16,6 +16,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// RV32Iアーキテクチャでは32+PCの33個の要素から構成される
         /// </summary>
         private readonly Dictionary<Register, UInt32> RegisterArray;
+        private readonly Dictionary<FPRegister, UInt64> FPRegisterArray;
 
         private readonly Dictionary<CSR, UInt32> CSRArray;
 
@@ -29,6 +30,7 @@ namespace RiscVCpu.LoadStoreUnit {
 
             // レジスタ初期化
             RegisterArray = new Dictionary<Register, UInt32>(Enumerable.Range(0, 32).ToDictionary(key => (Register)key, value => 0u));
+            FPRegisterArray = new Dictionary<FPRegister, UInt64>(Enumerable.Range(0, 32).ToDictionary(key => (FPRegister)key, value => BitConverter.ToUInt64(BitConverter.GetBytes(0d), 0)));
 
             // コントロール・ステータスレジスタ初期化
             CSRArray = Enum.GetValues(typeof(CSR)).Cast<CSR>().ToDictionary(key => key, value => 0u);
@@ -108,6 +110,47 @@ namespace RiscVCpu.LoadStoreUnit {
         }
 
         /// <summary>
+        /// 浮動小数点レジスタに値を設定する
+        /// </summary>
+        /// <param name="name">設定する対象レジスタ名</param>
+        /// <param name="value">設定する値</param>
+        public void SetValue(FPRegister name, Single value) {
+            //値をレジスタに設定
+            FPRegisterArray[name] = BitConverter.ToUInt64(BitConverter.GetBytes(value).Concat(new byte[] { 0, 0, 0, 0 }).ToArray(), 0);
+        }
+
+        /// <summary>
+        /// 浮動小数点レジスタに値を設定する
+        /// </summary>
+        /// <param name="name">設定する対象レジスタ名</param>
+        /// <param name="value">設定する値</param>
+        public void SetValue(FPRegister name, Double value) {
+            //値をレジスタに設定
+            FPRegisterArray[name] = BitConverter.ToUInt64(BitConverter.GetBytes(value), 0);
+        }
+
+        /// <summary>
+        /// 浮動小数点レジスタから値を取得する
+        /// </summary>
+        /// <param name="name">取得する対象レジスタ名</param>
+        /// <returns>レジスタの値</returns>
+        public Single GetSingleValue(FPRegister name) {
+            //レジスタの値を返す
+            return BitConverter.ToSingle(BitConverter.GetBytes(FPRegisterArray[name]), 0);
+        }
+
+        /// <summary>
+        /// 浮動小数点レジスタから値を取得する
+        /// </summary>
+        /// <param name="name">取得する対象レジスタ名</param>
+        /// <returns>レジスタの値</returns>
+        public Double GetDoubleValue(FPRegister name) {
+            //レジスタの値を返す
+            return BitConverter.ToDouble(BitConverter.GetBytes(FPRegisterArray[name]), 0);
+        }
+
+
+        /// <summary>
         /// CSRに値を設定する
         /// </summary>
         /// <param name="name">設定する対象レジスタ名</param>
@@ -129,7 +172,7 @@ namespace RiscVCpu.LoadStoreUnit {
 
             //CSRアドレスの11～12bitで読み書き可能 or 読み取り専用を
             //9～10bitがアクセス権限を表す
-            if (((UInt16)name & 0xc00u) != 0xc00u && (PrivilegeLevels)((UInt16)name & 0x300u) <= currentMode) {
+            if (((UInt16)name & 0xC00u) != 0xC00u && (PrivilegeLevels)((UInt16)name & 0x300u) <= currentMode) {
                 switch (operation) {
                     case 'w':
                         if ((CSR)name == CSR.sstatus) {
@@ -198,7 +241,12 @@ namespace RiscVCpu.LoadStoreUnit {
         /// </summary>
         /// <param name="isa">拡張命令セットを表すA～Zの文字</param>
         public void AddMisa(char isa) {
-            CSRArray[CSR.misa] += (UInt32)(1 << (Char.ToUpper(isa) - 'A' - 1));
+            CSRArray[CSR.misa] |= (UInt32)(1 << (Char.ToUpper(isa) - 'A' - 1));
+
+            // IAMAFDをサポートする場合、Gもセットする
+            if((CSRArray[CSR.misa] & 0x1129) == 0x1129) {
+                CSRArray[CSR.misa] |= 5u;
+            }
         }
 
         public void SetCause(RiscvExceptionCause cause) {

@@ -1,5 +1,6 @@
 ﻿using RiscVCpu.ArithmeticLogicUnit;
 using RiscVCpu.Decoder.Constants;
+using RiscVCpu.LoadStoreUnit;
 using RiscVCpu.LoadStoreUnit.Constants;
 using System;
 using System.Linq;
@@ -23,6 +24,8 @@ namespace RiscVCpu.Decoder {
             CompressedOpcode opcode = (CompressedOpcode)cins[0];
             Int32 immediate = 0;
             RV32_Alu alu;
+            RV32_Lsu lsu;
+            RV32_FloatPointLsu fplsu;
 
             switch (opcode) {
                 case CompressedOpcode.addi: // addi命令
@@ -91,11 +94,13 @@ namespace RiscVCpu.Decoder {
                         }
                     } else if (cins[1] == 0 && (cins[2] & 0x1f) != 0) {
                         // jalr命令
-                        result = cpu.Lsu.Jalr((Register)(cins[2] >> 5), rd_rs1, 0, 2);
+                        lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                        result = lsu.Jalr((Register)(cins[2] >> 5), rd_rs1, 0, 2);
 
                     } else if (cins[1] == 0 && cins[2] == 0b100000) {
                         // ebreak命令
-                        result = cpu.Lsu.Ebreak(2);
+                        lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                        result = lsu.Ebreak(2);
                     }
                     break;
 
@@ -132,74 +137,98 @@ namespace RiscVCpu.Decoder {
 
                 case CompressedOpcode.jal: // jal命令
                     immediate = GetUnsignedImmediate("CJ", cins);
-                    result = cpu.Lsu.Jal(Register.ra, immediate, 2);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    result = lsu.Jal(Register.ra, immediate, 2);
                     break;
 
                 case CompressedOpcode.j: // j命令
                     immediate = GetUnsignedImmediate("CJ", cins);
-                    result = cpu.Lsu.Jal(Register.zero, immediate, 2);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    result = lsu.Jal(Register.zero, immediate, 2);
                     break;
 
                 case CompressedOpcode.beqz: // beqz命令
                     immediate = GetUnsignedImmediate("CB", cins);
-                    result = cpu.Lsu.Beq(Register.zero, crd_rs1, immediate, 2);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    result = lsu.Beq(Register.zero, crd_rs1, immediate, 2);
                     break;
 
                 case CompressedOpcode.bnez: // bnez命令
                     immediate = GetUnsignedImmediate("CB", cins);
-                    result = cpu.Lsu.Bne(Register.zero, crd_rs1, immediate, 2);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    result = lsu.Bne(Register.zero, crd_rs1, immediate, 2);
                     break;
 
                 case CompressedOpcode.lw: // lw命令
                     immediate = GetUnsignedImmediate("CL", cins, 2);
-                    result = cpu.Lsu.Lw(crs2, crd_rs1, immediate, 2);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    result = lsu.Lw(crs2, crd_rs1, immediate, 2);
                     break;
 
                 case CompressedOpcode.flw: // flw命令
                     immediate = GetUnsignedImmediate("CL", cins, 2);
+                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    result = fplsu.Flw((FPRegister)crd_rs1, crs2, immediate, 2);
                     break;
 
                 case CompressedOpcode.fld: // fld命令
                     immediate = GetUnsignedImmediate("CL", cins, 3);
+                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    result = fplsu.Fld((FPRegister)crd_rs1, crs2, immediate, 2);
                     break;
 
                 case CompressedOpcode.sw: // sw命令
                     immediate = GetUnsignedImmediate("CL", cins, 2);
-                    result = cpu.Lsu.Sw(crd_rs1, crs2, immediate, 2);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    result = lsu.Sw(crd_rs1, crs2, immediate, 2);
                     break;
 
                 case CompressedOpcode.fsw: // fsw命令
                     immediate = GetUnsignedImmediate("CL", cins, 2);
+                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    result = fplsu.Fsw(crd_rs1, (FPRegister)crs2, immediate, 2);
                     break;
 
                 case CompressedOpcode.fsd: // fsd命令
                     immediate = GetUnsignedImmediate("CL", cins, 3);
+                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    result = fplsu.Fsd(crd_rs1, (FPRegister)crs2, immediate, 2);
                     break;
 
                 case CompressedOpcode.lwsp: // lwsp命令
                     immediate = GetUnsignedImmediate("CI", cins, 2);
-                    result = cpu.Lsu.Lw(rd_rs1, Register.sp, immediate, 2);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    result = lsu.Lw(rd_rs1, Register.sp, immediate, 2);
                     break;
 
                 case CompressedOpcode.flwsp: // flwsp命令
                     immediate = GetUnsignedImmediate("CI", cins, 2);
+                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    result = fplsu.Flw((FPRegister)crd_rs1, Register.sp, immediate, 2);
                     break;
 
                 case CompressedOpcode.fldsp: // fldsp命令
                     immediate = GetUnsignedImmediate("CI", cins, 3);
+                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    result = fplsu.Fld((FPRegister)crd_rs1, Register.sp, immediate, 2);
                     break;
 
                 case CompressedOpcode.swsp: // swsp命令
                     immediate = GetUnsignedImmediate("CSS", cins, 2);
-                    result = cpu.Lsu.Sw(rs2, Register.sp, immediate, 2);
+                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    result = lsu.Sw(rs2, Register.sp, immediate, 2);
                     break;
 
                 case CompressedOpcode.fswsp: // fswsp命令
                     immediate = GetUnsignedImmediate("CSS", cins, 2);
+                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    result = fplsu.Fsw(Register.sp, (FPRegister)crs2, immediate, 2);
                     break;
 
                 case CompressedOpcode.fsdsp: // fsdsp命令
                     immediate = GetUnsignedImmediate("CSS", cins, 3);
+                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    result = fplsu.Fsd(Register.sp, (FPRegister)crs2, immediate, 2);
                     break;
 
             }
