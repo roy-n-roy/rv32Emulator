@@ -172,7 +172,8 @@ namespace RiscVCpu.RegisterSet {
 
             //CSRアドレスの11～12bitで読み書き可能 or 読み取り専用を
             //9～10bitがアクセス権限を表す
-            if (((UInt16)name & 0xC00u) != 0xC00u && (PrivilegeLevels)((UInt16)name & 0x300u) <= currentMode) {
+            PrivilegeLevels instructionLevel = (PrivilegeLevels)(((UInt32)name >> 8) & 0x3u);
+            if (((UInt16)name & 0xC00u) != 0xC00u && instructionLevel <= currentMode) {
                 switch (operation) {
                     case 'w':
                         if ((CSR)name == CSR.sstatus) {
@@ -196,13 +197,13 @@ namespace RiscVCpu.RegisterSet {
                         CSRArray[name] &= ~value;
                         break;
                     default:
-                        throw new RiscvException(RiscvExceptionCause.IllegalInstruction, this);
+                        throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, this);
                 }
             } else {
                 //実行モードがアドレスの権限より小さい場合
                 //アドレス上位2bitが 0b11(= 読み取り専用)の場合は
                 //不正命令例外が発生する
-                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, this);
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction,0 , this);
             }
         }
 
@@ -213,12 +214,13 @@ namespace RiscVCpu.RegisterSet {
         /// <returns>CSRの値</returns>
         internal UInt32 GetCSR(CSR name) {
             //CSRアドレスの9～10bitがアクセス権限を表す
-            if ((PrivilegeLevels)((UInt16)name & 0x300u) <= currentMode) {
+            PrivilegeLevels instructionLevel = (PrivilegeLevels)(((UInt32)name >> 8) & 0x3u);
+            if (instructionLevel <= currentMode) {
 
                 // 一部スーパーバイザーモードCSRにはマシンモードCSRに読み替える, sie, sieはsstatus, sie, sieは
                 if ((CSR)name == CSR.sstatus) {
                     // []status CSR
-                    StatusCSR status = (StatusCSR)CSRArray[name | (CSR)(PrivilegeLevels.MachineMode - currentMode)];
+                    StatusCSR status = (StatusCSR)CSRArray[name | (CSR)0x200u];
                     status.Mode = currentMode;
                     return (UInt32)status;
                 } else if ((CSR)name == CSR.sie || (CSR)name == CSR.sip) {
@@ -232,7 +234,7 @@ namespace RiscVCpu.RegisterSet {
 
             } else {
                 //実行モードがアドレスの権限より小さい場合は不正命令例外が発生する
-                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, this);
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, this);
             }
         }
 
@@ -249,15 +251,18 @@ namespace RiscVCpu.RegisterSet {
             }
         }
 
-        public void SetCause(RiscvExceptionCause cause) {
+        public void SetExceptionCSR(RiscvExceptionCause cause, UInt32 tval) {
             switch (currentMode) {
                 case PrivilegeLevels.MachineMode:
+                    CSRArray[CSR.mepc] = PC;
                     CSRArray[CSR.mcause] = (UInt32)cause;
                     break;
                 case PrivilegeLevels.SupervisorMode:
+                    CSRArray[CSR.mepc] = PC;
                     CSRArray[CSR.scause] = (UInt32)cause;
                     break;
                 case PrivilegeLevels.UserMode:
+                    CSRArray[CSR.mepc] = PC;
                     CSRArray[CSR.ucause] = (UInt32)cause;
                     break;
             }

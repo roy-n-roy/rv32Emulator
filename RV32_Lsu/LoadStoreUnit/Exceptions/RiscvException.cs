@@ -10,60 +10,60 @@ namespace RiscVCpu.LoadStoreUnit.Exceptions {
         public RiscvExceptionCause Cause { get; }
 
         /// <summary>Risc-V CPU例外のインスタンスを初期化します</summary>
-        public RiscvException(RiscvExceptionCause cause, RV32_RegisterSet rs) : base(Enum.GetName(typeof(RiscvExceptionCause), cause)) {
+        public RiscvException(RiscvExceptionCause cause, UInt32 tval, RV32_RegisterSet reg) : base(Enum.GetName(typeof(RiscvExceptionCause), cause)) {
             this.Cause = cause;
-            rs.SetCause(cause);
+            reg.SetExceptionCSR(cause, tval);
         }
         /// <summary>指定したメッセージを使用して、Risc-V CPU例外のインスタンスを初期化します</summary>
         /// <param name="message">エラーを説明するメッセージ</param>
-        public RiscvException(RiscvExceptionCause cause, RV32_RegisterSet rs, string message) : base(Enum.GetName(typeof(RiscvExceptionCause), cause) + "\r\n" + message) {
+        public RiscvException(RiscvExceptionCause cause, UInt32 tval, RV32_RegisterSet reg, string message) : base(Enum.GetName(typeof(RiscvExceptionCause), cause) + "\r\n" + message) {
             this.Cause = cause;
-            rs.SetCause(cause);
+            reg.SetExceptionCSR(cause, tval);
         }
 
         /// <summary>指定したメッセージおよびこの例外の原因となった内部例外への参照を使用して、Risc-V CPU例外のインスタンスを初期化します</summary>
         /// <param name="message">エラーを説明するメッセージ</param>
         /// <param name="innerException">現在の例外の原因である例外</param>
-        public RiscvException(RiscvExceptionCause cause, RV32_RegisterSet rs, string message, Exception innerException) : base(Enum.GetName(typeof(RiscvExceptionCause), cause) + "\r\n" + message, innerException) {
+        public RiscvException(RiscvExceptionCause cause, UInt32 tval, RV32_RegisterSet reg, string message, Exception innerException) : base(Enum.GetName(typeof(RiscvExceptionCause), cause) + "\r\n" + message, innerException) {
             this.Cause = cause;
-            rs.SetCause(cause);
+            reg.SetExceptionCSR(cause, tval);
         }
     }
 
     /// <summary>Risc-V CPUで発生した環境呼び出し例外を表します</summary>
     public class RiscvEnvironmentCallException : RiscvException {
         /// <summary>Risc-V CPU 環境呼び出し例外のインスタンスを初期化します</summary>
-        public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, RV32_RegisterSet rs) : base((RiscvExceptionCause)(((UInt16)currentLevel >> 8) & 0x8), rs) {
+        public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, RV32_RegisterSet rs) : base((RiscvExceptionCause)((uint)currentLevel | 0x8u), 0, rs) {
         }
 
         /// <summary>指定したメッセージを使用して、Risc-V CPU 環境呼び出し例外のインスタンスを初期化します</summary>
         /// <param name="message">エラーを説明するメッセージ</param>
-        public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, RV32_RegisterSet rs, string message) : base((RiscvExceptionCause)(((UInt16)currentLevel >> 8) & 0x8), rs, message) {
+        public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, RV32_RegisterSet rs, string message) : base((RiscvExceptionCause)((uint)currentLevel | 0x8u), 0, rs, message) {
         }
 
         /// <summary>指定したメッセージおよびこの例外の原因となった内部例外への参照を使用して、Risc-V CPU 環境呼び出し例外のインスタンスを初期化します</summary>
         /// <param name="message">エラーを説明するメッセージ</param>
         /// <param name="innerException">現在の例外の原因である例外</param>
         public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, RV32_RegisterSet rs, string message, Exception innerException) 
-            : base((RiscvExceptionCause)(((UInt16)currentLevel >> 8) & 0x8), rs, message, innerException) {
+            : base((RiscvExceptionCause)((uint)currentLevel | 0x8u), 0, rs, message, innerException) {
         }
     }
 
     /// <summary>Risc-V CPUで発生したブレークポイント例外を表します</summary>
     public class RiscvBreakpointException : RiscvException {
         /// <summary>Risc-V CPU ブレークポイント例外のインスタンスを初期化します</summary>
-        public RiscvBreakpointException(RV32_RegisterSet rs) : base(RiscvExceptionCause.Breakpoint, rs) {
+        public RiscvBreakpointException(RV32_RegisterSet rs) : base(RiscvExceptionCause.Breakpoint, 0, rs) {
         }
 
         /// <summary>指定したメッセージを使用して、Risc-V CPU ブレークポイント例外のインスタンスを初期化します</summary>
         /// <param name="message">エラーを説明するメッセージ</param>
-        public RiscvBreakpointException(string message, RV32_RegisterSet rs) : base(RiscvExceptionCause.Breakpoint, rs, message) {
+        public RiscvBreakpointException(string message, RV32_RegisterSet rs) : base(RiscvExceptionCause.Breakpoint, 0, rs, message) {
         }
 
         /// <summary>指定したメッセージおよびこの例外の原因となった内部例外への参照を使用して、Risc-V CPU ブレークポイント例外のインスタンスを初期化します</summary>
         /// <param name="message">エラーを説明するメッセージ</param>
         /// <param name="innerException">現在の例外の原因である例外</param>
-        public RiscvBreakpointException(string message, RV32_RegisterSet rs, Exception innerException) : base(RiscvExceptionCause.Breakpoint, rs, message, innerException) {
+        public RiscvBreakpointException(string message, RV32_RegisterSet rs, Exception innerException) : base(RiscvExceptionCause.Breakpoint, 0, rs, message, innerException) {
         }
     }
 

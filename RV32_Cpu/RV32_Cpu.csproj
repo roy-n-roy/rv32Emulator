@@ -89,9 +89,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="test_result.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ElfLoader\ElfLoader.csproj">
       <Project>{28e3a2c3-67de-4542-803b-5db07a3bc6bb}</Project>
       <Name>ElfLoader</Name>

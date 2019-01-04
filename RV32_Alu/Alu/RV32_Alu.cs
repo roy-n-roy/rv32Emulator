@@ -139,7 +139,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="immediate">即値</param>
         /// <returns>処理の成否</returns>
         public bool Slli(Register rd, Register rs1, Int32 immediate, UInt32 insLength = 4u) {
-            if ((immediate >> 5) != 0) throw new RiscvException(RiscvExceptionCause.IllegalInstruction, reg);
+            if ((immediate >> 5) != 0) throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, reg);
             reg.SetValue(rd, reg.GetValue(rs1) << immediate);
             reg.IncrementPc(insLength);
             return true;
@@ -154,7 +154,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="immediate">即値</param>
         /// <returns>処理の成否</returns>
         public bool Srli(Register rd, Register rs1, Int32 immediate, UInt32 insLength = 4u) {
-            if ((immediate >> 5) != 0) throw new RiscvException(RiscvExceptionCause.IllegalInstruction, reg);
+            if ((immediate >> 5) != 0) throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, reg);
             reg.SetValue(rd, reg.GetValue(rs1) >> immediate);
             reg.IncrementPc(insLength);
             return true;
@@ -168,7 +168,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="immediate"></param>
         /// <returns>処理の成否</returns>
         public bool Srai(Register rd, Register rs1, Int32 immediate, UInt32 insLength = 4u) {
-            if ((immediate >> 5) != 0) throw new RiscvException(RiscvExceptionCause.IllegalInstruction, reg);
+            if ((immediate >> 5) != 0) throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, reg);
             reg.SetValue(rd, (UInt32)((Int32)reg.GetValue(rs1) >> immediate));
             reg.IncrementPc(insLength);
             return true;

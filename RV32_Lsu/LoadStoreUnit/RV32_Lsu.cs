@@ -485,13 +485,15 @@ namespace RiscVCpu.LoadStoreUnit {
         public bool Mret(UInt32 insLength = 4u) {
             reg.SetPc(reg.GetCSR(CSR.mepc));
             StatusCSR mstatus = (StatusCSR)reg.GetCSR(CSR.mstatus);
-            mstatus.MPP = 3;
+
+            PrivilegeLevels priv_level = (PrivilegeLevels)mstatus.MPP;
+
             mstatus.MIE = mstatus.MPIE;
             mstatus.MPIE = true;
             mstatus.MPP = 0;
             reg.SetCSR(CSR.mstatus, 'w', (UInt32)mstatus);
 
-            reg.CurrentMode = PrivilegeLevels.SupervisorMode;
+            reg.CurrentMode = priv_level;
 
             return true;
         }
@@ -508,7 +510,7 @@ namespace RiscVCpu.LoadStoreUnit {
             sstatus.SIE = sstatus.SPIE;
             sstatus.SPIE = true;
             sstatus.SPP = false;
-            reg.SetCSR(CSR.mstatus, 'w', (UInt32)sstatus);
+            reg.SetCSR(CSR.sstatus, 'w', (UInt32)sstatus);
 
             //reg.CurrentMode = PrivilegeLevels.UserMode;
 

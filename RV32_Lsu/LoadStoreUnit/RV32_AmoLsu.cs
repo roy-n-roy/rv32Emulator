@@ -72,7 +72,7 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
-                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, reg);
+                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
 
             if (acquire) {
@@ -111,7 +111,7 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
-                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, reg);
+                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
 
             if (acquire) {
@@ -151,7 +151,7 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
-                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, reg);
+                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
 
             if (acquire) {
@@ -191,7 +191,7 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
-                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, reg);
+                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
 
             if (acquire) {
@@ -231,7 +231,7 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
-                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, reg);
+                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
 
             if (acquire) {
@@ -271,7 +271,7 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
-                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, reg);
+                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
 
             if (acquire) {
@@ -311,7 +311,7 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
-                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, reg);
+                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
 
             if (acquire) {
@@ -351,7 +351,7 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
-                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, reg);
+                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
 
             if (acquire) {
@@ -391,7 +391,7 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = reg.GetValue(rs1);
 
             if (addr % 4 != 0) {
-                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, reg);
+                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
 
             if (acquire) {

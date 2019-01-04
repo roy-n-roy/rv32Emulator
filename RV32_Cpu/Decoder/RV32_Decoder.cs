@@ -35,7 +35,7 @@ namespace RiscVCpu.Decoder {
                 if (successed) break;
             }
             if (!successed) {
-                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, cpu.registerSet);
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, cpu.registerSet);
             }
         }
 

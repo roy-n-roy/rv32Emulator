@@ -1,13 +1,13 @@
 ﻿namespace RiscVCpu.LoadStoreUnit.Constants {
 
      /// <summary>特権レベル</summary>
-    public enum PrivilegeLevels : ushort {
+    public enum PrivilegeLevels : byte {
         /// <summary>ユーザモード</summary>
-        UserMode = 0x000,
+        UserMode = 0x0,
         /// <summary>ハイパーバイザモード</summary>
-        SupervisorMode = 0x100,
+        SupervisorMode = 0x1,
         /// <summary>マシンモード</summary>
-        MachineMode = 0x300,
+        MachineMode = 0x3,
     }
 
     /// <summary>mstatus, sstatusなどのステータスCSRを表す構造体</summary>
