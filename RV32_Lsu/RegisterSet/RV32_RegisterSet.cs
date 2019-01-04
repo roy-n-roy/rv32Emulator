@@ -11,16 +11,29 @@ namespace RiscVCpu.RegisterSet {
     /// 実データを扱う唯一のクラス
     /// </summary>
     public class RV32_RegisterSet {
+
         /// <summary>
-        /// レジスタを表す32bit符号付き整数の連想配列
-        /// RV32Iアーキテクチャでは32+PCの33個の要素から構成される
+        /// レジスタを表す32bit符号なし整数の連想配列
+        /// RV32Iアーキテクチャでは32個の要素から構成される
         /// </summary>
-        private readonly Dictionary<Register, UInt32> RegisterArray;
-        private readonly Dictionary<FPRegister, UInt64> FPRegisterArray;
+        private readonly Dictionary<Register, UInt32> Registers;
 
+        /// <summary>
+        /// 浮動小数点レジスタを表す64bit符号なし整数の連想配列
+        /// RV32FDアーキテクチャでは32個の要素から構成される
+        /// </summary>
+        private readonly Dictionary<FPRegister, UInt64> FPRegisters;
+
+        /// <summary>
+        /// コントロール・ステータスレジスタを表す32bit符号なし整数の連想配列
+        /// </summary>
         private readonly Dictionary<CSR, UInt32> CSRArray;
+        
+        private UInt32 programCounter;
+        private UInt32 instructionRegister;
 
-        private UInt32 pc;
+
+        /// <summary>現在の実行モード</summary>
         private PrivilegeLevels currentMode;
 
         /// <summary>
@@ -29,8 +42,8 @@ namespace RiscVCpu.RegisterSet {
         public RV32_RegisterSet() {
 
             // レジスタ初期化
-            RegisterArray = new Dictionary<Register, UInt32>(Enumerable.Range(0, 32).ToDictionary(key => (Register)key, value => 0u));
-            FPRegisterArray = new Dictionary<FPRegister, UInt64>(Enumerable.Range(0, 32).ToDictionary(key => (FPRegister)key, value => BitConverter.ToUInt64(BitConverter.GetBytes(0d), 0)));
+            Registers = new Dictionary<Register, UInt32>(Enumerable.Range(0, 32).ToDictionary(key => (Register)key, value => 0u));
+            FPRegisters = new Dictionary<FPRegister, UInt64>(Enumerable.Range(0, 32).ToDictionary(key => (FPRegister)key, value => BitConverter.ToUInt64(BitConverter.GetBytes(0d), 0)));
 
             // コントロール・ステータスレジスタ初期化
             CSRArray = Enum.GetValues(typeof(CSR)).Cast<CSR>().ToDictionary(key => key, value => 0u);
@@ -41,21 +54,22 @@ namespace RiscVCpu.RegisterSet {
             CSRArray[CSR.misa] |= 0x40000000;
         }
 
-        /// <summary>
-        /// プログラムカウンタ
-        /// </summary>
-        public UInt32 PC { get => pc; }
+        /// <summary>プログラムカウンタ</summary>
+        public UInt32 PC { get => programCounter; }
+
+        /// <summary>命令レジスタ</summary>
+        public UInt32 IR { get => instructionRegister; }
+
         /// <summary>
         /// 現在の実行モード
         /// </summary>
         public PrivilegeLevels CurrentMode { get => currentMode; set => currentMode = value; }
 
         /// <summary>
-        /// レジスタを全てクリアし、エントリポイントをPCに設定する
+        /// レジスタを全て初期化する
         /// </summary>
-        /// <param name="entryPoint"></param>
         public void ClearAll() {
-            RegisterArray.Select(r => RegisterArray[r.Key] = 0);
+            Registers.Select(r => Registers[r.Key] = 0);
             CSRArray.Select(c => CSRArray[c.Key] = 0);
 
             currentMode = PrivilegeLevels.MachineMode;
@@ -73,7 +87,9 @@ namespace RiscVCpu.RegisterSet {
         /// 引数で指定しない場合は 4 増加させる
         /// </summary>
         /// <param name="instructionLength">PCの増数 32bit長命令の場合は4、16bit長命令の場合は2を指定する</param>
-        public void IncrementPc(UInt32 instructionLength = 4u) => pc += instructionLength;
+        public void IncrementPc(UInt32 instructionLength = 4u) {
+            programCounter += instructionLength;
+        }
 
         /// <summary>
         /// プログラムカウンタに値を設定する
@@ -81,7 +97,8 @@ namespace RiscVCpu.RegisterSet {
         /// </summary>
         /// <param name="value"></param>
         internal void SetPc(UInt32 value) {
-            pc = value;
+            programCounter = value;
+            instructionRegister = 0;
         }
 
         /// <summary>
@@ -95,7 +112,7 @@ namespace RiscVCpu.RegisterSet {
 
             } else {
                 //値をレジスタに設定
-                RegisterArray[name] = value;
+                Registers[name] = value;
             }
         }
 
@@ -106,7 +123,7 @@ namespace RiscVCpu.RegisterSet {
         /// <returns>レジスタの値</returns>
         public UInt32 GetValue(Register name) {
             //レジスタの値を返す
-            return RegisterArray[name];
+            return Registers[name];
         }
 
         /// <summary>
@@ -116,7 +133,7 @@ namespace RiscVCpu.RegisterSet {
         /// <param name="value">設定する値</param>
         public void SetValue(FPRegister name, Single value) {
             //値をレジスタに設定
-            FPRegisterArray[name] = BitConverter.ToUInt64(BitConverter.GetBytes(value).Concat(new byte[] { 0, 0, 0, 0 }).ToArray(), 0);
+            FPRegisters[name] = BitConverter.ToUInt64(BitConverter.GetBytes(value).Concat(new byte[] { 0, 0, 0, 0 }).ToArray(), 0);
         }
 
         /// <summary>
@@ -126,7 +143,7 @@ namespace RiscVCpu.RegisterSet {
         /// <param name="value">設定する値</param>
         public void SetValue(FPRegister name, Double value) {
             //値をレジスタに設定
-            FPRegisterArray[name] = BitConverter.ToUInt64(BitConverter.GetBytes(value), 0);
+            FPRegisters[name] = BitConverter.ToUInt64(BitConverter.GetBytes(value), 0);
         }
 
         /// <summary>
@@ -136,7 +153,7 @@ namespace RiscVCpu.RegisterSet {
         /// <returns>レジスタの値</returns>
         public Single GetSingleValue(FPRegister name) {
             //レジスタの値を返す
-            return BitConverter.ToSingle(BitConverter.GetBytes(FPRegisterArray[name]), 0);
+            return BitConverter.ToSingle(BitConverter.GetBytes(FPRegisters[name]), 0);
         }
 
         /// <summary>
@@ -146,7 +163,7 @@ namespace RiscVCpu.RegisterSet {
         /// <returns>レジスタの値</returns>
         public Double GetDoubleValue(FPRegister name) {
             //レジスタの値を返す
-            return BitConverter.ToDouble(BitConverter.GetBytes(FPRegisterArray[name]), 0);
+            return BitConverter.ToDouble(BitConverter.GetBytes(FPRegisters[name]), 0);
         }
 
 
@@ -159,7 +176,7 @@ namespace RiscVCpu.RegisterSet {
 
             //レジスタがzeroの場合は何もしない
             if (reg != Register.zero) {
-                SetCSR(name, operation, (UInt32)RegisterArray[reg]);
+                SetCSR(name, operation, (UInt32)Registers[reg]);
             }
         }
 

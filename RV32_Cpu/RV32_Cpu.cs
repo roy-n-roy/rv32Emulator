@@ -35,6 +35,7 @@ namespace RiscVCpu {
         /// 引数で与えられた命令セットをサポートし、メインメモリを持つ
         /// RISC-Vアーキテクチャの32bitCPUを生成する
         /// </summary>
+        /// <param name="OptionsInstructionSet">拡張命令セットを表す文字列</param>
         /// <param name="mainMemory">メインメモリとして使用するUInt32配列</param>
         public RV32_Cpu(string OptionsInstructionSet, byte[] mainMemory) {
             mem = mainMemory;
@@ -85,7 +86,7 @@ namespace RiscVCpu {
         /// 引数で与えられた命令セットをサポートし、1KBのメインメモリを持つ
         /// RISC-Vアーキテクチャの32bitCPUを生成する
         /// </summary>
-        /// <param name="mainMemory">メインメモリとして使用するUInt32配列</param>
+        /// <param name="OptionsInstructionSet">拡張命令セットを表す文字列</param>
         public RV32_Cpu(string instractureSetOptions) : this(instractureSetOptions, new byte[1024]) {
         }
 
