@@ -8,12 +8,9 @@ namespace RiscVCpu.MemoryHandler {
     /// <summary>メインメモリハンドラ</summary>
     public class RV32_MemoryHandler : RV32_AbstractMemoryHandler {
 
-        private readonly byte[] mainMemory;
-
         /// <summary>メインメモリハンドラ</summary>
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
-        public RV32_MemoryHandler(byte[] mainMemory) {
-            this.mainMemory = mainMemory;
+        public RV32_MemoryHandler(byte[] mainMemory) : base(mainMemory) {
         }
 
         public override byte this[UInt64 index] {
@@ -58,7 +55,13 @@ namespace RiscVCpu.MemoryHandler {
     public abstract class RV32_AbstractMemoryHandler {
 
         public abstract byte this[UInt64 address] { get; set; }
+        private protected readonly byte[] mainMemory;
 
+        /// <summary>メインメモリハンドラ</summary>
+        /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
+        public RV32_AbstractMemoryHandler(byte[] mainMemory) {
+            this.mainMemory = mainMemory;
+        }
         /// <summary>
         /// メモリハンドラの基となったバイト配列を返す
         /// </summary>
@@ -84,5 +87,9 @@ namespace RiscVCpu.MemoryHandler {
         /// </summary>
         /// <param name="address">メモリアドレス</param>
         public abstract void Release(UInt64 address);
+
+        public UInt32 GetUInt32(int startIndex) {
+            return BitConverter.ToUInt32(mainMemory, startIndex);
+        }
     }
 }

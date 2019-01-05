@@ -341,10 +341,10 @@ namespace RiscVCpu.LoadStoreUnit {
         /// </summary>
         /// <returns>処理の成否</returns>
         public bool Ecall(UInt32 insLength = 4u) {
-            reg.IncrementPc(insLength);
-            PrivilegeLevels prevMode = reg.CurrentMode;
+            PrivilegeLevels prev_level = reg.CurrentMode;
             reg.CurrentMode = PrivilegeLevels.MachineMode;
-            throw new RiscvEnvironmentCallException(prevMode, reg);
+            reg.SetCSR(CSR.mepc, 'w', reg.PC);
+            throw new RiscvEnvironmentCallException(prev_level, reg);
         }
 
         /// <summary>
@@ -353,8 +353,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// </summary>
         /// <returns>処理の成否</returns>
         public bool Ebreak(UInt32 insLength = 4u) {
-            reg.IncrementPc(insLength);
-            reg.CurrentMode = PrivilegeLevels.MachineMode;
             throw new RiscvBreakpointException(reg);
         }
 
@@ -506,13 +504,16 @@ namespace RiscVCpu.LoadStoreUnit {
         public bool Sret(UInt32 insLength = 4u) {
             reg.SetPc(reg.GetCSR(CSR.sepc));
             StatusCSR sstatus = (StatusCSR)reg.GetCSR(CSR.sstatus);
-            sstatus.SPP = true;
+
+            PrivilegeLevels priv_level = (PrivilegeLevels)(sstatus.SPP ? 1u : 0u);
+
+
             sstatus.SIE = sstatus.SPIE;
             sstatus.SPIE = true;
             sstatus.SPP = false;
             reg.SetCSR(CSR.sstatus, 'w', (UInt32)sstatus);
 
-            //reg.CurrentMode = PrivilegeLevels.UserMode;
+            reg.CurrentMode = priv_level;
 
             return true;
         }

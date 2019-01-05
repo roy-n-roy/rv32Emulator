@@ -27,9 +27,10 @@ namespace RiscVCpu.Decoder {
         /// </summary>
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
-        public void Decode(UInt32 instruction, RV32_Cpu cpu) {
+        public void Decode(RV32_Cpu cpu) {
             bool successed = false;
-            byte[] ins = SplitInstruction(instruction);
+            byte[] ins = SplitInstruction(cpu.registerSet.IR);
+
             foreach (RV32_AbstractDecoder d in decoders.Values) {
                 successed |= d.Exec(ins, cpu);
                 if (successed) break;

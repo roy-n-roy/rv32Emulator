@@ -1,6 +1,7 @@
 ﻿using RiscVCpu.LoadStoreUnit;
 using RiscVCpu.LoadStoreUnit.Constants;
 using RiscVCpu.LoadStoreUnit.Exceptions;
+using RiscVCpu.MemoryHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,14 +28,16 @@ namespace RiscVCpu.RegisterSet {
         /// <summary>
         /// コントロール・ステータスレジスタを表す32bit符号なし整数の連想配列
         /// </summary>
-        private readonly Dictionary<CSR, UInt32> CSRArray;
-        
+        public readonly Dictionary<CSR, UInt32> CSRegisters;
+
         private UInt32 programCounter;
         private UInt32 instructionRegister;
-
+        private RV32_AbstractMemoryHandler mainMemory;
 
         /// <summary>現在の実行モード</summary>
         private PrivilegeLevels currentMode;
+
+        #region コンストラクタ
 
         /// <summary>
         /// RV32IアーキテクチャCPUのレジスタ群を表すクラス
@@ -46,41 +49,39 @@ namespace RiscVCpu.RegisterSet {
             FPRegisters = new Dictionary<FPRegister, UInt64>(Enumerable.Range(0, 32).ToDictionary(key => (FPRegister)key, value => BitConverter.ToUInt64(BitConverter.GetBytes(0d), 0)));
 
             // コントロール・ステータスレジスタ初期化
-            CSRArray = Enum.GetValues(typeof(CSR)).Cast<CSR>().ToDictionary(key => key, value => 0u);
+            CSRegisters = Enum.GetValues(typeof(CSR)).Cast<CSR>().ToDictionary(key => key, value => 0u);
             
             //マシンモードに設定
             currentMode = PrivilegeLevels.MachineMode;
 
-            CSRArray[CSR.misa] |= 0x40000000;
+            CSRegisters[CSR.misa] |= 0x40000000;
+
         }
 
+        #endregion
+
+        #region プロパティ
+
         /// <summary>プログラムカウンタ</summary>
-        public UInt32 PC { get => programCounter; }
+        public UInt32 PC {
+            get => programCounter;
+            internal set {
+                programCounter = value;
+                instructionRegister = mainMemory.GetUInt32((int)value);
+            }
+        }
 
         /// <summary>命令レジスタ</summary>
         public UInt32 IR { get => instructionRegister; }
 
-        /// <summary>
-        /// 現在の実行モード
-        /// </summary>
+        /// <summary>現在の実行モード</summary>
         public PrivilegeLevels CurrentMode { get => currentMode; set => currentMode = value; }
 
-        /// <summary>
-        /// レジスタを全て初期化する
-        /// </summary>
-        public void ClearAll() {
-            Registers.Select(r => Registers[r.Key] = 0);
-            CSRArray.Select(c => CSRArray[c.Key] = 0);
+        #endregion
 
-            currentMode = PrivilegeLevels.MachineMode;
-            CSRArray[CSR.misa] |= 0x40000000;
-        }
+        #region メソッド定義
 
-
-        /// <summary>
-        /// サイクルカウントを 1 増加させる
-        /// </summary>
-        public void IncrementCycle() => CSRArray[CSR.cycle]++;
+        #region プログラムカウンタ
 
         /// <summary>
         /// プログラムカウントを 引数で指定した分 増加させ、次の命令アドレスを指すように更新する
@@ -88,7 +89,7 @@ namespace RiscVCpu.RegisterSet {
         /// </summary>
         /// <param name="instructionLength">PCの増数 32bit長命令の場合は4、16bit長命令の場合は2を指定する</param>
         public void IncrementPc(UInt32 instructionLength = 4u) {
-            programCounter += instructionLength;
+            PC += instructionLength;
         }
 
         /// <summary>
@@ -97,9 +98,21 @@ namespace RiscVCpu.RegisterSet {
         /// </summary>
         /// <param name="value"></param>
         internal void SetPc(UInt32 value) {
-            programCounter = value;
-            instructionRegister = 0;
+            PC = value;
         }
+
+        /// <summary>
+        /// 命令レジスタに命令を読み込むため、
+        /// メインメモリの参照をレジスタに渡す
+        /// </summary>
+        /// <param name="mem"></param>
+        internal void SetMemHandler(RV32_AbstractMemoryHandler mem) {
+            mainMemory = mem;
+        }
+
+        #endregion
+
+        #region 整数レジスタ
 
         /// <summary>
         /// 整数レジスタに値を設定する
@@ -125,6 +138,10 @@ namespace RiscVCpu.RegisterSet {
             //レジスタの値を返す
             return Registers[name];
         }
+
+        #endregion
+
+        #region 浮動小数点レジスタ
 
         /// <summary>
         /// 浮動小数点レジスタに値を設定する
@@ -166,6 +183,9 @@ namespace RiscVCpu.RegisterSet {
             return BitConverter.ToDouble(BitConverter.GetBytes(FPRegisters[name]), 0);
         }
 
+        #endregion
+
+        #region コントロール・ステータスレジスタ
 
         /// <summary>
         /// CSRに値を設定する
@@ -196,22 +216,22 @@ namespace RiscVCpu.RegisterSet {
                         if ((CSR)name == CSR.sstatus) {
                             StatusCSR status = (StatusCSR)value;
                             status.Mode = currentMode;
-                            CSRArray[name] = (CSRArray[name] & ~StatusCSR.SModeCanRead) | (UInt32)status;
+                            CSRegisters[name] = (CSRegisters[name] & ~StatusCSR.SModeCanRead) | (UInt32)status;
                         } else {
-                            CSRArray[name] = value;
+                            CSRegisters[name] = value;
                         }
                         break;
                     case 's':
                         if ((CSR)name == CSR.sstatus) {
                             StatusCSR status = (StatusCSR)value;
                             status.Mode = currentMode;
-                            CSRArray[name] |= StatusCSR.SModeCanRead & (UInt32)status;
+                            CSRegisters[name] |= StatusCSR.SModeCanRead & (UInt32)status;
                         } else {
-                            CSRArray[name] |= value;
+                            CSRegisters[name] |= value;
                         }
                         break;
                     case 'c':
-                        CSRArray[name] &= ~value;
+                        CSRegisters[name] &= ~value;
                         break;
                     default:
                         throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, this);
@@ -237,16 +257,16 @@ namespace RiscVCpu.RegisterSet {
                 // 一部スーパーバイザーモードCSRにはマシンモードCSRに読み替える, sie, sieはsstatus, sie, sieは
                 if ((CSR)name == CSR.sstatus) {
                     // []status CSR
-                    StatusCSR status = (StatusCSR)CSRArray[name | (CSR)0x200u];
+                    StatusCSR status = (StatusCSR)CSRegisters[name | (CSR)0x200u];
                     status.Mode = currentMode;
                     return (UInt32)status;
                 } else if ((CSR)name == CSR.sie || (CSR)name == CSR.sip) {
                     // マシンモードCSRに読み替える
-                    InterruptPendingCSR interrupt = (InterruptPendingCSR)CSRArray[name | (CSR)0x200u];
+                    InterruptPendingCSR interrupt = (InterruptPendingCSR)CSRegisters[name | (CSR)0x200u];
                     interrupt.Mode = currentMode;
                     return (UInt32)interrupt;
                 } else {
-                    return (UInt32)CSRArray[name];
+                    return (UInt32)CSRegisters[name];
                 }
 
             } else {
@@ -255,36 +275,114 @@ namespace RiscVCpu.RegisterSet {
             }
         }
 
+        #endregion
+
+        /// <summary>
+        /// レジスタを全て初期化する
+        /// </summary>
+        public void ClearAll() {
+            Registers.Select(r => Registers[r.Key] = 0);
+            CSRegisters.Select(c => CSRegisters[c.Key] = 0);
+
+            currentMode = PrivilegeLevels.MachineMode;
+            CSRegisters[CSR.misa] |= 0x40000000;
+        }
+
+        /// <summary>
+        /// サイクルカウントを 1 増加させる
+        /// </summary>
+        public void IncrementCycle() => CSRegisters[CSR.cycle]++;
+
         /// <summary>
         /// マシンの拡張命令セットを表すCSRに設定を追加する
         /// </summary>
         /// <param name="isa">拡張命令セットを表すA～Zの文字</param>
         public void AddMisa(char isa) {
-            CSRArray[CSR.misa] |= (UInt32)(1 << (Char.ToUpper(isa) - 'A' - 1));
+            CSRegisters[CSR.misa] |= (UInt32)(1 << (Char.ToUpper(isa) - 'A' - 1));
 
             // IAMAFDをサポートする場合、Gもセットする
-            if((CSRArray[CSR.misa] & 0x1129) == 0x1129) {
-                CSRArray[CSR.misa] |= 5u;
+            if((CSRegisters[CSR.misa] & 0x1129u) == 0x1129u) {
+                CSRegisters[CSR.misa] |= 5u;
             }
         }
 
-        public void SetExceptionCSR(RiscvExceptionCause cause, UInt32 tval) {
-            switch (currentMode) {
-                case PrivilegeLevels.MachineMode:
-                    CSRArray[CSR.mepc] = PC;
-                    CSRArray[CSR.mcause] = (UInt32)cause;
-                    break;
-                case PrivilegeLevels.SupervisorMode:
-                    CSRArray[CSR.mepc] = PC;
-                    CSRArray[CSR.scause] = (UInt32)cause;
-                    break;
-                case PrivilegeLevels.UserMode:
-                    CSRArray[CSR.mepc] = PC;
-                    CSRArray[CSR.ucause] = (UInt32)cause;
-                    break;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cause"></param>
+        /// <param name="tval"></param>
+        public void SetCauseCSR(RiscvExceptionCause cause, UInt32 tval) {
+
+            // マシンモード以下に例外トラップ委譲されていないか
+            if ((CSRegisters[CSR.medeleg] & (1u << (int)cause)) == 0u) {
+                // 例外の発生したPCを設定
+                CSRegisters[CSR.mepc] = PC;
+
+                // 例外の原因を設定
+                CSRegisters[CSR.mcause] = (UInt32)cause;
+
+                // 例外の発生時にアクセスしていたメモリアドレスを設定
+                CSRegisters[CSR.mtval] = tval;
+
+                // 例外前のステータスを設定
+                StatusCSR status = new StatusCSR(CSRegisters[CSR.mstatus]);
+                status.MPIE = status.MIE;
+                status.MPP = (byte)currentMode;
+                status.MIE = false;
+                CSRegisters[CSR.mstatus] = (UInt32)status;
+
+                // プログラムカウンタの設定
+                PC = CSRegisters[CSR.mtvec];
+
+                // 実行モードの変更
+                currentMode = PrivilegeLevels.MachineMode;
+
+                // スーパーバイザモード以下に例外トラップ委譲されていないか
+            } else if ((CSRegisters[CSR.sedeleg] & (1u << (int)cause)) == 0u) {
+                // 例外の発生したPCを設定
+                CSRegisters[CSR.sepc] = PC;
+
+                // 例外の原因を設定
+                CSRegisters[CSR.scause] = (UInt32)cause;
+
+                // 例外の発生時にアクセスしていたメモリアドレスを設定
+                CSRegisters[CSR.stval] = tval;
+                
+                // 例外前のステータスを設定
+                StatusCSR status = new StatusCSR(CSRegisters[CSR.sstatus]);
+                status.SPIE = status.SIE;
+                status.SPP = ((byte)currentMode & 1u) > 0u;
+                status.SIE = false;
+                CSRegisters[CSR.sstatus] = (UInt32)status;
+
+                // プログラムカウンタの設定
+                PC = CSRegisters[CSR.utvec];
+
+                // 実行モードの変更
+                currentMode = PrivilegeLevels.SupervisorMode;
+            } else {
+                // 例外の発生したPCを設定
+                CSRegisters[CSR.uepc] = PC;
+
+                // 例外の原因を設定
+                CSRegisters[CSR.ucause] = (UInt32)cause;
+
+                // 例外の発生時にアクセスしていたメモリアドレスを設定
+                CSRegisters[CSR.utval] = tval;
+
+                // 例外前のステータスを設定
+                StatusCSR status = new StatusCSR(CSRegisters[CSR.ustatus]);
+                status.UPIE = status.UIE;
+                status.UIE = false;
+                CSRegisters[CSR.ustatus] = (UInt32)status;
+
+                // プログラムカウンタの設定
+                PC = CSRegisters[CSR.utvec];
+
+                // 実行モードの変更
+                currentMode = PrivilegeLevels.UserMode;
             }
         }
-
 
         /// <summary>
         /// レジスタ(zero～x31 + pc)の内容をレジスタ名と16進形式の文字列に変換して返す
@@ -300,5 +398,7 @@ namespace RiscVCpu.RegisterSet {
 
             return s;
         }
+
+        #endregion
     }
 }

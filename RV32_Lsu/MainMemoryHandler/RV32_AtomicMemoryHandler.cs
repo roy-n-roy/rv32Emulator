@@ -4,20 +4,17 @@ using System.Collections.Generic;
 namespace RiscVCpu.MemoryHandler {
     public class RV32_AtomicMemoryHandler : RV32_AbstractMemoryHandler {
 
-        private readonly byte[] mainMemory;
         private readonly HashSet<UInt64> reservedAddress;
 
         /// <summary>アトミック(不可分)なメモリ操作をサポートするメインメモリハンドラ</summary>
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
-        public RV32_AtomicMemoryHandler(byte[] mainMemory) {
-            this.mainMemory = mainMemory;
+        public RV32_AtomicMemoryHandler(byte[] mainMemory) : base(mainMemory) {
             reservedAddress = new HashSet<UInt64>();
         }
 
         /// <summary>アトミック(不可分)なメモリ操作をサポートするメインメモリハンドラ</summary>
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
-        public RV32_AtomicMemoryHandler(RV32_AbstractMemoryHandler mainMemory) {
-            this.mainMemory = mainMemory.GetBytes();
+        public RV32_AtomicMemoryHandler(RV32_AbstractMemoryHandler mainMemory) : base(mainMemory.GetBytes()) {
             reservedAddress = new HashSet<UInt64>();
         }
 

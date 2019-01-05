@@ -19,6 +19,8 @@ namespace RiscVCpu.LoadStoreUnit {
         public RV32_AbstractMemoryHandler Mem {
             get => mem;
             set {
+                mem = value;
+                reg.SetMemHandler(mem);
                 foreach (RV32_AbstractLoadStoreUnit lsu in lsus.Values) {
                     lsu.Mem = value;
                 }
@@ -33,6 +35,7 @@ namespace RiscVCpu.LoadStoreUnit {
         public RV32_LoadStoreUnit(RV32_RegisterSet registerSet, byte[] mainMemory) {
             reg = registerSet;
             mem = new RV32_MemoryHandler(mainMemory);
+            reg.SetMemHandler(mem);
         }
 
         /// <summary>

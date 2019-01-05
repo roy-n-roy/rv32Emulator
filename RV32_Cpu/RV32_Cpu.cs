@@ -168,11 +168,10 @@ namespace RiscVCpu {
         /// <returns>正常時:0, 異常時:0以外</returns>
         public int Run() {
             while (true) {
-                UInt32 ins = BitConverter.ToUInt32(mem, (int)registerSet.PC);
-                if (ins == 0) {
+                if (registerSet.IR == 0) {
                     return 0;
                 }
-                decoder.Decode(ins, this);
+                decoder.Decode(this);
                 registerSet.IncrementCycle();
             }
         }
