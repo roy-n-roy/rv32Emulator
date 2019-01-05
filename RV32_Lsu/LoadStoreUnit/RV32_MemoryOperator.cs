@@ -56,7 +56,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="entryPoint"></param>
         public void ClearAndSetPC(UInt32 entryPoint, UInt32 insLength = 4u) {
             reg.ClearAll();
-            reg.SetPc(entryPoint);
+            reg.PC = entryPoint;
         }
 
         /// <summary>

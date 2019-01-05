@@ -29,7 +29,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">ジャンプする現在のpcからの相対アドレス位置</param>
         public bool Jal(Register rd, Int32 offset, UInt32 insLength = 4u) {
             reg.SetValue(rd, reg.PC + 4u);
-            reg.SetPc(reg.PC + (UInt32)offset);
+            reg.PC += (UInt32)offset;
             return true;
         }
 
@@ -43,7 +43,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">ジャンプするオフセット値</param>
         public bool Jalr(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt32 t = reg.PC + 4u;
-            reg.SetPc((reg.GetValue(rs1) + (UInt32)offset) & ~1u);
+            reg.PC = (reg.GetValue(rs1) + (UInt32)offset) & ~1u;
             reg.SetValue(rd, t);
             return true;
         }
@@ -59,7 +59,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">ジャンプするオフセット値</param>
         public bool Beq(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             if (reg.GetValue(rs1) == reg.GetValue(rs2)) {
-                reg.SetPc(reg.PC + (UInt32)offset);
+                reg.PC += (UInt32)offset;
             } else {
                 reg.IncrementPc(insLength);
             }
@@ -75,7 +75,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">ジャンプするオフセット値</param>
         public bool Bne(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             if (reg.GetValue(rs1) != reg.GetValue(rs2)) {
-                reg.SetPc(reg.PC + (UInt32)offset);
+                reg.PC += (UInt32)offset;
             } else {
                 reg.IncrementPc(insLength);
             }
@@ -91,7 +91,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">ジャンプするオフセット値</param>
         public bool Blt(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             if ((Int32)reg.GetValue(rs1) < (Int32)reg.GetValue(rs2)) {
-                reg.SetPc(reg.PC + (UInt32)offset);
+                reg.PC += (UInt32)offset;
             } else {
                 reg.IncrementPc(insLength);
             }
@@ -107,7 +107,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">ジャンプするオフセット値</param>
         public bool Bge(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             if ((Int32)reg.GetValue(rs1) >= (Int32)reg.GetValue(rs2)) {
-                reg.SetPc(reg.PC + (UInt32)offset);
+                reg.PC += (UInt32)offset;
             } else {
                 reg.IncrementPc(insLength);
             }
@@ -123,7 +123,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">ジャンプするオフセット値</param>
         public bool Bltu(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             if (reg.GetValue(rs1) < reg.GetValue(rs2)) {
-                reg.SetPc(reg.PC + (UInt32)offset);
+                reg.PC += (UInt32)offset;
             } else {
                 reg.IncrementPc(insLength);
             }
@@ -139,7 +139,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">ジャンプするオフセット値</param>
         public bool Bgeu(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             if (reg.GetValue(rs1) >= reg.GetValue(rs2)) {
-                reg.SetPc(reg.PC + (UInt32)offset);
+                reg.PC += (UInt32)offset;
             } else {
                 reg.IncrementPc(insLength);
             }
@@ -481,7 +481,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// </summary>
         /// <returns>処理の成否</returns>
         public bool Mret(UInt32 insLength = 4u) {
-            reg.SetPc(reg.GetCSR(CSR.mepc));
+            reg.PC = reg.GetCSR(CSR.mepc);
             StatusCSR mstatus = (StatusCSR)reg.GetCSR(CSR.mstatus);
 
             PrivilegeLevels priv_level = (PrivilegeLevels)mstatus.MPP;
@@ -502,7 +502,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// </summary>
         /// <returns>処理の成否</returns>
         public bool Sret(UInt32 insLength = 4u) {
-            reg.SetPc(reg.GetCSR(CSR.sepc));
+            reg.PC = reg.GetCSR(CSR.sepc);
             StatusCSR sstatus = (StatusCSR)reg.GetCSR(CSR.sstatus);
 
             PrivilegeLevels priv_level = (PrivilegeLevels)(sstatus.SPP ? 1u : 0u);

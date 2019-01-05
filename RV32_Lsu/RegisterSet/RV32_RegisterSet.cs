@@ -93,15 +93,6 @@ namespace RiscVCpu.RegisterSet {
         }
 
         /// <summary>
-        /// プログラムカウンタに値を設定する
-        /// これはLSU内からしかアクセスできない
-        /// </summary>
-        /// <param name="value"></param>
-        internal void SetPc(UInt32 value) {
-            PC = value;
-        }
-
-        /// <summary>
         /// 命令レジスタに命令を読み込むため、
         /// メインメモリの参照をレジスタに渡す
         /// </summary>
