@@ -13,7 +13,7 @@ namespace RiscVCpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(byte[] ins, RV32_Cpu cpu) {
+        internal protected override bool Exec(UInt32[] ins, RV32_Cpu cpu) {
             bool result = false;
             Register rd = (Register)ins[1],
                         rs1 = (Register)ins[3],
@@ -23,7 +23,7 @@ namespace RiscVCpu.Decoder {
             Funct7 funct7 = (Funct7)(ins[5] | (ins[6] << 6));
             Int32 immediate = 0;
             RV32_Alu alu;
-            RV32_Lsu lsu;
+            RV32_IntegerLsu lsu;
 
             switch (opcode) {
                 case Opcode.lui: // lui命令
@@ -41,21 +41,21 @@ namespace RiscVCpu.Decoder {
 
                 case Opcode.jal: // jal命令
                     immediate = GetImmediate('J', ins);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Jal(rd, immediate);
                     break;
 
                 case Opcode.jalr: // jalr命令
                     if (funct3 == Funct3.jalr) {
                         immediate = GetImmediate('I', ins);
-                        lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                        lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                         result = lsu.Jalr(rd, rs1, immediate);
                     }
                     break;
 
                 case Opcode.branch: // Branch系命令
                     immediate = GetImmediate('B', ins);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     switch (funct3) {
                         case Funct3.beq: // beq命令
                             result = lsu.Beq(rs1, rs2, immediate);
@@ -85,7 +85,7 @@ namespace RiscVCpu.Decoder {
 
                 case Opcode.load: // Load系命令
                     immediate = GetImmediate('I', ins);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     switch (funct3) {
 
                         case Funct3.lb: // lb命令
@@ -112,7 +112,7 @@ namespace RiscVCpu.Decoder {
 
                 case Opcode.store: // Store系命令
                     immediate = GetImmediate('S', ins);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     switch (funct3) {
                         case Funct3.sb: // sb命令
                             result = lsu.Sb(rs1, rs2, immediate);
@@ -159,17 +159,17 @@ namespace RiscVCpu.Decoder {
 
 
                         case Funct3.slli: // slli命令
-                            result = alu.Slli(rd, rs1, ins[4] | ((ins[5] & 0b1) << 5));
+                            result = alu.Slli(rd, rs1, (Int32)(ins[4] | ((ins[5] & 0b1) << 5)));
                             break;
 
                         case Funct3.srli_srai: // srli/srai命令
                             switch (funct7) {
                                 case Funct7.srli:
-                                    result = alu.Srli(rd, rs1, ins[4] | ((ins[5] & 0b1) << 5));
+                                    result = alu.Srli(rd, rs1, (Int32)(ins[4] | ((ins[5] & 0b1) << 5)));
                                     break;
 
                                 case Funct7.srai:
-                                    result = alu.Srai(rd, rs1, ins[4] | ((ins[5] & 0b1) << 5));
+                                    result = alu.Srai(rd, rs1, (Int32)(ins[4] | ((ins[5] & 0b1) << 5)));
                                     break;
                             }
                             break;
@@ -223,7 +223,7 @@ namespace RiscVCpu.Decoder {
 
 
                 case Opcode.miscMem: // 同期命令
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     switch (funct3) {
                         case Funct3.fence: // fence命令
                             result = lsu.Fence((byte)(((ins[5] & 0x7 ) << 5) | ins[4]));
@@ -235,7 +235,7 @@ namespace RiscVCpu.Decoder {
                     }
                     break;
                 case Opcode.privilege: // 特権命令
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     switch (funct3) {
                         case Funct3.privilege: // 特権命令
                             if (rd == 0) {
@@ -286,17 +286,17 @@ namespace RiscVCpu.Decoder {
 
                         case Funct3.csrrwi: // csrrwi命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = lsu.Csrrwi(rd, ins[3], (CSR)immediate);
+                            result = lsu.Csrrwi(rd, (byte)ins[3], (CSR)immediate);
                             break;
 
                         case Funct3.csrrsi: // csrrsi命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = lsu.Csrrsi(rd, ins[3], (CSR)immediate);
+                            result = lsu.Csrrsi(rd, (byte)ins[3], (CSR)immediate);
                             break;
 
                         case Funct3.csrrci: // csrrci命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = lsu.Csrrci(rd, ins[3], (CSR)immediate);
+                            result = lsu.Csrrci(rd, (byte)ins[3], (CSR)immediate);
                             break;
                     }
                     break;

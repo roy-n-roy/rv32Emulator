@@ -4,26 +4,18 @@ using System.Collections.Generic;
 namespace RiscVCpu.MemoryHandler {
     public class RV32_AtomicMemoryHandler : RV32_AbstractMemoryHandler {
 
-        private readonly byte[] mainMemory;
         private readonly HashSet<UInt64> reservedAddress;
 
         /// <summary>アトミック(不可分)なメモリ操作をサポートするメインメモリハンドラ</summary>
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
-        public RV32_AtomicMemoryHandler(byte[] mainMemory) {
-            this.mainMemory = mainMemory;
+        public RV32_AtomicMemoryHandler(byte[] mainMemory) : base(mainMemory) {
             reservedAddress = new HashSet<UInt64>();
         }
 
         /// <summary>アトミック(不可分)なメモリ操作をサポートするメインメモリハンドラ</summary>
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
-        public RV32_AtomicMemoryHandler(RV32_AbstractMemoryHandler mainMemory) {
-            this.mainMemory = mainMemory.GetBytes();
+        public RV32_AtomicMemoryHandler(RV32_AbstractMemoryHandler mainMemory) : base(mainMemory.GetBytes()) {
             reservedAddress = new HashSet<UInt64>();
-        }
-
-        public override byte this[UInt64 index] {
-            set { mainMemory[index] = value; }
-            get { return mainMemory[index]; }
         }
 
         /// <summary>
@@ -42,8 +34,8 @@ namespace RiscVCpu.MemoryHandler {
             /// <param name="length">操作するメモリのバイト長</param>
             /// <returns>メモリ操作の可否</returns>
             bool result = false;
-            for (int i = 0; i < length; i++) {
-                result &= !reservedAddress.Contains(address);
+            for (uint i = 0; i < length; i++) {
+                result |= !reservedAddress.Contains(address + i);
             }
             return result;
         }
@@ -52,8 +44,10 @@ namespace RiscVCpu.MemoryHandler {
         /// メモリアドレスを予約する
         /// </summary>
         /// <param name="address">メモリアドレス</param>
-        public override void Acquire(UInt64 address) {
-            reservedAddress.Add(address);
+        public override void Acquire(UInt64 address, Int32 length) {
+            for (uint i = 0; i < length; i++) {
+                reservedAddress.Add(address + i);
+            }
         }
 
         /// <summary>

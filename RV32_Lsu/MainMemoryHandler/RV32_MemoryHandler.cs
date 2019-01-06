@@ -8,19 +8,12 @@ namespace RiscVCpu.MemoryHandler {
     /// <summary>メインメモリハンドラ</summary>
     public class RV32_MemoryHandler : RV32_AbstractMemoryHandler {
 
-        private readonly byte[] mainMemory;
-
         /// <summary>メインメモリハンドラ</summary>
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
-        public RV32_MemoryHandler(byte[] mainMemory) {
-            this.mainMemory = mainMemory;
-        }
+        public RV32_MemoryHandler(byte[] mainMemory) : base(mainMemory) {}
 
-        public override byte this[UInt64 index] {
-            set { mainMemory[index] = value; }
-            get { return mainMemory[index]; }
-        }
 
+ 
         /// <summary>
         /// メモリハンドラの基となったバイト配列を返す
         /// </summary>
@@ -43,7 +36,7 @@ namespace RiscVCpu.MemoryHandler {
         /// メモリアドレスを予約する
         /// </summary>
         /// <param name="address">メモリアドレス</param>
-        public override void Acquire(UInt64 address) {
+        public override void Acquire(UInt64 address, Int32 length) {
         }
 
         /// <summary>
@@ -57,8 +50,31 @@ namespace RiscVCpu.MemoryHandler {
     /// <summary>メインメモリハンドラ 抽象クラス</summary>
     public abstract class RV32_AbstractMemoryHandler {
 
-        public abstract byte this[UInt64 address] { get; set; }
+        public byte this[UInt64 index] {
+            set {
+                mainMemory[index] = value;
+                if (HostAccessAddress.Contains(index)) {
+                    throw new HostAccessTrap();
+                }
+            }
+            get {
+                if (HostAccessAddress.Contains(index)) {
+                    throw new HostAccessTrap();
+                }
+                return mainMemory[index];
+            }
+        }
 
+        private protected readonly byte[] mainMemory;
+        public readonly HashSet<UInt64> HostAccessAddress;
+
+
+        /// <summary>メインメモリハンドラ</summary>
+        /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
+        public RV32_AbstractMemoryHandler(byte[] mainMemory) {
+            this.mainMemory = mainMemory;
+            HostAccessAddress = new HashSet<UInt64>();
+        }
         /// <summary>
         /// メモリハンドラの基となったバイト配列を返す
         /// </summary>
@@ -77,12 +93,20 @@ namespace RiscVCpu.MemoryHandler {
         /// メモリアドレスを予約する
         /// </summary>
         /// <param name="address">メモリアドレス</param>
-        public abstract void Acquire(UInt64 address);
+        public abstract void Acquire(UInt64 address, Int32 length);
 
         /// <summary>
         /// メモリアドレスの予約を解放する
         /// </summary>
         /// <param name="address">メモリアドレス</param>
         public abstract void Release(UInt64 address);
+
+        public UInt32 GetUInt32(int startIndex) {
+            return BitConverter.ToUInt32(mainMemory, startIndex);
+        }
+    }
+
+    public class HostAccessTrap : Exception {
+
     }
 }

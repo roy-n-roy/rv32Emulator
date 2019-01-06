@@ -27,9 +27,10 @@ namespace RiscVCpu.Decoder {
         /// </summary>
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
-        public void Decode(UInt32 instruction, RV32_Cpu cpu) {
+        public void Decode(RV32_Cpu cpu) {
             bool successed = false;
-            byte[] ins = SplitInstruction(instruction);
+            UInt32[] ins = SplitInstruction(cpu.registerSet.IR);
+
             foreach (RV32_AbstractDecoder d in decoders.Values) {
                 successed |= d.Exec(ins, cpu);
                 if (successed) break;
@@ -44,18 +45,22 @@ namespace RiscVCpu.Decoder {
         /// </summary>
         /// <param name="instruction">UInt32型のRisc-V命令</param>
         /// <returns></returns>
-        private byte[] SplitInstruction(UInt32 instruction) {
-            bool[] ins = BitByteConverter.ToBits(BitConverter.GetBytes(instruction)).ToArray();
-            byte[] values = new byte[7];
-            values[0] = BitByteConverter.GetBytes(ins, 0, 7).First();
-            values[1] = BitByteConverter.GetBytes(ins, 7, 5).First();
-            values[2] = BitByteConverter.GetBytes(ins, 12, 3).First();
-            values[3] = BitByteConverter.GetBytes(ins, 15, 5).First();
-            values[4] = BitByteConverter.GetBytes(ins, 20, 5).First();
-            values[5] = BitByteConverter.GetBytes(ins, 25, 6).First();
-            values[6] = BitByteConverter.GetBytes(ins, 31, 1).First();
+        private UInt32[] SplitInstruction(UInt32 instruction) {
+            UInt32[] values = new UInt32[7];
+            values[0] = Slice(instruction, 0, 7);
+            values[1] = Slice(instruction, 7, 5);
+            values[2] = Slice(instruction, 12, 3);
+            values[3] = Slice(instruction, 15, 5);
+            values[4] = Slice(instruction, 20, 5);
+            values[5] = Slice(instruction, 25, 6);
+            values[6] = Slice(instruction, 31, 1);
 
             return values;
+        }
+
+        /// <summary>数値をbyte配列として返します</summary>
+        public static UInt32 Slice(UInt32 data, int startIndex, int count) {
+            return ((data >> startIndex) & (UInt32.MaxValue >> (32 - count)));
         }
     }
 
@@ -73,7 +78,7 @@ namespace RiscVCpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected abstract bool Exec(byte[] instruction, RV32_Cpu cpu);
+        internal protected abstract bool Exec(UInt32[] instruction, RV32_Cpu cpu);
 
         #region 共用メソッド
 
@@ -83,28 +88,28 @@ namespace RiscVCpu.Decoder {
         /// <param name="format">Risc-V命令形式</param>
         /// <param name="ins">SplitInstructionメソッドで分割したbyte[]のRisc-V命令</param>
         /// <returns>Int32型即値</returns>
-        private protected Int32 GetImmediate(char format, byte[] ins) {
+        private protected Int32 GetImmediate(char format, UInt32[] ins) {
             UInt32 result;
-            UInt32[] i = ins.Select(b => (UInt32)b).ToArray();
             switch (format) {
                 case 'U':
-                    result = (i[2] << 12) | (i[3] << 15) | (i[4] << 20) | (i[5] << 25);
+                    result = (ins[2] << 12) | (ins[3] << 15) | (ins[4] << 20) | (ins[5] << 25);
+                    result |= ins[6] == 0u ? 0u : 0x8000_0000u;
                     break;
                 case 'J':
-                    result = (i[4] & 0b11110u) | (i[5] << 5) | ((i[4] & 0b1u) << 11) | (i[2] << 12) | (i[3] << 15);
-                    result |= i[6] == 0u ? 0u : 0xfff00000u;
+                    result = (ins[4] & 0b11110u) | (ins[5] << 5) | ((ins[4] & 0b1u) << 11) | (ins[2] << 12) | (ins[3] << 15);
+                    result |= ins[6] == 0u ? 0u : 0xfff0_0000u;
                     break;
                 case 'I':
-                    result = i[4] | (i[5] << 5);
-                    result |= i[6] == 0u ? 0u : 0xfffff800u;
+                    result = ins[4] | (ins[5] << 5);
+                    result |= ins[6] == 0u ? 0u : 0xffff_f800u;
                     break;
                 case 'S':
-                    result = i[1] | (i[5] << 5);
-                    result |= i[6] == 0u ? 0u : 0xfffff800u;
+                    result = ins[1] | (ins[5] << 5);
+                    result |= ins[6] == 0u ? 0u : 0xffff_f800u;
                     break;
                 case 'B':
-                    result = (i[1] & 0b11110) | (i[5] << 5) | ((i[1] & 0b1) << 11);
-                    result |= i[6] == 0u ? 0u : 0xfffff000u;
+                    result = (ins[1] & 0b11110) | (ins[5] << 5) | ((ins[1] & 0b1) << 11);
+                    result |= ins[6] == 0u ? 0u : 0xffff_f000u;
                     break;
                 default:
                     result = 0;
@@ -112,6 +117,8 @@ namespace RiscVCpu.Decoder {
             }
             return (Int32)result;
         }
+
         #endregion
     }
+
 }

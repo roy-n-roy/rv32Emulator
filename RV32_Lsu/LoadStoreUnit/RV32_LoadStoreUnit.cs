@@ -11,28 +11,14 @@ namespace RiscVCpu.LoadStoreUnit {
     public class RV32_LoadStoreUnit {
         private readonly Dictionary<Type, RV32_AbstractLoadStoreUnit> lsus = new Dictionary<Type, RV32_AbstractLoadStoreUnit>();
         private protected readonly RV32_RegisterSet reg;
-        private protected RV32_AbstractMemoryHandler mem;
-
-        /// <summary>
-        /// メインメモリ
-        /// </summary>
-        public RV32_AbstractMemoryHandler Mem {
-            get => mem;
-            set {
-                foreach (RV32_AbstractLoadStoreUnit lsu in lsus.Values) {
-                    lsu.Mem = value;
-                }
-            }
-        }
 
         /// <summary>
         /// Risc-V 32bitCPU LSU
         /// </summary>
         /// <param name="registerSet">入出力用レジスタ</param>
         /// <param name="registerSet">メインメモリ</param>
-        public RV32_LoadStoreUnit(RV32_RegisterSet registerSet, byte[] mainMemory) {
+        public RV32_LoadStoreUnit(RV32_RegisterSet registerSet) {
             reg = registerSet;
-            mem = new RV32_MemoryHandler(mainMemory);
         }
 
         /// <summary>
@@ -42,7 +28,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <returns>Aluインスタンス</returns>
         public RV32_AbstractLoadStoreUnit GetInstance(Type type) {
             if (!lsus.ContainsKey(type)) {
-                lsus.Add(type, (RV32_AbstractLoadStoreUnit)Activator.CreateInstance(type, new object[] { reg, mem }));
+                lsus.Add(type, (RV32_AbstractLoadStoreUnit)Activator.CreateInstance(type, new object[] { reg, reg.Mem }));
             }
             return lsus[type];
         }
@@ -53,7 +39,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="entryPoint"></param>
         public void ClearAndSetPC(UInt32 entryPoint, UInt32 insLength = 4u) {
             reg.ClearAll();
-            reg.SetPc(entryPoint);
+            reg.PC = entryPoint;
         }
 
         /// <summary>
@@ -70,13 +56,9 @@ namespace RiscVCpu.LoadStoreUnit {
     /// </summary>
     public abstract class RV32_AbstractLoadStoreUnit {
         private protected readonly RV32_RegisterSet reg;
-        private protected RV32_AbstractMemoryHandler mem;
 
         protected internal RV32_AbstractLoadStoreUnit(RV32_RegisterSet registerSet, RV32_AbstractMemoryHandler mainMemory) {
             reg = registerSet;
-            mem = mainMemory;
         }
-
-        internal protected RV32_AbstractMemoryHandler Mem { get => mem; set => mem = value; }
     }
 }
