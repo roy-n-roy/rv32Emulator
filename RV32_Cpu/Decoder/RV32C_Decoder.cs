@@ -14,7 +14,7 @@ namespace RiscVCpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(byte[] ins, RV32_Cpu cpu) {
+        internal protected override bool Exec(UInt32[] ins, RV32_Cpu cpu) {
             byte[] cins = GetCompressedInstruction(ins);
             bool result = false;
             Register rd_rs1 = (Register)(cins[2] & 0x1f),
@@ -24,7 +24,7 @@ namespace RiscVCpu.Decoder {
             CompressedOpcode opcode = (CompressedOpcode)cins[0];
             Int32 immediate = 0;
             RV32_Alu alu;
-            RV32_Lsu lsu;
+            RV32_IntegerLsu lsu;
             RV32_FloatPointLsu fplsu;
 
             switch (opcode) {
@@ -94,12 +94,12 @@ namespace RiscVCpu.Decoder {
                         }
                     } else if (cins[1] == 0 && (cins[2] & 0x1f) != 0) {
                         // jalr命令
-                        lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                        lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                         result = lsu.Jalr((Register)(cins[2] >> 5), rd_rs1, 0, 2);
 
                     } else if (cins[1] == 0 && cins[2] == 0b100000) {
                         // ebreak命令
-                        lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                        lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                         result = lsu.Ebreak(2);
                     }
                     break;
@@ -137,31 +137,31 @@ namespace RiscVCpu.Decoder {
 
                 case CompressedOpcode.jal: // jal命令
                     immediate = GetUnsignedImmediate("CJ", cins);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Jal(Register.ra, immediate, 2);
                     break;
 
                 case CompressedOpcode.j: // j命令
                     immediate = GetUnsignedImmediate("CJ", cins);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Jal(Register.zero, immediate, 2);
                     break;
 
                 case CompressedOpcode.beqz: // beqz命令
                     immediate = GetUnsignedImmediate("CB", cins);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Beq(Register.zero, crd_rs1, immediate, 2);
                     break;
 
                 case CompressedOpcode.bnez: // bnez命令
                     immediate = GetUnsignedImmediate("CB", cins);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Bne(Register.zero, crd_rs1, immediate, 2);
                     break;
 
                 case CompressedOpcode.lw: // lw命令
                     immediate = GetUnsignedImmediate("CL", cins, 2);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Lw(crs2, crd_rs1, immediate, 2);
                     break;
 
@@ -179,7 +179,7 @@ namespace RiscVCpu.Decoder {
 
                 case CompressedOpcode.sw: // sw命令
                     immediate = GetUnsignedImmediate("CL", cins, 2);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Sw(crd_rs1, crs2, immediate, 2);
                     break;
 
@@ -197,7 +197,7 @@ namespace RiscVCpu.Decoder {
 
                 case CompressedOpcode.lwsp: // lwsp命令
                     immediate = GetUnsignedImmediate("CI", cins, 2);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Lw(rd_rs1, Register.sp, immediate, 2);
                     break;
 
@@ -215,7 +215,7 @@ namespace RiscVCpu.Decoder {
 
                 case CompressedOpcode.swsp: // swsp命令
                     immediate = GetUnsignedImmediate("CSS", cins, 2);
-                    lsu = (RV32_Lsu)cpu.Lsu(typeof(RV32_Lsu));
+                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Sw(rs2, Register.sp, immediate, 2);
                     break;
 
@@ -237,14 +237,13 @@ namespace RiscVCpu.Decoder {
 
 
 
-        private byte[] GetCompressedInstruction(byte[] ins) {
-            UInt16 instruction = (UInt16)(ins[0] + (ins[1] << 7) + (ins[2] << 12) + (ins[3] << 15));
+        private byte[] GetCompressedInstruction(UInt32[] ins) {
+            UInt32 instruction = (UInt16)(ins[0] + (ins[1] << 7) + (ins[2] << 12) + (ins[3] << 15));
 
-            bool[] bits = BitByteConverter.ToBits(BitConverter.GetBytes(instruction)).ToArray();
             byte[] cIns = new byte[3];
-            cIns[0] = (byte)(BitByteConverter.GetBytes(bits, 0, 2).First() + (BitByteConverter.GetBytes(bits, 13, 3).First() << 2));
-            cIns[1] = BitByteConverter.GetBytes(bits, 2, 5).First();
-            cIns[2] = BitByteConverter.GetBytes(bits, 7, 6).First();
+            cIns[0] = (byte)(RV32_Decoder.Slice(instruction, 0, 2) | (RV32_Decoder.Slice(instruction, 13, 3) << 2));
+            cIns[1] = (byte)RV32_Decoder.Slice(instruction, 2, 5);
+            cIns[2] = (byte)RV32_Decoder.Slice(instruction, 7, 6);
             return cIns;
         }
 
