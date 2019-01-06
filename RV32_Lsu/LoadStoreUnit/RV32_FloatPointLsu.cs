@@ -32,12 +32,12 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Flw(FPRegister rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (mem.CanOperate(addr, 4)) {
+            if (reg.Mem.CanOperate(addr, 4)) {
                 byte[] bytes = new byte[4];
-                bytes[0] = mem[addr + 0];
-                bytes[1] = mem[addr + 1];
-                bytes[2] = mem[addr + 2];
-                bytes[3] = mem[addr + 3];
+                bytes[0] = reg.Mem[addr + 0];
+                bytes[1] = reg.Mem[addr + 1];
+                bytes[2] = reg.Mem[addr + 2];
+                bytes[3] = reg.Mem[addr + 3];
                 reg.SetValue(rd, BitConverter.ToSingle(bytes, 0));
             }
             reg.IncrementPc(insLength);
@@ -53,16 +53,16 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Fld(FPRegister rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (mem.CanOperate(addr, 8)) {
+            if (reg.Mem.CanOperate(addr, 8)) {
                 byte[] bytes = new byte[8];
-                bytes[0] = mem[addr + 0];
-                bytes[1] = mem[addr + 1];
-                bytes[2] = mem[addr + 2];
-                bytes[3] = mem[addr + 3];
-                bytes[4] = mem[addr + 4];
-                bytes[5] = mem[addr + 5];
-                bytes[6] = mem[addr + 6];
-                bytes[7] = mem[addr + 7];
+                bytes[0] = reg.Mem[addr + 0];
+                bytes[1] = reg.Mem[addr + 1];
+                bytes[2] = reg.Mem[addr + 2];
+                bytes[3] = reg.Mem[addr + 3];
+                bytes[4] = reg.Mem[addr + 4];
+                bytes[5] = reg.Mem[addr + 5];
+                bytes[6] = reg.Mem[addr + 6];
+                bytes[7] = reg.Mem[addr + 7];
                 reg.SetValue(rd, BitConverter.ToDouble(bytes, 0));
             }
             reg.IncrementPc(insLength);
@@ -82,12 +82,12 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Fsw(Register rs1, FPRegister rs2, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (mem.CanOperate(addr, 4)) {
+            if (reg.Mem.CanOperate(addr, 4)) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetSingleValue(rs2));
-                mem[addr + 0] = bytes[0];
-                mem[addr + 1] = bytes[1];
-                mem[addr + 2] = bytes[2];
-                mem[addr + 3] = bytes[3];
+                reg.Mem[addr + 0] = bytes[0];
+                reg.Mem[addr + 1] = bytes[1];
+                reg.Mem[addr + 2] = bytes[2];
+                reg.Mem[addr + 3] = bytes[3];
             }
             reg.IncrementPc(insLength);
             return true;
@@ -102,16 +102,16 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Fsd(Register rs1, FPRegister rs2, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (mem.CanOperate(addr, 8)) {
+            if (reg.Mem.CanOperate(addr, 8)) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetDoubleValue(rs2));
-                mem[addr + 0] = bytes[0];
-                mem[addr + 1] = bytes[1];
-                mem[addr + 2] = bytes[2];
-                mem[addr + 3] = bytes[3];
-                mem[addr + 4] = bytes[4];
-                mem[addr + 5] = bytes[5];
-                mem[addr + 6] = bytes[6];
-                mem[addr + 7] = bytes[7];
+                reg.Mem[addr + 0] = bytes[0];
+                reg.Mem[addr + 1] = bytes[1];
+                reg.Mem[addr + 2] = bytes[2];
+                reg.Mem[addr + 3] = bytes[3];
+                reg.Mem[addr + 4] = bytes[4];
+                reg.Mem[addr + 5] = bytes[5];
+                reg.Mem[addr + 6] = bytes[6];
+                reg.Mem[addr + 7] = bytes[7];
             }
             reg.IncrementPc(insLength);
             return true;

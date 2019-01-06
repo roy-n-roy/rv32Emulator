@@ -60,7 +60,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BitByteConverter.cs" />
     <Compile Include="Decoder\Constants\InstructionConstants.cs" />
     <Compile Include="Decoder\RV32F_Decoder.cs" />
     <Compile Include="Decoder\RV32D_Decoder.cs" />

@@ -18,11 +18,6 @@ namespace RiscVCpu.MemoryHandler {
             reservedAddress = new HashSet<UInt64>();
         }
 
-        public override byte this[UInt64 index] {
-            set { mainMemory[index] = value; }
-            get { return mainMemory[index]; }
-        }
-
         /// <summary>
         /// メモリハンドラの基となったバイト配列を返す
         /// </summary>
@@ -39,8 +34,8 @@ namespace RiscVCpu.MemoryHandler {
             /// <param name="length">操作するメモリのバイト長</param>
             /// <returns>メモリ操作の可否</returns>
             bool result = false;
-            for (int i = 0; i < length; i++) {
-                result &= !reservedAddress.Contains(address);
+            for (uint i = 0; i < length; i++) {
+                result |= !reservedAddress.Contains(address + i);
             }
             return result;
         }
@@ -49,8 +44,10 @@ namespace RiscVCpu.MemoryHandler {
         /// メモリアドレスを予約する
         /// </summary>
         /// <param name="address">メモリアドレス</param>
-        public override void Acquire(UInt64 address) {
-            reservedAddress.Add(address);
+        public override void Acquire(UInt64 address, Int32 length) {
+            for (uint i = 0; i < length; i++) {
+                reservedAddress.Add(address + i);
+            }
         }
 
         /// <summary>

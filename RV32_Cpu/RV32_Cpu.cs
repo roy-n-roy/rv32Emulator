@@ -10,10 +10,6 @@ using System.IO;
 namespace RiscVCpu {
     public class RV32_Cpu {
         /// <summary>
-        /// メインメモリ
-        /// </summary>
-        public byte[] mem;
-        /// <summary>
         /// 命令デコーダ
         /// </summary>
         private readonly RV32_Decoder decoder;
@@ -36,20 +32,19 @@ namespace RiscVCpu {
         /// RISC-Vアーキテクチャの32bitCPUを生成する
         /// </summary>
         /// <param name="OptionsInstructionSet">拡張命令セットを表す文字列</param>
-        /// <param name="mainMemory">メインメモリとして使用するUInt32配列</param>
-        public RV32_Cpu(string OptionsInstructionSet, byte[] mainMemory) {
-            mem = mainMemory;
-
+        /// <param name="mem">メインメモリとして使用するUInt32配列</param>
+        public RV32_Cpu(string OptionsInstructionSet, byte[] mem) {
             // 基本命令セットRV32I
-            registerSet = new RV32_RegisterSet();
-            registerSet.AddMisa('I');
+            registerSet = new RV32_RegisterSet(new RV32_MemoryHandler(mem));
 
             decoder = new RV32_Decoder();
             decoder.AddDecoder(typeof(RV32I_Decoder));
 
             alu = new RV32_Calculators(registerSet);
-            lsu = new RV32_LoadStoreUnit(registerSet, mem);
+            lsu = new RV32_LoadStoreUnit(registerSet);
 
+            lsu.AddMisa('I');
+            lsu.AddMisa('S');
 
             // 拡張命令セット
             foreach (char option in OptionsInstructionSet.ToCharArray()) {
@@ -61,7 +56,7 @@ namespace RiscVCpu {
 
                     case 'A': // RV32A 拡張命令セット
                         decoder.AddDecoder(typeof(RV32A_Decoder));
-                        lsu.Mem = new RV32_AtomicMemoryHandler(lsu.Mem.GetBytes());
+                        registerSet.Mem = new RV32_AtomicMemoryHandler(mem);
                         break;
 
                     case 'C': // RV32C 拡張命令セット
@@ -133,7 +128,7 @@ namespace RiscVCpu {
             int readBytes = 0;
             using (BinaryReader br = new BinaryReader(File.Open(objectPath, FileMode.Open))) {
                 fileSize = br.BaseStream.Length;
-                readBytes = br.Read(mem, 0, (int)fileSize);
+                readBytes = br.Read(registerSet.Mem.GetBytes(), 0, (int)fileSize);
             }
 
             if (fileSize == 0 || fileSize != readBytes) {
@@ -141,7 +136,7 @@ namespace RiscVCpu {
                 return -1;
             }
 
-            Elf32_Header elf = (Elf32_Header)mem;
+            Elf32_Header elf = (Elf32_Header)registerSet.Mem.GetBytes();
 
             if (elf.e_type != ElfType.ET_EXEC) {
                 Console.WriteLine(Path.GetFileName(objectPath) + " 実行可能ファイルではありません");

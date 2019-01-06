@@ -50,8 +50,9 @@
     <Compile Include="MainMemoryHandler\RV32_AtomicMemoryHandler.cs" />
     <Compile Include="MainMemoryHandler\RV32_MemoryHandler.cs" />
     <Compile Include="LoadStoreUnit\RV32_AmoLsu.cs" />
-    <Compile Include="LoadStoreUnit\RV32_MemoryOperator.cs" />
-    <Compile Include="LoadStoreUnit\RV32_Lsu.cs" />
+    <Compile Include="LoadStoreUnit\RV32_LoadStoreUnit.cs" />
+    <Compile Include="LoadStoreUnit\RV32_IntegerLsu.cs" />
+    <Compile Include="RegisterSet\RV32_ControlStatusRegisters.cs" />
     <Compile Include="RegisterSet\RV32_RegisterSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

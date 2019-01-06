@@ -1,6 +1,8 @@
-﻿namespace RiscVCpu.LoadStoreUnit.Constants {
+﻿using System;
 
-     /// <summary>特権レベル</summary>
+namespace RiscVCpu.LoadStoreUnit.Constants {
+
+    /// <summary>特権レベル</summary>
     public enum PrivilegeLevels : byte {
         /// <summary>ユーザモード</summary>
         UserMode = 0x0,
@@ -10,6 +12,494 @@
         MachineMode = 0x3,
     }
 
+    #region CSRアドレス定義
+    /// <summary>
+    /// RV32I基本命令セットで使用するコントロール・ステータスレジスタのアドレス
+    /// アドレスは12bitから成り、最上位4bitがアクセス権限を表す
+    /// 上位2bit 00-10:読み書き可, 11:読み取り専用
+    /// 下位2bit => 特権レベル(PrivilegeLevels)
+    /// </summary>
+    public enum CSR : ushort {
+
+        #region ユーザモードCSR
+        /// <summary>ユーザ ステータスレジスタ</summary>
+        ustatus = 0x000,
+        /// <summary>ユーザ 割り込み有効レジスタ</summary>
+        uie = 0x004,
+        /// <summary>ユーザ 例外・割り込みハンドラ ベースアドレス</summary>
+        utvec = 0x005,
+
+        /// <summary>ユーザ 例外・割り込みハンドラ スクラッチレジスタ</summary>
+        uscratch = 0x040,
+        /// <summary>ユーザ 例外発生時 プログラムカウンタプログラム</summary>
+        uepc = 0x041,
+        /// <summary>ユーザ 例外・割り込み原因レジスタ</summary>
+        ucause = 0x042,
+        /// <summary>ユーザ 例外発生時 メモリアドレスレジスタ</summary>
+        utval = 0x043,
+        /// <summary>ユーザ 割り込みペンディングレジスタ</summary>
+        uip = 0x044,
+
+        /// <summary>ユーザ 浮動小数点 例外フラグレジスタ</summary>
+        fflags = 0x001,
+        /// <summary>ユーザ 浮動小数点 丸めモード</summary>
+        frm = 0x002,
+        /// <summary>ユーザ 浮動小数点 制御・状態レジスタ</summary>
+        fcsr = 0x003,
+
+        /// <summary>ユーザ サイクルカウンタ</summary>
+        cycle = 0xc00,
+        /// <summary>ユーザ タイマ</summary>
+        time = 0xc01,
+        /// <summary>ユーザ 命令リタイヤカウンタ</summary>
+        instret = 0xc02,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter3 = 0xc03,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter4 = 0xc04,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter5 = 0xc05,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter6 = 0xc06,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter7 = 0xc07,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter8 = 0xc08,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter9 = 0xc09,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter10 = 0xc0a,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter11 = 0xc0b,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter12 = 0xc0c,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter13 = 0xc0d,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter14 = 0xc0e,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter15 = 0xc0f,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter16 = 0xc10,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter17 = 0xc11,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter18 = 0xc12,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter19 = 0xc13,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter20 = 0xc14,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter21 = 0xc15,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter22 = 0xc16,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter23 = 0xc17,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter24 = 0xc18,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter25 = 0xc19,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter26 = 0xc1a,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter27 = 0xc1b,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter28 = 0xc1c,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter29 = 0xc1d,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter30 = 0xc1e,
+        /// <summary>ユーザ 性能監視カウンタ</summary>
+        hpmcounter31 = 0xc1f,
+
+        /// <summary>ユーザ サイクルカウンタ(上位ビット)</summary>
+        cycleh = 0xc80,
+        /// <summary>ユーザ タイマ(上位ビット)</summary>
+        timeh = 0xc81,
+        /// <summary>ユーザ 命令リタイヤカウンタ(上位ビット)</summary>
+        instreth = 0xc82,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter3h = 0xc83,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter4h = 0xc84,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter5h = 0xc85,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter6h = 0xc86,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter7h = 0xc87,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter8h = 0xc88,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter9h = 0xc89,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter10h = 0x8a,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter11h = 0xc8b,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter12h = 0xc8c,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter13h = 0xc8d,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter14h = 0xc8e,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter15h = 0xc8f,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter16h = 0xc90,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter17h = 0xc91,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter18h = 0xc92,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter19h = 0xc93,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter20h = 0xc94,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter21h = 0xc95,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter22h = 0xc96,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter23h = 0xc97,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter24h = 0xc98,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter25h = 0xc99,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter26h = 0xc9a,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter27h = 0xc9b,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter28h = 0xc9c,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter29h = 0xc9d,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter30h = 0xc9e,
+        /// <summary>ユーザ 性能監視カウンタ(上位ビット)</summary>
+        hpmcounter31h = 0xc9f,
+
+        #endregion
+
+        #region スーパーバイザモードCSR
+        /// <summary>スーパーバイザ ステータスレジスタ</summary>
+        sstatus = 0x100,
+        /// <summary>スーパーバイザ 例外委譲レジスタ</summary>
+        sedeleg = 0x102,
+        /// <summary>スーパーバイザ 割り込み委譲レジスタ</summary>
+        sideleg = 0x103,
+        /// <summary>スーパーバイザ 割り込み有効レジスタ</summary>
+        sie = 0x104,
+        /// <summary>スーパーバイザ 例外・割り込みハンドラ ベースアドレス</summary>
+        stvec = 0x105,
+        /// <summary>スーパーバイザ カウンタ有効レジスタ</summary>
+        scounteren = 0x106,
+
+        /// <summary>スーパーバイザ 例外・割り込みハンドラ スクラッチレジスタ</summary>
+        sscratch = 0x140,
+        /// <summary>スーパーバイザ 例外発生時 プログラムカウンタプログラム</summary>
+        sepc = 0x141,
+        /// <summary>スーパーバイザ 例外・割り込み原因レジスタ</summary>
+        scause = 0x142,
+        /// <summary>スーパーバイザ 例外発生時 メモリアドレスレジスタ</summary>
+        stval = 0x143,
+        /// <summary>スーパーバイザ 割り込みペンディングレジスタ</summary>
+        sip = 0x144,
+
+        /// <summary>スーパーバイザ アドレス変換・保護レジスタ</summary>
+        satp = 0x180,
+
+        #endregion
+
+        #region マシンモードCSR
+        /// <summary>マシン ベンダーID</summary>
+        mvendorid = 0xf11,
+        /// <summary>マシン アーキテクチャID</summary>
+        marchid = 0xf12,
+        /// <summary>マシン 実装ID</summary>
+        mimpid = 0xf13,
+        /// <summary>マシン ハードウェアスレッドID</summary>
+        mhartid = 0xf14,
+
+        /// <summary>マシン ステータスレジスタ</summary>
+        mstatus = 0x300,
+        misa = 0x301,
+        /// <summary>マシン 例外委譲レジスタ</summary>
+        medeleg = 0x302,
+        /// <summary>マシン 割り込み委譲レジスタ</summary>
+        mideleg = 0x303,
+        /// <summary>マシン 割り込み有効レジスタ</summary>
+        mie = 0x304,
+        /// <summary>マシン 例外・割り込みハンドラ ベースアドレス</summary>
+        mtvec = 0x305,
+        /// <summary>マシン カウンタ有効レジスタ</summary>
+        mcounteren = 0x306,
+
+        /// <summary>マシン 例外・割り込みハンドラ スクラッチレジスタ</summary>
+        mscratch = 0x340,
+        /// <summary>マシン 例外発生時 プログラムカウンタプログラム</summary>
+        mepc = 0x341,
+        /// <summary>マシン 例外・割り込み原因レジスタ</summary>
+        mcause = 0x342,
+        /// <summary>マシン 例外発生時 メモリアドレスレジスタ</summary>
+        mtval = 0x343,
+        /// <summary>マシン 割り込みペンディングレジスタ</summary>
+        mip = 0x344,
+
+        /// <summary>マシン メモリ保護 構成レジスタ</summary>
+        pmpcfg0 = 0x3a0,
+        /// <summary>マシン メモリ保護 構成レジスタ</summary>
+        pmpcfg1 = 0x3a1,
+        /// <summary>マシン メモリ保護 構成レジスタ</summary>
+        pmpcfg2 = 0x3a2,
+        /// <summary>マシン メモリ保護 構成レジスタ</summary>
+        pmpcfg3 = 0x3a3,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr0 = 0x3b0,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr1 = 0x3b1,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr2 = 0x3b2,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr3 = 0x3b3,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr4 = 0x3b4,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr5 = 0x3b5,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr6 = 0x3b6,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr7 = 0x3b7,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr8 = 0x3b8,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr9 = 0x3b9,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr10 = 0x3ba,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr11 = 0x3bb,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr12 = 0x3bc,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr13 = 0x3bd,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr14 = 0x3be,
+        /// <summary>マシン メモリ保護 アドレスレジスタ</summary>
+        pmpaddr15 = 0x3bf,
+
+        /// <summary>マシン サイクルカウンタ</summary>
+        mcycle = 0xb00,
+        /// <summary>マシン タイマ</summary>
+        mtime = 0xb01,
+        /// <summary>マシン 命令リタイヤカウンタ</summary>
+        minstret = 0xb02,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter3 = 0xb03,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter4 = 0xb04,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter5 = 0xb05,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter6 = 0xb06,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter7 = 0xb07,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter8 = 0xb08,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter9 = 0xb09,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter10 = 0xb0a,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter11 = 0xb0b,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter12 = 0xb0c,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter13 = 0xb0d,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter14 = 0xb0e,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter15 = 0xb0f,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter16 = 0xb10,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter17 = 0xb11,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter18 = 0xb12,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter19 = 0xb13,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter20 = 0xb14,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter21 = 0xb15,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter22 = 0xb16,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter23 = 0xb17,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter24 = 0xb18,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter25 = 0xb19,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter26 = 0xb1a,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter27 = 0xb1b,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter28 = 0xb1c,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter29 = 0xb1d,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter30 = 0xb1e,
+        /// <summary>マシン 性能監視カウンタ</summary>
+        mhpmcounter31 = 0xb1f,
+
+        /// <summary>マシン サイクルカウンタ(上位ビット)</summary>
+        mcycleh = 0xb80,
+        /// <summary>マシン タイマ(上位ビット)</summary>
+        mtimeh = 0xb81,
+        /// <summary>マシン 命令リタイヤカウンタ(上位ビット)</summary>
+        minstreth = 0xb82,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter3h = 0xb83,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter4h = 0xb84,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter5h = 0xb85,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter6h = 0xb86,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter7h = 0xb87,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter8h = 0xb88,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter9h = 0xb89,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter10h = 0xb8a,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter11h = 0xb8b,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter12h = 0xb8c,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter13h = 0xb8d,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter14h = 0xb8e,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter15h = 0xb8f,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter16h = 0xb90,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter17h = 0xb91,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter18h = 0xb92,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter19h = 0xb93,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter20h = 0xb94,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter21h = 0xb95,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter22h = 0xb96,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter23h = 0xb97,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter24h = 0xb98,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter25h = 0xb99,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter26h = 0xb9a,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter27h = 0xb9b,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter28h = 0xb9c,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter29h = 0xb9d,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter30h = 0xb9e,
+        /// <summary>マシン 性能監視カウンタ(上位ビット)</summary>
+        mhpmcounter31h = 0xb9f,
+
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent3 = 0x323,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent4 = 0x324,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent5 = 0x325,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent6 = 0x326,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent7 = 0x327,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent8 = 0x328,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent9 = 0x329,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent10 = 0x32a,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent11 = 0x32b,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent12 = 0x32c,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent13 = 0x32d,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent14 = 0x32e,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent15 = 0x32f,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent16 = 0x330,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent17 = 0x331,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent18 = 0x332,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent19 = 0x333,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent20 = 0x334,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent21 = 0x335,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent22 = 0x336,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent23 = 0x337,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent24 = 0x338,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent25 = 0x339,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent26 = 0x33a,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent27 = 0x33b,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent28 = 0x33c,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent29 = 0x33d,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent30 = 0x33e,
+        /// <summary>マシン 性能監視イベントセレクタ</summary>
+        mhpmevent31 = 0x33f,
+
+        #endregion
+
+        #region デバッグモードCSR
+        /// <summary>デバッグ/トレース トリガセレクタ</summary>
+        tselect = 0x7a0,
+        /// <summary>デバッグ/トレース トリガデータレジスタ</summary>
+        tdata1 = 0x7a1,
+        /// <summary>デバッグ/トレース トリガデータレジスタ</summary>
+        tdata2 = 0x7a2,
+        /// <summary>デバッグ/トレース トリガデータレジスタ</summary>
+        tdata3 = 0x7a3,
+
+        /// <summary>デバッグ 制御・状態レジスタ</summary>
+        dcsr = 0x7b0,
+        /// <summary>デバッグ プログラムカウンタ</summary>
+        dpc = 0x7b1,
+        /// <summary>デバッグ スクラッチレジスタ</summary>
+        dscratch = 0x7b2,
+
+        #endregion
+    }
+    
+    #endregion
+
+    #region CSR構造体定義
     /// <summary>mstatus, sstatusなどのステータスCSRを表す構造体</summary>
     public struct StatusCSR {
         // mstatus, sstatusなどに相当するモード
@@ -38,9 +528,9 @@
         }
 
         // 各モードで読書可能なビット
-        public static uint MModeCanRead = 0b1000_0000_0111_1111_1111_1001_1011_1011u;
-        public static uint SModeCanRead = 0b1000_0000_0000_1101_1110_0001_0011_0011u;
-        public static uint UModeCanRead = 0b1000_0000_0000_1101_1110_0000_0001_0001u;
+        public static uint MModeMask = 0b1000_0000_0111_1111_1111_1001_1011_1011u;
+        public static uint SModeMask = 0b1000_0000_0000_1101_1110_0001_0011_0011u;
+        public static uint UModeMask = 0b1000_0000_0000_1101_1110_0000_0001_0001u;
 
         // 変数
         public bool SD { get; set; }
@@ -84,11 +574,11 @@
         }
 
         // キャスト
-        public static explicit operator StatusCSR(uint v) {
+        public static implicit operator StatusCSR(uint v) {
             return new StatusCSR(v);
         }
 
-        public static explicit operator uint(StatusCSR v) {
+        public static implicit operator uint(StatusCSR v) {
             uint value = 0;
 
             value += (uint)(v.SD ? 1 << 31 : 0);
@@ -110,9 +600,9 @@
             value += (uint)(v.UIE ? 1 : 0);
 
             if (v.Mode == PrivilegeLevels.SupervisorMode) {
-                value &= SModeCanRead;
+                value &= SModeMask;
             } else if (v.Mode == PrivilegeLevels.UserMode) {
-                value &= UModeCanRead;
+                value &= UModeMask;
             }
 
             return value;
@@ -136,9 +626,9 @@
             }
         }
         // 各モードで読取り可能なビット
-        public static uint MModeCanRead = 0b1011_1011_1011u;
-        public static uint SModeCanRead = 0b0011_0011_0011u;
-        public static uint UModeCanRead = 0b0001_0001_0001u;
+        public static uint MModeMask = 0b1011_1011_1011u;
+        public static uint SModeMask = 0b0011_0011_0011u;
+        public static uint UModeMask = 0b0001_0001_0001u;
 
         // 変数
         /// <summary>マシン外部割り込み保留ビット</summary>
@@ -174,11 +664,11 @@
         }
 
         // キャスト
-        public static explicit operator InterruptPendingCSR(uint v) {
+        public static implicit operator InterruptPendingCSR(uint v) {
             return new InterruptPendingCSR(v);
         }
 
-        public static explicit operator uint(InterruptPendingCSR v) {
+        public static implicit operator uint(InterruptPendingCSR v) {
             uint value = 0;
             value += v.MEIP ? 1u << 11 : 0u;
             value += v.SEIP ? 1u << 9 : 0u;
@@ -191,9 +681,9 @@
             value += (uint)(v.USIP ? 1u << 0 : 0u);
 
             if (v.Mode == PrivilegeLevels.SupervisorMode) {
-                value &= SModeCanRead;
+                value &= SModeMask;
             } else if (v.Mode == PrivilegeLevels.UserMode) {
-                value &= UModeCanRead;
+                value &= UModeMask;
             }
             return value;
         }
@@ -216,9 +706,9 @@
             }
         }
         // 各モードで読取り可能なビット
-        public static uint MModeCanRead = 0b1011_1011_1011u;
-        public static uint SModeCanRead = 0b0011_0011_0011u;
-        public static uint UModeCanRead = 0b0001_0001_0001u;
+        public static uint MModeMask = 0b1011_1011_1011u;
+        public static uint SModeMask = 0b0011_0011_0011u;
+        public static uint UModeMask = 0b0001_0001_0001u;
 
         // 変数
         /// <summary>マシン外部割り込み有効ビット</summary>
@@ -254,11 +744,11 @@
         }
 
         // キャスト
-        public static explicit operator InterruptEnableCSR(uint v) {
+        public static implicit operator InterruptEnableCSR(uint v) {
             return new InterruptEnableCSR(v);
         }
 
-        public static explicit operator uint(InterruptEnableCSR v) {
+        public static implicit operator uint(InterruptEnableCSR v) {
             uint value = 0;
             value += (uint)(v.MEIE ? 1 : 0) << 11;
             value += (uint)(v.SEIE ? 1 : 0) << 9;
@@ -271,9 +761,9 @@
             value += (uint)(v.USIE ? 1 : 0);
 
             if (v.Mode == PrivilegeLevels.SupervisorMode) {
-                value &= SModeCanRead;
+                value &= SModeMask;
             } else if (v.Mode == PrivilegeLevels.UserMode) {
-                value &= UModeCanRead;
+                value &= UModeMask;
             }
             return value;
         }
@@ -385,11 +875,11 @@
         }
 
         // キャスト
-        public static explicit operator CounterEnableCSR(uint v) {
+        public static implicit operator CounterEnableCSR(uint v) {
             return new CounterEnableCSR(v);
         }
 
-        public static explicit operator uint(CounterEnableCSR v) {
+        public static implicit operator uint(CounterEnableCSR v) {
             uint value = 0;
             value += v.CY ? 1u << 0 : 0u;
             value += v.TM ? 1u << 1 : 0u;
@@ -426,5 +916,6 @@
             return value;
         }
     }
-
+    
+    #endregion
 }
