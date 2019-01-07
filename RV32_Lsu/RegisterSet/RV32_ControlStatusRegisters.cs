@@ -41,7 +41,7 @@ namespace RiscVCpu.RegisterSet {
                         return base[CSR.fcsr] & FloatCSR.FflagsMask;
 
                     case CSR.frm:
-                        return base[CSR.fcsr] & FloatCSR.FrmMask;
+                        return (base[CSR.fcsr] & FloatCSR.FrmMask) >> 5;
 
                     default:
                         // cycle,time,insret,hpmcounter3～31
@@ -83,13 +83,17 @@ namespace RiscVCpu.RegisterSet {
                         base[CSR.mie] = base[CSR.mie] & ~InterruptEnableCSR.UModeMask | value & InterruptEnableCSR.UModeMask;
                         break;
 
-                    // fflags,frm
+                    // fcsr,fflags,frm
+                    case CSR.fcsr:
+                        base[CSR.fcsr] =  value & (FloatCSR.FflagsMask | FloatCSR.FrmMask);
+                        break;
+
                     case CSR.fflags:
                         base[CSR.fcsr] = base[CSR.fcsr] & ~FloatCSR.FflagsMask | value & FloatCSR.FflagsMask;
                         break;
 
                     case CSR.frm:
-                        base[CSR.fcsr] = base[CSR.fcsr] & ~FloatCSR.FrmMask | value & FloatCSR.FrmMask;
+                        base[CSR.fcsr] = base[CSR.fcsr] & ~FloatCSR.FrmMask | (value << 5) & FloatCSR.FrmMask;
                         break;
 
                     default:
