@@ -22,6 +22,7 @@ namespace RiscVCpu.Decoder {
             Opcode opcode = (Opcode)ins[0];
             Funct3 funct3 = (Funct3)ins[2];
             Funct7 funct7 = (Funct7)(ins[5] | (ins[6] << 6));
+            FloatRoundingMode frm = (FloatRoundingMode)ins[2];
             Int32 immediate = 0;
             RV32_DoubleFpu fpu;
             RV32_FloatPointLsu lsu;
@@ -46,28 +47,28 @@ namespace RiscVCpu.Decoder {
                 case Opcode.fmadd: // fmaddd命令
                     if ((ins[5] & 0x3u) == 0x1u) {
                         fpu = (RV32_DoubleFpu)cpu.Alu(typeof(RV32_DoubleFpu));
-                        result = fpu.FmaddD(rd, rs1, rs2, rs3);
+                        result = fpu.FmaddD(rd, rs1, rs2, rs3, frm);
                     }
                     break;
 
                 case Opcode.fmsub: // fmsubd命令
                     if ((ins[5] & 0x3u) == 0x1u) {
                         fpu = (RV32_DoubleFpu)cpu.Alu(typeof(RV32_DoubleFpu));
-                        result = fpu.FmsubD(rd, rs1, rs2, rs3);
+                        result = fpu.FmsubD(rd, rs1, rs2, rs3, frm);
                     }
                     break;
 
                 case Opcode.fnmadd: // fnmaddd命令
                     if ((ins[5] & 0x3u) == 0x1u) {
                         fpu = (RV32_DoubleFpu)cpu.Alu(typeof(RV32_DoubleFpu));
-                        result = fpu.FnmaddD(rd, rs1, rs2, rs3);
+                        result = fpu.FnmaddD(rd, rs1, rs2, rs3, frm);
                     }
                     break;
 
                 case Opcode.fnmsub: // fnmsubd命令
                     if ((ins[5] & 0x3u) == 0x1u) {
                         fpu = (RV32_DoubleFpu)cpu.Alu(typeof(RV32_DoubleFpu));
-                        result = fpu.FnmsubD(rd, rs1, rs2, rs3);
+                        result = fpu.FnmsubD(rd, rs1, rs2, rs3, frm);
                     }
                     break;
 
@@ -75,23 +76,23 @@ namespace RiscVCpu.Decoder {
                     fpu = (RV32_DoubleFpu)cpu.Alu(typeof(RV32_DoubleFpu));
                     switch (funct7) {
                         case Funct7.faddD: // faddd命令
-                            result = fpu.FaddD(rd, rs1, rs2);
+                            result = fpu.FaddD(rd, rs1, rs2, frm);
                             break;
 
                         case Funct7.fsubD: // fsubd命令
-                            result = fpu.FsubD(rd, rs1, rs2);
+                            result = fpu.FsubD(rd, rs1, rs2, frm);
                             break;
 
                         case Funct7.fmulD: // fmuld命令
-                            result = fpu.FmulD(rd, rs1, rs2);
+                            result = fpu.FmulD(rd, rs1, rs2, frm);
                             break;
 
                         case Funct7.fdivD: // fdivd命令
-                            result = fpu.FdivD(rd, rs1, rs2);
+                            result = fpu.FdivD(rd, rs1, rs2, frm);
                             break;
 
                         case Funct7.fsqrtD: // fsqrtd命令
-                            result = fpu.FsqrtD(rd, rs1);
+                            result = fpu.FsqrtD(rd, rs1, frm);
                             break;
 
                         case Funct7.fsgnjD:
@@ -139,21 +140,21 @@ namespace RiscVCpu.Decoder {
                             break;
 
                         case Funct7.fcvtSD: // fcvtsd命令
-                            result = fpu.FcvtSD(rd, rs1);
+                            result = fpu.FcvtSD(rd, rs1, frm);
                             break;
 
                         case Funct7.fcvtDS: // fcvtds命令
-                            result = fpu.FcvtDS(rd, rs1);
+                            result = fpu.FcvtDS(rd, rs1, frm);
                             break;
 
                         case Funct7.fcvtWD:
                             switch (ins[4]) {
                                 case 0x0: // fcvtwd命令
-                                    result = fpu.FcvtWD((Register)rd, rs1);
+                                    result = fpu.FcvtWD((Register)rd, rs1, frm);
                                     break;
 
                                 case 0x1: // fcvtwud命令
-                                    result = fpu.FcvtWUD((Register)rd, rs1);
+                                    result = fpu.FcvtWUD((Register)rd, rs1, frm);
                                     break;
                             }
                             break;
@@ -161,11 +162,11 @@ namespace RiscVCpu.Decoder {
                         case Funct7.fcvtDW:
                             switch (ins[4]) {
                                 case 0x0: // fcvtdw命令
-                                    result = fpu.FcvtDW(rd, (Register)rs1);
+                                    result = fpu.FcvtDW(rd, (Register)rs1, frm);
                                     break;
 
                                 case 0x1: // fcvtdwu命令
-                                    result = fpu.FcvtDWU(rd, (Register)rs1);
+                                    result = fpu.FcvtDWU(rd, (Register)rs1, frm);
                                     break;
                             }
                             break;

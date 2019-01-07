@@ -36,6 +36,13 @@ namespace RiscVCpu.RegisterSet {
                     case CSR.uie:
                         return base[CSR.mie] & InterruptEnableCSR.UModeMask;
 
+                    // fflags,frm
+                    case CSR.fflags:
+                        return base[CSR.fcsr] & FloatCSR.FflagsMask;
+
+                    case CSR.frm:
+                        return base[CSR.fcsr] & FloatCSR.FrmMask;
+
                     default:
                         // cycle,time,insret,hpmcounter3～31
                         if ((CSR.cycle <= name && name <= CSR.hpmcounter31) || (CSR.cycleh <= name && name <= CSR.hpmcounter31h)) {
@@ -51,29 +58,38 @@ namespace RiscVCpu.RegisterSet {
                     // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
                 switch (name) {
                     case CSR.sstatus:
-                        base[CSR.mstatus] = value & StatusCSR.SModeMask;
+                        base[CSR.mstatus] = base[CSR.mstatus] & ~StatusCSR.SModeMask | value & StatusCSR.SModeMask;
                         break;
 
                     case CSR.ustatus:
-                        base[CSR.mstatus] = value & StatusCSR.UModeMask;
+                        base[CSR.mstatus] = base[CSR.mstatus] & ~StatusCSR.UModeMask | value & StatusCSR.UModeMask;
                         break;
 
                     // sip,uip
                     case CSR.sip:
-                        base[CSR.mip] = value & InterruptPendingCSR.SModeMask;
+                        base[CSR.mip] = base[CSR.mip] & ~InterruptPendingCSR.SModeMask | value & InterruptPendingCSR.SModeMask;
                         break;
 
                     case CSR.uip:
-                        base[CSR.mip] = value & InterruptPendingCSR.UModeMask;
+                        base[CSR.mip] = base[CSR.mip] & ~InterruptPendingCSR.UModeMask | value & InterruptPendingCSR.UModeMask;
                         break;
 
                     // sie,uie
                     case CSR.sie:
-                        base[CSR.mie] = value & InterruptEnableCSR.SModeMask;
+                        base[CSR.mie] = base[CSR.mie] & ~InterruptEnableCSR.SModeMask | value & InterruptEnableCSR.SModeMask;
                         break;
 
                     case CSR.uie:
-                        base[CSR.mie] = value & InterruptEnableCSR.UModeMask;
+                        base[CSR.mie] = base[CSR.mie] & ~InterruptEnableCSR.UModeMask | value & InterruptEnableCSR.UModeMask;
+                        break;
+
+                    // fflags,frm
+                    case CSR.fflags:
+                        base[CSR.fcsr] = base[CSR.fcsr] & ~FloatCSR.FflagsMask | value & FloatCSR.FflagsMask;
+                        break;
+
+                    case CSR.frm:
+                        base[CSR.fcsr] = base[CSR.fcsr] & ~FloatCSR.FrmMask | value & FloatCSR.FrmMask;
                         break;
 
                     default:
