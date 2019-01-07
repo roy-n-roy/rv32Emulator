@@ -10,6 +10,8 @@ namespace RiscVCpu.ArithmeticLogicUnit {
     /// Risc-V RV32I 倍精度浮動小数点命令セット 算術論理演算命令を実行するFPU
     /// </summary>
     public class RV32_DoubleFpu : RV32_AbstractCalculator {
+        private static readonly Double Epsilon = GetEpsilon();
+        private static readonly Double NaN = -Double.NaN;
 
         /// <summary>
         /// Risc-V 倍精度浮動小数算術論理演算 FPU
@@ -31,7 +33,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, UInt32 insLength = 4u) {
+        public bool FmaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
             Decimal value1 = (Decimal)reg.GetDoubleValue(rs1);
             Decimal value2 = (Decimal)reg.GetDoubleValue(rs2);
             Decimal value3 = (Decimal)reg.GetDoubleValue(rs3);
@@ -50,7 +52,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, UInt32 insLength = 4u) {
+        public bool FmsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
             Decimal value1 = (Decimal)reg.GetDoubleValue(rs1);
             Decimal value2 = (Decimal)reg.GetDoubleValue(rs2);
             Decimal value3 = (Decimal)reg.GetDoubleValue(rs3);
@@ -69,7 +71,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FnmaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, UInt32 insLength = 4u) {
+        public bool FnmaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
             Decimal value1 = (Decimal)reg.GetDoubleValue(rs1);
             Decimal value2 = (Decimal)reg.GetDoubleValue(rs2);
             Decimal value3 = (Decimal)reg.GetDoubleValue(rs3);
@@ -88,7 +90,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FnmsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, UInt32 insLength = 4u) {
+        public bool FnmsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
             Decimal value1 = (Decimal)reg.GetDoubleValue(rs1);
             Decimal value2 = (Decimal)reg.GetDoubleValue(rs2);
             Decimal value3 = (Decimal)reg.GetDoubleValue(rs3);
@@ -106,8 +108,24 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, reg.GetDoubleValue(rs1) + reg.GetDoubleValue(rs2));
+        public bool FaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Double value1 = reg.GetDoubleValue(rs1);
+            Double value2 = reg.GetDoubleValue(rs2);
+
+            Double result = value1 + value2;
+            result = IsNaN(result) ? NaN : result;
+            reg.SetValue(rd, result);
+
+            if (IsSigNaN(value1) || IsSigNaN(value2)) {
+                reg.SetFflagsCSR(16);
+            } else if (IsNaN(result)) {
+                reg.SetFflagsCSR(16);
+            } else if (result != value1 + value2) {
+                reg.SetFflagsCSR(1);
+            } else {
+                reg.SetFflagsCSR(0);
+            }
+
             reg.IncrementPc(insLength);
             return true;
         }
@@ -120,8 +138,24 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, reg.GetDoubleValue(rs1) - reg.GetDoubleValue(rs2));
+        public bool FsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Double value1 = reg.GetDoubleValue(rs1);
+            Double value2 = reg.GetDoubleValue(rs2);
+
+            Double result = value1 - value2;
+            result = IsNaN(result) ? NaN : result;
+            reg.SetValue(rd, result);
+
+            if (IsSigNaN(value1) || IsSigNaN(value2)) {
+                reg.SetFflagsCSR(16);
+            } else if (IsNaN(result)) {
+                reg.SetFflagsCSR(16);
+            } else if (result != value1 - value2) {
+                reg.SetFflagsCSR(1);
+            } else {
+                reg.SetFflagsCSR(0);
+            }
+
             reg.IncrementPc(insLength);
             return true;
         }
@@ -134,8 +168,23 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmulD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, reg.GetDoubleValue(rs1) * reg.GetDoubleValue(rs2));
+        public bool FmulD(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Double value1 = reg.GetDoubleValue(rs1);
+            Double value2 = reg.GetDoubleValue(rs2);
+
+            Double result = value1 * value2;
+            result = IsNaN(result) ? NaN : result;
+            reg.SetValue(rd, result);
+
+            if (IsSigNaN(value1) || IsSigNaN(value2)) {
+                reg.SetFflagsCSR(16);
+            } else if (IsNaN(result)) {
+                reg.SetFflagsCSR(16);
+            } else if (result != value1 * value2) {
+                reg.SetFflagsCSR(1);
+            } else {
+                reg.SetFflagsCSR(0);
+            }
             reg.IncrementPc(insLength);
             return true;
         }
@@ -148,7 +197,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FdivD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
+        public bool FdivD(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
             Double value1 = reg.GetDoubleValue(rs1);
             Double value2 = reg.GetDoubleValue(rs2);
 
@@ -159,7 +208,19 @@ namespace RiscVCpu.ArithmeticLogicUnit {
                 reg.SetValue(rd, Double.PositiveInfinity);
 
             } else {
-                reg.SetValue(rd, value1 / value2);
+                Double result = value1 / value2;
+                result = IsNaN(result) ? NaN : result;
+                reg.SetValue(rd, result);
+                reg.SetFflagsCSR(8);
+                if (IsSigNaN(value1) || IsSigNaN(value2)) {
+                    reg.SetFflagsCSR(16);
+                } else if (IsNaN(result)) {
+                    reg.SetFflagsCSR(16);
+                } else if (result != value1 * value2) {
+                    reg.SetFflagsCSR(1);
+                } else {
+                    reg.SetFflagsCSR(0);
+                }
             }
             reg.IncrementPc(insLength);
             return true;
@@ -173,7 +234,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FsqrtD(FPRegister rd, FPRegister rs1, UInt32 insLength = 4u) {
+        public bool FsqrtD(FPRegister rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
             reg.SetValue(rd, (Double)Math.Sqrt(reg.GetDoubleValue(rs1)));
             reg.IncrementPc(insLength);
             return true;
@@ -252,6 +313,11 @@ namespace RiscVCpu.ArithmeticLogicUnit {
             Double value2 = reg.GetDoubleValue(rs2);
 
             reg.SetValue(rd, value1 < value2 ? value1 : value2);
+            if (IsSigNaN(value1) || IsSigNaN(value2)) {
+                reg.SetFflagsCSR(16);
+            } else {
+                reg.SetFflagsCSR(0);
+            }
             reg.IncrementPc(insLength);
             return true;
         }
@@ -269,6 +335,11 @@ namespace RiscVCpu.ArithmeticLogicUnit {
             Double value2 = reg.GetDoubleValue(rs2);
 
             reg.SetValue(rd, value1 > value2 ? value1 : value2);
+            if (IsSigNaN(value1) || IsSigNaN(value2)) {
+                reg.SetFflagsCSR(16);
+            } else {
+                reg.SetFflagsCSR(0);
+            }
             reg.IncrementPc(insLength);
             return true;
         }
@@ -282,7 +353,15 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FeqD(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (reg.GetDoubleValue(rs1) == reg.GetDoubleValue(rs2) ? 1U : 0U));
+            Double value1 = reg.GetDoubleValue(rs1);
+            Double value2 = reg.GetDoubleValue(rs2);
+
+            reg.SetValue(rd, (value1 == value2 ? 1U : 0U));
+            if (IsSigNaN(value1) || IsSigNaN(value2)) {
+                reg.SetFflagsCSR(16);
+            } else {
+                reg.SetFflagsCSR(0);
+            }
             reg.IncrementPc(insLength);
             return true;
         }
@@ -296,7 +375,15 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FltD(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (reg.GetDoubleValue(rs1) < reg.GetDoubleValue(rs2) ? 1U : 0U));
+            Double value1 = reg.GetDoubleValue(rs1);
+            Double value2 = reg.GetDoubleValue(rs2);
+
+            reg.SetValue(rd, value1 < value2 ? 1U : 0U);
+            if (IsSigNaN(value1) || IsSigNaN(value2)) {
+                reg.SetFflagsCSR(16);
+            } else {
+                reg.SetFflagsCSR(0);
+            }
             reg.IncrementPc(insLength);
             return true;
         }
@@ -310,33 +397,41 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FleD(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (reg.GetDoubleValue(rs1) <= reg.GetDoubleValue(rs2) ? 1U : 0U));
+            Double value1 = reg.GetDoubleValue(rs1);
+            Double value2 = reg.GetDoubleValue(rs2);
+
+            reg.SetValue(rd, (value1 <= value2 ? 1U : 0U));
+            if (IsSigNaN(value1) || IsSigNaN(value2)) {
+                reg.SetFflagsCSR(16);
+            } else {
+                reg.SetFflagsCSR(0);
+            }
             reg.IncrementPc(insLength);
             return true;
         }
 
         /// <summary>
-        /// Floating-Point Convert to Single from Double命令
+        /// Floating-Point Convert to Double from Double命令
         /// 浮動小数点レジスタrs1の倍精度浮動小数を単精度浮動小数に変換して、浮動小数点レジスタrdに書き込む
         /// </summary>
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtSD(FPRegister rd, FPRegister rs1, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (Single)reg.GetDoubleValue(rs1));
+        public bool FcvtSD(FPRegister rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            reg.SetValue(rd, (Double)reg.GetDoubleValue(rs1));
             reg.IncrementPc(insLength);
             return true;
         }
 
         /// <summary>
-        /// Floating-Point Convert to Double from Single命令
+        /// Floating-Point Convert to Double from Double命令
         /// 浮動小数点レジスタrs1の単精度浮動小数を倍精度浮動小数に変換して、浮動小数点レジスタrdに書き込む
         /// </summary>
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtDS(FPRegister rd, FPRegister rs1, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (Double)reg.GetSingleValue(rs1));
+        public bool FcvtDS(FPRegister rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            reg.SetValue(rd, (Double)reg.GetDoubleValue(rs1));
             reg.IncrementPc(insLength);
             return true;
         }
@@ -348,7 +443,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtWD(Register rd, FPRegister rs1, UInt32 insLength = 4u) {
+        public bool FcvtWD(Register rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
             reg.SetValue(rd, (UInt32)(Int32)reg.GetDoubleValue(rs1));
             reg.IncrementPc(insLength);
             return true;
@@ -361,7 +456,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtWUD(Register rd, FPRegister rs1, UInt32 insLength = 4u) {
+        public bool FcvtWUD(Register rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
             reg.SetValue(rd, (UInt32)reg.GetDoubleValue(rs1));
             reg.IncrementPc(insLength);
             return true;
@@ -374,7 +469,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtDW(FPRegister rd, Register rs1, UInt32 insLength = 4u) {
+        public bool FcvtDW(FPRegister rd, Register rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
             reg.SetValue(rd, (Double)(Int32)reg.GetValue(rs1));
             reg.IncrementPc(insLength);
             return true;
@@ -387,7 +482,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtDWU(FPRegister rd, Register rs1, UInt32 insLength = 4u) {
+        public bool FcvtDWU(FPRegister rd, Register rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
             reg.SetValue(rd, (Double)reg.GetValue(rs1));
             reg.IncrementPc(insLength);
             return true;
@@ -412,7 +507,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
                 // rs1が負の正規数の場合
                 mask |= 0b00_0000_1000;
 
-            } else if ((Double.NegativeInfinity < value1 && value1 < -Math.Pow(2, 127)) || (-Math.Pow(2, -126) < value1 && value1 <= -Epsilon())) {
+            } else if ((Double.NegativeInfinity < value1 && value1 < -Math.Pow(2, 127)) || (-Math.Pow(2, -126) < value1 && value1 <= -Epsilon)) {
                 // rs1が負の非正規数の場合
                 mask |= 0b00_0000_1000;
 
@@ -424,7 +519,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
                 // rs1が+0の場合
                 mask |= 0b00_0001_0000;
 
-            } else if ((Epsilon() <= value1 && value1 < Math.Pow(2, -126)) || (Math.Pow(2, 127) < value1 && value1 < Double.NegativeInfinity)) {
+            } else if ((Epsilon <= value1 && value1 < Math.Pow(2, -126)) || (Math.Pow(2, 127) < value1 && value1 < Double.NegativeInfinity)) {
                 // rs1が正の非正規数の場合
                 mask |= 0b00_0010_0000;
 
@@ -459,7 +554,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// 正の最小値を求める
         /// </summary>
         /// <returns></returns>
-        static Double Epsilon() {
+        static Double GetEpsilon() {
             Double eps = 1.0f;
             while (1.0f + (eps / 2.0f) > 1.0f) {
                 eps /= 2.0f;
@@ -467,5 +562,10 @@ namespace RiscVCpu.ArithmeticLogicUnit {
             return eps;
         }
 
+        private static bool IsNaN(Double value) => Double.IsNaN(value);
+        private static bool IsSigNaN(Double value) {
+            UInt32 i = BitConverter.ToUInt32(BitConverter.GetBytes(value), 0);
+            return (i & 0x7fc0_0000u) == 0x7f80_0000u && (i & 0x0003_ffffu) > 0;
+        }
     }
 }

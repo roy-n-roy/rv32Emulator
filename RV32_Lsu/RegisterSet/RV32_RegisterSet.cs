@@ -388,6 +388,14 @@ namespace RiscVCpu.RegisterSet {
         }
 
         /// <summary>
+        /// 浮動小数点例外フラグをCSRに設定する
+        /// </summary>
+        /// <param name="fcsr"></param>
+        public void SetFflagsCSR(FloatCSR fcsr) {
+            CSRegisters[CSR.fflags] = fcsr & 0x1fu;
+        }
+
+        /// <summary>
         /// レジスタ(zero～x31 + pc)の内容をレジスタ名と16進形式の文字列に変換して返す
         /// </summary>
         /// <returns>レジスタ状態を表す文字列</returns>

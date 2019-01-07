@@ -12,6 +12,22 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
         MachineMode = 0x3,
     }
 
+    /// <summary>丸めモード</summary>
+    public enum FloatRoundingMode : byte {
+        /// <summary>最近接丸め(偶数)(Round to Nearest, ties to Even)</summary>
+        RNE = 0b000,
+        /// <summary>0への丸め(Round towards Zero)</summary>
+        RTZ = 0b001,
+        /// <summary>-∞への丸め(Round Down (towards -∞))</summary>
+        RDN = 0b010,
+        /// <summary>+∞への丸め(Round Up (towards +∞))</summary>
+        RUP = 0b011,
+        /// <summary>最近接丸め(0から遠い方向)(Round to Nearest, ties to Max Magnitude)</summary>
+        RMM = 0b100,
+        /// <summary>命令のrmフィールドを使用する、動的丸め(In instruction's rm eld, selects dynamic rounding mode;)</summary>
+        DYN = 0b111,
+    }
+
     #region CSRアドレス定義
     /// <summary>
     /// RV32I基本命令セットで使用するコントロール・ステータスレジスタのアドレス
@@ -527,9 +543,12 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
             }
         }
 
-        // 各モードで読書可能なビット
+        // 定数
+        /// <summary>マシンモードで読み書き可能なビット</summary>
         public static uint MModeMask = 0b1000_0000_0111_1111_1111_1001_1011_1011u;
+        /// <summary>スーパーバイザモードで読み書き可能なビット</summary>
         public static uint SModeMask = 0b1000_0000_0000_1101_1110_0001_0011_0011u;
+        /// <summary>ユーザモードで読み書き可能なビット</summary>
         public static uint UModeMask = 0b1000_0000_0000_1101_1110_0000_0001_0001u;
 
         // 変数
@@ -581,23 +600,23 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
         public static implicit operator uint(StatusCSR v) {
             uint value = 0;
 
-            value += (uint)(v.SD ? 1 << 31 : 0);
-            value += (uint)(v.TSR ? 1 << 22 : 0);
-            value += (uint)(v.TW ? 1 << 21 : 0);
-            value += (uint)(v.TVM ? 1 << 20 : 0);
-            value += (uint)(v.MXR ? 1 << 19 : 0);
-            value += (uint)(v.SUM ? 1 << 18 : 0);
-            value += (uint)(v.MPRV ? 1 << 17 : 0);
-            value += (uint)v.XS << 15;
-            value += (uint)v.FS << 13;
-            value += (uint)v.MPP << 11;
-            value += (uint)(v.SPP ? 1 << 8 : 0);
-            value += (uint)(v.MPIE ? 1 << 7 : 0);
-            value += (uint)(v.SPIE ? 1 << 5 : 0);
-            value += (uint)(v.UPIE ? 1 << 4 : 0);
-            value += (uint)(v.MIE ? 1 << 3 : 0);
-            value += (uint)(v.SIE ? 1 << 1 : 0);
-            value += (uint)(v.UIE ? 1 : 0);
+            value |= v.SD ? 1u << 31 : 0u;
+            value |= v.TSR ? 1u << 22 : 0u;
+            value |= v.TW ? 1u << 21 : 0u;
+            value |= v.TVM ? 1u << 20 : 0u;
+            value |= v.MXR ? 1u << 19 : 0u;
+            value |= v.SUM ? 1u << 18 : 0u;
+            value |= v.MPRV ? 1u << 17 : 0u;
+            value |= (uint)v.XS << 15;
+            value |= (uint)v.FS << 13;
+            value |= (uint)v.MPP << 11;
+            value |= v.SPP ? 1u << 8 : 0u;
+            value |= v.MPIE ? 1u << 7 : 0u;
+            value |= v.SPIE ? 1u << 5 : 0u;
+            value |= v.UPIE ? 1u << 4 : 0u;
+            value |= v.MIE ? 1u << 3 : 0u;
+            value |= v.SIE ? 1u << 1 : 0u;
+            value |= v.UIE ? 1u << 0 : 0u;
 
             if (v.Mode == PrivilegeLevels.SupervisorMode) {
                 value &= SModeMask;
@@ -625,9 +644,12 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
                 }
             }
         }
-        // 各モードで読取り可能なビット
+        // 定数
+        /// <summary>マシンモードで読み書き可能なビット</summary>
         public static uint MModeMask = 0b1011_1011_1011u;
+        /// <summary>スーパーバイザモードで読み書き可能なビット</summary>
         public static uint SModeMask = 0b0011_0011_0011u;
+        /// <summary>ユーザモードで読み書き可能なビット</summary>
         public static uint UModeMask = 0b0001_0001_0001u;
 
         // 変数
@@ -670,15 +692,15 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
 
         public static implicit operator uint(InterruptPendingCSR v) {
             uint value = 0;
-            value += v.MEIP ? 1u << 11 : 0u;
-            value += v.SEIP ? 1u << 9 : 0u;
-            value += v.UEIP ? 1u << 8 : 0u;
-            value += v.MTIP ? 1u << 7 : 0u;
-            value += v.STIP ? 1u << 5 : 0u;
-            value += v.UTIP ? 1u << 4 : 0u;
-            value += v.MSIP ? 1u << 3 : 0u;
-            value += v.SSIP ? 1u << 1 : 0u;
-            value += (uint)(v.USIP ? 1u << 0 : 0u);
+            value |= v.MEIP ? 1u << 11 : 0u;
+            value |= v.SEIP ? 1u << 9 : 0u;
+            value |= v.UEIP ? 1u << 8 : 0u;
+            value |= v.MTIP ? 1u << 7 : 0u;
+            value |= v.STIP ? 1u << 5 : 0u;
+            value |= v.UTIP ? 1u << 4 : 0u;
+            value |= v.MSIP ? 1u << 3 : 0u;
+            value |= v.SSIP ? 1u << 1 : 0u;
+            value |= v.USIP ? 1u << 0 : 0u;
 
             if (v.Mode == PrivilegeLevels.SupervisorMode) {
                 value &= SModeMask;
@@ -705,9 +727,13 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
                 }
             }
         }
-        // 各モードで読取り可能なビット
+
+        // 定数
+        /// <summary>マシンモードで読み書き可能なビット</summary>
         public static uint MModeMask = 0b1011_1011_1011u;
+        /// <summary>スーパーバイザモードで読み書き可能なビット</summary>
         public static uint SModeMask = 0b0011_0011_0011u;
+        /// <summary>ユーザモードで読み書き可能なビット</summary>
         public static uint UModeMask = 0b0001_0001_0001u;
 
         // 変数
@@ -730,17 +756,18 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
         /// <summary>ユーザソフトウェア割り込み有効ビット</summary>
         public bool USIE { get; set; }
 
+        // コンストラクタ
         /// <summary>mip, sipなどの割り込み有効CSRを表す構造体</summary>
         public InterruptEnableCSR(uint v) : this() {
-            MEIE = (v & 0x00000800) > 0;
-            SEIE = (v & 0x00000200) > 0;
-            UEIE = (v & 0x00000100) > 0;
-            MTIE = (v & 0x00000080) > 0;
-            STIE = (v & 0x00000020) > 0;
-            UTIE = (v & 0x00000010) > 0;
-            MSIE = (v & 0x00000008) > 0;
-            SSIE = (v & 0x00000002) > 0;
-            USIE = (v & 0x00000001) > 0;
+            MEIE = (v & 0x00000800u) > 0;
+            SEIE = (v & 0x00000200u) > 0;
+            UEIE = (v & 0x00000100u) > 0;
+            MTIE = (v & 0x00000080u) > 0;
+            STIE = (v & 0x00000020u) > 0;
+            UTIE = (v & 0x00000010u) > 0;
+            MSIE = (v & 0x00000008u) > 0;
+            SSIE = (v & 0x00000002u) > 0;
+            USIE = (v & 0x00000001u) > 0;
         }
 
         // キャスト
@@ -750,15 +777,15 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
 
         public static implicit operator uint(InterruptEnableCSR v) {
             uint value = 0;
-            value += (uint)(v.MEIE ? 1 : 0) << 11;
-            value += (uint)(v.SEIE ? 1 : 0) << 9;
-            value += (uint)(v.UEIE ? 1 : 0) << 8;
-            value += (uint)(v.MTIE ? 1 : 0) << 7;
-            value += (uint)(v.STIE ? 1 : 0) << 5;
-            value += (uint)(v.UTIE ? 1 : 0) << 4;
-            value += (uint)(v.MSIE ? 1 : 0) << 3;
-            value += (uint)(v.SSIE ? 1 : 0) << 1;
-            value += (uint)(v.USIE ? 1 : 0);
+            value |= v.MEIE ? 1u << 11 : 0u;
+            value |= v.SEIE ? 1u << 9 : 0u;
+            value |= v.UEIE ? 1u << 8 : 0u;
+            value |= v.MTIE ? 1u << 7 : 0u;
+            value |= v.STIE ? 1u << 5 : 0u;
+            value |= v.UTIE ? 1u << 4 : 0u;
+            value |= v.MSIE ? 1u << 3 : 0u;
+            value |= v.SSIE ? 1u << 1 : 0u;
+            value |= v.USIE ? 1u << 0 : 0u;
 
             if (v.Mode == PrivilegeLevels.SupervisorMode) {
                 value &= SModeMask;
@@ -780,63 +807,63 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
         /// <summary>instretカウンタ有効ビット</summary>
         public bool IR { get; set; }
         /// <summary>hpmcountern3カウンタ有効ビット</summary>
-        public bool HPM3 { get; }
+        public bool HPM3 { get; set; }
         /// <summary>hpmcountern4カウンタ有効ビット</summary>
-        public bool HPM4 { get; }
+        public bool HPM4 { get; set; }
         /// <summary>hpmcountern5カウンタ有効ビット</summary>
-        public bool HPM5 { get; }
+        public bool HPM5 { get; set; }
         /// <summary>hpmcountern6カウンタ有効ビット</summary>
-        public bool HPM6 { get; }
+        public bool HPM6 { get; set; }
         /// <summary>hpmcountern7カウンタ有効ビット</summary>
-        public bool HPM7 { get; }
+        public bool HPM7 { get; set; }
         /// <summary>hpmcountern8カウンタ有効ビット</summary>
-        public bool HPM8 { get; }
+        public bool HPM8 { get; set; }
         /// <summary>hpmcountern9カウンタ有効ビット</summary>
-        public bool HPM9 { get; }
+        public bool HPM9 { get; set; }
         /// <summary>hpmcountern10カウンタ有効ビット</summary>
-        public bool HPM10 { get; }
+        public bool HPM10 { get; set; }
         /// <summary>hpmcountern11カウンタ有効ビット</summary>
-        public bool HPM11 { get; }
+        public bool HPM11 { get; set; }
         /// <summary>hpmcountern12カウンタ有効ビット</summary>
-        public bool HPM12 { get; }
+        public bool HPM12 { get; set; }
         /// <summary>hpmcountern13カウンタ有効ビット</summary>
-        public bool HPM13 { get; }
+        public bool HPM13 { get; set; }
         /// <summary>hpmcountern14カウンタ有効ビット</summary>
-        public bool HPM14 { get; }
+        public bool HPM14 { get; set; }
         /// <summary>hpmcountern15カウンタ有効ビット</summary>
-        public bool HPM15 { get; }
+        public bool HPM15 { get; set; }
         /// <summary>hpmcountern16カウンタ有効ビット</summary>
-        public bool HPM16 { get; }
+        public bool HPM16 { get; set; }
         /// <summary>hpmcountern17カウンタ有効ビット</summary>
-        public bool HPM17 { get; }
+        public bool HPM17 { get; set; }
         /// <summary>hpmcountern18カウンタ有効ビット</summary>
-        public bool HPM18 { get; }
+        public bool HPM18 { get; set; }
         /// <summary>hpmcountern19カウンタ有効ビット</summary>
-        public bool HPM19 { get; }
+        public bool HPM19 { get; set; }
         /// <summary>hpmcountern20カウンタ有効ビット</summary>
-        public bool HPM20 { get; }
+        public bool HPM20 { get; set; }
         /// <summary>hpmcountern21カウンタ有効ビット</summary>
-        public bool HPM21 { get; }
+        public bool HPM21 { get; set; }
         /// <summary>hpmcountern22カウンタ有効ビット</summary>
-        public bool HPM22 { get; }
+        public bool HPM22 { get; set; }
         /// <summary>hpmcountern23カウンタ有効ビット</summary>
-        public bool HPM23 { get; }
+        public bool HPM23 { get; set; }
         /// <summary>hpmcountern24カウンタ有効ビット</summary>
-        public bool HPM24 { get; }
+        public bool HPM24 { get; set; }
         /// <summary>hpmcountern25カウンタ有効ビット</summary>
-        public bool HPM25 { get; }
+        public bool HPM25 { get; set; }
         /// <summary>hpmcountern26カウンタ有効ビット</summary>
-        public bool HPM26 { get; }
+        public bool HPM26 { get; set; }
         /// <summary>hpmcountern27カウンタ有効ビット</summary>
-        public bool HPM27 { get; }
+        public bool HPM27 { get; set; }
         /// <summary>hpmcountern28カウンタ有効ビット</summary>
-        public bool HPM28 { get; }
+        public bool HPM28 { get; set; }
         /// <summary>hpmcountern29カウンタ有効ビット</summary>
-        public bool HPM29 { get; }
+        public bool HPM29 { get; set; }
         /// <summary>hpmcountern30カウンタ有効ビット</summary>
-        public bool HPM30 { get; }
+        public bool HPM30 { get; set; }
         /// <summary>hpmcountern31カウンタ有効ビット</summary>
-        public bool HPM31 { get; }
+        public bool HPM31 { get; set; }
 
         /// <summary>mip, sipなどの割り込み有効CSRを表す構造体</summary>
         public CounterEnableCSR(uint v) : this() {
@@ -917,5 +944,54 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
         }
     }
     
+    /// <summary>浮動小数点CSRを表す構造体</summary>
+    public struct FloatCSR {
+        // 定数
+        /// <summary>浮動小数点例外フラグ</summary>
+        public static uint FflagsMask = 0x1fu;
+        /// <summary>丸めモード</summary>
+        public static uint FrmMask = 0xe0;
+
+        // 変数
+        /// <summary>丸めモード</summary>
+        public FloatRoundingMode Frm { get; set; }
+        /// <summary>無効な操作(Invalid Operation)</summary>
+        public bool NV { get; set; }
+        /// <summary>ゼロ除算(Divide By Zero)</summary>
+        public bool DZ { get; set; }
+        /// <summary>オーバーフロー(Overflow)</summary>
+        public bool OF { get; set; }
+        /// <summary>アンダーフロー(Underflow)</summary>
+        public bool UF { get; set; }
+        /// <summary>不正確(Inexact)</summary>
+        public bool NX { get; set; }
+
+        // コンストラクタ
+        public FloatCSR(uint v) {
+            Frm = (FloatRoundingMode)((v & 0xe0u) >> 5);
+            NV = (v & 0x10u) > 0;
+            DZ = (v & 0x08u) > 0;
+            OF = (v & 0x04u) > 0;
+            UF = (v & 0x02u) > 0;
+            NX = (v & 0x01u) > 0;
+        }
+
+        // キャスト
+        public static implicit operator FloatCSR(uint v) {
+            return new FloatCSR(v);
+        }
+
+        public static implicit operator uint(FloatCSR v) {
+            uint value = 0;
+            value |= (uint)v.Frm << 5;
+            value |= v.NV ? 1u << 4 : 0u;
+            value |= v.DZ ? 1u << 3 : 0u;
+            value |= v.OF ? 1u << 2 : 0u;
+            value |= v.UF ? 1u << 1 : 0u;
+            value |= v.NX ? 1u << 0 : 0u;
+            return value;
+        }
+    }
+
     #endregion
 }
