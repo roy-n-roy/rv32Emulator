@@ -40,6 +40,12 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
         #region ユーザモードCSR
         /// <summary>ユーザ ステータスレジスタ</summary>
         ustatus = 0x000,
+        /// <summary>ユーザ 浮動小数点 例外フラグレジスタ</summary>
+        fflags = 0x001,
+        /// <summary>ユーザ 浮動小数点 丸めモード</summary>
+        frm = 0x002,
+        /// <summary>ユーザ 浮動小数点 制御・状態レジスタ</summary>
+        fcsr = 0x003,
         /// <summary>ユーザ 割り込み有効レジスタ</summary>
         uie = 0x004,
         /// <summary>ユーザ 例外・割り込みハンドラ ベースアドレス</summary>
@@ -55,13 +61,6 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
         utval = 0x043,
         /// <summary>ユーザ 割り込みペンディングレジスタ</summary>
         uip = 0x044,
-
-        /// <summary>ユーザ 浮動小数点 例外フラグレジスタ</summary>
-        fflags = 0x001,
-        /// <summary>ユーザ 浮動小数点 丸めモード</summary>
-        frm = 0x002,
-        /// <summary>ユーザ 浮動小数点 制御・状態レジスタ</summary>
-        fcsr = 0x003,
 
         /// <summary>ユーザ サイクルカウンタ</summary>
         cycle = 0xc00,
