@@ -25,7 +25,7 @@ namespace RiscVCpu.Decoder {
         /// <summary>
         /// 引数で渡された32bit長の命令を、各デコーダでデコードする
         /// </summary>
-        /// <param name="instruction">32bit長の命令</param>
+        /// <param name="instruction">32bit長の命令を格納したUInt32型配列</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         public void Decode(RV32_Cpu cpu) {
             bool successed = false;
@@ -41,7 +41,7 @@ namespace RiscVCpu.Decoder {
         }
 
         /// <summary>
-        /// UInt32型のRisc-V命令をbyte[]分割する
+        /// UInt32型のRisc-V命令をに分割する
         /// </summary>
         /// <param name="instruction">UInt32型のRisc-V命令</param>
         /// <returns></returns>
