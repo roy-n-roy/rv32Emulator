@@ -157,11 +157,13 @@ namespace ElfLoader {
         public Elf32_Sym[] e_symtab;
 
         /// <summary>ELFヘッダ情報</summary>
-        public Elf32_Header(IEnumerable<byte> bytes) : this() {
+        public Elf32_Header(byte[] bytes) : this() {
             int ptr = 0;
             e_ident = new char[16];
 
-            byte[] ehBytes = bytes.Take(52).ToArray();
+            byte[] ehBytes = new byte[52];
+            Array.Copy(bytes, ehBytes, 52);
+
 
             foreach (byte b in ehBytes.Take(16)) {
                 e_ident[ptr++] = (char)b;
@@ -187,7 +189,9 @@ namespace ElfLoader {
             // セクションヘッダテーブル
             e_shdrtab = new Elf32_Shdr[e_shnum];
             for (int i = 0; i < e_shnum; i++) {
-                e_shdrtab[i] = new Elf32_Shdr(bytes.Skip((int)(e_shoff + (e_shentsize * i))).Take((int)e_shentsize));
+                byte[] e_sh = new byte[e_shentsize];
+                Array.Copy(bytes, (int)(e_shoff + (e_shentsize * i)), e_sh, 0, e_shentsize);
+                e_shdrtab[i] = new Elf32_Shdr(e_sh);
             }
 
 
@@ -228,7 +232,9 @@ namespace ElfLoader {
                     // シンボルを各セクションにひもづけ
                     List<Elf32_Sym> symtab = new List<Elf32_Sym>();
                     for (int i = 0; i < shdr.sh_size / shdr.sh_entsize; i++) {
-                        symtab.Add(new Elf32_Sym(bytes.Skip((int)(shdr.sh_offset + (shdr.sh_entsize * i))).Take((int)shdr.sh_entsize).ToArray(), sym_strtab));
+                        byte[] e_sym = new byte[shdr.sh_entsize];
+                        Array.Copy(bytes, (shdr.sh_offset + (shdr.sh_entsize * i)), e_sym, 0, shdr.sh_entsize);
+                        symtab.Add(new Elf32_Sym(e_sym, sym_strtab));
                     }
 
                     List<Elf32_Sym> l = new List<Elf32_Sym>();
@@ -249,7 +255,9 @@ namespace ElfLoader {
             // プログラムヘッダテーブル
             e_phdrtab = new Elf32_Phdr[e_phnum];
             for (int i = 0; i < e_phnum; i++) {
-                e_phdrtab[i] = new Elf32_Phdr(bytes.Skip((int)(e_phoff + (e_phentsize * i))).Take((int)e_phentsize));
+                byte[] e_ph = new byte[e_phentsize];
+                Array.Copy(bytes, (int)(e_phoff + (e_phentsize * i)), e_ph, 0, e_phentsize);
+                e_phdrtab[i] = new Elf32_Phdr(e_ph);
             }
         }
 
@@ -339,7 +347,7 @@ namespace ElfLoader {
         public Elf32_Sym[] sh_symtab;
 
         /// <summary>セクションヘッダテーブル</summary>
-        public Elf32_Shdr(IEnumerable<byte> bytes) : this() {
+        public Elf32_Shdr(byte[] bytes) : this() {
             int ptr = 0;
             byte[] sHeader = bytes.ToArray();
 
@@ -401,7 +409,7 @@ namespace ElfLoader {
         public Elf32_Word p_align;
 
         /// <summary>プログラムヘッダ</summary>
-        public Elf32_Phdr(IEnumerable<byte> bytes) : this() {
+        public Elf32_Phdr(byte[] bytes) : this() {
             int ptr = 0;
             byte[] pHeader = bytes.ToArray();
 
@@ -461,7 +469,7 @@ namespace ElfLoader {
         public Elf32_Half st_shndx;
 
         /// <summary>シンボルテーブル</summary>
-        public Elf32_Sym(IEnumerable<byte> bytes, char[] sym_strtab) : this() {
+        public Elf32_Sym(byte[] bytes, char[] sym_strtab) : this() {
             int ptr = 0;
             byte[] symTable = bytes.ToArray();
 

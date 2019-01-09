@@ -28,7 +28,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rd">次の命令アドレスを格納するレジスタ番号</param>
         /// <param name="offset">ジャンプする現在のpcからの相対アドレス位置</param>
         public bool Jal(Register rd, Int32 offset, UInt32 insLength = 4u) {
-            reg.SetValue(rd, reg.PC + 4u);
+            reg.SetValue(rd, reg.PC + insLength);
             reg.PC += (UInt32)offset;
             return true;
         }
@@ -42,7 +42,7 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ベースのアドレス</param>
         /// <param name="offset">ジャンプするオフセット値</param>
         public bool Jalr(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt32 t = reg.PC + 4u;
+            UInt32 t = reg.PC + insLength;
             reg.PC = (reg.GetValue(rs1) + (UInt32)offset) & ~1u;
             reg.SetValue(rd, t);
             return true;

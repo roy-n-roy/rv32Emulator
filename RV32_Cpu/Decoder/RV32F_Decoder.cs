@@ -22,6 +22,7 @@ namespace RiscVCpu.Decoder {
             Opcode opcode = (Opcode)ins[0];
             Funct3 funct3 = (Funct3)ins[2];
             Funct7 funct7 = (Funct7)(ins[5] | (ins[6] << 6));
+            FloatRoundingMode frm = (FloatRoundingMode)ins[2];
             Int32 immediate = 0;
             RV32_SingleFpu fpu;
             RV32_FloatPointLsu lsu;
@@ -46,28 +47,28 @@ namespace RiscVCpu.Decoder {
                 case Opcode.fmadd: // fmadds命令
                     if ((ins[5] & 0x3u) == 0x0u) {
                         fpu = (RV32_SingleFpu)cpu.Alu(typeof(RV32_SingleFpu));
-                        result = fpu.FmaddS(rd, rs1, rs2, rs3);
+                        result = fpu.FmaddS(rd, rs1, rs2, rs3, frm);
                     }
                     break;
 
                 case Opcode.fmsub: // fmsubs命令
                     if ((ins[5] & 0x3u) == 0x0u) {
                         fpu = (RV32_SingleFpu)cpu.Alu(typeof(RV32_SingleFpu));
-                        result = fpu.FmsubS(rd, rs1, rs2, rs3);
+                        result = fpu.FmsubS(rd, rs1, rs2, rs3, frm);
                     }
                     break;
 
                 case Opcode.fnmadd: // fnmadds命令
                     if ((ins[5] & 0x3u) == 0x0u) {
                         fpu = (RV32_SingleFpu)cpu.Alu(typeof(RV32_SingleFpu));
-                        result = fpu.FnmaddS(rd, rs1, rs2, rs3);
+                        result = fpu.FnmaddS(rd, rs1, rs2, rs3, frm);
                     }
                     break;
 
                 case Opcode.fnmsub: // fnmsubs命令
                     if ((ins[5] & 0x3u) == 0x0u) {
                         fpu = (RV32_SingleFpu)cpu.Alu(typeof(RV32_SingleFpu));
-                        result = fpu.FnmsubS(rd, rs1, rs2, rs3);
+                        result = fpu.FnmsubS(rd, rs1, rs2, rs3, frm);
                     }
                     break;
 
@@ -75,23 +76,23 @@ namespace RiscVCpu.Decoder {
                     fpu = (RV32_SingleFpu)cpu.Alu(typeof(RV32_SingleFpu));
                     switch (funct7) {
                         case Funct7.faddS: // fadds命令
-                            result = fpu.FaddS(rd, rs1, rs2);
+                            result = fpu.FaddS(rd, rs1, rs2, frm);
                             break;
 
                         case Funct7.fsubS: // fsubs命令
-                            result = fpu.FsubS(rd, rs1, rs2);
+                            result = fpu.FsubS(rd, rs1, rs2, frm);
                             break;
 
                         case Funct7.fmulS: // fmuls命令
-                            result = fpu.FmulS(rd, rs1, rs2);
+                            result = fpu.FmulS(rd, rs1, rs2, frm);
                             break;
 
                         case Funct7.fdivS: // fmuls命令
-                            result = fpu.FdivS(rd, rs1, rs2);
+                            result = fpu.FdivS(rd, rs1, rs2, frm);
                             break;
 
                         case Funct7.fsqrtS: // fsqrts命令
-                            result = fpu.FsqrtS(rd, rs1);
+                            result = fpu.FsqrtS(rd, rs1, frm);
                             break;
 
                         case Funct7.fsgnjS:
@@ -141,11 +142,11 @@ namespace RiscVCpu.Decoder {
                         case Funct7.fcvtWS:
                             switch (ins[4]) {
                                 case 0x0: // fcnvws命令
-                                    result = fpu.FcvtWS((Register)rd, rs1);
+                                    result = fpu.FcvtWS((Register)rd, rs1, frm);
                                     break;
 
                                 case 0x1: // fcnvwus命令
-                                    result = fpu.FcvtWUS((Register)rd, rs1);
+                                    result = fpu.FcvtWUS((Register)rd, rs1, frm);
                                     break;
                             }
                             break;
@@ -153,11 +154,11 @@ namespace RiscVCpu.Decoder {
                         case Funct7.fcvtSW:
                             switch (ins[4]) {
                                 case 0x0: // fcnvsw命令
-                                    result = fpu.FcvtSW(rd, (Register)rs1);
+                                    result = fpu.FcvtSW(rd, (Register)rs1, frm);
                                     break;
 
                                 case 0x1: // fcnvswu命令
-                                    result = fpu.FcvtSWU(rd, (Register)rs1);
+                                    result = fpu.FcvtSWU(rd, (Register)rs1, frm);
                                     break;
                             }
                             break;

@@ -129,34 +129,37 @@ namespace RiscVCpu.Decoder {
                     break;
 
                 case Opcode.miscOpImm: // Op-imm系命令(即値算術論理演算)
-                    immediate = GetImmediate('I', ins);
                     alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
                     switch (funct3) {
                         case Funct3.addi: // addi命令
+                            immediate = GetImmediate('I', ins);
                             result = alu.Addi(rd, rs1, immediate);
                             break;
 
                         case Funct3.xori: // xori命令
+                            immediate = GetImmediate('I', ins);
                             result = alu.Xori(rd, rs1, immediate);
                             break;
 
                         case Funct3.ori: // ori命令
+                            immediate = GetImmediate('I', ins);
                             result = alu.Ori(rd, rs1, immediate);
                             break;
 
                         case Funct3.andi: // andi命令
+                            immediate = GetImmediate('I', ins);
                             result = alu.Andi(rd, rs1, immediate);
                             break;
 
-
                         case Funct3.slti: // slti命令
+                            immediate = GetImmediate('I', ins);
                             result = alu.Slti(rd, rs1, immediate);
                             break;
 
                         case Funct3.sltiu: //110 sltiu命令
+                            immediate = GetImmediate('I', ins);
                             result = alu.Sltiu(rd, rs1, immediate);
                             break;
-
 
                         case Funct3.slli: // slli命令
                             result = alu.Slli(rd, rs1, (Int32)(ins[4] | ((ins[5] & 0b1) << 5)));

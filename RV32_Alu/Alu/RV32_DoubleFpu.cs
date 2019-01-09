@@ -1,15 +1,28 @@
-﻿using RiscVCpu.LoadStoreUnit;
-using RiscVCpu.LoadStoreUnit.Constants;
-using RiscVCpu.LoadStoreUnit.Exceptions;
+﻿using RiscVCpu.LoadStoreUnit.Constants;
 using RiscVCpu.RegisterSet;
 using System;
 
 namespace RiscVCpu.ArithmeticLogicUnit {
 
+    /// <summary>64bit長バイナリ形式</summary>
+    using Binary64 = UInt64;
+    /// <summary>32bit長バイナリ形式</summary>
+    using Binary32 = UInt32;
+
     /// <summary>
     /// Risc-V RV32I 倍精度浮動小数点命令セット 算術論理演算命令を実行するFPU
     /// </summary>
     public class RV32_DoubleFpu : RV32_AbstractCalculator {
+
+        internal const Binary64 NaN = 0x7ff8_0000_0000_0000u;
+        internal const Binary64 Zero = 0x0000_0000_0000_0000u;
+        internal const Binary64 Infinity = 0x7ff0_0000_0000_0000u;
+
+        internal const Binary64 NegativeSign = 0x8000_0000_0000_0000u;
+
+        internal const Binary64 SignMask = 0x8000_0000_0000_0000u;
+        internal const Binary64 ExpMask = 0x7ff0_0000_0000_0000u;
+        internal const Binary64 MantMask = 0x000f_ffff_ffff_ffffu;
 
         /// <summary>
         /// Risc-V 倍精度浮動小数算術論理演算 FPU
@@ -31,12 +44,33 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, UInt32 insLength = 4u) {
-            Decimal value1 = (Decimal)reg.GetDoubleValue(rs1);
-            Decimal value2 = (Decimal)reg.GetDoubleValue(rs2);
-            Decimal value3 = (Decimal)reg.GetDoubleValue(rs3);
+        public bool FmaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 binary3 = reg.GetValue(rs3);
+            Binary64 result;
+            FloatCSR fcsr = 0;
 
-            reg.SetValue(rd, (Double)((value1 * value2) + value3));
+            result = ToBinary((ToDouble(binary1) * ToDouble(binary2)) + ToDouble(binary3));
+            result = IsNaN(result) ? NaN : result;
+
+            if ((IsInfinity(binary1) || IsInfinity(binary2)) && IsInfinity(binary3) &&
+                ((IsNegative(binary1) ^ IsPositive(binary2)) ^ IsNegative(binary3))) {
+                // ∞ + -∞ もしくは -∞ + ∞の場合
+                result = NaN;
+                fcsr.NV = true;
+
+            } else if (IsSigNaN(binary1) || IsSigNaN(binary2) || IsSigNaN(binary3)) {
+                // いずれかの数値がシグナリングNaNの場合
+                fcsr.NV = true;
+
+            } else if (ToDouble(result) != (ToDouble(binary1) * ToDouble(binary2)) + ToDouble(binary3)) {
+                // 結果が一致しない場合
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -50,12 +84,33 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, UInt32 insLength = 4u) {
-            Decimal value1 = (Decimal)reg.GetDoubleValue(rs1);
-            Decimal value2 = (Decimal)reg.GetDoubleValue(rs2);
-            Decimal value3 = (Decimal)reg.GetDoubleValue(rs3);
+        public bool FmsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 binary3 = reg.GetValue(rs3);
+            Binary64 result;
+            FloatCSR fcsr = 0;
 
-            reg.SetValue(rd, (Double)((value1 * value2) - value3));
+            result = ToBinary((ToDouble(binary1) * ToDouble(binary2)) - ToDouble(binary3));
+            result = IsNaN(result) ? NaN : result;
+
+            if ((IsInfinity(binary1) || IsInfinity(binary2)) && IsInfinity(binary3) &&
+                ((IsNegative(binary1) ^ IsPositive(binary2)) ^ IsPositive(binary3))) {
+                // ∞ + -∞ もしくは -∞ + ∞の場合
+                result = NaN;
+                fcsr.NV = true;
+
+            } else if (IsSigNaN(binary1) || IsSigNaN(binary2) || IsSigNaN(binary3)) {
+                // いずれかの数値がシグナリングNaNの場合
+                fcsr.NV = true;
+
+            } else if (ToDouble(result) != (ToDouble(binary1) * ToDouble(binary2)) - ToDouble(binary3)) {
+                // 結果が一致しない場合
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -69,12 +124,33 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FnmaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, UInt32 insLength = 4u) {
-            Decimal value1 = (Decimal)reg.GetDoubleValue(rs1);
-            Decimal value2 = (Decimal)reg.GetDoubleValue(rs2);
-            Decimal value3 = (Decimal)reg.GetDoubleValue(rs3);
+        public bool FnmaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 binary3 = reg.GetValue(rs3);
+            Binary64 result;
+            FloatCSR fcsr = 0;
 
-            reg.SetValue(rd, (Double)((-value1 * value2) + value3));
+            result = ToBinary((-ToDouble(binary1) * ToDouble(binary2)) + ToDouble(binary3));
+            result = IsNaN(result) ? NaN : result;
+
+            if ((IsInfinity(binary1) || IsInfinity(binary2)) && IsInfinity(binary3) &&
+                ((IsPositive(binary1) ^ IsPositive(binary2)) ^ IsNegative(binary3))) {
+                // ∞ + -∞ もしくは -∞ + ∞の場合
+                result = NaN;
+                fcsr.NV = true;
+
+            } else if (IsSigNaN(binary1) || IsSigNaN(binary2) || IsSigNaN(binary3)) {
+                // いずれかの数値がシグナリングNaNの場合
+                fcsr.NV = true;
+
+            } else if (ToDouble(result) != (ToDouble(binary1) * ToDouble(binary2)) + ToDouble(binary3)) {
+                // 結果が一致しない場合
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -88,12 +164,33 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FnmsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, UInt32 insLength = 4u) {
-            Decimal value1 = (Decimal)reg.GetDoubleValue(rs1);
-            Decimal value2 = (Decimal)reg.GetDoubleValue(rs2);
-            Decimal value3 = (Decimal)reg.GetDoubleValue(rs3);
+        public bool FnmsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 binary3 = reg.GetValue(rs3);
+            Binary64 result;
+            FloatCSR fcsr = 0;
 
-            reg.SetValue(rd, (Double)((-value1 * value2) - value3));
+            result = ToBinary((-ToDouble(binary1) * ToDouble(binary2)) - ToDouble(binary3));
+            result = IsNaN(result) ? NaN : result;
+
+            if ((IsInfinity(binary1) || IsInfinity(binary2)) && IsInfinity(binary3) &&
+                ((IsPositive(binary1) ^ IsPositive(binary2)) ^ IsPositive(binary3))) {
+                // ∞ + -∞ もしくは -∞ + ∞の場合
+                result = NaN;
+                fcsr.NV = true;
+
+            } else if (IsSigNaN(binary1) || IsSigNaN(binary2) || IsSigNaN(binary3)) {
+                // いずれかの数値がシグナリングNaNの場合
+                fcsr.NV = true;
+
+            } else if (ToDouble(result) != (-ToDouble(binary1) * ToDouble(binary2)) - ToDouble(binary3)) {
+                // 結果が一致しない場合
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -106,8 +203,32 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, reg.GetDoubleValue(rs1) + reg.GetDoubleValue(rs2));
+        public bool FaddD(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 result;
+            FloatCSR fcsr = 0;
+
+            result = ToBinary(ToDouble(binary1) + ToDouble(binary2));
+            result = IsNaN(result) ? NaN : result;
+
+            if (IsInfinity(binary1) && IsInfinity(binary2) &&
+                ((IsPositive(binary1) && IsNegative(binary2)) || (IsNegative(binary1) && IsPositive(binary2)))) {
+                // ∞ + -∞ もしくは -∞ + ∞の場合
+                result = NaN;
+                fcsr.NV = true;
+
+            } else if (IsSigNaN(binary1) || IsSigNaN(binary2)) {
+                // いずれかの数値がシグナリングNaNの場合
+                fcsr.NV = true;
+
+            } else if (ToDouble(result) != ToDouble(binary1) + ToDouble(binary2)) {
+                // 結果が一致しない場合
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -120,8 +241,32 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, reg.GetDoubleValue(rs1) - reg.GetDoubleValue(rs2));
+        public bool FsubD(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 result;
+            FloatCSR fcsr = 0;
+
+            result = ToBinary(ToDouble(binary1) - ToDouble(binary2));
+            result = IsNaN(result) ? NaN : result;
+
+            if (IsInfinity(binary1) && IsInfinity(binary2) &&
+                ((IsPositive(binary1) && IsPositive(binary2)) || (IsNegative(binary1) && IsNegative(binary2)))) {
+                // ∞ - ∞ もしくは -∞ - -∞の場合
+                result = NaN;
+                fcsr.NV = true;
+
+            } else if (IsSigNaN(binary1) || IsSigNaN(binary2)) {
+                // いずれかの数値がシグナリングNaNの場合
+                fcsr.NV = true;
+
+            } else if (ToDouble(result) != ToDouble(binary1) - ToDouble(binary2)) {
+                // 結果が一致しない場合
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -134,8 +279,26 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmulD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, reg.GetDoubleValue(rs1) * reg.GetDoubleValue(rs2));
+        public bool FmulD(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 result;
+            FloatCSR fcsr = 0;
+
+            result = ToBinary(ToDouble(binary1) * ToDouble(binary2));
+            result = IsNaN(result) ? NaN : result;
+
+            if (IsSigNaN(binary1) || IsSigNaN(binary2)) {
+                // いずれかの数値がシグナリングNaNの場合
+                fcsr.NV = true;
+
+            } else if (ToDouble(result) != ToDouble(binary1) * ToDouble(binary2)) {
+                // 結果が一致しない場合
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -148,19 +311,38 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FdivD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            Double value1 = reg.GetDoubleValue(rs1);
-            Double value2 = reg.GetDoubleValue(rs2);
+        public bool FdivD(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 result;
+            FloatCSR fcsr = 0;
 
-            if (value1 == 0f && value2 == 0f) {
-                reg.SetValue(rd, Double.NaN);
+            if (binary1 == 0f && binary2 == 0f) {
+                // 被除数、除数ともに0の場合
+                result = NaN;
+                fcsr.DZ = true;
 
-            }else if(value2 == 0f) {
-                reg.SetValue(rd, Double.PositiveInfinity);
+            } else if (IsZero(binary2)) {
+                // ゼロ除算の場合
+                result = Infinity | ((binary1 & SignMask) ^ (binary2 & SignMask));
+                fcsr.DZ = true;
 
             } else {
-                reg.SetValue(rd, value1 / value2);
+                result = ToBinary(ToDouble(binary1) / ToDouble(binary2));
+                result = IsNaN(result) ? NaN : result;
+
+                if (IsSigNaN(binary1) || IsSigNaN(binary2)) {
+                    // いずれかの数値がシグナリングNaNの場合
+                    fcsr.NV = true;
+
+                } else if (ToDouble(result) != ToDouble(binary1) / ToDouble(binary2)) {
+                    // 結果が一致しない場合
+                    fcsr.NX = true;
+                }
             }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -173,8 +355,29 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FsqrtD(FPRegister rd, FPRegister rs1, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (Double)Math.Sqrt(reg.GetDoubleValue(rs1)));
+        public bool FsqrtD(FPRegister rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 result;
+            FloatCSR fcsr = 0;
+
+            result = ToBinary((Double)Math.Sqrt(ToDouble(binary1)));
+            result = IsNaN(result) ? NaN : result;
+
+            if (IsSigNaN(binary1)) {
+                // いずれかの数値がシグナリングNaNの場合
+                fcsr.NV = true;
+
+            } else if (IsNegative(binary1)) {
+                // 負数の平方根を求めようとした場合
+                fcsr.NV = true;
+
+            } else if (ToDouble(result) * ToDouble(result) != ToDouble(binary1)) {
+                // 結果が一致しない場合
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -189,12 +392,13 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FsgnjD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            byte[] value1 = BitConverter.GetBytes(reg.GetDoubleValue(rs1));
-            byte[] value2 = BitConverter.GetBytes(reg.GetDoubleValue(rs2));
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 result;
 
-            value1[7] = (byte)((value1[7] & 0x7fu) | (value2[7] & 0x80u));
+            result = binary1 & 0x7fff_ffffu | binary2 & 0x8000_0000u;
 
-            reg.SetValue(rd, BitConverter.ToDouble(value1, 0));
+            reg.SetValue(rd, result);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -209,12 +413,15 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FsgnjnD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            byte[] value1 = BitConverter.GetBytes(reg.GetDoubleValue(rs1));
-            byte[] value2 = BitConverter.GetBytes(reg.GetDoubleValue(rs2));
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 result;
+            FloatCSR fcsr = 0;
 
-            value1[7] = (byte)((value1[7] & 0x7fu) | (~value2[7] & 0x80u));
+            result = binary1 & 0x7fff_ffffu | ~binary2 & 0x8000_0000u;
 
-            reg.SetValue(rd, BitConverter.ToDouble(value1, 0));
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -229,12 +436,15 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FsgnjxD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            byte[] value1 = BitConverter.GetBytes(reg.GetDoubleValue(rs1));
-            byte[] value2 = BitConverter.GetBytes(reg.GetDoubleValue(rs2));
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 result;
+            FloatCSR fcsr = 0;
 
-            value1[7] = (byte)((value1[7] & 0x7fu) | ((byte)(value1[7] ^ value2[7]) & 0x80u));
+            result = binary1 & 0x7fff_ffffu | (binary1 ^ binary2) & 0x8000_0000u;
 
-            reg.SetValue(rd, BitConverter.ToDouble(value1, 0));
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -248,10 +458,20 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FminD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            Double value1 = reg.GetDoubleValue(rs1);
-            Double value2 = reg.GetDoubleValue(rs2);
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 result;
+            FloatCSR fcsr = 0;
 
-            reg.SetValue(rd, value1 < value2 ? value1 : value2);
+            result = ToDouble(binary1) < ToDouble(binary2) ? binary1 : (IsNegative(binary1) && IsZero(binary1) ? binary1 : binary2);
+            result = IsNaN(result) ? NaN : result;
+
+            if (IsSigNaN(binary1) || IsSigNaN(binary2)) {
+                fcsr.NV = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -265,10 +485,20 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FmaxD(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            Double value1 = reg.GetDoubleValue(rs1);
-            Double value2 = reg.GetDoubleValue(rs2);
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            Binary64 result;
+            FloatCSR fcsr = 0;
 
-            reg.SetValue(rd, value1 > value2 ? value1 : value2);
+            result = ToDouble(binary1) > ToDouble(binary2) ? binary1 : (IsPositive(binary1) && IsZero(binary1) ? binary1 : binary2);
+            result = IsNaN(result) ? NaN : result;
+
+            if (IsSigNaN(binary1) || IsSigNaN(binary2)) {
+                fcsr.NV = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -282,7 +512,19 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FeqD(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (reg.GetDoubleValue(rs1) == reg.GetDoubleValue(rs2) ? 1U : 0U));
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            UInt32 result;
+            FloatCSR fcsr = 0;
+
+            result = ToDouble(binary1) == ToDouble(binary2) ? 1u : 0u;
+
+            if (IsSigNaN(binary1) || IsSigNaN(binary2)) {
+                fcsr.NV = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -296,7 +538,19 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FltD(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (reg.GetDoubleValue(rs1) < reg.GetDoubleValue(rs2) ? 1U : 0U));
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            UInt32 result;
+            FloatCSR fcsr = 0;
+
+            result = ToDouble(binary1) < ToDouble(binary2) ? 1u : 0u;
+
+            if (IsNaN(binary1) || IsNaN(binary2)) {
+                fcsr.NV = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -310,7 +564,19 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FleD(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (reg.GetDoubleValue(rs1) <= reg.GetDoubleValue(rs2) ? 1U : 0U));
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary64 binary2 = reg.GetValue(rs2);
+            UInt32 result;
+            FloatCSR fcsr = 0;
+
+            result = ToDouble(binary1) <= ToDouble(binary2) ? 1u : 0u;
+
+            if (IsNaN(binary1) || IsNaN(binary2)) {
+                fcsr.NV = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -322,8 +588,71 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtSD(FPRegister rd, FPRegister rs1, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (Single)reg.GetDoubleValue(rs1));
+        public bool FcvtSD(FPRegister rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            Binary32 result;
+            FloatCSR fcsr = 0;
+
+            Binary32 sign = (Binary32)((binary1 & SignMask) >> 32);
+
+            if (IsInfinity(binary1)) {
+                // +-∞の場合
+                result = sign | RV32_SingleFpu.Infinity;
+
+            } else if (IsZero(binary1)) {
+                // +-0の場合
+                result = sign | RV32_SingleFpu.Zero;
+
+            } else if (IsSigNaN(binary1)) {
+                // シグナリングNaNの場合
+                fcsr.NV = true;
+                result = RV32_SingleFpu.NaN;
+
+            } else if (IsQuietNaN(binary1)) {
+                result = RV32_SingleFpu.NaN;
+
+            } else {
+                int exp = ((int)(binary1 & ExpMask) >> 52) - (1023 - 127);
+                Binary32 mantissa = (Binary32)((binary1 & MantMask) >> 22 | (binary1 & ((1u << 22) - 1u))) > 0u ? 1u : 0u | 0x4000_0000u;
+
+                byte roundIncrement, roundBits = (byte)(mantissa & 0x7fu); ;
+
+                if (frm == FloatRoundingMode.RTZ || frm == FloatRoundingMode.RUP || frm == FloatRoundingMode.RDN) {
+                    roundIncrement = frm == (sign > 0u ? FloatRoundingMode.RDN : FloatRoundingMode.RUP) ? (byte)0x7fu : (byte)0u;
+                } else {
+                    roundIncrement = 0x40;
+                }
+
+                if (0xfdu <= (uint)exp && exp >= 0 && ((0xfd < exp) || (0x80000000 <= mantissa + roundIncrement))) {
+                    fcsr.OF = true;
+                    fcsr.NX = true;
+
+                    result = (sign | RV32_SingleFpu.Infinity) - roundIncrement > 0 ? 0u : 1u;
+                } else {
+                    if (0xfdu <= (uint)exp && exp < 0) {
+                        bool isTiny = (exp < -1) || (mantissa + roundIncrement < 0x80000000);
+
+                        mantissa = (mantissa >> exp | (((mantissa << (-exp & 31)) != 0) ? 1u : 0u));
+                        exp = 0;
+                        roundBits = (byte)(mantissa & 0x7Fu);
+
+                        if (isTiny && roundBits > 0) {
+                            fcsr.UF = true;
+                        }
+                    }
+                    mantissa = (mantissa + roundIncrement) >> 7;
+                    if (roundBits > 0u) {
+                        fcsr.NX = true;
+                    }
+                    mantissa &= ((roundBits ^ 0x40) == 0 && frm == FloatRoundingMode.RNE) ? ~1u : ~0u;
+                    exp = mantissa == 0u ? 0 : exp;
+
+                    result = sign + (Binary32)(exp << 23) + mantissa;
+                }
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -335,8 +664,15 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtDS(FPRegister rd, FPRegister rs1, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (Double)reg.GetSingleValue(rs1));
+        public bool FcvtDS(FPRegister rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary32 binary1 = (Binary32)reg.GetValue(rs1);
+            Binary64 result;
+            FloatCSR fcsr = 0;
+
+            result = ToBinary((Double)RV32_SingleFpu.ToSingle(binary1));
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -348,8 +684,38 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtWD(Register rd, FPRegister rs1, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (UInt32)(Int32)reg.GetDoubleValue(rs1));
+        public bool FcvtWD(Register rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            Int32 result;
+            FloatCSR fcsr = 0;
+
+            Double value1 = ToDouble(binary1);
+            Double rvalue1 = ToDouble(RoundNum(binary1, 0, frm));
+
+            result = (Int32)rvalue1;
+
+            if ((IsPositive(binary1) && IsInfinity(binary1)) || IsNaN(binary1)) {
+                fcsr.NV = true;
+                result = Int32.MaxValue;
+
+            } else if (IsNegative(binary1) && IsInfinity(binary1)) {
+                fcsr.NV = true;
+                result = Int32.MinValue;
+
+            } else if (Int32.MaxValue < rvalue1) {
+                fcsr.NV = true;
+                result = Int32.MaxValue;
+
+            } else if (Int32.MinValue > rvalue1) {
+                fcsr.NV = true;
+                result = Int32.MinValue;
+
+            } else if (result != value1) {
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, (UInt32)result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -361,8 +727,38 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtWUD(Register rd, FPRegister rs1, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (UInt32)reg.GetDoubleValue(rs1));
+        public bool FcvtWUD(Register rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Binary64 binary1 = reg.GetValue(rs1);
+            UInt32 result;
+            FloatCSR fcsr = 0;
+
+            Double value1 = ToDouble(binary1);
+            Double rvalue1 = ToDouble(RoundNum(binary1, 0, frm));
+
+            result = (UInt32)rvalue1;
+
+            if ((IsPositive(binary1) && IsInfinity(binary1)) || IsNaN(binary1)) {
+                fcsr.NV = true;
+                result = UInt32.MaxValue;
+
+            } else if (IsNegative(binary1) && IsInfinity(binary1)) {
+                fcsr.NV = true;
+                result = UInt32.MinValue;
+
+            } else if (UInt32.MaxValue < rvalue1) {
+                fcsr.NV = true;
+                result = UInt32.MaxValue;
+
+            } else if (UInt32.MinValue > rvalue1) {
+                fcsr.NV = true;
+                result = UInt32.MinValue;
+
+            } else if (result != value1) {
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -374,8 +770,19 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtDW(FPRegister rd, Register rs1, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (Double)(Int32)reg.GetValue(rs1));
+        public bool FcvtDW(FPRegister rd, Register rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            Int32 value1 = (Int32)reg.GetValue(rs1);
+            Binary64 result;
+            FloatCSR fcsr = 0;
+
+            result = ToBinary((Double)value1);
+
+            if ((Int32)ToDouble(result) != value1) {
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -387,8 +794,19 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtDWU(FPRegister rd, Register rs1, UInt32 insLength = 4u) {
-            reg.SetValue(rd, (Double)reg.GetValue(rs1));
+        public bool FcvtDWU(FPRegister rd, Register rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+            UInt32 value1 = reg.GetValue(rs1);
+            Binary64 result;
+            FloatCSR fcsr = 0;
+
+            result = ToBinary((Double)value1);
+
+            if ((UInt32)ToDouble(result) != value1) {
+                fcsr.NX = true;
+            }
+
+            reg.SetValue(rd, result);
+            reg.SetFflagsCSR(fcsr);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -401,52 +819,51 @@ namespace RiscVCpu.ArithmeticLogicUnit {
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
         public bool FclassD(Register rd, FPRegister rs1, UInt32 insLength = 4u) {
-            Double value1 = reg.GetDoubleValue(rs1);
-            UInt32 mask = 0;
+            Binary64 binary1 = reg.GetValue(rs1);
+            UInt32 result = 0u;
 
-            if (Double.IsNegativeInfinity(value1)) {
+            if (IsNegative(binary1) && IsInfinity(binary1)) {
                 // rs1が-∞の場合
-                mask |= 0b00_0000_0001;
+                result |= 0b00_0000_0001;
 
-            } else if (-Math.Pow(2, 127) <= value1 && value1 <= -Math.Pow(2, -126)) {
+            } else if (IsNegative(binary1) && IsNormalNum(binary1)) {
                 // rs1が負の正規数の場合
-                mask |= 0b00_0000_1000;
+                result |= 0b00_0000_0010;
 
-            } else if ((Double.NegativeInfinity < value1 && value1 < -Math.Pow(2, 127)) || (-Math.Pow(2, -126) < value1 && value1 <= -Epsilon())) {
+            } else if (IsNegative(binary1) && IsDenormalNum(binary1)) {
                 // rs1が負の非正規数の場合
-                mask |= 0b00_0000_1000;
+                result |= 0b00_0000_0100;
 
-            } else if (value1 == -0f) {
+            } else if (IsNegative(binary1) && IsZero(binary1)) {
                 // rs1が-0の場合
-                mask |= 0b00_0000_1000;
+                result |= 0b00_0000_1000;
 
-            } else if (value1 == 0f) {
+            } else if (IsPositive(binary1) && IsZero(binary1)) {
                 // rs1が+0の場合
-                mask |= 0b00_0001_0000;
+                result |= 0b00_0001_0000;
 
-            } else if ((Epsilon() <= value1 && value1 < Math.Pow(2, -126)) || (Math.Pow(2, 127) < value1 && value1 < Double.NegativeInfinity)) {
+            } else if (IsPositive(binary1) && IsDenormalNum(binary1)) {
                 // rs1が正の非正規数の場合
-                mask |= 0b00_0010_0000;
+                result |= 0b00_0010_0000;
 
-            } else if (Math.Pow(2, -126) <= value1 && value1 <= -Math.Pow(2, 127)) {
+            } else if (IsPositive(binary1) && IsNormalNum(binary1)) {
                 // rs1が正の正規数の場合
-                mask |= 0b00_0100_0000;
+                result |= 0b00_0100_0000;
 
-            } else if (Double.IsPositiveInfinity(value1)) {
+            } else if (IsPositive(binary1) && IsInfinity(binary1)) {
                 // rs1が+∞の場合
-                mask |= 0b00_1000_0000;
+                result |= 0b00_1000_0000;
 
-            } else if (Double.IsNaN(value1)) {
+            } else if (IsSigNaN(binary1)) {
                 // rs1がシグナル型非数の場合
-                mask |= 0b01_0000_0000;
+                result |= 0b01_0000_0000;
 
-            } else if (Double.IsNaN(value1)) {
+            } else if (IsQuietNaN(binary1)) {
                 // rs1がクワイエット型非数の場合
-                mask |= 0b10_0000_0000;
+                result |= 0b10_0000_0000;
             }
 
-
-            reg.SetValue(rd, mask);
+            reg.SetValue(rd, result);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -455,17 +872,75 @@ namespace RiscVCpu.ArithmeticLogicUnit {
 
         #endregion
 
-        /// <summary>
-        /// 正の最小値を求める
-        /// </summary>
-        /// <returns></returns>
-        static Double Epsilon() {
-            Double eps = 1.0f;
-            while (1.0f + (eps / 2.0f) > 1.0f) {
-                eps /= 2.0f;
-            }
-            return eps;
-        }
+        internal static bool IsZero(Binary64 binary) => (binary & (ExpMask | MantMask)) == Zero;
 
+        internal static bool IsDenormalNum(Binary64 binary) => (binary & ExpMask) == 0u && !IsZero(binary);
+        internal static bool IsNormalNum(Binary64 binary) => (binary & ExpMask) > 0u && (binary & ExpMask) < 0x7ff0_0000_0000_0000u;
+
+        internal static bool IsNaN(Binary64 binary) => (binary & ExpMask) == 0x7ff0_0000_0000_0000u && (binary & MantMask) > 0u;
+        internal static bool IsSigNaN(Binary64 binary) => IsNaN(binary) && (binary & 0x0008_0000_0000_0000u) == 0x0000_0000_0000_0000u;
+        internal static bool IsQuietNaN(Binary64 binary) => IsNaN(binary) && (binary & 0x0008_0000_0000_0000u) == 0x0008_0000_0000_0000u;
+
+        internal static bool IsInfinity(Binary64 binary) => (binary & (ExpMask | MantMask)) == Infinity;
+
+        internal static bool IsNegative(Binary64 binary) => (binary & SignMask) == NegativeSign;
+        internal static bool IsPositive(Binary64 binary) => !IsNegative(binary);
+
+        /// <summary>
+        /// 64bit長バイナリ形式から倍精度浮動小数点数に変換する
+        /// </summary>
+        /// <param name="binary">バイナリ形式の値</param>
+        /// <returns>変換した倍精度浮動小数点数</returns>
+        internal static Double ToDouble(Binary64 binary) => BitConverter.ToDouble(BitConverter.GetBytes(binary), 0);
+
+        /// <summary>
+        /// 倍精度浮動小数点数を64bit長バイナリ形式に変換する
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        internal static Binary64 ToBinary(Double value) => BitConverter.ToUInt64(BitConverter.GetBytes(value), 0);
+
+        /// <summary>
+        /// 値を指定した桁数、丸めモードで丸める
+        /// </summary>
+        /// <param name="binary">丸めるバイナリ形式の値</param>
+        /// <param name="digits">桁数</param>
+        /// <param name="frm">丸めモード</param>
+        /// <returns>丸めたバイナリ形式の値</returns>
+        private static Binary64 RoundNum(Binary64 binary, int digits, FloatRoundingMode frm) {
+            Binary64 result;
+            Double coef;
+            switch (frm) {
+                case FloatRoundingMode.RNE: // 最近接丸め(偶数)
+                    result = ToBinary((Double)Math.Round(ToDouble(binary), digits, MidpointRounding.ToEven));
+                    break;
+
+                case FloatRoundingMode.RTZ: // 0への丸め
+                    coef = (Double)Math.Pow(10, digits);
+                    Double sign = IsNegative(binary) ? -1f : 1f;
+                    result = ToBinary(sign * (Double)(Math.Floor(sign * ToDouble(binary) * coef) / coef));
+                    break;
+
+                case FloatRoundingMode.RDN: // 切り下げ
+                    coef = (Double)Math.Pow(10, digits);
+                    result = ToBinary((Double)(Math.Ceiling(ToDouble(binary) * coef) / coef));
+                    break;
+
+                case FloatRoundingMode.RUP: // 切り上げ
+                    coef = (Double)Math.Pow(10, digits);
+                    result = ToBinary((Double)(Math.Floor(ToDouble(binary) * coef) / coef));
+                    break;
+
+                case FloatRoundingMode.RMM: // 最近接丸め(0から遠くへの丸め)
+                    result = ToBinary((Double)Math.Round(ToDouble(binary), digits, MidpointRounding.AwayFromZero));
+                    break;
+
+                default:
+                    result = 0u;
+                    break;
+            }
+
+            return result;
+        }
     }
 }
