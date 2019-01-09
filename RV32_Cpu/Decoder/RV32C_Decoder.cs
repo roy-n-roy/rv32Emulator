@@ -9,7 +9,7 @@ namespace RiscVCpu.Decoder {
     public class RV32C_Decoder : RV32_AbstractDecoder {
 
         /// <summary>命令長(Byte)</summary>
-        static UInt32 InstructionLength = 2;
+        const UInt32 InstructionLength = 2u;
 
         /// <summary>
         /// 引数で渡された32bit長のうち、前半の16bitを命令としてデコードし、cpuで実行する
