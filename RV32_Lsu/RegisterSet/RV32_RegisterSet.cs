@@ -143,9 +143,9 @@ namespace RiscVCpu.RegisterSet {
         /// </summary>
         /// <param name="name">設定する対象レジスタ名</param>
         /// <param name="value">設定する値</param>
-        public void SetValue(FPRegister name, Single value) {
+        public void SetValue(FPRegister name, UInt32 value) {
             //値をレジスタに設定
-            FPRegisters[name] = BitConverter.ToUInt64(BitConverter.GetBytes(value).Concat(new byte[] { 0, 0, 0, 0 }).ToArray(), 0);
+            FPRegisters[name] = value;
         }
 
         /// <summary>
@@ -153,9 +153,9 @@ namespace RiscVCpu.RegisterSet {
         /// </summary>
         /// <param name="name">設定する対象レジスタ名</param>
         /// <param name="value">設定する値</param>
-        public void SetValue(FPRegister name, Double value) {
+        public void SetValue(FPRegister name, UInt64 value) {
             //値をレジスタに設定
-            FPRegisters[name] = BitConverter.ToUInt64(BitConverter.GetBytes(value), 0);
+            FPRegisters[name] = value;
         }
 
         /// <summary>
@@ -163,19 +163,9 @@ namespace RiscVCpu.RegisterSet {
         /// </summary>
         /// <param name="name">取得する対象レジスタ名</param>
         /// <returns>レジスタの値</returns>
-        public Single GetSingleValue(FPRegister name) {
+        public UInt64 GetValue(FPRegister name) {
             //レジスタの値を返す
-            return BitConverter.ToSingle(BitConverter.GetBytes(FPRegisters[name]), 0);
-        }
-
-        /// <summary>
-        /// 浮動小数点レジスタから値を取得する
-        /// </summary>
-        /// <param name="name">取得する対象レジスタ名</param>
-        /// <returns>レジスタの値</returns>
-        public Double GetDoubleValue(FPRegister name) {
-            //レジスタの値を返す
-            return BitConverter.ToDouble(BitConverter.GetBytes(FPRegisters[name]), 0);
+            return FPRegisters[name];
         }
 
         #endregion
