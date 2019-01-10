@@ -178,17 +178,13 @@ namespace RiscVCpu {
                     }
                     decoder.Decode(this);
                     registerSet.IncrementCycle();
-#if !DEBUG
-                } catch (RiscvException) {
-#endif
 #if DEBUG
-                } catch (RiscvException e) {
+                } catch (RiscvException e) 
+                   when (!(e is RiscvEnvironmentCallException || e is RiscvBreakpointException)) {
                     uint addr = registerSet.CSRegisters[CSR.mepc];
-
-                    String errstr = " PC= " + addr.ToString("X") + "\r\n";
-                    errstr += e.ToString();
+                    Console.Error.WriteLine(" PC= " + addr.ToString("X") + "\r\n" + e.ToString());
 #endif
-                }
+                } catch (RiscvException) { }
             }
         }
 
