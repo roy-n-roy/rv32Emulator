@@ -52,6 +52,7 @@ namespace RiscVCpu.RegisterSet {
             CSRegisters = new RV32_ControlStatusRegisters(Enum.GetValues(typeof(CSR)).Cast<CSR>().ToDictionary(key => key, value => 0u));
 
             mainMemory = mem;
+            mainMemory.SetRegisterSet(this);
 
             //マシンモードに設定
             currentMode = PrivilegeLevels.MachineMode;
@@ -69,9 +70,6 @@ namespace RiscVCpu.RegisterSet {
             get => programCounter;
             internal set {
                 programCounter = value;
-                if (Mem.IsFaultAddress(value, 4)) {
-                    throw new RiscvException(RiscvExceptionCause.InstructionAccessFault, value, this);
-                }
                 instructionRegister = Mem.FetchInstruction(value);
             }
         }
@@ -93,7 +91,10 @@ namespace RiscVCpu.RegisterSet {
         /// <summary>メインメモリ</summary>
         public RV32_AbstractMemoryHandler Mem {
             get => mainMemory;
-            set => mainMemory = value;
+            set {
+                mainMemory = value;
+                mainMemory.SetRegisterSet(this);
+            }
         }
 
         #endregion
