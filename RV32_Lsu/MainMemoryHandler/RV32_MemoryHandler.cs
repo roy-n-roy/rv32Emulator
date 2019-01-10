@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RiscVCpu.MemoryHandler {
     /// <summary>メインメモリハンドラ</summary>
@@ -12,8 +9,6 @@ namespace RiscVCpu.MemoryHandler {
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
         public RV32_MemoryHandler(byte[] mainMemory) : base(mainMemory) {}
 
-
- 
         /// <summary>
         /// メモリハンドラの基となったバイト配列を返す
         /// </summary>
@@ -45,6 +40,12 @@ namespace RiscVCpu.MemoryHandler {
         /// <param name="address">メモリアドレス</param>
         public override void Release(UInt64 address) {
         }
+
+        /// <summary>
+        /// メモリアドレスの予約を全て解放する
+        /// </summary>
+        public override void Reset() {
+        }
     }
 
     /// <summary>メインメモリハンドラ 抽象クラス</summary>
@@ -52,7 +53,7 @@ namespace RiscVCpu.MemoryHandler {
 
         public byte this[UInt64 index] {
             set {
-                mainMemory[index] = value;
+                mainMemory[index - PAddr + Offset] = value;
                 if (HostAccessAddress.Contains(index)) {
                     throw new HostAccessTrap();
                 }
@@ -61,13 +62,16 @@ namespace RiscVCpu.MemoryHandler {
                 if (HostAccessAddress.Contains(index)) {
                     throw new HostAccessTrap();
                 }
-                return mainMemory[index];
+                return mainMemory[index - PAddr + Offset];
             }
         }
 
         private protected readonly byte[] mainMemory;
         public readonly HashSet<UInt64> HostAccessAddress;
 
+        public UInt64 Size { get => (UInt64)mainMemory.LongLength; }
+        public UInt64 PAddr { get; set; }
+        public UInt64 Offset { get; set; }
 
         /// <summary>メインメモリハンドラ</summary>
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
@@ -101,8 +105,25 @@ namespace RiscVCpu.MemoryHandler {
         /// <param name="address">メモリアドレス</param>
         public abstract void Release(UInt64 address);
 
-        public UInt32 GetUInt32(int startIndex) {
-            return BitConverter.ToUInt32(mainMemory, startIndex);
+        /// <summary>
+        /// メモリアドレスの予約を全て解放する
+        /// </summary>
+        public abstract void Reset();
+
+        public bool IsFaultAddress(UInt64 address, uint length) {
+            return address < PAddr || address + length - 1 >= Size - PAddr + Offset;
+        }
+
+        /// <summary>
+        /// 指定したアドレスから命令をフェッチする
+        /// </summary>
+        /// <param name="addr">命令のアドレス</param>
+        /// <returns>32bit長 Risc-V命令</returns>
+        public UInt32 FetchInstruction(UInt64 addr) {
+            if (HostAccessAddress.Contains(addr)) {
+                throw new HostAccessTrap();
+            }
+            return BitConverter.ToUInt32(mainMemory, (int)(addr - PAddr + Offset));
         }
     }
 

@@ -36,17 +36,19 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <summary>
         /// レジスタを全てクリアし、エントリポイントをPCに設定する
         /// </summary>
-        /// <param name="entryPoint"></param>
-        public void ClearAndSetPC(UInt32 entryPoint, UInt32 insLength = 4u) {
+        /// <param name="entryOffset"></param>
+        public void ClearAndSetPC(UInt32 PhysicalAddress, UInt32 VirtualAddress, UInt32 entryOffset) {
             reg.ClearAll();
-            reg.PC = entryPoint;
+            reg.PAddr = PhysicalAddress;
+            reg.Offset = entryOffset;
+            reg.PC = VirtualAddress;
         }
 
         /// <summary>
         /// サポートするオプション拡張命令セット(Machine ISA)を表すCSRに設定を追加する
         /// </summary>
         /// <param name="option">命令セットを表す文字</param>
-        public void AddMisa(char option, UInt32 insLength = 4u) {
+        public void AddMisa(char option) {
             reg.AddMisa(option);
         }
     }

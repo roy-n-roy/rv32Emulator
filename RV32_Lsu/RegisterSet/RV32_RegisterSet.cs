@@ -46,7 +46,7 @@ namespace RiscVCpu.RegisterSet {
 
             // レジスタ初期化
             Registers = Enumerable.Range(0, 32).ToDictionary(key => (Register)key, value => 0u);
-            FPRegisters = Enumerable.Range(0, 32).ToDictionary(key => (FPRegister)key, value => BitConverter.ToUInt64(BitConverter.GetBytes(0d), 0)); 
+            FPRegisters = Enumerable.Range(0, 32).ToDictionary(key => (FPRegister)key, value => BitConverter.ToUInt64(BitConverter.GetBytes(0d), 0));
 
             // コントロール・ステータスレジスタ初期化
             CSRegisters = new RV32_ControlStatusRegisters(Enum.GetValues(typeof(CSR)).Cast<CSR>().ToDictionary(key => key, value => 0u));
@@ -56,7 +56,7 @@ namespace RiscVCpu.RegisterSet {
             //マシンモードに設定
             currentMode = PrivilegeLevels.MachineMode;
 
-            CSRegisters[CSR.misa] |= 0x40000000;
+            CSRegisters.Misa |= 0x4000_0000u;
 
         }
 
@@ -69,9 +69,15 @@ namespace RiscVCpu.RegisterSet {
             get => programCounter;
             internal set {
                 programCounter = value;
-                instructionRegister = Mem.GetUInt32((int)value);
+                if (Mem.IsFaultAddress(value, 4)) {
+                    throw new RiscvException(RiscvExceptionCause.InstructionAccessFault, value, this);
+                }
+                instructionRegister = Mem.FetchInstruction(value);
             }
         }
+
+        public UInt64 Offset { get => Mem.Offset; set => Mem.Offset = value; }
+        public UInt64 PAddr { get => Mem.PAddr; set => Mem.PAddr = value; }
 
         /// <summary>命令レジスタ</summary>
         public UInt32 IR {
@@ -146,6 +152,9 @@ namespace RiscVCpu.RegisterSet {
         public void SetValue(FPRegister name, UInt32 value) {
             //値をレジスタに設定
             FPRegisters[name] = value;
+            StatusCSR status = CSRegisters[CSR.mstatus];
+            status.FS = 0x3;
+            CSRegisters[CSR.mstatus] = status;
         }
 
         /// <summary>
@@ -156,6 +165,9 @@ namespace RiscVCpu.RegisterSet {
         public void SetValue(FPRegister name, UInt64 value) {
             //値をレジスタに設定
             FPRegisters[name] = value;
+            StatusCSR status = CSRegisters[CSR.mstatus];
+            status.FS = 0x3;
+            CSRegisters[CSR.mstatus] = status;
         }
 
         /// <summary>
@@ -168,6 +180,21 @@ namespace RiscVCpu.RegisterSet {
             return FPRegisters[name];
         }
 
+        /// <summary>
+        /// 浮動小数点例外フラグをCSRに設定する
+        /// </summary>
+        /// <param name="fcsr"></param>
+        public void SetFflagsCSR(FloatCSR fcsr) {
+            CSRegisters[CSR.fflags] = fcsr & 0x1fu;
+        }
+
+        /// <summary>
+        /// 浮動小数点レジスタ・fcsrの状態を返す
+        /// </summary>
+        /// <returns></returns>
+        public bool IsFPAvailable() {
+            return ((StatusCSR)CSRegisters[CSR.mstatus]).FS != 0;
+        }
         #endregion
 
         #region コントロール・ステータスレジスタ
@@ -213,7 +240,7 @@ namespace RiscVCpu.RegisterSet {
                 //実行モードがアドレスの権限より小さい場合
                 //アドレス上位2bitが 0b11(= 読み取り専用)の場合は
                 //不正命令例外が発生する
-                throw new RiscvException(RiscvExceptionCause.IllegalInstruction,0 , this);
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, this);
             }
         }
 
@@ -244,7 +271,6 @@ namespace RiscVCpu.RegisterSet {
             CSRegisters.Select(c => CSRegisters[c.Key] = 0);
 
             currentMode = PrivilegeLevels.MachineMode;
-            CSRegisters[CSR.misa] |= 0x40000000;
         }
 
         /// <summary>
@@ -253,6 +279,7 @@ namespace RiscVCpu.RegisterSet {
         public void IncrementCycle() {
             CSRegisters[CSR.mcycle]++;
             CSRegisters[CSR.minstret]++;
+            /*
             CSRegisters[CSR.mhpmcounter3] += CSRegisters[CSR.mhpmevent3];
             CSRegisters[CSR.mhpmcounter4] += CSRegisters[CSR.mhpmevent4];
             CSRegisters[CSR.mhpmcounter5] += CSRegisters[CSR.mhpmevent5];
@@ -281,7 +308,7 @@ namespace RiscVCpu.RegisterSet {
             CSRegisters[CSR.mhpmcounter28] += CSRegisters[CSR.mhpmevent28];
             CSRegisters[CSR.mhpmcounter29] += CSRegisters[CSR.mhpmevent29];
             CSRegisters[CSR.mhpmcounter30] += CSRegisters[CSR.mhpmevent30];
-            CSRegisters[CSR.mhpmcounter31] += CSRegisters[CSR.mhpmevent31];
+            CSRegisters[CSR.mhpmcounter31] += CSRegisters[CSR.mhpmevent31];*/
         }
 
         /// <summary>
@@ -289,11 +316,11 @@ namespace RiscVCpu.RegisterSet {
         /// </summary>
         /// <param name="isa">拡張命令セットを表すA～Zの文字</param>
         internal void AddMisa(char isa) {
-            CSRegisters[CSR.misa] |= (UInt32)(1 << (Char.ToUpper(isa) - 'A' - 1));
+            CSRegisters.Misa |= 1u << (Char.ToUpper(isa) - 'A');
 
-            // IAMAFDをサポートする場合、Gもセットする
-            if((CSRegisters[CSR.misa] & 0x1129u) == 0x1129u) {
-                CSRegisters[CSR.misa] |= 5u;
+            // 追加標準機能をサポートする場合、Gもセットする
+            if (Char.ToUpper(isa) != 'E' && Char.ToUpper(isa) != 'I') {
+                CSRegisters.Misa |= 1u << ('G' - 'A');
             }
         }
 
@@ -340,7 +367,7 @@ namespace RiscVCpu.RegisterSet {
 
                 // 例外の発生時にアクセスしていたメモリアドレスを設定
                 CSRegisters[CSR.stval] = tval;
-                
+
                 // 例外前のステータスを設定
                 StatusCSR status = CSRegisters[CSR.sstatus];
                 status.SPIE = status.SIE;
@@ -375,14 +402,6 @@ namespace RiscVCpu.RegisterSet {
                 // 実行モードの変更
                 currentMode = PrivilegeLevels.UserMode;
             }
-        }
-
-        /// <summary>
-        /// 浮動小数点例外フラグをCSRに設定する
-        /// </summary>
-        /// <param name="fcsr"></param>
-        public void SetFflagsCSR(FloatCSR fcsr) {
-            CSRegisters[CSR.fflags] = fcsr & 0x1fu;
         }
 
         /// <summary>
