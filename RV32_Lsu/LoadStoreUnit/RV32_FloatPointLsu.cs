@@ -32,9 +32,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Flw(FPRegister rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.StoreAMOPageFault, addr + 3, reg);
-            }
             if (reg.Mem.CanOperate(addr, 4) && reg.IsFPAvailable()) {
                 byte[] bytes = new byte[8];
                 bytes[0] = reg.Mem[addr + 0];
@@ -60,9 +57,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Fld(FPRegister rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.IsFaultAddress(addr, 8)) {
-                throw new RiscvException(RiscvExceptionCause.StoreAMOPageFault, addr + 7, reg);
-            }
             if (reg.Mem.CanOperate(addr, 8) && reg.IsFPAvailable()) {
                 byte[] bytes = new byte[8];
                 bytes[0] = reg.Mem[addr + 0];
@@ -92,9 +86,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Fsw(Register rs1, FPRegister rs2, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.StoreAMOPageFault, addr + 3, reg);
-            }
             if (reg.Mem.CanOperate(addr, 4) && reg.IsFPAvailable()) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
                 reg.Mem[addr + 0] = bytes[0];
@@ -115,9 +106,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Fsd(Register rs1, FPRegister rs2, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.IsFaultAddress(addr, 8)) {
-                throw new RiscvException(RiscvExceptionCause.StoreAMOPageFault, addr + 7, reg);
-            }
             if (reg.Mem.CanOperate(addr, 8) && reg.IsFPAvailable()) {
 
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));

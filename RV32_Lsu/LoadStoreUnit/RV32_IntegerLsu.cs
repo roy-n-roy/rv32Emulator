@@ -159,9 +159,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Lb(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.IsFaultAddress(addr, 1)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr, reg);
-            }
             if (reg.Mem.CanOperate(addr, 1)) {
                 byte[] bytes = new byte[4];
                 bytes[0] = reg.Mem[addr];
@@ -182,9 +179,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Lbu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.IsFaultAddress(addr, 1)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr, reg);
-            }
             if (reg.Mem.CanOperate(addr, 1)) {
                 byte[] bytes = new byte[4];
                 bytes[0] = reg.Mem[addr];
@@ -206,9 +200,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Lh(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (addr < reg.Mem.PAddr || addr + 1 >= reg.Mem.Size - reg.Mem.PAddr + reg.Mem.Offset) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 1, reg);
-            }
             if (reg.Mem.CanOperate(addr, 2)) {
                 byte[] bytes = new byte[4];
                 bytes[0] = reg.Mem[addr + 0];
@@ -230,9 +221,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Lhu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.IsFaultAddress(addr, 2)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 1, reg);
-            }
             if (reg.Mem.CanOperate(addr, 2)) {
                 byte[] bytes = new byte[4];
                 bytes[0] = reg.Mem[addr + 0];
@@ -254,9 +242,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Lw(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 3, reg);
-            }
             if (reg.Mem.CanOperate(addr, 4)) {
                 byte[] bytes = new byte[4];
                 bytes[0] = reg.Mem[addr + 0];
@@ -282,9 +267,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Sb(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.IsFaultAddress(addr, 1)) {
-                throw new RiscvException(RiscvExceptionCause.StoreAMOPageFault, addr, reg);
-            }
             if (reg.Mem.CanOperate(addr, 1)) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
                 reg.Mem[addr + 0] = bytes[0];
@@ -302,9 +284,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Sh(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.IsFaultAddress(addr, 2)) {
-                throw new RiscvException(RiscvExceptionCause.StoreAMOPageFault, addr + 1, reg);
-            }
             if (reg.Mem.CanOperate(addr, 2)) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
                 reg.Mem[addr + 0] = bytes[0];
@@ -323,9 +302,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="offset">オフセット</param>
         public bool Sw(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.StoreAMOPageFault, addr + 3, reg);
-            }
             if (reg.Mem.CanOperate(addr, 4)) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
                 reg.Mem[addr + 0] = bytes[0];

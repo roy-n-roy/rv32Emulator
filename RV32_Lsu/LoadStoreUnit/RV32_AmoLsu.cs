@@ -31,9 +31,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool LrW(Register rd, Register rs1, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 3, reg);
-            }
             if (reg.Mem.CanOperate(addr, 4)) {
                 reg.Mem.Acquire(addr, 4);
                 base.Lw(rd, rs1, 0);
@@ -52,9 +49,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool ScW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.StoreAMOPageFault, addr + 3, reg);
-            }
             if (!reg.Mem.CanOperate(addr, 4)) {
                 base.Sw(rs1, rs2, 0);
                 reg.Mem.Release(addr);
@@ -76,10 +70,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool AmoSwapW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 3, reg);
-            }
             if (addr % 4 != 0) {
                 throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
@@ -119,10 +109,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool AmoAddW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 3, reg);
-            }
             if (addr % 4 != 0) {
                 throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
@@ -165,10 +151,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool AmoXorW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 3, reg);
-            }
             if (addr % 4 != 0) {
                 throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
@@ -210,10 +192,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool AmoAndW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 3, reg);
-            }
             if (addr % 4 != 0) {
                 throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
@@ -256,10 +234,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool AmoOrW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 3, reg);
-            }
             if (addr % 4 != 0) {
                 throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
@@ -301,11 +275,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool AmoMinW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 3, reg);
-            }
-
             if (addr % 4 != 0) {
                 throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
@@ -349,10 +318,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool AmoMaxW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 3, reg);
-            }
             if (addr % 4 != 0) {
                 throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
@@ -396,10 +361,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool AmoMinuW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 3, reg);
-            }
             if (addr % 4 != 0) {
                 throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
@@ -443,10 +404,6 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs2">レジスタ番号</param>
         public bool AmoMaxuW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4u) {
             UInt32 addr = reg.GetValue(rs1);
-
-            if (reg.Mem.IsFaultAddress(addr, 4)) {
-                throw new RiscvException(RiscvExceptionCause.LoadPageFault, addr + 3, reg);
-            }
             if (addr % 4 != 0) {
                 throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
             }
