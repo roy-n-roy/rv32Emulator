@@ -2,6 +2,8 @@
 using RiscVCpu.ArithmeticLogicUnit;
 using RiscVCpu.Decoder;
 using RiscVCpu.LoadStoreUnit;
+using RiscVCpu.LoadStoreUnit.Constants;
+using RiscVCpu.LoadStoreUnit.Exceptions;
 using RiscVCpu.MemoryHandler;
 using RiscVCpu.RegisterSet;
 using System;
@@ -109,7 +111,7 @@ namespace RiscVCpu {
         /// </summary>
         /// <param name="type">ALUの型</param>
         /// <returns></returns>
-        public RV32_AbstractCalculator Alu(Type type){ return alu.GetInstance(type); }
+        public RV32_AbstractCalculator Alu(Type type) { return alu.GetInstance(type); }
 
         /// <summary>
         /// ロード/ストアユニットを返す
@@ -170,11 +172,19 @@ namespace RiscVCpu {
         /// <returns>正常時:0, 異常時:0以外</returns>
         public int Run() {
             while (true) {
-                if (registerSet.IR == 0) {
-                    return 0;
-                }
-                decoder.Decode(this);
-                registerSet.IncrementCycle();
+                try {
+                    if (registerSet.IR == 0) {
+                        return 0;
+                    }
+                    decoder.Decode(this);
+                    registerSet.IncrementCycle();
+#if DEBUG
+                } catch (RiscvException e) 
+                   when (!(e is RiscvEnvironmentCallException || e is RiscvBreakpointException)) {
+                    uint addr = registerSet.CSRegisters[CSR.mepc];
+                    Console.Error.WriteLine(" PC= " + addr.ToString("X") + "\r\n" + e.ToString());
+#endif
+                } catch (RiscvException) { }
             }
         }
 
