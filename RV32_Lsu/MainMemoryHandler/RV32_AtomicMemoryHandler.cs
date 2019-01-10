@@ -57,5 +57,12 @@ namespace RiscVCpu.MemoryHandler {
         public override void Release(UInt64 address) {
             reservedAddress.Remove(address);
         }
+
+        /// <summary>
+        /// メモリアドレスの予約を全て解放する
+        /// </summary>
+        public override void Reset() {
+            reservedAddress.Clear();
+        }
     }
 }

@@ -126,6 +126,9 @@ namespace RiscVCpu {
 
             long fileSize = 0;
             int readBytes = 0;
+
+            registerSet.Mem.Reset();
+
             using (BinaryReader br = new BinaryReader(File.Open(objectPath, FileMode.Open))) {
                 fileSize = br.BaseStream.Length;
                 readBytes = br.Read(registerSet.Mem.GetBytes(), 0, (int)fileSize);
@@ -143,16 +146,20 @@ namespace RiscVCpu {
                 return -1;
             }
 
-            UInt32 entryAddr = 0;
+            UInt32 entryOffset = 0,
+                      virtAddr = 0,
+                      physAddr = 0;
 
             foreach (Elf32_Phdr ph in elf.e_phdrtab) {
                 if ((ph.p_flags & 0x1) > 0) {
-                    entryAddr = ph.p_offset;
+                    entryOffset = ph.p_offset;
+                    virtAddr = ph.p_vaddr;
+                    physAddr = ph.p_paddr;
                     break;
                 }
             }
 
-            lsu.ClearAndSetPC(entryAddr);
+            lsu.ClearAndSetPC(physAddr, virtAddr, entryOffset);
 
             return 0;
         }
