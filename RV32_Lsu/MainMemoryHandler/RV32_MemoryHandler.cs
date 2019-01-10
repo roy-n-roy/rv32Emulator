@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RiscVCpu.LoadStoreUnit.Exceptions;
+using RiscVCpu.RegisterSet;
+using System;
 using System.Collections.Generic;
 
 namespace RiscVCpu.MemoryHandler {
@@ -7,7 +9,7 @@ namespace RiscVCpu.MemoryHandler {
 
         /// <summary>メインメモリハンドラ</summary>
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
-        public RV32_MemoryHandler(byte[] mainMemory) : base(mainMemory) {}
+        public RV32_MemoryHandler(byte[] mainMemory) : base(mainMemory) { }
 
         /// <summary>
         /// メモリハンドラの基となったバイト配列を返す
@@ -51,18 +53,26 @@ namespace RiscVCpu.MemoryHandler {
     /// <summary>メインメモリハンドラ 抽象クラス</summary>
     public abstract class RV32_AbstractMemoryHandler {
 
-        public byte this[UInt64 index] {
+        private RV32_RegisterSet reg;
+
+        public byte this[UInt32 address] {
             set {
-                mainMemory[index - PAddr + Offset] = value;
-                if (HostAccessAddress.Contains(index)) {
+                if (address < PAddr || address >= Size - PAddr + Offset) {
+                    throw new RiscvException(RiscvExceptionCause.StoreAMOAccessFault, address, reg);
+                }
+                mainMemory[address - PAddr + Offset] = value;
+                if (HostAccessAddress.Contains(address)) {
                     throw new HostAccessTrap();
                 }
             }
             get {
-                if (HostAccessAddress.Contains(index)) {
+                if (HostAccessAddress.Contains(address)) {
                     throw new HostAccessTrap();
                 }
-                return mainMemory[index - PAddr + Offset];
+                if (address < PAddr || address >= Size - PAddr + Offset) {
+                    throw new RiscvException(RiscvExceptionCause.LoadAccessFault, address, reg);
+                }
+                return mainMemory[address - PAddr + Offset];
             }
         }
 
@@ -72,6 +82,10 @@ namespace RiscVCpu.MemoryHandler {
         public UInt64 Size { get => (UInt64)mainMemory.LongLength; }
         public UInt64 PAddr { get; set; }
         public UInt64 Offset { get; set; }
+
+        internal void SetRegisterSet(RV32_RegisterSet registerSet) {
+            reg = registerSet;
+        }
 
         /// <summary>メインメモリハンドラ</summary>
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
@@ -110,24 +124,25 @@ namespace RiscVCpu.MemoryHandler {
         /// </summary>
         public abstract void Reset();
 
-        public bool IsFaultAddress(UInt64 address, uint length) {
-            return address < PAddr || address + length - 1 >= Size - PAddr + Offset;
-        }
-
         /// <summary>
         /// 指定したアドレスから命令をフェッチする
         /// </summary>
         /// <param name="addr">命令のアドレス</param>
         /// <returns>32bit長 Risc-V命令</returns>
-        public UInt32 FetchInstruction(UInt64 addr) {
-            if (HostAccessAddress.Contains(addr)) {
+        public UInt32 FetchInstruction(UInt32 address) {
+            if (HostAccessAddress.Contains(address)) {
                 throw new HostAccessTrap();
             }
-            return BitConverter.ToUInt32(mainMemory, (int)(addr - PAddr + Offset));
+            if (address < PAddr || address >= Size - PAddr + Offset) {
+                throw new RiscvException(RiscvExceptionCause.InstructionAccessFault, address, reg);
+            }
+            return BitConverter.ToUInt32(mainMemory, (int)(address - PAddr + Offset));
         }
     }
 
+    /// <summary>
+    /// ホストへトラップを返す
+    /// </summary>
     public class HostAccessTrap : Exception {
-
     }
 }
