@@ -65,6 +65,10 @@ namespace RiscVCpu.ArithmeticLogicUnit {
             } else if (ToSingle(result) != (ToSingle(binary1) * ToSingle(binary2)) + ToSingle(binary3)) {
                 // 結果が一致しない場合
                 fcsr.NX = true;
+
+            } else if (IsRounded(result, binary1) || IsRounded(result, binary2) || IsRounded(result, binary3)) {
+                // 桁丸めが発生している場合
+                fcsr.NX = true;
             }
 
             reg.SetValue(rd, result);
@@ -105,6 +109,10 @@ namespace RiscVCpu.ArithmeticLogicUnit {
             } else if (ToSingle(result) != (ToSingle(binary1) * ToSingle(binary2)) - ToSingle(binary3)) {
                 // 結果が一致しない場合
                 fcsr.NX = true;
+
+            } else if (IsRounded(result, binary1) || IsRounded(result, binary2) || IsRounded(result, binary3)) {
+                // 桁丸めが発生している場合
+                fcsr.NX = true;
             }
 
             reg.SetValue(rd, result);
@@ -129,7 +137,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
             Binary32 result;
             FloatCSR fcsr = 0;
 
-            result = ToBinary((-ToSingle(binary1) * ToSingle(binary2)) + ToSingle(binary3));
+            result = ToBinary((-ToSingle(binary1) * ToSingle(binary2)) - ToSingle(binary3));
             result = IsNaN(result) ? NaN : result;
 
             if ((IsInfinity(binary1) || IsInfinity(binary2)) && IsInfinity(binary3) &&
@@ -142,8 +150,12 @@ namespace RiscVCpu.ArithmeticLogicUnit {
                 // いずれかの数値がシグナリングNaNの場合
                 fcsr.NV = true;
 
-            } else if (ToSingle(result) != (-ToSingle(binary1) * ToSingle(binary2)) + ToSingle(binary3)) {
+            } else if (ToSingle(result) != (-ToSingle(binary1) * ToSingle(binary2)) - ToSingle(binary3)) {
                 // 結果が一致しない場合
+                fcsr.NX = true;
+
+            } else if (IsRounded(result, binary1) || IsRounded(result, binary2) || IsRounded(result, binary3)) {
+                // 桁丸めが発生している場合
                 fcsr.NX = true;
             }
 
@@ -169,7 +181,7 @@ namespace RiscVCpu.ArithmeticLogicUnit {
             Binary32 result;
             FloatCSR fcsr = 0;
 
-            result = ToBinary((-ToSingle(binary1) * ToSingle(binary2)) - ToSingle(binary3));
+            result = ToBinary((-ToSingle(binary1) * ToSingle(binary2)) + ToSingle(binary3));
             result = IsNaN(result) ? NaN : result;
 
             if ((IsInfinity(binary1) || IsInfinity(binary2)) && IsInfinity(binary3) &&
@@ -182,8 +194,12 @@ namespace RiscVCpu.ArithmeticLogicUnit {
                 // いずれかの数値がシグナリングNaNの場合
                 fcsr.NV = true;
 
-            } else if (ToSingle(result) != (-ToSingle(binary1) * ToSingle(binary2)) - ToSingle(binary3)) {
+            } else if (ToSingle(result) != (-ToSingle(binary1) * ToSingle(binary2)) + ToSingle(binary3)) {
                 // 結果が一致しない場合
+                fcsr.NX = true;
+
+            } else if (IsRounded(result, binary1) || IsRounded(result, binary2) || IsRounded(result, binary3)) {
+                // 桁丸めが発生している場合
                 fcsr.NX = true;
             }
 
@@ -222,6 +238,10 @@ namespace RiscVCpu.ArithmeticLogicUnit {
             } else if (ToSingle(result) != ToSingle(binary1) + ToSingle(binary2)) {
                 // 結果が一致しない場合
                 fcsr.NX = true;
+
+            } else if (IsRounded(result, binary1) || IsRounded(result, binary2)) {
+                // 桁丸めが発生している場合
+                fcsr.NX = true;
             }
 
             reg.SetValue(rd, result);
@@ -259,6 +279,10 @@ namespace RiscVCpu.ArithmeticLogicUnit {
             } else if (ToSingle(result) != ToSingle(binary1) - ToSingle(binary2)) {
                 // 結果が一致しない場合
                 fcsr.NX = true;
+
+            } else if (IsRounded(result, binary1) || IsRounded(result, binary2)) {
+                // 桁丸めが発生している場合
+                fcsr.NX = true;
             }
 
             reg.SetValue(rd, result);
@@ -290,6 +314,10 @@ namespace RiscVCpu.ArithmeticLogicUnit {
 
             } else if (ToSingle(result) != ToSingle(binary1) * ToSingle(binary2)) {
                 // 結果が一致しない場合
+                fcsr.NX = true;
+
+            } else if (IsRounded(result, binary1) || IsRounded(result, binary2)) {
+                // 桁丸めが発生している場合
                 fcsr.NX = true;
             }
 
@@ -334,6 +362,10 @@ namespace RiscVCpu.ArithmeticLogicUnit {
                 } else if (ToSingle(result) != ToSingle(binary1) / ToSingle(binary2)) {
                     // 結果が一致しない場合
                     fcsr.NX = true;
+
+                } else if (IsRounded(result, binary1) || IsRounded(result, binary2)) {
+                    // 桁丸めが発生している場合
+                    fcsr.NX = true;
                 }
             }
 
@@ -369,6 +401,10 @@ namespace RiscVCpu.ArithmeticLogicUnit {
 
             } else if (ToSingle(result) * ToSingle(result) != ToSingle(binary1)) {
                 // 結果が一致しない場合
+                fcsr.NX = true;
+
+            } else if (IsRounded(binary1, result)) {
+                // 桁丸めが発生している場合
                 fcsr.NX = true;
             }
 
@@ -819,6 +855,20 @@ namespace RiscVCpu.ArithmeticLogicUnit {
 
         internal static bool IsNegative(Binary32 binary) => (binary & SignMask) == NegativeSign;
         internal static bool IsPositive(Binary32 binary) => !IsNegative(binary);
+
+        internal static bool IsRounded(Binary32 base_binary, Binary32 binary) {
+            bool result = true;
+
+            // binary1とbinary2の指数の差を求める
+            int exp_sa = (int)((base_binary & ExpMask) >> 23) - (int)((binary & ExpMask) >> 23) ;
+
+            // 差が+の場合は仮数が右シフト、-の場合は左シフトされるので、シフトして消える部分に数値がある場合は誤差ありとする
+            //Binary32 mask = (exp_sa > 0 ? ((1u << exp_sa) - 1) : (uint)(-0xff80_0000 >> -exp_sa));
+            //                                                          -0x80_0000 = 0xff80_0000
+            Binary32 mask = (exp_sa > 0 ? ((1u << exp_sa) - 1) : (uint)(-0x80_0000 >> -exp_sa));
+            result = ((binary & MantMask) & mask) > 0;
+            return result;
+        }
 
         /// <summary>
         /// 32bit長バイナリ形式から単精度浮動小数点数に変換する
