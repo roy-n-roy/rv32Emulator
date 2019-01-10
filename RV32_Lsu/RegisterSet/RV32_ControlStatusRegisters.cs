@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace RiscVCpu.RegisterSet {
     public class RV32_ControlStatusRegisters : Dictionary<CSR, UInt32> {
+
+        public UInt32 Misa { get => base[CSR.misa]; set => base[CSR.misa] = value; }
+
         public RV32_ControlStatusRegisters(IDictionary<CSR, uint> dictionary) : base(dictionary) {
         }
 
@@ -86,14 +89,24 @@ namespace RiscVCpu.RegisterSet {
                     // fcsr,fflags,frm
                     case CSR.fcsr:
                         base[CSR.fcsr] =  value & (FloatCSR.FflagsMask | FloatCSR.FrmMask);
+                        StatusCSR status;
+                        status = new StatusCSR { FS = 0x3 };
+                        base[CSR.mstatus] |= status;
                         break;
 
                     case CSR.fflags:
                         base[CSR.fcsr] = base[CSR.fcsr] & ~FloatCSR.FflagsMask | value & FloatCSR.FflagsMask;
+                        status = new StatusCSR { FS = 0x3 };
+                        base[CSR.mstatus] |= status;
                         break;
 
                     case CSR.frm:
                         base[CSR.fcsr] = base[CSR.fcsr] & ~FloatCSR.FrmMask | (value << 5) & FloatCSR.FrmMask;
+                        status = new StatusCSR { FS = 0x3 };
+                        base[CSR.mstatus] |= status;
+                        break;
+
+                    case CSR.misa:
                         break;
 
                     default:
