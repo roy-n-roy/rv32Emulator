@@ -33,12 +33,16 @@ namespace RiscVCpu.LoadStoreUnit {
         public bool Flw(FPRegister rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
             UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 4)) {
-                byte[] bytes = new byte[4];
+                byte[] bytes = new byte[8];
                 bytes[0] = reg.Mem[addr + 0];
                 bytes[1] = reg.Mem[addr + 1];
                 bytes[2] = reg.Mem[addr + 2];
                 bytes[3] = reg.Mem[addr + 3];
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                bytes[4] = 0xff;
+                bytes[5] = 0xff;
+                bytes[6] = 0xff;
+                bytes[7] = 0xff;
+                reg.SetValue(rd, BitConverter.ToUInt64(bytes, 0));
             }
             reg.IncrementPc(insLength);
             return true;
