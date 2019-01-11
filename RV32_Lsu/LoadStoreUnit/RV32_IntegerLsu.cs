@@ -161,13 +161,17 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 1)) {
                 byte[] bytes = new byte[4];
-                bytes[0] = reg.Mem[addr];
-                bytes[1] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
-                bytes[2] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
-                bytes[3] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                try {
+                    bytes[0] = reg.Mem[addr];
+                    bytes[1] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
+                    bytes[2] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
+                    bytes[3] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
+                    reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+           when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
         /// <summary>
@@ -181,13 +185,17 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 1)) {
                 byte[] bytes = new byte[4];
-                bytes[0] = reg.Mem[addr];
-                bytes[1] = 0;
-                bytes[2] = 0;
-                bytes[3] = 0;
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                try {
+                    bytes[0] = reg.Mem[addr];
+                    bytes[1] = 0;
+                    bytes[2] = 0;
+                    bytes[3] = 0;
+                    reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+           when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -202,13 +210,17 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 2)) {
                 byte[] bytes = new byte[4];
-                bytes[0] = reg.Mem[addr + 0];
-                bytes[1] = reg.Mem[addr + 1];
-                bytes[2] = (byte)((bytes[1] & 128u) > 1u ? 0xffu : 0u);
-                bytes[3] = (byte)((bytes[1] & 128u) > 1u ? 0xffu : 0u);
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                try {
+                    bytes[0] = reg.Mem[addr + 0];
+                    bytes[1] = reg.Mem[addr + 1];
+                    bytes[2] = (byte)((bytes[1] & 128u) > 1u ? 0xffu : 0u);
+                    bytes[3] = (byte)((bytes[1] & 128u) > 1u ? 0xffu : 0u);
+                    reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+           when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -223,13 +235,17 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 2)) {
                 byte[] bytes = new byte[4];
-                bytes[0] = reg.Mem[addr + 0];
-                bytes[1] = reg.Mem[addr + 1];
-                bytes[2] = 0;
-                bytes[3] = 0;
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                try {
+                    bytes[0] = reg.Mem[addr + 0];
+                    bytes[1] = reg.Mem[addr + 1];
+                    bytes[2] = 0;
+                    bytes[3] = 0;
+                    reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -244,13 +260,17 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 4)) {
                 byte[] bytes = new byte[4];
-                bytes[0] = reg.Mem[addr + 0];
-                bytes[1] = reg.Mem[addr + 1];
-                bytes[2] = reg.Mem[addr + 2];
-                bytes[3] = reg.Mem[addr + 3];
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                try {
+                    bytes[0] = reg.Mem[addr + 0];
+                    bytes[1] = reg.Mem[addr + 1];
+                    bytes[2] = reg.Mem[addr + 2];
+                    bytes[3] = reg.Mem[addr + 3];
+                    reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+                when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -269,9 +289,13 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 1)) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-                reg.Mem[addr + 0] = bytes[0];
+                try {
+                    reg.Mem[addr + 0] = bytes[0];
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+                 when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -286,10 +310,14 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 2)) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-                reg.Mem[addr + 0] = bytes[0];
-                reg.Mem[addr + 1] = bytes[1];
+                try {
+                    reg.Mem[addr + 0] = bytes[0];
+                    reg.Mem[addr + 1] = bytes[1];
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+                 when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -304,12 +332,16 @@ namespace RiscVCpu.LoadStoreUnit {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 4)) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-                reg.Mem[addr + 0] = bytes[0];
-                reg.Mem[addr + 1] = bytes[1];
-                reg.Mem[addr + 2] = bytes[2];
-                reg.Mem[addr + 3] = bytes[3];
+                try {
+                    reg.Mem[addr + 0] = bytes[0];
+                    reg.Mem[addr + 1] = bytes[1];
+                    reg.Mem[addr + 2] = bytes[2];
+                    reg.Mem[addr + 3] = bytes[3];
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+                   when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
