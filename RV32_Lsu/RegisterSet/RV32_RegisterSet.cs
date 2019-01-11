@@ -28,7 +28,7 @@ namespace RiscVCpu.RegisterSet {
         /// <summary>
         /// コントロール・ステータスレジスタを表す32bit符号なし整数の連想配列
         /// </summary>
-        public readonly RV32_ControlStatusRegisters CSRegisters;
+        internal readonly RV32_ControlStatusRegisters CSRegisters;
 
         private UInt32 programCounter;
         private UInt32 instructionRegister;
@@ -73,9 +73,6 @@ namespace RiscVCpu.RegisterSet {
                 instructionRegister = Mem.FetchInstruction(value);
             }
         }
-
-        public UInt64 Offset { get => Mem.Offset; set => Mem.Offset = value; }
-        public UInt64 PAddr { get => Mem.PAddr; set => Mem.PAddr = value; }
 
         /// <summary>命令レジスタ</summary>
         public UInt32 IR {
@@ -254,7 +251,26 @@ namespace RiscVCpu.RegisterSet {
             //CSRアドレスの9～10bitがアクセス権限を表す
             PrivilegeLevels instructionLevel = (PrivilegeLevels)(((UInt32)name >> 8) & 0x3u);
             if (instructionLevel <= currentMode) {
+
+                // ユーザモードカウンタ・タイマを読み込む場合
+                // mcounteren,scounterenにビットが設定されていない場合は、
+                // 参照不可のため、不正命令例外を発行する
+                if ((CSR.cycle <= name && name <= CSR.hpmcounter31) ||
+                    (CSR.cycleh <= name && name <= CSR.hpmcounter31h)) {
+
+                    if (CurrentMode == PrivilegeLevels.UserMode) {
+                        if (((CSRegisters[CSR.mcounteren] & (1u << ((int)name & 0x01f))) == 0) ||
+                            ((CSRegisters[CSR.scounteren] & (1u << ((int)name & 0x01f))) == 0)) {
+                            throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, this);
+                        }
+                    } else if (CurrentMode == PrivilegeLevels.SupervisorMode) {
+                        if (((CSRegisters[CSR.mcounteren] >> ((int)name & 0x01f)) & 0x1u) == 0) {
+                            throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, this);
+                        }
+                    }
+                }
                 return (UInt32)CSRegisters[name];
+
 
             } else {
                 //実行モードがアドレスの権限より小さい場合は不正命令例外が発生する
@@ -326,11 +342,11 @@ namespace RiscVCpu.RegisterSet {
         }
 
         /// <summary>
-        /// 
+        /// 例外発生時のCSR処理を行う
         /// </summary>
-        /// <param name="cause"></param>
-        /// <param name="tval"></param>
-        public void SetCauseCSR(RiscvExceptionCause cause, UInt32 tval) {
+        /// <param name="cause">例外の原因</param>
+        /// <param name="tval">例外の原因となったアドレス(ない場合は0)</param>
+        public void HandleExceptionCSR(RiscvExceptionCause cause, UInt32 tval) {
 
             if ((CSRegisters[CSR.medeleg] & (1u << (int)cause)) == 0u || (CSRegisters[CSR.misa] & ((1u << ('S' - 'A')) | (1u << ('U' - 'A')))) == 0u) {
                 // マシンモード以下に例外トラップ委譲されていない または、 ユーザモード・スーパーバイザモードの実装がない場合
