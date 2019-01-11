@@ -34,9 +34,8 @@ namespace RiscVCpu.LoadStoreUnit {
             if (reg.Mem.CanOperate(addr, 4)) {
                 reg.Mem.Acquire(addr, 4);
                 base.Lw(rd, rs1, 0);
-            } else {
-                reg.IncrementPc(insLength);
             }
+            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -54,9 +53,9 @@ namespace RiscVCpu.LoadStoreUnit {
                 reg.Mem.Release(addr);
                 reg.SetValue(rd, 0);
             } else {
-                reg.IncrementPc(insLength);
                 reg.SetValue(rd, 1);
             }
+            reg.IncrementPc(insLength);
             return true;
         }
 
