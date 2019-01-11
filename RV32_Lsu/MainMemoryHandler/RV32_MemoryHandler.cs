@@ -56,24 +56,41 @@ namespace RiscVCpu.MemoryHandler {
         private RV32_RegisterSet reg;
 
         public byte this[UInt32 address] {
+            // メモリへのストア
             set {
                 if (address < PAddr || address >= Size - PAddr + Offset) {
-                    throw new RiscvException(RiscvExceptionCause.StoreAMOAccessFault, address, reg);
+                    throw new RiscvException(RiscvExceptionCause.StoreAMOPageFault, address, reg);
                 }
                 mainMemory[address - PAddr + Offset] = value;
                 if (HostAccessAddress.Contains(address)) {
                     throw new HostAccessTrap();
                 }
             }
+            // メモリからのロード
             get {
                 if (HostAccessAddress.Contains(address)) {
                     throw new HostAccessTrap();
                 }
                 if (address < PAddr || address >= Size - PAddr + Offset) {
-                    throw new RiscvException(RiscvExceptionCause.LoadAccessFault, address, reg);
+                    throw new RiscvException(RiscvExceptionCause.LoadPageFault, address, reg);
                 }
                 return mainMemory[address - PAddr + Offset];
             }
+        }
+
+        /// <summary>
+        /// 指定したアドレスから命令をフェッチする
+        /// </summary>
+        /// <param name="addr">命令のアドレス</param>
+        /// <returns>32bit長 Risc-V命令</returns>
+        public UInt32 FetchInstruction(UInt32 address) {
+            if (HostAccessAddress.Contains(address)) {
+                throw new HostAccessTrap();
+            }
+            if (address < PAddr || address >= Size - PAddr + Offset) {
+                throw new RiscvException(RiscvExceptionCause.InstructionPageFault, address, reg);
+            }
+            return BitConverter.ToUInt32(mainMemory, (int)(address - PAddr + Offset));
         }
 
         private protected readonly byte[] mainMemory;
@@ -124,20 +141,6 @@ namespace RiscVCpu.MemoryHandler {
         /// </summary>
         public abstract void Reset();
 
-        /// <summary>
-        /// 指定したアドレスから命令をフェッチする
-        /// </summary>
-        /// <param name="addr">命令のアドレス</param>
-        /// <returns>32bit長 Risc-V命令</returns>
-        public UInt32 FetchInstruction(UInt32 address) {
-            if (HostAccessAddress.Contains(address)) {
-                throw new HostAccessTrap();
-            }
-            if (address < PAddr || address >= Size - PAddr + Offset) {
-                throw new RiscvException(RiscvExceptionCause.InstructionAccessFault, address, reg);
-            }
-            return BitConverter.ToUInt32(mainMemory, (int)(address - PAddr + Offset));
-        }
     }
 
     /// <summary>
