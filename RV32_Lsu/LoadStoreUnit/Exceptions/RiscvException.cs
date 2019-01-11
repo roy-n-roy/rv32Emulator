@@ -6,27 +6,31 @@ namespace RiscVCpu.LoadStoreUnit.Exceptions {
     /// <summary>Risc-V CPUで発生した例外を表します</summary>
     public class RiscvException : Exception {
 
-        /// <summary>割り込み・例外要因</summary>
-        public RiscvExceptionCause Cause { get; }
 
         /// <summary>Risc-V CPU例外のインスタンスを初期化します</summary>
         public RiscvException(RiscvExceptionCause cause, UInt32 tval, RV32_RegisterSet reg) : base(Enum.GetName(typeof(RiscvExceptionCause), cause)) {
-            this.Cause = cause;
-            reg.SetCauseCSR(cause, tval);
+            Data.Add("pc", reg.PC);
+            Data.Add("cause", cause);
+            Data.Add("tval", tval);
+            reg.HandleExceptionCSR(cause, tval);
         }
         /// <summary>指定したメッセージを使用して、Risc-V CPU例外のインスタンスを初期化します</summary>
         /// <param name="message">エラーを説明するメッセージ</param>
         public RiscvException(RiscvExceptionCause cause, UInt32 tval, RV32_RegisterSet reg, string message) : base(Enum.GetName(typeof(RiscvExceptionCause), cause) + "\r\n" + message) {
-            this.Cause = cause;
-            reg.SetCauseCSR(cause, tval);
+            Data.Add("pc", reg.PC);
+            Data.Add("cause", cause);
+            Data.Add("tval", tval);
+            reg.HandleExceptionCSR(cause, tval);
         }
 
         /// <summary>指定したメッセージおよびこの例外の原因となった内部例外への参照を使用して、Risc-V CPU例外のインスタンスを初期化します</summary>
         /// <param name="message">エラーを説明するメッセージ</param>
         /// <param name="innerException">現在の例外の原因である例外</param>
         public RiscvException(RiscvExceptionCause cause, UInt32 tval, RV32_RegisterSet reg, string message, Exception innerException) : base(Enum.GetName(typeof(RiscvExceptionCause), cause) + "\r\n" + message, innerException) {
-            this.Cause = cause;
-            reg.SetCauseCSR(cause, tval);
+            Data.Add("pc", reg.PC);
+            Data.Add("cause", cause);
+            Data.Add("tval", tval);
+            reg.HandleExceptionCSR(cause, tval);
         }
     }
 
