@@ -39,8 +39,8 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="entryOffset"></param>
         public void ClearAndSetPC(UInt32 PhysicalAddress, UInt32 VirtualAddress, UInt32 entryOffset) {
             reg.ClearAll();
-            reg.PAddr = PhysicalAddress;
-            reg.Offset = entryOffset;
+            reg.Mem.PAddr = PhysicalAddress;
+            reg.Mem.Offset = entryOffset;
             reg.PC = VirtualAddress;
         }
 
