@@ -1,8 +1,8 @@
-﻿using RiscVCpu.LoadStoreUnit.Constants;
-using RiscVCpu.RegisterSet;
+﻿using RV32_Lsu.Constants;
+using RV32_Lsu.RegisterSet;
 using System;
 
-namespace RiscVCpu.LoadStoreUnit.Exceptions {
+namespace RV32_Lsu.Exceptions {
     /// <summary>Risc-V CPUで発生した例外を表します</summary>
     public class RiscvException : Exception {
 

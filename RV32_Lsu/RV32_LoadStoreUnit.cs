@@ -1,9 +1,9 @@
-﻿using RiscVCpu.MemoryHandler;
-using RiscVCpu.RegisterSet;
+﻿using RV32_Lsu.MemoryHandler;
+using RV32_Lsu.RegisterSet;
 using System;
 using System.Collections.Generic;
 
-namespace RiscVCpu.LoadStoreUnit {
+namespace RV32_Lsu {
 
     /// <summary>
     /// Risc-V 32bitCPU LSU

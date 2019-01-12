@@ -1,9 +1,9 @@
-﻿using RiscVCpu.LoadStoreUnit;
-using RiscVCpu.LoadStoreUnit.Constants;
-using RiscVCpu.RegisterSet;
+﻿using RV32_Lsu;
+using RV32_Lsu.Constants;
+using RV32_Lsu.RegisterSet;
 using System;
 
-namespace RiscVCpu.ArithmeticLogicUnit {
+namespace RV32_Alu {
     /// <summary>
     /// Risc-V RV32M 拡張命令セット 乗除算命令を実行するALU
     /// </summary>

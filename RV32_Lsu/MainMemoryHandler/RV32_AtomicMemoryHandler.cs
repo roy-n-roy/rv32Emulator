@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RiscVCpu.MemoryHandler {
+namespace RV32_Lsu.MemoryHandler {
     public class RV32_AtomicMemoryHandler : RV32_AbstractMemoryHandler {
 
         private readonly HashSet<UInt64> reservedAddress;

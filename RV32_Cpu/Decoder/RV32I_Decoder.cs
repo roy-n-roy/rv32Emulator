@@ -1,10 +1,10 @@
-﻿using RiscVCpu.ArithmeticLogicUnit;
-using RiscVCpu.Decoder.Constants;
-using RiscVCpu.LoadStoreUnit;
-using RiscVCpu.LoadStoreUnit.Constants;
+﻿using RV32_Alu;
+using RV32_Cpu.Decoder.Constants;
+using RV32_Lsu;
+using RV32_Lsu.Constants;
 using System;
 
-namespace RiscVCpu.Decoder {
+namespace RV32_Cpu.Decoder {
     public class RV32I_Decoder : RV32_AbstractDecoder {
 
         /// <summary>
@@ -13,7 +13,7 @@ namespace RiscVCpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(UInt32[] ins, RV32_Cpu cpu) {
+        internal protected override bool Exec(UInt32[] ins, RV32_CentralProcessingUnit cpu) {
             bool result = false;
             Register rd = (Register)ins[1],
                         rs1 = (Register)ins[3],
@@ -22,20 +22,20 @@ namespace RiscVCpu.Decoder {
             Funct3 funct3 = (Funct3)ins[2];
             Funct7 funct7 = (Funct7)(ins[5] | (ins[6] << 6));
             Int32 immediate = 0;
-            RV32_Alu alu;
+            RV32_IntegerAlu alu;
             RV32_IntegerLsu lsu;
 
             switch (opcode) {
                 case Opcode.lui: // lui命令
                     immediate = GetImmediate('U', ins);
-                    alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
                     result = alu.Lui(rd, immediate);
                     break;
 
 
                 case Opcode.auipc: // auipc命令
                     immediate = GetImmediate('U', ins);
-                    alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
                     result = alu.Auipc(rd, immediate);
                     break;
 
@@ -129,7 +129,7 @@ namespace RiscVCpu.Decoder {
                     break;
 
                 case Opcode.miscOpImm: // Op-imm系命令(即値算術論理演算)
-                    alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
                     switch (funct3) {
                         case Funct3.addi: // addi命令
                             immediate = GetImmediate('I', ins);
@@ -180,7 +180,7 @@ namespace RiscVCpu.Decoder {
                     break;
 
                 case Opcode.miscOp: // Op系命令(算術論理演算)
-                    alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
                     switch (((UInt16)funct3 | ((UInt16)funct7 << 3))) {
                         case (UInt16)Funct3.add_sub | ((UInt16)Funct7.add << 3): // add命令
                             result = alu.Add(rd, rs1, rs2);

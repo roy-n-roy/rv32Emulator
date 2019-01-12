@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RiscVCpu.LoadStoreUnit.Constants {
+namespace RV32_Lsu.Constants {
 
     /// <summary>特権レベル</summary>
     public enum PrivilegeLevels : byte {
@@ -511,7 +511,7 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
 
         #endregion
     }
-    
+
     #endregion
 
     #region CSR構造体定義
@@ -606,9 +606,9 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
             value |= v.MXR ? 1u << 19 : 0u;
             value |= v.SUM ? 1u << 18 : 0u;
             value |= v.MPRV ? 1u << 17 : 0u;
-            value |= (uint)v.XS << 15;
-            value |= (uint)v.FS << 13;
-            value |= (uint)v.MPP << 11;
+            value |= (v.XS & 0x3u) << 15;
+            value |= (v.FS & 0x3u) << 13;
+            value |= (v.MPP & 0x3u) << 11;
             value |= v.SPP ? 1u << 8 : 0u;
             value |= v.MPIE ? 1u << 7 : 0u;
             value |= v.SPIE ? 1u << 5 : 0u;
@@ -942,7 +942,7 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
             return value;
         }
     }
-    
+
     /// <summary>浮動小数点CSRを表す構造体</summary>
     public struct FloatCSR {
         // 定数
@@ -992,5 +992,34 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
         }
     }
 
+    /// <summary>スーパーバイザアドレス変換・保護CSR (Supervisor Address Translation and Protection Register)</summary>
+    public struct SatpCSR {
+        // 変数
+        /// <summary>アドレッシングモード(false: Bare, true: Sv32モード)</summary>
+        public bool MODE { get; set; }
+        /// <summary>アドレス空間ID (Address Space Identifier)</summary>
+        public ushort ASID { get; set; }
+        /// <summary>物理ページ番号 (Physical Page Number)</summary>
+        public uint PPN { get; set; }
+
+        public SatpCSR(uint v) {
+            MODE = (v & 0x8000_0000u) > 0;
+            ASID = (ushort)((v & 0x7fc0_0000u) >> 22);
+            PPN = (v & 0x003f_ffffu);
+        }
+
+        public static implicit operator SatpCSR(uint v) {
+            return new SatpCSR(v);
+        }
+
+        public static implicit operator uint(SatpCSR v) {
+            uint value = 0;
+            value |= v.MODE ? 1u << 31 : 0u;
+            value |= (v.ASID & 0x01ffu) << 22;
+            value |= (v.PPN & 0x003f_ffffu) << 0;
+            return value;
+        }
+
+    }
     #endregion
 }

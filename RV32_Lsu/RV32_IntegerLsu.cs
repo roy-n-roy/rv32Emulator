@@ -1,10 +1,10 @@
-﻿using RiscVCpu.LoadStoreUnit.Constants;
-using RiscVCpu.LoadStoreUnit.Exceptions;
-using RiscVCpu.MemoryHandler;
-using RiscVCpu.RegisterSet;
+﻿using RV32_Lsu.Constants;
+using RV32_Lsu.Exceptions;
+using RV32_Lsu.MemoryHandler;
+using RV32_Lsu.RegisterSet;
 using System;
 
-namespace RiscVCpu.LoadStoreUnit {
+namespace RV32_Lsu {
 
     /// <summary>
     /// Risc-V RV32I 基本命令セット ロードストアユニット

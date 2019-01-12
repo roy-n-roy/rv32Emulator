@@ -1,9 +1,9 @@
-﻿using RiscVCpu.LoadStoreUnit.Exceptions;
+﻿using RV32_Lsu.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RiscVCpu.Decoder {
+namespace RV32_Cpu.Decoder {
 
     /// <summary>
     /// 
@@ -27,7 +27,7 @@ namespace RiscVCpu.Decoder {
         /// </summary>
         /// <param name="instruction">32bit長の命令を格納したUInt32型配列</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
-        public void Decode(RV32_Cpu cpu) {
+        public void Decode(RV32_CentralProcessingUnit cpu) {
             bool successed = false;
             UInt32[] ins = SplitInstruction(cpu.registerSet.IR);
 
@@ -78,7 +78,7 @@ namespace RiscVCpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected abstract bool Exec(UInt32[] instruction, RV32_Cpu cpu);
+        internal protected abstract bool Exec(UInt32[] instruction, RV32_CentralProcessingUnit cpu);
 
         #region 共用メソッド
 

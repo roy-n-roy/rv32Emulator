@@ -1,9 +1,9 @@
-﻿using RiscVCpu.ArithmeticLogicUnit;
-using RiscVCpu.Decoder.Constants;
-using RiscVCpu.LoadStoreUnit.Constants;
+﻿using RV32_Alu;
+using RV32_Cpu.Decoder.Constants;
+using RV32_Lsu.Constants;
 using System;
 
-namespace RiscVCpu.Decoder {
+namespace RV32_Cpu.Decoder {
     public class RV32M_Decoder : RV32_AbstractDecoder {
 
         /// <summary>
@@ -12,7 +12,7 @@ namespace RiscVCpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(UInt32[] ins, RV32_Cpu cpu) {
+        internal protected override bool Exec(UInt32[] ins, RV32_CentralProcessingUnit cpu) {
             bool result = false;
             Register rd = (Register)ins[1],
                         rs1 = (Register)ins[3],

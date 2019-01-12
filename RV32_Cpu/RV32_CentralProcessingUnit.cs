@@ -1,16 +1,16 @@
 ﻿using ElfLoader;
-using RiscVCpu.ArithmeticLogicUnit;
-using RiscVCpu.Decoder;
-using RiscVCpu.LoadStoreUnit;
-using RiscVCpu.LoadStoreUnit.Constants;
-using RiscVCpu.LoadStoreUnit.Exceptions;
-using RiscVCpu.MemoryHandler;
-using RiscVCpu.RegisterSet;
+using RV32_Alu;
+using RV32_Cpu.Decoder;
+using RV32_Lsu;
+using RV32_Lsu.Exceptions;
+using RV32_Lsu.MemoryHandler;
+using RV32_Lsu.RegisterSet;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
-namespace RiscVCpu {
-    public class RV32_Cpu {
+namespace RV32_Cpu {
+    public class RV32_CentralProcessingUnit {
         /// <summary>
         /// 命令デコーダ
         /// </summary>
@@ -28,6 +28,7 @@ namespace RiscVCpu {
         /// </summary>
         public readonly RV32_RegisterSet registerSet;
 
+
         #region コンストラクタ
         /// <summary>
         /// 引数で与えられた命令セットをサポートし、メインメモリを持つ
@@ -35,7 +36,7 @@ namespace RiscVCpu {
         /// </summary>
         /// <param name="OptionsInstructionSet">拡張命令セットを表す文字列</param>
         /// <param name="mem">メインメモリとして使用するUInt32配列</param>
-        public RV32_Cpu(string OptionsInstructionSet, byte[] mem) {
+        public RV32_CentralProcessingUnit(string OptionsInstructionSet, byte[] mem) {
             // 基本命令セットRV32I
             registerSet = new RV32_RegisterSet(new RV32_MemoryHandler(mem));
 
@@ -77,6 +78,8 @@ namespace RiscVCpu {
                         break;
                 }
             }
+
+
         }
 
         /// <summary>
@@ -84,7 +87,7 @@ namespace RiscVCpu {
         /// RISC-Vアーキテクチャの32bitCPUを生成する
         /// </summary>
         /// <param name="OptionsInstructionSet">拡張命令セットを表す文字列</param>
-        public RV32_Cpu(string instractureSetOptions) : this(instractureSetOptions, new byte[1024]) {
+        public RV32_CentralProcessingUnit(string instractureSetOptions) : this(instractureSetOptions, new byte[1024]) {
         }
 
         /// <summary>
@@ -92,14 +95,14 @@ namespace RiscVCpu {
         /// RISC-Vアーキテクチャの32bitCPUを生成する
         /// </summary>
         /// <param name="mainMemory">メインメモリとして使用するUInt32配列</param>
-        public RV32_Cpu(byte[] mainMemory) : this("I", mainMemory) {
+        public RV32_CentralProcessingUnit(byte[] mainMemory) : this("I", mainMemory) {
         }
 
         /// <summary>
         /// RV32I命令セットをサポートし、1KBのメインメモリを持つ
         /// RISC-Vアーキテクチャの32bitCPUを生成する
         /// </summary>
-        public RV32_Cpu() : this(new byte[1024]) {
+        public RV32_CentralProcessingUnit() : this(new byte[1024]) {
         }
 
         #endregion
@@ -160,10 +163,27 @@ namespace RiscVCpu {
                     break;
                 }
             }
+            foreach (Elf32_Shdr sh in elf.e_shdrtab) {
+                if (sh.sh_name.Equals(".tohost")) {
+                    foreach (Elf32_Sym sh_sym in sh.sh_symtab) {
+                        if (sh_sym.st_name.Equals("tohost")) {
+                            //tohost_addr = sh_sym.st_value - sh.sh_addr + sh.sh_offset;
+                            tohost_addr = sh_sym.st_value;
+                            break;
+                        }
+                    }
+                    if (tohost_addr != 0) break;
+                }
+            }
 
             lsu.ClearAndSetPC(physAddr, virtAddr, entryOffset);
 
             return 0;
+        }
+
+        ulong tohost_addr = 0;
+        public ulong GetToHostAddr() {
+            return tohost_addr;
         }
 
         /// <summary>
@@ -175,16 +195,25 @@ namespace RiscVCpu {
                 try {
                     if (registerSet.IR == 0) {
                         return 0;
-                    }
+                    }                 
                     decoder.Decode(this);
-                    registerSet.IncrementCycle();
 #if DEBUG
-                } catch (RiscvException e) 
-                   when (!(e is RiscvEnvironmentCallException || e is RiscvBreakpointException)) {
-                    uint addr = registerSet.CSRegisters[CSR.mepc];
-                    Console.Error.WriteLine(" PC= " + addr.ToString("X") + "\r\n" + e.ToString());
+                } catch (RiscvException e)
+                  when ((RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.Breakpoint &&
+                        (RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.EnvironmentCallFromMMode &&
+                        (RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.EnvironmentCallFromSMode &&
+                        (RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.EnvironmentCallFromUMode) {
+
+                    
+                    Console.Error.WriteLine("\r\n例外発生");
+                    Console.Error.WriteLine("    PC            = " + ((uint)e.Data["pc"]).ToString("X"));
+                    Console.Error.WriteLine("    MemoryAddress = " + ((uint)e.Data["tval"]).ToString("X"));
+                    Console.Error.WriteLine(e.ToString());
 #endif
-                } catch (RiscvException) { }
+                } catch (RiscvException) {
+                } finally {
+                    registerSet.IncrementCycle();
+                }
             }
         }
 

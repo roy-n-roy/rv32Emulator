@@ -1,12 +1,11 @@
-﻿using RiscVCpu.LoadStoreUnit;
-using RiscVCpu.LoadStoreUnit.Constants;
-using RiscVCpu.LoadStoreUnit.Exceptions;
-using RiscVCpu.MemoryHandler;
+﻿using RV32_Lsu.Constants;
+using RV32_Lsu.Exceptions;
+using RV32_Lsu.MemoryHandler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RiscVCpu.RegisterSet {
+namespace RV32_Lsu.RegisterSet {
     /// <summary>
     /// RV32アーキテクチャのレジスタ
     /// 実データを扱う唯一のクラス

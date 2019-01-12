@@ -1,8 +1,8 @@
-﻿using RiscVCpu.LoadStoreUnit.Constants;
-using RiscVCpu.RegisterSet;
+﻿using RV32_Lsu.Constants;
+using RV32_Lsu.RegisterSet;
 using System;
 
-namespace RiscVCpu.ArithmeticLogicUnit {
+namespace RV32_Alu {
 
     /// <summary>32bit長バイナリ形式</summary>
     using Binary32 = UInt32;

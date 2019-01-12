@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{E37356BA-9757-44A2-B594-E6DA496BC812}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>RV32_Cpu</RootNamespace>
     <AssemblyName>RV32_Cpu</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -49,9 +49,13 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -60,7 +64,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Decoder\Constants\InstructionConstants.cs" />
+    <Compile Include="Constants\InstructionConstants.cs" />
     <Compile Include="Decoder\RV32F_Decoder.cs" />
     <Compile Include="Decoder\RV32D_Decoder.cs" />
     <Compile Include="Decoder\RV32C_Decoder.cs" />
@@ -68,8 +72,7 @@
     <Compile Include="Decoder\RV32A_Decoder.cs" />
     <Compile Include="Decoder\RV32M_Decoder.cs" />
     <Compile Include="Decoder\RV32_Decoder.cs" />
-    <Compile Include="RV32_Cpu.cs" />
-    <Compile Include="Test.cs" />
+    <Compile Include="RV32_CentralProcessingUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -92,9 +95,9 @@
       <Project>{28e3a2c3-67de-4542-803b-5db07a3bc6bb}</Project>
       <Name>ElfLoader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RV32_Alu\RV32_Calculator.csproj">
+    <ProjectReference Include="..\RV32_Alu\RV32_Alu.csproj">
       <Project>{28c36aee-cd6d-4185-80c9-142d86e5b585}</Project>
-      <Name>RV32_Calculator</Name>
+      <Name>RV32_Alu</Name>
     </ProjectReference>
     <ProjectReference Include="..\RV32_Lsu\RV32_LoatStoreUnit.csproj">
       <Project>{fa819d4a-5080-468f-a2b9-b80fb581cd41}</Project>

@@ -1,4 +1,4 @@
-﻿namespace RiscVCpu.Decoder.Constants {
+﻿namespace RV32_Cpu.Decoder.Constants {
 
     #region RV32命令定義
 

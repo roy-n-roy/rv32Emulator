@@ -1,21 +1,20 @@
-﻿using RiscVCpu.LoadStoreUnit;
-using RiscVCpu.LoadStoreUnit.Constants;
-using RiscVCpu.LoadStoreUnit.Exceptions;
-using RiscVCpu.RegisterSet;
+﻿using RV32_Lsu.Constants;
+using RV32_Lsu.Exceptions;
+using RV32_Lsu.RegisterSet;
 using System;
 
-namespace RiscVCpu.ArithmeticLogicUnit {
+namespace RV32_Alu {
 
     /// <summary>
     /// Risc-V RV32I 基本命令セット 算術論理演算命令を実行するALU
     /// </summary>
-    public class RV32_Alu : RV32_AbstractCalculator {
+    public class RV32_IntegerAlu : RV32_AbstractCalculator {
         /// <summary>
         /// Risc-V 算術論理ALU
         /// </summary>
         /// <param name="registerSet">入出力用レジスタ</param>
 
-        public RV32_Alu(RV32_RegisterSet reg) : base(reg) {
+        public RV32_IntegerAlu(RV32_RegisterSet reg) : base(reg) {
         }
 
         #region Risc-V CPU命令
