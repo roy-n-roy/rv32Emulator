@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>RISC_V_CPU_ConsoleEmulator</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RV32_Cpu\RV32_Cpu.csproj" />
+    <ProjectReference Include="..\RV32_Lsu\RV32_LoatStoreUnit.csproj" />
+  </ItemGroup>
+
+</Project>
