@@ -255,6 +255,9 @@ namespace RV32_Lsu.RegisterSet {
         /// </param>
         /// <returns>処理の成否</returns>
         public bool SfenceVma(Register rs1, Register rs2, UInt32 insLength = 4u) {
+            if (((StatusCSR)CSRegisters[CSR.mstatus]).TVM && CurrentMode <= PrivilegeLevels.SupervisorMode) {
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
+            }
             IncrementPc(insLength);
             return true;
         }
@@ -311,6 +314,9 @@ namespace RV32_Lsu.RegisterSet {
         /// </summary>
         /// <returns>処理の成否</returns>
         public bool Uret(UInt32 insLength = 4u) {
+            if (((StatusCSR)CSRegisters[CSR.mstatus]).TSR) {
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
+            }
             PC = CSRegisters[CSR.uepc];
             StatusCSR ustatus = CSRegisters[CSR.ustatus];
 
@@ -459,6 +465,10 @@ namespace RV32_Lsu.RegisterSet {
             //9～10bitがアクセス権限を表す
             PrivilegeLevels instructionLevel = (PrivilegeLevels)(((UInt32)name >> 8) & 0x3u);
             if (((UInt16)name & 0xC00u) != 0xC00u && instructionLevel <= CurrentMode) {
+                if (((StatusCSR)CSRegisters[CSR.mstatus]).TVM && CurrentMode <= PrivilegeLevels.SupervisorMode) {
+                    throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
+                }
+
                 switch (operation) {
                     case 'w':
                         CSRegisters[name] = value;
