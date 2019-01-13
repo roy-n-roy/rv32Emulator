@@ -1,4 +1,7 @@
 ﻿namespace RV32_Cpu.Decoder.Constants {
+    /***********************
+     * RISC-V命令 定数定義 *
+     ***********************/
 
     #region RV32命令定義
 
@@ -259,6 +262,8 @@
     /// <summary>RV32命令の20～31bit部分</summary>
     public enum Funct12 : ushort {
         #region RV32I 命令定義
+        /// <summary>Supervisor-Mode Exception Return</summary>
+        uret = 0b000000000010,
         /// <summary>Supervisor-Mode Exception Return</summary>
         sret = 0b000100000010,
         /// <summary>Machine-Mode Exeception Return</summary>
