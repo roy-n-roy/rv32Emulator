@@ -2,15 +2,17 @@
 using RV32_Alu;
 using RV32_Cpu.Decoder;
 using RV32_Lsu;
+using RV32_Lsu.Constants;
 using RV32_Lsu.Exceptions;
 using RV32_Lsu.MemoryHandler;
 using RV32_Lsu.RegisterSet;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using static RV32_Cpu.InstructionConverter;
 
 namespace RV32_Cpu {
-    public class RV32_CentralProcessingUnit {
+    public class RV32_HaedwareThread {
         /// <summary>
         /// 命令デコーダ
         /// </summary>
@@ -36,7 +38,7 @@ namespace RV32_Cpu {
         /// </summary>
         /// <param name="OptionsInstructionSet">拡張命令セットを表す文字列</param>
         /// <param name="mem">メインメモリとして使用するUInt32配列</param>
-        public RV32_CentralProcessingUnit(string OptionsInstructionSet, byte[] mem) {
+        public RV32_HaedwareThread(string OptionsInstructionSet, byte[] mem) {
             // 基本命令セットRV32I
             registerSet = new RV32_RegisterSet(new RV32_MemoryHandler(mem));
 
@@ -87,7 +89,7 @@ namespace RV32_Cpu {
         /// RISC-Vアーキテクチャの32bitCPUを生成する
         /// </summary>
         /// <param name="OptionsInstructionSet">拡張命令セットを表す文字列</param>
-        public RV32_CentralProcessingUnit(string instractureSetOptions) : this(instractureSetOptions, new byte[1024]) {
+        public RV32_HaedwareThread(string instractureSetOptions) : this(instractureSetOptions, new byte[1024]) {
         }
 
         /// <summary>
@@ -95,14 +97,14 @@ namespace RV32_Cpu {
         /// RISC-Vアーキテクチャの32bitCPUを生成する
         /// </summary>
         /// <param name="mainMemory">メインメモリとして使用するUInt32配列</param>
-        public RV32_CentralProcessingUnit(byte[] mainMemory) : this("I", mainMemory) {
+        public RV32_HaedwareThread(byte[] mainMemory) : this("I", mainMemory) {
         }
 
         /// <summary>
         /// RV32I命令セットをサポートし、1KBのメインメモリを持つ
         /// RISC-Vアーキテクチャの32bitCPUを生成する
         /// </summary>
-        public RV32_CentralProcessingUnit() : this(new byte[1024]) {
+        public RV32_HaedwareThread() : this(new byte[1024]) {
         }
 
         #endregion
@@ -110,14 +112,14 @@ namespace RV32_Cpu {
         #region メソッド
 
         /// <summary>
-        /// 指定した型の算術演算器を返す
+        /// 指定した型の算術演算器インスタンスを返す
         /// </summary>
         /// <param name="type">ALUの型</param>
         /// <returns></returns>
         public RV32_AbstractCalculator Alu(Type type) { return alu.GetInstance(type); }
 
         /// <summary>
-        /// ロード/ストアユニットを返す
+        /// 指定した型のロード/ストアユニットインスタンスを返す
         /// </summary>
         /// <param name="type">LSUの型</param>
         public RV32_AbstractLoadStoreUnit Lsu(Type type) { return lsu.GetInstance(type); }
@@ -192,26 +194,45 @@ namespace RV32_Cpu {
         /// <returns>正常時:0, 異常時:0以外</returns>
         public int Run() {
             while (true) {
-                try {
+                StepExecute();
+            }
+        }
+
+        /// <summary>
+        /// 1ステップ(1サイクル)命令を実行する
+        /// </summary>
+        public void StepExecute() {
+            try {
+                if (registerSet.CheckAndHandleInterrupt()) {
+                    registerSet.Mem.Reset();
+
+                    // ToDo: 標準入力制御の実装
+
+                    registerSet.IncrementCycle();
+                } else {
+
+                    RiscvInstruction ins = InstructionConverter.Decode(registerSet.IR);
                     decoder.Decode(this);
+                }
+
 #if DEBUG
-                } catch (RiscvException e)
+                // デバッグモードの際、ブレークポイント/環境呼び出し例外以外の例外・割り込みをコンソールに出力する。
+            } catch (RiscvException e)
                   when ((RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.Breakpoint &&
                         (RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.EnvironmentCallFromMMode &&
                         (RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.EnvironmentCallFromSMode &&
                         (RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.EnvironmentCallFromUMode) {
 
-                    
-                    Console.Error.WriteLine("\r\n例外発生");
-                    Console.Error.WriteLine("    PC            = " + ((uint)e.Data["pc"]).ToString("X"));
-                    Console.Error.WriteLine("    MemoryAddress = " + ((uint)e.Data["tval"]).ToString("X"));
-                    Console.Error.WriteLine(e.ToString());
+                Console.Error.WriteLine("\r\n例外発生");
+                Console.Error.WriteLine("    PC        = 0x" + ((uint)e.Data["pc"]).ToString("X"));
+                Console.Error.WriteLine("    TrapValue = 0x" + ((uint)e.Data["tval"]).ToString("X"));
+                Console.Error.WriteLine(e.ToString());
 #endif
-                } catch (RiscvException) {
-                } finally {
-                    registerSet.IncrementCycle();
-                }
+            } catch (RiscvException) {
+            } finally {
+                registerSet.IncrementCycle();
             }
+
         }
 
         /// <summary>

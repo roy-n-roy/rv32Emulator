@@ -1,4 +1,5 @@
-﻿using RV32_Lsu.Exceptions;
+﻿using RV32_Lsu.Constants;
+using RV32_Lsu.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace RV32_Cpu.Decoder {
         /// </summary>
         /// <param name="instruction">32bit長の命令を格納したUInt32型配列</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
-        public void Decode(RV32_CentralProcessingUnit cpu) {
+        public void Decode(RV32_HaedwareThread cpu) {
             bool successed = false;
             UInt32[] ins = SplitInstruction(cpu.registerSet.IR);
 
@@ -36,7 +37,7 @@ namespace RV32_Cpu.Decoder {
                 if (successed) break;
             }
             if (!successed) {
-                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, cpu.registerSet);
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, cpu.registerSet.IR, cpu.registerSet);
             }
         }
 
@@ -78,7 +79,7 @@ namespace RV32_Cpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected abstract bool Exec(UInt32[] instruction, RV32_CentralProcessingUnit cpu);
+        internal protected abstract bool Exec(UInt32[] instruction, RV32_HaedwareThread cpu);
 
         #region 共用メソッド
 

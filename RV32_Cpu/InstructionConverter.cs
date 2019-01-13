@@ -4,8 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace RISC_V_CPU_Emulator {
-
+namespace RV32_Cpu {
 
     public class InstructionConverter {
 

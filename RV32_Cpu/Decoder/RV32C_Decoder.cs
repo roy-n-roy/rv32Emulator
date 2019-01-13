@@ -17,7 +17,7 @@ namespace RV32_Cpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(UInt32[] ins, RV32_CentralProcessingUnit cpu) {
+        internal protected override bool Exec(UInt32[] ins, RV32_HaedwareThread cpu) {
             UInt32[] cins = SplitCompressedInstruction(ins);
             bool result = false;
             Register rd_rs1 = (Register)(cins[2] & 0x1f),
@@ -98,8 +98,7 @@ namespace RV32_Cpu.Decoder {
                         result = lsu.Jalr((Register)(cins[2] >> 5), rd_rs1, 0, InstructionLength);
 
                     } else if (cins[1] == 0 && cins[2] == 0b100000) { // ebreak命令
-                        lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
-                        result = lsu.Ebreak(InstructionLength);
+                        result = cpu.registerSet.Ebreak(InstructionLength);
                     }
                     break;
 

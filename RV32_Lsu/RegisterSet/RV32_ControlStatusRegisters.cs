@@ -17,8 +17,8 @@ namespace RV32_Lsu.RegisterSet {
         public new UInt32 this[CSR name] {
             get {
                 switch (name) {
-                    // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
                     // sstatus,ustatus
+                    // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
                     case CSR.sstatus:
                         return base[CSR.mstatus] & StatusCSR.SModeMask;
 
@@ -27,12 +27,12 @@ namespace RV32_Lsu.RegisterSet {
 
                     // sip,uip
                     case CSR.sip:
-                        return base[CSR.mip] & InterruptPendingCSR.SModeMask;
+                        return base[CSR.mip] & InterruptPendingCSR.SModeReadMask;
 
                     case CSR.uip:
-                        return base[CSR.mip] & InterruptPendingCSR.UModeMask;
+                        return base[CSR.mip] & InterruptPendingCSR.UModeReadMask;
 
-                    // sie,uie
+                    // sie,sideleg,uie,uideleg
                     case CSR.sie:
                         return base[CSR.mie] & InterruptEnableCSR.SModeMask;
 
@@ -40,16 +40,33 @@ namespace RV32_Lsu.RegisterSet {
                         return base[CSR.mie] & InterruptEnableCSR.UModeMask;
 
                     // fflags,frm
+                    // fcsrへのアクセスとして読み替える
                     case CSR.fflags:
                         return base[CSR.fcsr] & FloatCSR.FflagsMask;
 
                     case CSR.frm:
                         return (base[CSR.fcsr] & FloatCSR.FrmMask) >> 5;
 
+                    // mtvec,stvec,utvec
+                    // ベクタードモードかつ割り込みの場合は、ベースアドレス+(cause * 4)として読み替える
+                    case CSR.mtvec:
+                        TvecCSR tvec;
+                        tvec = base[CSR.mtvec];
+                        return (tvec.MODE == 1 && (base[CSR.mcause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (base[CSR.mcause] * 4) : tvec.BASE;
+
+                    case CSR.stvec:
+                        tvec = base[CSR.stvec];
+                        return (tvec.MODE == 1 && (base[CSR.scause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (base[CSR.scause] * 4) : tvec.BASE;
+
+                    case CSR.utvec:
+                        tvec = base[CSR.utvec];
+                        return (tvec.MODE == 1 && (base[CSR.ucause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (base[CSR.ucause] * 4) : tvec.BASE;
+
                     default:
                         // cycle,time,insret,hpmcounter3～31
+                        // mcycle,mtime,minsret,mhpcounterの読み込み専用シャドウとしてアクセスする
                         if ((CSR.cycle <= name && name <= CSR.hpmcounter31) || (CSR.cycleh <= name && name <= CSR.hpmcounter31h)) {
-                            return base[(name & (CSR)0xffu) | CSR.mcycle];
+                            return base[CSR.mcycle | (name & (CSR)0xffu)];
 
                         } else {
                             return base[name];
@@ -58,8 +75,9 @@ namespace RV32_Lsu.RegisterSet {
 
             }
             set {
-                    // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
                 switch (name) {
+                    // sstatus,ustatus
+                    // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
                     case CSR.sstatus:
                         base[CSR.mstatus] = base[CSR.mstatus] & ~StatusCSR.SModeMask | value & StatusCSR.SModeMask;
                         break;
@@ -68,13 +86,17 @@ namespace RV32_Lsu.RegisterSet {
                         base[CSR.mstatus] = base[CSR.mstatus] & ~StatusCSR.UModeMask | value & StatusCSR.UModeMask;
                         break;
 
-                    // sip,uip
+                    // mip,sip,uip
+                    case CSR.mip:
+                        base[CSR.mip] = base[CSR.mip] & ~InterruptPendingCSR.MModeWriteMask | value & InterruptPendingCSR.MModeWriteMask;
+                        break;
+
                     case CSR.sip:
-                        base[CSR.mip] = base[CSR.mip] & ~InterruptPendingCSR.SModeMask | value & InterruptPendingCSR.SModeMask;
+                        base[CSR.mip] = base[CSR.mip] & ~InterruptPendingCSR.SModeWriteMask | value & InterruptPendingCSR.SModeWriteMask;
                         break;
 
                     case CSR.uip:
-                        base[CSR.mip] = base[CSR.mip] & ~InterruptPendingCSR.UModeMask | value & InterruptPendingCSR.UModeMask;
+                        base[CSR.mip] = base[CSR.mip] & ~InterruptPendingCSR.UModeWriteMask | value & InterruptPendingCSR.UModeWriteMask;
                         break;
 
                     // sie,uie
@@ -86,7 +108,16 @@ namespace RV32_Lsu.RegisterSet {
                         base[CSR.mie] = base[CSR.mie] & ~InterruptEnableCSR.UModeMask | value & InterruptEnableCSR.UModeMask;
                         break;
 
+                    // mepc,sepc,uepc
+                    // epcの下位2bitは常にゼロとなる
+                    case CSR.mepc:
+                    case CSR.sepc:
+                    case CSR.uepc:
+                        base[name] = value & 0xffff_fffc;
+                        break;
+
                     // fcsr,fflags,frm
+                    // fcsrへのアクセスとして読み替える
                     case CSR.fcsr:
                         base[CSR.fcsr] =  value & (FloatCSR.FflagsMask | FloatCSR.FrmMask);
                         StatusCSR status;
@@ -106,6 +137,8 @@ namespace RV32_Lsu.RegisterSet {
                         base[CSR.mstatus] |= status;
                         break;
 
+                    // misa
+                    // misaへの書き込みは無視する
                     case CSR.misa:
                         break;
 

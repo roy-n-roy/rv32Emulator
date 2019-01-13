@@ -30,7 +30,7 @@ namespace RISC_V_CPU_Emulator {
 
             byte[] mem = new byte[32 * 1024];
 
-            RV32_CentralProcessingUnit cpu = new RV32_CentralProcessingUnit("AMCFD", mem);
+            RV32_HaedwareThread cpu = new RV32_HaedwareThread("AMCFD", mem);
 
             Application.Run(new InstructionViewer(cpu));
 
@@ -40,7 +40,7 @@ namespace RISC_V_CPU_Emulator {
             });
         }
 
-        private static void RunRiscvProgram(RV32_CentralProcessingUnit cpu, string[] RiscvBinaryFiles) {
+        private static void RunRiscvProgram(RV32_HaedwareThread cpu, string[] RiscvBinaryFiles) {
 
             float all = RiscvBinaryFiles.Length;
             float successed = 0f;

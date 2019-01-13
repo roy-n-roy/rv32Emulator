@@ -13,7 +13,7 @@ namespace RV32_Cpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(UInt32[] ins, RV32_CentralProcessingUnit cpu) {
+        internal protected override bool Exec(UInt32[] ins, RV32_HaedwareThread cpu) {
             bool result = false;
             FPRegister rd = (FPRegister)ins[1],
                         rs1 = (FPRegister)ins[3],

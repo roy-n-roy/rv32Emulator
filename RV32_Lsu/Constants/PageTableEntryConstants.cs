@@ -5,6 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace RV32_Lsu.Constants {
+    /*******************************************
+     * ページテーブルエントリ 定数、構造体定義 *
+     *******************************************/
+
     /// <summary>ページテーブルエントリ(PTE)</summary>
     public struct PageTableEntry {
         // 変数

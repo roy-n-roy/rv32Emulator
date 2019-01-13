@@ -72,7 +72,8 @@
     <Compile Include="Decoder\RV32A_Decoder.cs" />
     <Compile Include="Decoder\RV32M_Decoder.cs" />
     <Compile Include="Decoder\RV32_Decoder.cs" />
-    <Compile Include="RV32_CentralProcessingUnit.cs" />
+    <Compile Include="InstructionConverter.cs" />
+    <Compile Include="RV32_HaedwareThread.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

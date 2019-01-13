@@ -13,7 +13,7 @@ using static RISC_V_CPU_Emulator.InstructionConverter;
 
 namespace RISC_V_CPU_Emulator {
     public partial class InstructionViewer : Form {
-        public InstructionViewer(RV32_CentralProcessingUnit cpu) {
+        public InstructionViewer(RV32_HaedwareThread cpu) {
             InitializeComponent();
         }
 
