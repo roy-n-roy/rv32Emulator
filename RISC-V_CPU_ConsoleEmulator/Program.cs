@@ -15,7 +15,7 @@ namespace RISC_V_CPU_ConsoleEmulator {
 
             Regex rex;
             rex = new Regex("rv32[msu][a-z]-p-[a-z_]+$", RegexOptions.Compiled);
-            rex = new Regex("rv32mi-p-illegal$", RegexOptions.Compiled);
+            //rex = new Regex("rv32mi-p-illegal$", RegexOptions.Compiled);
 
             string[] files = Directory.GetFiles(dirPath).Where<string>(
                 f => (rex.IsMatch(f))).ToArray();
@@ -69,6 +69,7 @@ namespace RISC_V_CPU_ConsoleEmulator {
             Console.WriteLine("成功  : " + successed.ToString("#,0"));
             Console.WriteLine("失敗  : " + (all - successed).ToString("#,0"));
             Console.WriteLine("成功率: " + ((successed / all) * 100f).ToString("#,0.00") + "%");
+            Console.Read();
         }
     }
 }

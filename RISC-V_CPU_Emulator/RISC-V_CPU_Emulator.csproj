@@ -88,9 +88,9 @@
       <Project>{e37356ba-9757-44a2-b594-e6da496bc812}</Project>
       <Name>RV32_Cpu</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RV32_Lsu\RV32_LoatStoreUnit.csproj">
+    <ProjectReference Include="..\RV32_Lsu\RV32_Lsu.csproj">
       <Project>{fa819d4a-5080-468f-a2b9-b80fb581cd41}</Project>
-      <Name>RV32_LoatStoreUnit</Name>
+      <Name>RV32_Lsu</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

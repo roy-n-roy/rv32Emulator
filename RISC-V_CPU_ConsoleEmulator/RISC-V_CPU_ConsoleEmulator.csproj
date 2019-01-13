@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RV32_Cpu\RV32_Cpu.csproj" />
-    <ProjectReference Include="..\RV32_Lsu\RV32_LoatStoreUnit.csproj" />
+    <ProjectReference Include="..\RV32_Lsu\RV32_Lsu.csproj" />
   </ItemGroup>
 
 </Project>

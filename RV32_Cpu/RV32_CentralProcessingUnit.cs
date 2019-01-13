@@ -193,9 +193,6 @@ namespace RV32_Cpu {
         public int Run() {
             while (true) {
                 try {
-                    if (registerSet.IR == 0) {
-                        return 0;
-                    }                 
                     decoder.Decode(this);
 #if DEBUG
                 } catch (RiscvException e)
