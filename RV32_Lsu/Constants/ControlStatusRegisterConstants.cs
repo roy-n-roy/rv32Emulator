@@ -1,6 +1,9 @@
 ﻿using System;
 
-namespace RiscVCpu.LoadStoreUnit.Constants {
+namespace RV32_Lsu.Constants {
+    /************************
+     * CSR 定数、構造体定義 *
+     ************************/
 
     /// <summary>特権レベル</summary>
     public enum PrivilegeLevels : byte {
@@ -26,6 +29,60 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
         RMM = 0b100,
         /// <summary>命令のrmフィールドを使用する、動的丸め(In instruction's rm eld, selects dynamic rounding mode;)</summary>
         DYN = 0b111,
+    }
+
+    /// <summary>割り込み要因</summary>
+    public enum RiscvInterruptCause : uint {
+        /// <summary>ユーザソフトウェア割り込み</summary>
+        UserSoftware = 0x8000_0000u,
+        /// <summary>スーパーバイザソフトウェア割り込み</summary>
+        SupervisorSoftware = 0x8000_0001u,
+        /// <summary>マシンソフトウェア割り込み</summary>
+        MachineSoftware = 0x8000_0003u,
+        /// <summary>ユーザタイマ割り込み</summary>
+        UserTimer = 0x8000_0004u,
+        /// <summary>スーパーバイザタイマ割り込み</summary>
+        SupervisorTimer = 0x8000_0005u,
+        /// <summary>マシンタイマ割り込み</summary>
+        MachineTimer = 0x8000_0007u,
+        /// <summary>ユーザ外部割り込み</summary>
+        UserExternal = 0x8000_0008u,
+        /// <summary>スーパーバイザ外部割り込み</summary>
+        SupervisorExternal = 0x8000_0009u,
+        /// <summary>マシン外部割り込み</summary>
+        MachineExternal = 0x8000_000bu,
+    }
+
+    /// <summary>例外要因</summary>
+    public enum RiscvExceptionCause : uint {
+        /// <summary>命令アドレス非整列化例外</summary>
+        InstructionAddressMisaligned = 0x0000_0000u,
+        /// <summary>命令アクセス・フォールト例外</summary>
+        InstructionAccessFault = 0x0000_0001u,
+        /// <summary>不正命令例外</summary>
+        IllegalInstruction = 0x0000_0002u,
+        /// <summary>ブレークポイント例外</summary>
+        Breakpoint = 0x0000_0003u,
+        /// <summary>ロードアドレス非整列化例外</summary>
+        LoadAddressMisaligned = 0x0000_0004u,
+        /// <summary>ロードアクセス・フォールト例外</summary>
+        LoadAccessFault = 0x0000_0005u,
+        /// <summary>ストアアドレス非整列化例外</summary>
+        AMOAddressMisaligned = 0x0000_0006u,
+        /// <summary>ストアアクセス・フォールト例外</summary>
+        StoreAMOAccessFault = 0x0000_0007u,
+        /// <summary>ユーザモードからの環境呼び出し例外</summary>
+        EnvironmentCallFromUMode = 0x0000_0008u,
+        /// <summary>スーパーバイザモードからの環境呼び出し例外</summary>
+        EnvironmentCallFromSMode = 0x0000_0009u,
+        /// <summary>マシンモードからの環境呼び出し例外</summary>
+        EnvironmentCallFromMMode = 0x0000_000bu,
+        /// <summary>命令ページ・フォールト例外</summary>
+        InstructionPageFault = 0x0000_000cu,
+        /// <summary>ロードページ・フォールト例外</summary>
+        LoadPageFault = 0x0000_000du,
+        /// <summary>ストアページ・フォールト例外</summary>
+        StoreAMOPageFault = 0x0000_000fu,
     }
 
     #region CSRアドレス定義
@@ -511,7 +568,7 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
 
         #endregion
     }
-    
+
     #endregion
 
     #region CSR構造体定義
@@ -551,22 +608,39 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
         public static uint UModeMask = 0b1000_0000_0000_1101_1110_0000_0001_0001u;
 
         // 変数
+        /// <summary></summary>
         public bool SD { get; set; }
+        /// <summary></summary>
         public bool TSR { get; set; }
+        /// <summary>タイムアウト待機 true:WFIがSmodeで実行され、制限時間内に完了しない場合不正命令例外を発生さえる</summary>
         public bool TW { get; set; }
+        /// <summary>トラップ仮想メモリ true:satpCSRへの読み書き、SFENCE.VMA命令の実効で不正命令例外を発生させる</summary>
         public bool TVM { get; set; }
+        /// <summary>実行ファイル読み込み許可 true:読み込み可でないファイルでも実行可である場合は読み込みが可能となる</summary>
         public bool MXR { get; set; }
+        /// <summary>スーパーバイザユーザメモリアクセス許可</summary>
         public bool SUM { get; set; }
+        /// <summary>権限変更</summary>
         public bool MPRV { get; set; }
+        /// <summary></summary>
         public byte XS { get; set; }
+        /// <summary></summary>
         public byte FS { get; set; }
+        /// <summary></summary>
         public byte MPP { get; set; }
+        /// <summary></summary>
         public bool SPP { get; set; }
+        /// <summary></summary>
         public bool MPIE { get; set; }
+        /// <summary></summary>
         public bool SPIE { get; set; }
+        /// <summary></summary>
         public bool UPIE { get; set; }
+        /// <summary></summary>
         public bool MIE { get; set; }
+        /// <summary></summary>
         public bool SIE { get; set; }
+        /// <summary></summary>
         public bool UIE { get; set; }
 
         // コンストラクタ
@@ -606,9 +680,9 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
             value |= v.MXR ? 1u << 19 : 0u;
             value |= v.SUM ? 1u << 18 : 0u;
             value |= v.MPRV ? 1u << 17 : 0u;
-            value |= (uint)v.XS << 15;
-            value |= (uint)v.FS << 13;
-            value |= (uint)v.MPP << 11;
+            value |= (v.XS & 0x3u) << 15;
+            value |= (v.FS & 0x3u) << 13;
+            value |= (v.MPP & 0x3u) << 11;
             value |= v.SPP ? 1u << 8 : 0u;
             value |= v.MPIE ? 1u << 7 : 0u;
             value |= v.SPIE ? 1u << 5 : 0u;
@@ -644,12 +718,19 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
             }
         }
         // 定数
-        /// <summary>マシンモードで読み書き可能なビット</summary>
-        public static uint MModeMask = 0b1011_1011_1011u;
-        /// <summary>スーパーバイザモードで読み書き可能なビット</summary>
-        public static uint SModeMask = 0b0011_0011_0011u;
-        /// <summary>ユーザモードで読み書き可能なビット</summary>
-        public static uint UModeMask = 0b0001_0001_0001u;
+        /// <summary>マシンモードで読み込み可能なビット</summary>
+        public static uint MModeReadMask = 0b1011_0011_1011u;
+        /// <summary>スーパーバイザモードで読み込み可能なビット</summary>
+        public static uint SModeReadMask = 0b0011_0011_0011u;
+        /// <summary>ユーザモードで読み込み可能なビット</summary>
+        public static uint UModeReadMask = 0b0001_0001_0001u;
+
+        /// <summary>マシンモードで書き込み可能なビット</summary>
+        public static uint MModeWriteMask = 0b0011_0011_1011u;
+        /// <summary>スーパーバイザモードで書き込み可能なビット</summary>
+        public static uint SModeWriteMask = 0b0001_0000_0011u;
+        /// <summary>ユーザモードで書き込み可能なビット</summary>
+        public static uint UModeWriteMask = 0b0000_0000_0001u;
 
         // 変数
         /// <summary>マシン外部割り込み保留ビット</summary>
@@ -702,9 +783,9 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
             value |= v.USIP ? 1u << 0 : 0u;
 
             if (v.Mode == PrivilegeLevels.SupervisorMode) {
-                value &= SModeMask;
+                value &= SModeReadMask;
             } else if (v.Mode == PrivilegeLevels.UserMode) {
-                value &= UModeMask;
+                value &= UModeReadMask;
             }
             return value;
         }
@@ -942,7 +1023,7 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
             return value;
         }
     }
-    
+
     /// <summary>浮動小数点CSRを表す構造体</summary>
     public struct FloatCSR {
         // 定数
@@ -988,6 +1069,61 @@ namespace RiscVCpu.LoadStoreUnit.Constants {
             value |= v.OF ? 1u << 2 : 0u;
             value |= v.UF ? 1u << 1 : 0u;
             value |= v.NX ? 1u << 0 : 0u;
+            return value;
+        }
+    }
+
+    /// <summary>スーパーバイザアドレス変換・保護CSR (Supervisor Address Translation and Protection Register)</summary>
+    public struct SatpCSR {
+        // 変数
+        /// <summary>アドレッシングモード(false: Bare, true: Sv32モード)</summary>
+        public bool MODE { get; set; }
+        /// <summary>アドレス空間ID (Address Space Identifier)</summary>
+        public ushort ASID { get; set; }
+        /// <summary>物理ページ番号 (Physical Page Number)</summary>
+        public uint PPN { get; set; }
+
+        public SatpCSR(uint v) {
+            MODE = (v & 0x8000_0000u) > 0;
+            ASID = (ushort)((v & 0x7fc0_0000u) >> 22);
+            PPN = (v & 0x003f_ffffu);
+        }
+
+        public static implicit operator SatpCSR(uint v) {
+            return new SatpCSR(v);
+        }
+
+        public static implicit operator uint(SatpCSR v) {
+            uint value = 0;
+            value |= v.MODE ? 1u << 31 : 0u;
+            value |= (v.ASID & 0x01ffu) << 22;
+            value |= (v.PPN & 0x003f_ffffu) << 0;
+            return value;
+        }
+    }
+
+    /// <summary>トラップベクタベースアドレスレジスタ(Trap-Vector Base-Address Register)</summary>
+    public struct TvecCSR {
+        /// <summary>ベースアドレス</summary>
+        public uint BASE { get; set; }
+        /// <summary>モード(0:ダイレクト, 1:ベクタード 2≦予約)</summary>
+        public byte MODE { get; set; }
+
+        // コンストラクタ
+        public TvecCSR(uint v) {
+            BASE = v & 0xffff_fffcu; ;
+            MODE = (byte)(v & 0x3u);
+        }
+
+        // キャスト
+        public static implicit operator TvecCSR(uint v) {
+            return new TvecCSR(v);
+        }
+
+        public static implicit operator uint(TvecCSR v) {
+            uint value = 0;
+            value |= v.BASE & 0xffff_fffcu;
+            value |= v.MODE & 0x3u;
             return value;
         }
     }

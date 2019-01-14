@@ -1,6 +1,9 @@
-﻿namespace RiscVCpu.LoadStoreUnit.Constants {
+﻿namespace RV32_Lsu.Constants {
 
     #region RV32レジスタ名定義
+    /***********************
+     * レジスタ名 定数定義 *
+     ***********************/
 
     /// <summary>
     /// RV32I基本命令セットで使用する整数レジスタのアドレスを表す

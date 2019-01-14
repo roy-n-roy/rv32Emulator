@@ -1,10 +1,10 @@
-﻿using RiscVCpu.LoadStoreUnit.Constants;
-using RiscVCpu.LoadStoreUnit.Exceptions;
-using RiscVCpu.MemoryHandler;
-using RiscVCpu.RegisterSet;
+﻿using RV32_Lsu.Constants;
+using RV32_Lsu.Exceptions;
+using RV32_Lsu.MemoryHandler;
+using RV32_Lsu.RegisterSet;
 using System;
 
-namespace RiscVCpu.LoadStoreUnit {
+namespace RV32_Lsu {
 
     /// <summary>
     /// Risc-V RV32I 浮動小数点命令セット ロードストアユニット
@@ -31,14 +31,22 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Flw(FPRegister rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.CanOperate(addr, 4)) {
-                byte[] bytes = new byte[4];
-                bytes[0] = reg.Mem[addr + 0];
-                bytes[1] = reg.Mem[addr + 1];
-                bytes[2] = reg.Mem[addr + 2];
-                bytes[3] = reg.Mem[addr + 3];
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
+            if (reg.Mem.CanOperate(addr, 4) && reg.IsFPAvailable()) {
+                byte[] bytes = new byte[8];
+                try {
+                    bytes[0] = reg.Mem[addr + 0];
+                    bytes[1] = reg.Mem[addr + 1];
+                    bytes[2] = reg.Mem[addr + 2];
+                    bytes[3] = reg.Mem[addr + 3];
+                    bytes[4] = 0xff;
+                    bytes[5] = 0xff;
+                    bytes[6] = 0xff;
+                    bytes[7] = 0xff;
+                    reg.SetValue(rd, BitConverter.ToUInt64(bytes, 0));
+                } catch (RiscvException e)
+                 when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
             reg.IncrementPc(insLength);
             return true;
@@ -52,18 +60,22 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Fld(FPRegister rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.CanOperate(addr, 8)) {
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
+            if (reg.Mem.CanOperate(addr, 8) && reg.IsFPAvailable()) {
                 byte[] bytes = new byte[8];
-                bytes[0] = reg.Mem[addr + 0];
-                bytes[1] = reg.Mem[addr + 1];
-                bytes[2] = reg.Mem[addr + 2];
-                bytes[3] = reg.Mem[addr + 3];
-                bytes[4] = reg.Mem[addr + 4];
-                bytes[5] = reg.Mem[addr + 5];
-                bytes[6] = reg.Mem[addr + 6];
-                bytes[7] = reg.Mem[addr + 7];
-                reg.SetValue(rd, BitConverter.ToUInt64(bytes, 0));
+                try {
+                    bytes[0] = reg.Mem[addr + 0];
+                    bytes[1] = reg.Mem[addr + 1];
+                    bytes[2] = reg.Mem[addr + 2];
+                    bytes[3] = reg.Mem[addr + 3];
+                    bytes[4] = reg.Mem[addr + 4];
+                    bytes[5] = reg.Mem[addr + 5];
+                    bytes[6] = reg.Mem[addr + 6];
+                    bytes[7] = reg.Mem[addr + 7];
+                    reg.SetValue(rd, BitConverter.ToUInt64(bytes, 0));
+                } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
             reg.IncrementPc(insLength);
             return true;
@@ -81,13 +93,17 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Fsw(Register rs1, FPRegister rs2, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.CanOperate(addr, 4)) {
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
+            if (reg.Mem.CanOperate(addr, 4) && reg.IsFPAvailable()) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-                reg.Mem[addr + 0] = bytes[0];
-                reg.Mem[addr + 1] = bytes[1];
-                reg.Mem[addr + 2] = bytes[2];
-                reg.Mem[addr + 3] = bytes[3];
+                try {
+                    reg.Mem[addr + 0] = bytes[0];
+                    reg.Mem[addr + 1] = bytes[1];
+                    reg.Mem[addr + 2] = bytes[2];
+                    reg.Mem[addr + 3] = bytes[3];
+                } catch (RiscvException e)
+             when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                }
             }
             reg.IncrementPc(insLength);
             return true;
@@ -101,17 +117,22 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Fsd(Register rs1, FPRegister rs2, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
-            if (reg.Mem.CanOperate(addr, 8)) {
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
+            if (reg.Mem.CanOperate(addr, 8) && reg.IsFPAvailable()) {
+
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-                reg.Mem[addr + 0] = bytes[0];
-                reg.Mem[addr + 1] = bytes[1];
-                reg.Mem[addr + 2] = bytes[2];
-                reg.Mem[addr + 3] = bytes[3];
-                reg.Mem[addr + 4] = bytes[4];
-                reg.Mem[addr + 5] = bytes[5];
-                reg.Mem[addr + 6] = bytes[6];
-                reg.Mem[addr + 7] = bytes[7];
+                try {
+                    reg.Mem[addr + 0] = bytes[0];
+                    reg.Mem[addr + 1] = bytes[1];
+                    reg.Mem[addr + 2] = bytes[2];
+                    reg.Mem[addr + 3] = bytes[3];
+                    reg.Mem[addr + 4] = bytes[4];
+                    reg.Mem[addr + 5] = bytes[5];
+                    reg.Mem[addr + 6] = bytes[6];
+                    reg.Mem[addr + 7] = bytes[7];
+                } catch (RiscvException e)
+                 when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                }
             }
             reg.IncrementPc(insLength);
             return true;

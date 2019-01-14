@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RiscVCpu.MemoryHandler {
+namespace RV32_Lsu.MemoryHandler {
     public class RV32_AtomicMemoryHandler : RV32_AbstractMemoryHandler {
 
         private readonly HashSet<UInt64> reservedAddress;
@@ -56,6 +56,13 @@ namespace RiscVCpu.MemoryHandler {
         /// <param name="address">メモリアドレス</param>
         public override void Release(UInt64 address) {
             reservedAddress.Remove(address);
+        }
+
+        /// <summary>
+        /// メモリアドレスの予約を全て解放する
+        /// </summary>
+        public override void Reset() {
+            reservedAddress.Clear();
         }
     }
 }

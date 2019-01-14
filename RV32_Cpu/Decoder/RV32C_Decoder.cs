@@ -1,11 +1,11 @@
-﻿using RiscVCpu.ArithmeticLogicUnit;
-using RiscVCpu.Decoder.Constants;
-using RiscVCpu.LoadStoreUnit;
-using RiscVCpu.LoadStoreUnit.Constants;
+﻿using RV32_Alu;
+using RV32_Cpu.Decoder.Constants;
+using RV32_Lsu;
+using RV32_Lsu.Constants;
 using System;
 using System.Linq;
 
-namespace RiscVCpu.Decoder {
+namespace RV32_Cpu.Decoder {
     public class RV32C_Decoder : RV32_AbstractDecoder {
 
         /// <summary>命令長(Byte)</summary>
@@ -17,28 +17,35 @@ namespace RiscVCpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(UInt32[] ins, RV32_Cpu cpu) {
-            UInt32[] cins = SplitCompressedInstruction(ins);
+        internal protected override bool Exec(UInt32[] ins, RV32_HaedwareThread cpu) {
             bool result = false;
+
+            // 命令の0～1bit目が "11" の場合は対象なし
+            if ((ins[0] & 0b11u) == 0b11u) {
+                return result;
+            }
+
+            // 32bit長命令の前半から16bit長命令を取り出し
+            UInt32[] cins = SplitCompressedInstruction(ins);
             Register rd_rs1 = (Register)(cins[2] & 0x1f),
                         rs2 = (Register)cins[1],
                     crd_rs1 = (Register)(0x8 | (cins[2] & 0x7)),
                        crs2 = (Register)(0x8 | (cins[1] & 0x7));
             CompressedOpcode opcode = (CompressedOpcode)cins[0];
             Int32 immediate = 0;
-            RV32_Alu alu;
+            RV32_IntegerAlu alu;
             RV32_IntegerLsu lsu;
             RV32_FloatPointLsu fplsu;
 
             switch (opcode) {
                 case CompressedOpcode.addi: // addi命令
-                    alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
                     immediate = GetSignedImmediate("CI", cins);
                     result = alu.Addi(rd_rs1, rd_rs1, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.misc_alu:
-                    alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
                     switch (cins[2] & 0b011000) {
                         case 0b000000: // srli命令
                             immediate = GetUnsignedImmediate("CI", cins);
@@ -81,13 +88,13 @@ namespace RiscVCpu.Decoder {
                 case CompressedOpcode.slli: // slli命令
                     immediate = GetUnsignedImmediate("CI", cins);
                     immediate = immediate != 0 ? immediate : 64;
-                    alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
                     result = alu.Slli(crd_rs1, crd_rs1, immediate, InstructionLength);
                     break;
 
                  case CompressedOpcode.jr_mv_add:
                     if (cins[1] != 0 && (cins[2] & 0x1f) != 0) {
-                        alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                        alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
                         if ((cins[2] & 0b100000) == 0) { // mv命令
                             result = alu.Add(rd_rs1, Register.zero, rs2, InstructionLength);
                         } else { // add命令
@@ -98,27 +105,26 @@ namespace RiscVCpu.Decoder {
                         result = lsu.Jalr((Register)(cins[2] >> 5), rd_rs1, 0, InstructionLength);
 
                     } else if (cins[1] == 0 && cins[2] == 0b100000) { // ebreak命令
-                        lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
-                        result = lsu.Ebreak(InstructionLength);
+                        result = cpu.registerSet.Ebreak(InstructionLength);
                     }
                     break;
 
                 case CompressedOpcode.addi4spn: // addi4spn命令
                     immediate = GetUnsignedImmediate("CIW", cins);
                     if (immediate != 0) {
-                        alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                        alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
                         result = alu.Addi(crs2, Register.sp, immediate, InstructionLength);
                     }
                     break;
 
                 case CompressedOpcode.li: // li命令
-                    alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
                     immediate = GetSignedImmediate("CI", cins);
                     result = alu.Addi(rd_rs1, Register.zero, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.lui_addi16sp: // lui_addi16sp命令
-                    alu = (RV32_Alu)cpu.Alu(typeof(RV32_Alu));
+                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
                     immediate = GetSignedImmediate("CI", cins);
                     if (immediate != 0) { // addi16sp命令
                         if ((cins[2] & 0x1f) == 0b000010) {

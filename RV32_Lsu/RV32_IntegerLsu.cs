@@ -1,10 +1,10 @@
-﻿using RiscVCpu.LoadStoreUnit.Constants;
-using RiscVCpu.LoadStoreUnit.Exceptions;
-using RiscVCpu.MemoryHandler;
-using RiscVCpu.RegisterSet;
+﻿using RV32_Lsu.Constants;
+using RV32_Lsu.Exceptions;
+using RV32_Lsu.MemoryHandler;
+using RV32_Lsu.RegisterSet;
 using System;
 
-namespace RiscVCpu.LoadStoreUnit {
+namespace RV32_Lsu {
 
     /// <summary>
     /// Risc-V RV32I 基本命令セット ロードストアユニット
@@ -158,16 +158,20 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Lb(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 1)) {
                 byte[] bytes = new byte[4];
-                bytes[0] = reg.Mem[addr];
-                bytes[1] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
-                bytes[2] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
-                bytes[3] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                try {
+                    bytes[0] = reg.Mem[addr];
+                    bytes[1] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
+                    bytes[2] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
+                    bytes[3] = (byte)((bytes[0] & 0x80u) > 1u ? 0xffu : 0u);
+                    reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+           when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
         /// <summary>
@@ -178,16 +182,20 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Lbu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 1)) {
                 byte[] bytes = new byte[4];
-                bytes[0] = reg.Mem[addr];
-                bytes[1] = 0;
-                bytes[2] = 0;
-                bytes[3] = 0;
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                try {
+                    bytes[0] = reg.Mem[addr];
+                    bytes[1] = 0;
+                    bytes[2] = 0;
+                    bytes[3] = 0;
+                    reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+           when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -199,16 +207,20 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Lh(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 2)) {
                 byte[] bytes = new byte[4];
-                bytes[0] = reg.Mem[addr + 0];
-                bytes[1] = reg.Mem[addr + 1];
-                bytes[2] = (byte)((bytes[1] & 128u) > 1u ? 0xffu : 0u);
-                bytes[3] = (byte)((bytes[1] & 128u) > 1u ? 0xffu : 0u);
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                try {
+                    bytes[0] = reg.Mem[addr + 0];
+                    bytes[1] = reg.Mem[addr + 1];
+                    bytes[2] = (byte)((bytes[1] & 128u) > 1u ? 0xffu : 0u);
+                    bytes[3] = (byte)((bytes[1] & 128u) > 1u ? 0xffu : 0u);
+                    reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+           when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -220,16 +232,20 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Lhu(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 2)) {
                 byte[] bytes = new byte[4];
-                bytes[0] = reg.Mem[addr + 0];
-                bytes[1] = reg.Mem[addr + 1];
-                bytes[2] = 0;
-                bytes[3] = 0;
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                try {
+                    bytes[0] = reg.Mem[addr + 0];
+                    bytes[1] = reg.Mem[addr + 1];
+                    bytes[2] = 0;
+                    bytes[3] = 0;
+                    reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -241,16 +257,20 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ロードする対象のベースアドレスが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Lw(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 4)) {
                 byte[] bytes = new byte[4];
-                bytes[0] = reg.Mem[addr + 0];
-                bytes[1] = reg.Mem[addr + 1];
-                bytes[2] = reg.Mem[addr + 2];
-                bytes[3] = reg.Mem[addr + 3];
-                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                try {
+                    bytes[0] = reg.Mem[addr + 0];
+                    bytes[1] = reg.Mem[addr + 1];
+                    bytes[2] = reg.Mem[addr + 2];
+                    bytes[3] = reg.Mem[addr + 3];
+                    reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+                when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -266,12 +286,16 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Sb(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 1)) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-                reg.Mem[addr + 0] = bytes[0];
+                try {
+                    reg.Mem[addr + 0] = bytes[0];
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+                 when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -283,13 +307,17 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Sh(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 2)) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-                reg.Mem[addr + 0] = bytes[0];
-                reg.Mem[addr + 1] = bytes[1];
+                try {
+                    reg.Mem[addr + 0] = bytes[0];
+                    reg.Mem[addr + 1] = bytes[1];
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+                 when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
@@ -301,224 +329,24 @@ namespace RiscVCpu.LoadStoreUnit {
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
         public bool Sw(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            UInt64 addr = (UInt64)(reg.GetValue(rs1) + offset);
+            UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 4)) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-                reg.Mem[addr + 0] = bytes[0];
-                reg.Mem[addr + 1] = bytes[1];
-                reg.Mem[addr + 2] = bytes[2];
-                reg.Mem[addr + 3] = bytes[3];
+                try {
+                    reg.Mem[addr + 0] = bytes[0];
+                    reg.Mem[addr + 1] = bytes[1];
+                    reg.Mem[addr + 2] = bytes[2];
+                    reg.Mem[addr + 3] = bytes[3];
+                    reg.IncrementPc(insLength);
+                } catch (RiscvException e)
+                   when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                }
             }
-            reg.IncrementPc(insLength);
             return true;
         }
 
         #endregion
 
-        #region Risc-V CPU 特権命令
-        /// <summary>
-        /// Fence Memory and I/O命令
-        /// </summary>
-        /// <param name="pred_succ"></param>
-        /// <returns>処理の成否</returns>
-        public bool Fence(byte pred_succ, UInt32 insLength = 4u) {
-            reg.IncrementPc(insLength);
-            return true;
-        }
-
-        /// <summary>
-        /// Fence Instruction Stream命令
-        /// </summary>
-        /// <returns>処理の成否</returns>
-        public bool FenceI(UInt32 insLength = 4u) {
-            reg.IncrementPc(insLength);
-            return true;
-        }
-
-        /// <summary>
-        /// Environment Call命令
-        /// 環境呼び出し例外を起こして、実行環境を呼び出す
-        /// </summary>
-        /// <returns>処理の成否</returns>
-        public bool Ecall(UInt32 insLength = 4u) {
-            PrivilegeLevels prev_level = reg.CurrentMode;
-            reg.CurrentMode = PrivilegeLevels.MachineMode;
-            reg.SetCSR(CSR.mepc, 'w', reg.PC);
-            throw new RiscvEnvironmentCallException(prev_level, reg);
-        }
-
-        /// <summary>
-        /// Environment Break命令
-        /// ブレークポイント例外を起こして、実行環境を呼び出す
-        /// </summary>
-        /// <returns>処理の成否</returns>
-        public bool Ebreak(UInt32 insLength = 4u) {
-            throw new RiscvBreakpointException(reg);
-        }
-
-        /// <summary>
-        /// Control Status Register Read and Write命令
-        /// 現在のCSRをレジスタrdに書き込み、レジスタrs1をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="rs1">書き込む値が格納されているレジスタ</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrw(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = reg.GetCSR(csr);
-            reg.SetCSR(csr, 'w', rs1);
-            reg.SetValue(rd, t);
-            reg.IncrementPc(insLength);
-            return true;
-        }
-        /// <summary>
-        /// Control Status Register Read and Set命令
-        /// 現在のCSRをレジスタrdに書き込み、現在のCSRとレジスタrs1の論理和をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="rs1">セットする値が格納されているレジスタ</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrs(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = reg.GetCSR(csr);
-            reg.SetCSR(csr, 's', rs1);
-            reg.SetValue(rd, t);
-            reg.IncrementPc(insLength);
-            return true;
-        }
-        /// <summary>
-        /// Control Status Register Read and Clear命令
-        /// 現在のCSRをレジスタrdに書き込み、現在のCSRとレジスタrs1の1の補数との論理積をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="rs1">クリアする値が格納されているレジスタ</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrc(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = reg.GetCSR(csr);
-            reg.SetCSR(csr, 'c', rs1);
-            reg.SetValue(rd, t);
-            reg.IncrementPc(insLength);
-            return true;
-        }
-        /// <summary>
-        /// Control Status Register Read and Write Immediate命令
-        /// 現在のCSRをレジスタrdに書き込み、即値をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="zImmediate">即値</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrwi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = reg.GetCSR(csr);
-            reg.SetCSR(csr, 'w', zImmediate);
-            reg.SetValue(rd, t);
-            reg.IncrementPc(insLength);
-            return true;
-        }
-
-        /// <summary>
-        /// Control Status Register Read and Set Immediate命令
-        /// 現在のCSRをレジスタrdに書き込み、現在のCSRと即値の論理和をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="zImmediate">即値</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrsi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = reg.GetCSR(csr);
-            reg.SetCSR(csr, 's', zImmediate);
-            reg.SetValue(rd, t);
-            reg.IncrementPc(insLength);
-            return true;
-        }
-        /// <summary>
-        /// Control Status Register Read and Clear Immediate命令
-        /// 現在のCSRをレジスタrdに書き込み、現在のCSRと即値の1の補数との論理積をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="zImmediate">即値</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrci(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = reg.GetCSR(csr);
-            reg.SetCSR(csr, 'c', zImmediate);
-            reg.SetValue(rd, t);
-            reg.IncrementPc(insLength);
-            return true;
-        }
-
-        /// <summary>
-        /// Wait For Interrupt命令
-        /// </summary>
-        /// <returns>処理の成否</returns>
-        public bool Wfi(UInt32 insLength = 4u) {
-            reg.IncrementPc(insLength);
-            return true;
-        }
-
-        /// <summary>
-        /// Fence Virtual Memory
-        /// 先行するページ/テーブルへのストアと引き続いて怒る仮想アドレスの変換とを順序付ける
-        /// </summary>
-        /// <param name="rs1">
-        /// 0: 選択されたアドレス空間の全ての仮想アドレスに関するアドレス変換が順序付けられる
-        /// 0以外: 選択されたアドレス空間のrs1を含むアドレス変換だけが順序付けられる
-        /// </param>
-        /// <param name="rs2">
-        /// 0: 全てのアドレス空間におけるアドレス変換が順序付けられる
-        /// 0以外: rs2によって識別されるアドレス空間におけるアドレス変換のみが順序付けられる
-        /// </param>
-        /// <returns>処理の成否</returns>
-        public bool SfenceVma(Register rs1, Register rs2, UInt32 insLength = 4u) {
-            reg.IncrementPc(insLength);
-            return true;
-        }
-
-        /// <summary>
-        /// Machine-Mode Exception Return
-        /// マシンモードの例外ハンドラから戻る
-        /// </summary>
-        /// <returns>処理の成否</returns>
-        public bool Mret(UInt32 insLength = 4u) {
-            reg.PC = reg.GetCSR(CSR.mepc);
-            StatusCSR mstatus = reg.GetCSR(CSR.mstatus);
-
-            PrivilegeLevels priv_level = (PrivilegeLevels)mstatus.MPP;
-
-            mstatus.MIE = mstatus.MPIE;
-            mstatus.MPIE = true;
-            mstatus.MPP = 0;
-            reg.SetCSR(CSR.mstatus, 'w', (UInt32)mstatus);
-
-            reg.CurrentMode = priv_level;
-
-            return true;
-        }
-
-        /// <summary>
-        /// Supervisor-Mode Exception Return
-        /// スーパーバイザモードの例外ハンドラから戻る
-        /// </summary>
-        /// <returns>処理の成否</returns>
-        public bool Sret(UInt32 insLength = 4u) {
-            reg.PC = reg.GetCSR(CSR.sepc);
-            StatusCSR sstatus = reg.GetCSR(CSR.sstatus);
-
-            PrivilegeLevels priv_level = (PrivilegeLevels)(sstatus.SPP ? 1u : 0u);
-
-
-            sstatus.SIE = sstatus.SPIE;
-            sstatus.SPIE = true;
-            sstatus.SPP = false;
-            reg.SetCSR(CSR.sstatus, 'w', (UInt32)sstatus);
-
-            reg.CurrentMode = priv_level;
-
-            return true;
-        }
-
-        #endregion
 
         #endregion
     }

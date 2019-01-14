@@ -1,4 +1,7 @@
-﻿namespace RiscVCpu.Decoder.Constants {
+﻿namespace RV32_Cpu.Decoder.Constants {
+    /***********************
+     * RISC-V命令 定数定義 *
+     ***********************/
 
     #region RV32命令定義
 
@@ -46,9 +49,9 @@
         /// <summary>Floating-Point Fused Multiply-Subtract命令</summary>
         fmsub = 0b1000111,
         /// <summary>Floating-Point Fused Negative Multiply-Add命令</summary>
-        fnmadd = 0b1001011,
+        fnmadd = 0b1001111,
         /// <summary>Floating-Point Fused Negative Multiply-Subtract命令</summary>
-        fnmsub = 0b1001111,
+        fnmsub = 0b1001011,
         /// <summary>Floating-Point 算術論理演算命令</summary>
         fmiscOp = 0b1010011,
 
@@ -254,68 +257,13 @@
 
         #endregion
 
-        #region RV32F拡張 命令定義
-        /// <summary>Float-Point Add, Single-Precision命令</summary>
-        faddS = 0b0000000,
-        /// <summary>Float-Point Subtract, Single-Precision命令</summary>
-        fsubS = 0b0000100,
-        /// <summary>Float-Point Multiply, Single-Precision命令</summary>
-        fmulS = 0b0001000,
-        /// <summary>Float-Point Divide, Single-Precision命令</summary>
-        fdivS = 0b0001100,
-        /// <summary>Float-Point Square Root, Single-Precision命令</summary>
-        fsqrtS = 0b0101100,
-        /// <summary>Float-Point Sign Inject, Single-Precision命令</summary>
-        fsgnjS = 0b0010000,
-        /// <summary>Float-Point Min/Max, Single-Precision命令</summary>
-        fminS_fmaxS = 0b0010100,
-        /// <summary>Float-Point Compare, Single-Precision命令</summary>
-        fcompareS = 0b1010000,
-        /// <summary>Float-Point Convert to Word from Single命令</summary>
-        fcvtWS = 0b1100000,
-        /// <summary>Float-Point Convert to Single from Word命令</summary>
-        fcvtSW = 0b1101000,
-        /// <summary>Float-Point Move to Word from Integer命令/Classify, Single-Precision命令</summary>
-        fmvXW_fclassS = 0b1110000,
-        /// <summary>Float-Point Move to Integer from Word命令</summary>
-        fmvWX = 0b1111000,
-
-        #endregion
-
-        #region RV32D拡張 命令定義
-        /// <summary>Float-Point Add, Double-Precision命令</summary>
-        faddD = 0b0000001,
-        /// <summary>Float-Point Subtract, Double-Precision命令</summary>
-        fsubD = 0b0000101,
-        /// <summary>Float-Point Multiply, Double-Precision命令</summary>
-        fmulD = 0b0001001,
-        /// <summary>Float-Point Divide, Double-Precision命令</summary>
-        fdivD = 0b0001101,
-        /// <summary>Float-Point Square Root, Double-Precision命令</summary>
-        fsqrtD = 0b0101101,
-        /// <summary>Float-Point Sign Inject, Double-Precision命令</summary>
-        fsgnjD = 0b0010001,
-        /// <summary>Float-Point Min/Max, Double-Precision命令</summary>
-        fminD_fmaxD = 0b0010101,
-        /// <summary>Float-Point Compare, Double-Precision命令</summary>
-        fcompareD = 0b1010001,
-        /// <summary>Float-Point Convert to Single from Double命令</summary>
-        fcvtSD = 0b0100000,
-        /// <summary>Float-Point Convert to Double from Single命令</summary>
-        fcvtDS = 0b0100001,
-        /// <summary>Float-Point Convert to Word from Double命令</summary>
-        fcvtWD = 0b1100001,
-        /// <summary>Float-Point Convert to Double from Word命令</summary>
-        fcvtDW = 0b1101001,
-        /// <summary>Float-Point Classify, Double-Precision命令</summary>
-        fclassD = 0b1110001,
-
-        #endregion
     }
 
     /// <summary>RV32命令の20～31bit部分</summary>
     public enum Funct12 : ushort {
         #region RV32I 命令定義
+        /// <summary>Supervisor-Mode Exception Return</summary>
+        uret = 0b000000000010,
         /// <summary>Supervisor-Mode Exception Return</summary>
         sret = 0b000100000010,
         /// <summary>Machine-Mode Exeception Return</summary>
@@ -357,6 +305,37 @@
         amo_maxu = 0b11100,
 
         #endregion
+
+        #region RV32FD拡張 命令定義
+        /// <summary>Float-Point Add命令</summary>
+        fadd = 0b00000,
+        /// <summary>Float-Point Subtract命令</summary>
+        fsub = 0b00001,
+        /// <summary>Float-Point Multiply命令</summary>
+        fmul = 0b00010,
+        /// <summary>Float-Point Divide命令</summary>
+        fdiv = 0b00011,
+        /// <summary>Float-Point Square Root命令</summary>
+        fsqrt = 0b01011,
+        /// <summary>Float-Point Sign Inject命令</summary>
+        fsgnj = 0b00100,
+        /// <summary>Float-Point Min/Max命令</summary>
+        fmin_fmax = 0b00101,
+        /// <summary>Float-Point Compare命令</summary>
+        fcompare = 0b10100,
+        /// <summary>Float-Point Convert to Single from Double/to Double from Single命令</summary>
+        fcvtSD = 0b01000,
+        /// <summary>Float-Point Convert to Word from Single/Double命令</summary>
+        fcvttoW = 0b11000,
+        /// <summary>Float-Point Convert to Single/Double from Word命令</summary>
+        fcvtfromW = 0b11010,
+        /// <summary>Float-Point Move to Word from Integer命令/Classify命令</summary>
+        fmvXW_fclass = 0b11100,
+        /// <summary>Float-Point Move to Integer from Word命令</summary>
+        fmvWX = 0b11110,
+
+        #endregion
+
     }
 
     /// <summary>RV32C拡張命令の15～13bit部分+0～1bit部分</summary>

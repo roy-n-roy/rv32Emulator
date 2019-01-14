@@ -1,9 +1,9 @@
-﻿using RiscVCpu.MemoryHandler;
-using RiscVCpu.RegisterSet;
+﻿using RV32_Lsu.MemoryHandler;
+using RV32_Lsu.RegisterSet;
 using System;
 using System.Collections.Generic;
 
-namespace RiscVCpu.LoadStoreUnit {
+namespace RV32_Lsu {
 
     /// <summary>
     /// Risc-V 32bitCPU LSU
@@ -31,23 +31,6 @@ namespace RiscVCpu.LoadStoreUnit {
                 lsus.Add(type, (RV32_AbstractLoadStoreUnit)Activator.CreateInstance(type, new object[] { reg, reg.Mem }));
             }
             return lsus[type];
-        }
-
-        /// <summary>
-        /// レジスタを全てクリアし、エントリポイントをPCに設定する
-        /// </summary>
-        /// <param name="entryPoint"></param>
-        public void ClearAndSetPC(UInt32 entryPoint, UInt32 insLength = 4u) {
-            reg.ClearAll();
-            reg.PC = entryPoint;
-        }
-
-        /// <summary>
-        /// サポートするオプション拡張命令セット(Machine ISA)を表すCSRに設定を追加する
-        /// </summary>
-        /// <param name="option">命令セットを表す文字</param>
-        public void AddMisa(char option, UInt32 insLength = 4u) {
-            reg.AddMisa(option);
         }
     }
 

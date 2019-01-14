@@ -1,9 +1,8 @@
-﻿using RiscVCpu.LoadStoreUnit;
-using RiscVCpu.RegisterSet;
+﻿using RV32_Lsu.RegisterSet;
 using System;
 using System.Collections.Generic;
 
-namespace RiscVCpu.ArithmeticLogicUnit {
+namespace RV32_Alu {
 
     /// <summary>
     /// Risc-V 32bitCPU ALU

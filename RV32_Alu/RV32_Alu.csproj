@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FA819D4A-5080-468F-A2B9-B80FB581CD41}</ProjectGuid>
+    <ProjectGuid>{28C36AEE-CD6D-4185-80C9-142D86E5B585}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RV32_Lsu</RootNamespace>
-    <AssemblyName>RV32_Lsu</AssemblyName>
+    <RootNamespace>RV32_Alu</RootNamespace>
+    <AssemblyName>RV32_Alu</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -43,19 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LoadStoreUnit\Constants\ControlStatusRegisterConstants.cs" />
-    <Compile Include="LoadStoreUnit\Constants\RegisterConstants.cs" />
-    <Compile Include="LoadStoreUnit\Exceptions\RiscvException.cs" />
-    <Compile Include="LoadStoreUnit\RV32_FloatPointLsu.cs" />
-    <Compile Include="MainMemoryHandler\RV32_AtomicMemoryHandler.cs" />
-    <Compile Include="MainMemoryHandler\RV32_MemoryHandler.cs" />
-    <Compile Include="LoadStoreUnit\RV32_AmoLsu.cs" />
-    <Compile Include="LoadStoreUnit\RV32_LoadStoreUnit.cs" />
-    <Compile Include="LoadStoreUnit\RV32_IntegerLsu.cs" />
-    <Compile Include="RegisterSet\RV32_ControlStatusRegisters.cs" />
-    <Compile Include="RegisterSet\RV32_RegisterSet.cs" />
+    <Compile Include="Alu\RV32_DoubleFpu.cs" />
+    <Compile Include="Alu\RV32_SingleFpu.cs" />
+    <Compile Include="Alu\RV32_IntegerAlu.cs" />
+    <Compile Include="Alu\RV32_Mac.cs" />
+    <Compile Include="Alu\RV32_Calculators.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\RV32_Lsu\RV32_Lsu.csproj">
+      <Project>{fa819d4a-5080-468f-a2b9-b80fb581cd41}</Project>
+      <Name>RV32_Lsu</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
