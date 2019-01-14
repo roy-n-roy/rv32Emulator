@@ -15,6 +15,12 @@ namespace RV32_Cpu.Decoder {
         /// <returns>実行の成否</returns>
         internal protected override bool Exec(UInt32[] ins, RV32_HaedwareThread cpu) {
             bool result = false;
+
+            // 命令の0～1bit目が "11" でない場合は対象なし
+            if ((ins[0] & 0x11u) != 0b11u) {
+                return result;
+            }
+
             FPRegister rd = (FPRegister)ins[1],
                         rs1 = (FPRegister)ins[3],
                         rs2 = (FPRegister)ins[4],

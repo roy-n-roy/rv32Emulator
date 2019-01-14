@@ -18,8 +18,15 @@ namespace RV32_Cpu.Decoder {
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
         internal protected override bool Exec(UInt32[] ins, RV32_HaedwareThread cpu) {
-            UInt32[] cins = SplitCompressedInstruction(ins);
             bool result = false;
+
+            // 命令の0～1bit目が "11" の場合は対象なし
+            if ((ins[0] & 0b11u) == 0x11u) {
+                return result;
+            }
+
+            // 32bit長命令の前半から16bit長命令を取り出し
+            UInt32[] cins = SplitCompressedInstruction(ins);
             Register rd_rs1 = (Register)(cins[2] & 0x1f),
                         rs2 = (Register)cins[1],
                     crd_rs1 = (Register)(0x8 | (cins[2] & 0x7)),
