@@ -16,7 +16,7 @@ namespace RV32_Cpu.Decoder {
             bool result = false;
 
             // 命令の0～1bit目が "11" でない場合は対象なし
-            if ((ins[0] & 0x11u) != 0b11u) {
+            if ((ins[0] & 0b11u) != 0b11u) {
                 return result;
             }
 
