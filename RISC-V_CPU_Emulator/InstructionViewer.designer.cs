@@ -55,7 +55,7 @@
             this.BinaryInstructionLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BinaryInstructionLabel.AutoSize = true;
             this.BinaryInstructionLabel.Font = new System.Drawing.Font("Yu Gothic UI", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.BinaryInstructionLabel.Location = new System.Drawing.Point(614, 9);
+            this.BinaryInstructionLabel.Location = new System.Drawing.Point(481, 9);
             this.BinaryInstructionLabel.Name = "BinaryInstructionLabel";
             this.BinaryInstructionLabel.Size = new System.Drawing.Size(609, 45);
             this.BinaryInstructionLabel.TabIndex = 0;
@@ -175,7 +175,7 @@
             // 
             this.StepExecuteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.StepExecuteButton.Font = new System.Drawing.Font("Meiryo UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.StepExecuteButton.Location = new System.Drawing.Point(1023, 379);
+            this.StepExecuteButton.Location = new System.Drawing.Point(875, 379);
             this.StepExecuteButton.Name = "StepExecuteButton";
             this.StepExecuteButton.Size = new System.Drawing.Size(185, 51);
             this.StepExecuteButton.TabIndex = 12;
@@ -197,7 +197,7 @@
             this.groupBox1.Controls.Add(this.Arg1Value);
             this.groupBox1.Controls.Add(this.Arg1Name);
             this.groupBox1.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox1.Location = new System.Drawing.Point(650, 81);
+            this.groupBox1.Location = new System.Drawing.Point(502, 81);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(310, 285);
             this.groupBox1.TabIndex = 13;
@@ -226,7 +226,7 @@
             this.DumpViewTextBox.Name = "DumpViewTextBox";
             this.DumpViewTextBox.ReadOnly = true;
             this.DumpViewTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.DumpViewTextBox.Size = new System.Drawing.Size(577, 413);
+            this.DumpViewTextBox.Size = new System.Drawing.Size(462, 413);
             this.DumpViewTextBox.TabIndex = 16;
             this.DumpViewTextBox.Text = "";
             // 
@@ -235,7 +235,7 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.InstructionNameLabel);
             this.groupBox2.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox2.Location = new System.Drawing.Point(977, 81);
+            this.groupBox2.Location = new System.Drawing.Point(829, 81);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(231, 78);
             this.groupBox2.TabIndex = 17;
@@ -247,7 +247,7 @@
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.PCValueLabel);
             this.groupBox3.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox3.Location = new System.Drawing.Point(980, 181);
+            this.groupBox3.Location = new System.Drawing.Point(832, 181);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(228, 79);
             this.groupBox3.TabIndex = 18;
@@ -259,7 +259,7 @@
             this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox4.Controls.Add(this.CurrentModeLabel);
             this.groupBox4.Font = new System.Drawing.Font("メイリオ", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.groupBox4.Location = new System.Drawing.Point(980, 287);
+            this.groupBox4.Location = new System.Drawing.Point(832, 287);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(228, 79);
             this.groupBox4.TabIndex = 18;
@@ -279,21 +279,22 @@
             // 
             // BinaryInstructionDigitLabel
             // 
+            this.BinaryInstructionDigitLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.BinaryInstructionDigitLabel.AutoSize = true;
             this.BinaryInstructionDigitLabel.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.BinaryInstructionDigitLabel.Location = new System.Drawing.Point(620, 47);
+            this.BinaryInstructionDigitLabel.Location = new System.Drawing.Point(487, 47);
             this.BinaryInstructionDigitLabel.Name = "BinaryInstructionDigitLabel";
             this.BinaryInstructionDigitLabel.Size = new System.Drawing.Size(598, 15);
             this.BinaryInstructionDigitLabel.TabIndex = 19;
             this.BinaryInstructionDigitLabel.Text = "----Opcode---- -aq/rl- --------rs2-------  -------rs1-------   -Opcode-   -------" +
     "rd--------   --------Opcode--------";
-            this.BinaryInstructionDigitLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.BinaryInstructionDigitLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             // 
             // InstructionViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1235, 451);
+            this.ClientSize = new System.Drawing.Size(1087, 451);
             this.Controls.Add(this.BinaryInstructionDigitLabel);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
