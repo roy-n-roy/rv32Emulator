@@ -15,7 +15,6 @@ namespace RISC_V_CPU_ConsoleEmulator {
 
             Regex rex;
             rex = new Regex("rv32[msu][a-z]-p-[a-z_]+$", RegexOptions.Compiled);
-            rex = new Regex("rv32mi-p-illegal$", RegexOptions.Compiled);
 
             string[] files = Directory.GetFiles(dirPath).Where<string>(
                 f => (rex.IsMatch(f))).ToArray();

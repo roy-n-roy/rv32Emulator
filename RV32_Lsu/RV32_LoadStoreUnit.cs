@@ -32,25 +32,6 @@ namespace RV32_Lsu {
             }
             return lsus[type];
         }
-
-        /// <summary>
-        /// レジスタを全てクリアし、エントリポイントをPCに設定する
-        /// </summary>
-        /// <param name="entryOffset"></param>
-        public void ClearAndSetPC(UInt32 PhysicalAddress, UInt32 VirtualAddress, UInt32 entryOffset) {
-            reg.ClearAll();
-            reg.Mem.PAddr = PhysicalAddress;
-            reg.Mem.Offset = entryOffset;
-            reg.PC = VirtualAddress;
-        }
-
-        /// <summary>
-        /// サポートするオプション拡張命令セット(Machine ISA)を表すCSRに設定を追加する
-        /// </summary>
-        /// <param name="option">命令セットを表す文字</param>
-        public void AddMisa(char option) {
-            reg.AddMisa(option);
-        }
     }
 
     /// <summary>

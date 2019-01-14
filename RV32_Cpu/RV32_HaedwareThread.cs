@@ -48,12 +48,12 @@ namespace RV32_Cpu {
             alu = new RV32_Calculators(registerSet);
             lsu = new RV32_LoadStoreUnit(registerSet);
 
-            lsu.AddMisa('I');
-            lsu.AddMisa('S');
+            registerSet.AddMisa('I');
+            registerSet.AddMisa('S');
 
             // 拡張命令セット
             foreach (char option in OptionsInstructionSet.ToCharArray()) {
-                lsu.AddMisa(option);
+                registerSet.AddMisa(option);
                 switch (option) {
                     case 'M': // RV32M 拡張命令セット
                         decoder.AddDecoder(typeof(RV32M_Decoder));
@@ -178,7 +178,7 @@ namespace RV32_Cpu {
                 }
             }
 
-            lsu.ClearAndSetPC(physAddr, virtAddr, entryOffset);
+            registerSet.ClearAndSetPC(physAddr, virtAddr, entryOffset);
 
             return 0;
         }
@@ -232,7 +232,6 @@ namespace RV32_Cpu {
             } finally {
                 registerSet.IncrementCycle();
             }
-
         }
 
         /// <summary>

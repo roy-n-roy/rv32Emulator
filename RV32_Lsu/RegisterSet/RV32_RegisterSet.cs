@@ -65,20 +65,21 @@ namespace RV32_Lsu.RegisterSet {
             get => programCounter;
             internal set {
                 programCounter = value;
-                instructionRegister = Mem.FetchInstruction(value);
+                // 命令レジスタのフェッチ
+                IR = Mem.FetchInstruction(value);
             }
         }
 
         /// <summary>命令レジスタ</summary>
-        private UInt32 instructionRegister;
-        public UInt32 IR {
-            get => instructionRegister;
-        }
+        public UInt32 IR { get; private set; }
 
         /// <summary>現在の実行モード</summary>
         public PrivilegeLevels CurrentMode { get; set; }
 
-        /// <summary>メインメモリ</summary>
+         /// <summary>割り込み待ちモード</summary>
+        public bool IsWaitMode { get; set; }
+
+       /// <summary>メインメモリ</summary>
         private RV32_AbstractMemoryHandler mainMemory;
         public RV32_AbstractMemoryHandler Mem {
             get => mainMemory;
@@ -88,106 +89,20 @@ namespace RV32_Lsu.RegisterSet {
             }
         }
 
-        /// <summary>割り込み待ちモード</summary>
-        public bool IsWaitMode { get; set; }
-
         #endregion
+
+        /// <summary>
+        /// プログラムカウントを 引数で指定した分 増加させ、次の命令アドレスを指すように更新する
+        /// 引数で指定しない場合は 4 増加させる
+        /// </summary>
+        /// <param name="instructionLength">PCの増数 32bit長命令の場合は4、16bit長命令の場合は2を指定する</param>
+        public void IncrementPc(UInt32 instructionLength = 4u) {
+            PC += instructionLength;
+        }
 
         #region Risc-V CPU命令
 
         #region Risc-V CPU 特権命令
-        /// <summary>
-        /// Control Status Register Read and Write命令
-        /// 現在のCSRをレジスタrdに書き込み、レジスタrs1をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="rs1">書き込む値が格納されているレジスタ</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrw(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = CSRegisters[csr];
-            SetCSR(csr, 'w', rs1);
-            SetValue(rd, t);
-            IncrementPc(insLength);
-            return true;
-        }
-        /// <summary>
-        /// Control Status Register Read and Set命令
-        /// 現在のCSRをレジスタrdに書き込み、現在のCSRとレジスタrs1の論理和をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="rs1">セットする値が格納されているレジスタ</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrs(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = CSRegisters[csr];
-            SetCSR(csr, 's', rs1);
-            SetValue(rd, t);
-            IncrementPc(insLength);
-            return true;
-        }
-        /// <summary>
-        /// Control Status Register Read and Clear命令
-        /// 現在のCSRをレジスタrdに書き込み、現在のCSRとレジスタrs1の1の補数との論理積をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="rs1">クリアする値が格納されているレジスタ</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrc(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = CSRegisters[csr];
-            SetCSR(csr, 'c', rs1);
-            SetValue(rd, t);
-            IncrementPc(insLength);
-            return true;
-        }
-        /// <summary>
-        /// Control Status Register Read and Write Immediate命令
-        /// 現在のCSRをレジスタrdに書き込み、即値をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="zImmediate">即値</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrwi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = CSRegisters[csr];
-            SetCSR(csr, 'w', zImmediate);
-            SetValue(rd, t);
-            IncrementPc(insLength);
-            return true;
-        }
-
-        /// <summary>
-        /// Control Status Register Read and Set Immediate命令
-        /// 現在のCSRをレジスタrdに書き込み、現在のCSRと即値の論理和をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="zImmediate">即値</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrsi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = CSRegisters[csr];
-            SetCSR(csr, 's', zImmediate);
-            SetValue(rd, t);
-            IncrementPc(insLength);
-            return true;
-        }
-        /// <summary>
-        /// Control Status Register Read and Clear Immediate命令
-        /// 現在のCSRをレジスタrdに書き込み、現在のCSRと即値の1の補数との論理積をCSRに書き込む
-        /// </summary>
-        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
-        /// <param name="zImmediate">即値</param>
-        /// <param name="csr">CSRのアドレス</param>
-        /// <returns>処理の成否</returns>
-        public bool Csrrci(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
-            UInt32 t = CSRegisters[csr];
-            SetCSR(csr, 'c', zImmediate);
-            SetValue(rd, t);
-            IncrementPc(insLength);
-            return true;
-        }
-
         /// <summary>
         /// Fence Memory and I/O命令
         /// </summary>
@@ -233,7 +148,7 @@ namespace RV32_Lsu.RegisterSet {
         /// </summary>
         /// <returns>処理の成否</returns>
         public bool Wfi(UInt32 insLength = 4u) {
-            if (((StatusCSR)CSRegisters[CSR.mstatus]).TW) {
+            if (((StatusCSR)CSRegisters[CSR.mstatus]).TW && CurrentMode <= PrivilegeLevels.SupervisorMode) {
                 throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
             }
             IsWaitMode = true;
@@ -289,7 +204,7 @@ namespace RV32_Lsu.RegisterSet {
         /// </summary>
         /// <returns>処理の成否</returns>
         public bool Sret(UInt32 insLength = 4u) {
-            if (((StatusCSR)CSRegisters[CSR.mstatus]).TSR) {
+            if (((StatusCSR)CSRegisters[CSR.mstatus]).TSR && CurrentMode <= PrivilegeLevels.SupervisorMode) {
                 throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
             }
             PC = CSRegisters[CSR.sepc];
@@ -332,114 +247,106 @@ namespace RV32_Lsu.RegisterSet {
         }
 
 
-        #endregion
-
-        #endregion
-
-        #region publicメソッド定義
-
-        #region プログラムカウンタ
+        /// <summary>
+        /// Control Status Register Read and Write命令
+        /// 現在のCSRをレジスタrdに書き込み、レジスタrs1をCSRに書き込む
+        /// </summary>
+        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
+        /// <param name="rs1">書き込む値が格納されているレジスタ</param>
+        /// <param name="csr">CSRのアドレス</param>
+        /// <returns>処理の成否</returns>
+        public bool Csrrw(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
+            UInt32 t = GetCSR(csr);
+            SetCSR(csr, 'w', rs1);
+            SetValue(rd, t);
+            IncrementPc(insLength);
+            return true;
+        }
+        /// <summary>
+        /// Control Status Register Read and Set命令
+        /// 現在のCSRをレジスタrdに書き込み、現在のCSRとレジスタrs1の論理和をCSRに書き込む
+        /// </summary>
+        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
+        /// <param name="rs1">セットする値が格納されているレジスタ</param>
+        /// <param name="csr">CSRのアドレス</param>
+        /// <returns>処理の成否</returns>
+        public bool Csrrs(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
+            UInt32 t = GetCSR(csr);
+            SetCSR(csr, 's', rs1);
+            SetValue(rd, t);
+            IncrementPc(insLength);
+            return true;
+        }
+        /// <summary>
+        /// Control Status Register Read and Clear命令
+        /// 現在のCSRをレジスタrdに書き込み、現在のCSRとレジスタrs1の1の補数との論理積をCSRに書き込む
+        /// </summary>
+        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
+        /// <param name="rs1">クリアする値が格納されているレジスタ</param>
+        /// <param name="csr">CSRのアドレス</param>
+        /// <returns>処理の成否</returns>
+        public bool Csrrc(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
+            UInt32 t = GetCSR(csr);
+            SetCSR(csr, 'c', rs1);
+            SetValue(rd, t);
+            IncrementPc(insLength);
+            return true;
+        }
+        /// <summary>
+        /// Control Status Register Read and Write Immediate命令
+        /// 現在のCSRをレジスタrdに書き込み、即値をCSRに書き込む
+        /// </summary>
+        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
+        /// <param name="zImmediate">即値</param>
+        /// <param name="csr">CSRのアドレス</param>
+        /// <returns>処理の成否</returns>
+        public bool Csrrwi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
+            UInt32 t = GetCSR(csr);
+            SetCSR(csr, 'w', zImmediate);
+            SetValue(rd, t);
+            IncrementPc(insLength);
+            return true;
+        }
 
         /// <summary>
-        /// プログラムカウントを 引数で指定した分 増加させ、次の命令アドレスを指すように更新する
-        /// 引数で指定しない場合は 4 増加させる
+        /// Control Status Register Read and Set Immediate命令
+        /// 現在のCSRをレジスタrdに書き込み、現在のCSRと即値の論理和をCSRに書き込む
         /// </summary>
-        /// <param name="instructionLength">PCの増数 32bit長命令の場合は4、16bit長命令の場合は2を指定する</param>
-        public void IncrementPc(UInt32 instructionLength = 4u) {
-            PC += instructionLength;
+        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
+        /// <param name="zImmediate">即値</param>
+        /// <param name="csr">CSRのアドレス</param>
+        /// <returns>処理の成否</returns>
+        public bool Csrrsi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
+            UInt32 t = GetCSR(csr);
+            SetCSR(csr, 's', zImmediate);
+            SetValue(rd, t);
+            IncrementPc(insLength);
+            return true;
+        }
+
+        /// <summary>
+        /// Control Status Register Read and Clear Immediate命令
+        /// 現在のCSRをレジスタrdに書き込み、現在のCSRと即値の1の補数との論理積をCSRに書き込む
+        /// </summary>
+        /// <param name="rd">現在のCSRの値を格納するレジスタ番号</param>
+        /// <param name="zImmediate">即値</param>
+        /// <param name="csr">CSRのアドレス</param>
+        /// <returns>処理の成否</returns>
+        public bool Csrrci(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
+            UInt32 t = CSRegisters[csr];
+            SetCSR(csr, 'c', zImmediate);
+            SetValue(rd, t);
+            IncrementPc(insLength);
+            return true;
         }
 
         #endregion
 
-        #region 整数レジスタ
-
-        /// <summary>
-        /// 整数レジスタに値を設定する
-        /// </summary>
-        /// <param name="name">設定する対象レジスタ名</param>
-        /// <param name="value">設定する値</param>
-        public void SetValue(Register name, UInt32 value) {
-            if (name == Register.zero) {
-                //zeroレジスタは常に0から変更されないため、なにもしない
-
-            } else {
-                //値をレジスタに設定
-                Registers[name] = value;
-            }
-        }
-
-        /// <summary>
-        /// 整数レジスタから値を取得する
-        /// </summary>
-        /// <param name="name">取得する対象レジスタ名</param>
-        /// <returns>レジスタの値</returns>
-        public UInt32 GetValue(Register name) {
-            //レジスタの値を返す
-            return Registers[name];
-        }
-
         #endregion
 
-        #region 浮動小数点レジスタ
+        #region 内部用メソッド
 
-        /// <summary>
-        /// 浮動小数点レジスタに値を設定する
-        /// </summary>
-        /// <param name="name">設定する対象レジスタ名</param>
-        /// <param name="value">設定する値</param>
-        public void SetValue(FPRegister name, UInt32 value) {
-            //値をレジスタに設定
-            FPRegisters[name] = value;
-            StatusCSR status = CSRegisters[CSR.mstatus];
-            status.FS = 0x3;
-            CSRegisters[CSR.mstatus] = status;
-        }
-
-        /// <summary>
-        /// 浮動小数点レジスタに値を設定する
-        /// </summary>
-        /// <param name="name">設定する対象レジスタ名</param>
-        /// <param name="value">設定する値</param>
-        public void SetValue(FPRegister name, UInt64 value) {
-            //値をレジスタに設定
-            FPRegisters[name] = value;
-            StatusCSR status = CSRegisters[CSR.mstatus];
-            status.FS = 0x3;
-            CSRegisters[CSR.mstatus] = status;
-        }
-
-        /// <summary>
-        /// 浮動小数点レジスタから値を取得する
-        /// </summary>
-        /// <param name="name">取得する対象レジスタ名</param>
-        /// <returns>レジスタの値</returns>
-        public UInt64 GetValue(FPRegister name) {
-            //レジスタの値を返す
-            return FPRegisters[name];
-        }
-
-        /// <summary>
-        /// 浮動小数点例外フラグをCSRに設定する
-        /// </summary>
-        /// <param name="fcsr"></param>
-        public void SetFflagsCSR(FloatCSR fcsr) {
-            CSRegisters[CSR.fflags] = fcsr & 0x1fu;
-        }
-
-        /// <summary>
-        /// 浮動小数点レジスタ・fcsrの状態を返す
-        /// </summary>
-        /// <returns></returns>
-        public bool IsFPAvailable() {
-            return ((StatusCSR)CSRegisters[CSR.mstatus]).FS != 0;
-        }
-        #endregion
-
-        #endregion
-
-        #region privateメソッド定義
-
-        #region コントロール・ステータスレジスタ
+        #region private コントロール・ステータスレジスタ操作
 
         /// <summary>
         /// CSRに値を設定する
@@ -528,15 +435,91 @@ namespace RV32_Lsu.RegisterSet {
 
         #endregion
 
-        /// <summary>
-        /// レジスタを全て初期化する
-        /// </summary>
-        public void ClearAll() {
-            Registers.Select(r => Registers[r.Key] = 0);
-            CSRegisters.Select(c => CSRegisters[c.Key] = 0);
+        #region public 整数レジスタ操作
 
-            CurrentMode = PrivilegeLevels.MachineMode;
+        /// <summary>
+        /// 整数レジスタに値を設定する
+        /// </summary>
+        /// <param name="name">設定する対象レジスタ名</param>
+        /// <param name="value">設定する値</param>
+        public void SetValue(Register name, UInt32 value) {
+            if (name == Register.zero) {
+                //zeroレジスタは常に0から変更されないため、なにもしない
+
+            } else {
+                //値をレジスタに設定
+                Registers[name] = value;
+            }
         }
+
+        /// <summary>
+        /// 整数レジスタから値を取得する
+        /// </summary>
+        /// <param name="name">取得する対象レジスタ名</param>
+        /// <returns>レジスタの値</returns>
+        public UInt32 GetValue(Register name) {
+            //レジスタの値を返す
+            return Registers[name];
+        }
+
+        #endregion
+
+        #region public 浮動小数点レジスタ
+
+        /// <summary>
+        /// 浮動小数点レジスタに値を設定する
+        /// </summary>
+        /// <param name="name">設定する対象レジスタ名</param>
+        /// <param name="value">設定する値</param>
+        public void SetValue(FPRegister name, UInt32 value) {
+            //値をレジスタに設定
+            FPRegisters[name] = value;
+            StatusCSR status = CSRegisters[CSR.mstatus];
+            status.FS = 0x3;
+            CSRegisters[CSR.mstatus] = status;
+        }
+
+        /// <summary>
+        /// 浮動小数点レジスタに値を設定する
+        /// </summary>
+        /// <param name="name">設定する対象レジスタ名</param>
+        /// <param name="value">設定する値</param>
+        public void SetValue(FPRegister name, UInt64 value) {
+            //値をレジスタに設定
+            FPRegisters[name] = value;
+            StatusCSR status = CSRegisters[CSR.mstatus];
+            status.FS = 0x3;
+            CSRegisters[CSR.mstatus] = status;
+        }
+
+        /// <summary>
+        /// 浮動小数点レジスタから値を取得する
+        /// </summary>
+        /// <param name="name">取得する対象レジスタ名</param>
+        /// <returns>レジスタの値</returns>
+        public UInt64 GetValue(FPRegister name) {
+            //レジスタの値を返す
+            return FPRegisters[name];
+        }
+
+        /// <summary>
+        /// 浮動小数点例外フラグをCSRに設定する
+        /// </summary>
+        /// <param name="fcsr"></param>
+        public void SetFflagsCSR(FloatCSR fcsr) {
+            CSRegisters[CSR.fflags] = fcsr & 0x1fu;
+        }
+
+        /// <summary>
+        /// 浮動小数点レジスタ・fcsrの状態を返す
+        /// </summary>
+        /// <returns></returns>
+        public bool IsFPAvailable() {
+            return ((StatusCSR)CSRegisters[CSR.mstatus]).FS != 0;
+        }
+        #endregion
+
+        #region public コントロール・ステータスレジスタ
 
         /// <summary>
         /// サイクルカウントを 1 増加させる
@@ -581,13 +564,27 @@ namespace RV32_Lsu.RegisterSet {
         /// マシンの拡張命令セットを表すCSRに設定を追加する
         /// </summary>
         /// <param name="isa">拡張命令セットを表すA～Zの文字</param>
-        internal void AddMisa(char isa) {
+        public void AddMisa(char isa) {
             CSRegisters.Misa |= 1u << (Char.ToUpper(isa) - 'A');
 
             // 追加標準機能をサポートする場合、Gもセットする
             if (Char.ToUpper(isa) != 'E' && Char.ToUpper(isa) != 'I') {
                 CSRegisters.Misa |= 1u << ('G' - 'A');
             }
+        }
+
+        /// <summary>
+        /// レジスタを全てクリアし、エントリポイントをPCに設定する
+        /// </summary>
+        public void ClearAndSetPC(UInt32 PhysicalAddress, UInt32 VirtualAddress, UInt32 entryOffset) {
+            Registers.Select(r => Registers[r.Key] = 0);
+            CSRegisters.Select(c => CSRegisters[c.Key] = 0);
+
+            CurrentMode = PrivilegeLevels.MachineMode;
+
+            Mem.PAddr = PhysicalAddress;
+            Mem.Offset = entryOffset;
+            PC = VirtualAddress;
         }
 
         /// <summary>
@@ -769,7 +766,9 @@ namespace RV32_Lsu.RegisterSet {
                     CSRegisters[CSR.mstatus] = status;
 
                     // プログラムカウンタの設定
-                    PC = CSRegisters[CSR.mtvec];
+                    if (PC != CSRegisters[CSR.mtvec]) {
+                        PC = CSRegisters[CSR.mtvec];
+                    }
 
                     // 実行モードの変更
                     CurrentMode = PrivilegeLevels.MachineMode;
@@ -793,7 +792,10 @@ namespace RV32_Lsu.RegisterSet {
                     CSRegisters[CSR.sstatus] = status;
 
                     // プログラムカウンタの設定
-                    PC = CSRegisters[CSR.stvec];
+                    if (PC != CSRegisters[CSR.stvec]) {
+                        PC = CSRegisters[CSR.stvec];
+                    }
+
                     // 実行モードの変更
                     CurrentMode = PrivilegeLevels.SupervisorMode;
                     break;
@@ -815,8 +817,9 @@ namespace RV32_Lsu.RegisterSet {
                     CSRegisters[CSR.ustatus] = status;
 
                     // プログラムカウンタの設定
-                    PC = CSRegisters[CSR.utvec];
-                    UInt32 utvec = CSRegisters[CSR.utvec];
+                    if (PC != CSRegisters[CSR.utvec]) {
+                        PC = CSRegisters[CSR.utvec];
+                    }
 
                     // 実行モードの変更
                     CurrentMode = PrivilegeLevels.UserMode;
@@ -824,6 +827,10 @@ namespace RV32_Lsu.RegisterSet {
             }
         }
 
+
+        #endregion
+
+        #endregion
 
         /// <summary>
         /// レジスタ(zero～x31 + pc)の内容をレジスタ名と16進形式の文字列に変換して返す
@@ -839,7 +846,5 @@ namespace RV32_Lsu.RegisterSet {
 
             return s;
         }
-
-        #endregion
     }
 }
