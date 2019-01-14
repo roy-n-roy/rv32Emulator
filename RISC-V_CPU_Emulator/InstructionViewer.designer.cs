@@ -288,7 +288,7 @@
             this.BinaryInstructionDigitLabel.TabIndex = 19;
             this.BinaryInstructionDigitLabel.Text = "----Opcode---- -aq/rl- --------rs2-------  -------rs1-------   -Opcode-   -------" +
     "rd--------   --------Opcode--------";
-            this.BinaryInstructionDigitLabel.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.BinaryInstructionDigitLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // InstructionViewer
             // 
