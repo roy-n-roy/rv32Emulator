@@ -60,6 +60,7 @@
             this.BinaryInstructionLabel.Size = new System.Drawing.Size(609, 45);
             this.BinaryInstructionLabel.TabIndex = 0;
             this.BinaryInstructionLabel.Text = "0000000 00000 00000 000 00000 0000000";
+            this.BinaryInstructionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // InstructionNameLabel
             // 
@@ -286,6 +287,7 @@
             this.BinaryInstructionDigitLabel.TabIndex = 19;
             this.BinaryInstructionDigitLabel.Text = "----Opcode---- -aq/rl- --------rs2-------  -------rs1-------   -Opcode-   -------" +
     "rd--------   --------Opcode--------";
+            this.BinaryInstructionDigitLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // InstructionViewer
             // 
