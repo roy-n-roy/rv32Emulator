@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RV32_Lsu.Constants {
+namespace RV32_Register.Constants {
     /*******************************************
      * ページテーブルエントリ 定数、構造体定義 *
      *******************************************/

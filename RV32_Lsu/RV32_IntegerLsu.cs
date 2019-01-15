@@ -1,7 +1,7 @@
-﻿using RV32_Lsu.Constants;
-using RV32_Lsu.Exceptions;
-using RV32_Lsu.MemoryHandler;
-using RV32_Lsu.RegisterSet;
+﻿using RV32_Register.MemoryHandler;
+using RV32_Register;
+using RV32_Register.Constants;
+using RV32_Register.Exceptions;
 using System;
 
 namespace RV32_Lsu {
@@ -20,133 +20,6 @@ namespace RV32_Lsu {
         }
 
         #region Risc-V CPU命令
-
-        /// <summary>
-        /// Jump And Link命令
-        /// 次の命令アドレス(pc+4)をレジスタrdに書き込み、現在のpcにoffsetを加えてpcに設定する
-        /// </summary>
-        /// <param name="rd">次の命令アドレスを格納するレジスタ番号</param>
-        /// <param name="offset">ジャンプする現在のpcからの相対アドレス位置</param>
-        public bool Jal(Register rd, Int32 offset, UInt32 insLength = 4u) {
-            reg.SetValue(rd, reg.PC + insLength);
-            reg.PC += (UInt32)offset;
-            return true;
-        }
-
-        /// <summary>
-        /// Jump And Link Register命令
-        /// レジスタrs1+offsetをpcに書き込み、
-        /// 次の命令アドレスだった値(pc+4)をレジスタrdに書き込む
-        /// </summary>
-        /// <param name="rd">結果を格納するレジスタ番号</param>
-        /// <param name="rs1">ベースのアドレス</param>
-        /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Jalr(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
-            UInt32 t = reg.PC + insLength;
-            reg.PC = (reg.GetValue(rs1) + (UInt32)offset) & ~1u;
-            reg.SetValue(rd, t);
-            return true;
-        }
-
-        #region Risv-V CPU Branch系命令
-
-        /// <summary>
-        /// Branch if Equal命令
-        /// レジスタrs1の値とrs2の値が同じ場合、pcにoffsetを加える
-        /// </summary>
-        /// <param name="rs1">被比較数</param>
-        /// <param name="rs2">比較数</param>
-        /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Beq(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            if (reg.GetValue(rs1) == reg.GetValue(rs2)) {
-                reg.PC += (UInt32)offset;
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Branch if Not Equal命令
-        /// レジスタrs1の値とrs2の値が異なる場合、pcにoffsetを加える
-        /// </summary>
-        /// <param name="rs1">被比較数</param>
-        /// <param name="rs2">比較数</param>
-        /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bne(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            if (reg.GetValue(rs1) != reg.GetValue(rs2)) {
-                reg.PC += (UInt32)offset;
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Branch if Less Then命令
-        /// レジスタrs1の値がrs2の値より小さい場合、pcにoffsetを加える
-        /// </summary>
-        /// <param name="rs1">被比較数</param>
-        /// <param name="rs2">比較数</param>
-        /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Blt(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            if ((Int32)reg.GetValue(rs1) < (Int32)reg.GetValue(rs2)) {
-                reg.PC += (UInt32)offset;
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Branch if Greater Then or Equal命令
-        /// レジスタrs1の値がrs2の値以上の場合、pcにoffsetを加える
-        /// </summary>
-        /// <param name="rs1">被比較数</param>
-        /// <param name="rs2">比較数</param>
-        /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bge(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            if ((Int32)reg.GetValue(rs1) >= (Int32)reg.GetValue(rs2)) {
-                reg.PC += (UInt32)offset;
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Branch if Less Then, Unsigned命令
-        /// レジスタrs1の値がrs2の値より小さい場合、pcにoffsetを加える
-        /// </summary>
-        /// <param name="rs1">被比較数</param>
-        /// <param name="rs2">比較数</param>
-        /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bltu(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            if (reg.GetValue(rs1) < reg.GetValue(rs2)) {
-                reg.PC += (UInt32)offset;
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        /// <summary>
-        /// Branch if Greater Then or Equal命令
-        /// レジスタrs1の値がrs2の値以上の場合、pcにoffsetを加える
-        /// </summary>
-        /// <param name="rs1">被比較数</param>
-        /// <param name="rs2">比較数</param>
-        /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bgeu(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
-            if (reg.GetValue(rs1) >= reg.GetValue(rs2)) {
-                reg.PC += (UInt32)offset;
-            } else {
-                reg.IncrementPc(insLength);
-            }
-            return true;
-        }
-
-        #endregion
 
         #region Risc-V CPU Load系命令
 

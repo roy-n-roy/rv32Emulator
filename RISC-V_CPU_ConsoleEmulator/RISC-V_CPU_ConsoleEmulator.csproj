@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RV32_Cpu\RV32_Cpu.csproj" />
     <ProjectReference Include="..\RV32_Lsu\RV32_Lsu.csproj" />
+    <ProjectReference Include="..\RV32_Register\RV32_Register.csproj" />
   </ItemGroup>
 
 </Project>

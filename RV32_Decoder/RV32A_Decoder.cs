@@ -1,6 +1,6 @@
 ﻿using RV32_Decoder.Constants;
 using RV32_Lsu;
-using RV32_Lsu.Constants;
+using RV32_Register.Constants;
 using System;
 
 namespace RV32_Decoder {

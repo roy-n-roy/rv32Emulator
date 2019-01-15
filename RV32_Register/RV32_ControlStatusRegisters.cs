@@ -1,4 +1,4 @@
-﻿using RV32_Lsu.Constants;
+﻿using RV32_Register.Constants;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RV32_Lsu.RegisterSet {
+namespace RV32_Register {
     public class RV32_ControlStatusRegisters : Dictionary<CSR, UInt32> {
 
         public UInt32 Misa { get => base[CSR.misa]; set => base[CSR.misa] = value; }

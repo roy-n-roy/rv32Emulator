@@ -1,7 +1,7 @@
 ﻿using RV32_Alu;
 using RV32_Decoder.Constants;
 using RV32_Lsu;
-using RV32_Lsu.Constants;
+using RV32_Register.Constants;
 using System;
 
 namespace RV32_Decoder {
@@ -102,8 +102,7 @@ namespace RV32_Decoder {
                             result = alu.Add(rd_rs1, rd_rs1, rs2, InstructionLength);
                         }
                     } else if (cins[1] == 0 && (cins[2] & 0x1f) != 0) { // jalr,jr命令
-                        lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
-                        result = lsu.Jalr((Register)(cins[2] >> 5), rd_rs1, 0, InstructionLength);
+                        result = Decoder.Reg.Jalr((Register)(cins[2] >> 5), rd_rs1, 0, InstructionLength);
 
                     } else if (cins[1] == 0 && cins[2] == 0b100000) { // ebreak命令
                         result = Decoder.Reg.Ebreak(InstructionLength);
@@ -144,26 +143,22 @@ namespace RV32_Decoder {
 
                 case CompressedOpcode.jal: // jal命令
                     immediate = GetUnsignedImmediate("CJ", cins);
-                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
-                    result = lsu.Jal(Register.ra, immediate, InstructionLength);
+                    result = Decoder.Reg.Jal(Register.ra, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.j: // j命令
                     immediate = GetUnsignedImmediate("CJ", cins);
-                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
-                    result = lsu.Jal(Register.zero, immediate, InstructionLength);
+                    result = Decoder.Reg.Jal(Register.zero, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.beqz: // beqz命令
                     immediate = GetUnsignedImmediate("CB", cins);
-                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
-                    result = lsu.Beq(crd_rs1, Register.zero, immediate, InstructionLength);
+                    result = Decoder.Reg.Beq(crd_rs1, Register.zero, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.bnez: // bnez命令
                     immediate = GetUnsignedImmediate("CB", cins);
-                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
-                    result = lsu.Bne(crd_rs1, Register.zero, immediate, InstructionLength);
+                    result = Decoder.Reg.Bne(crd_rs1, Register.zero, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.lw: // lw命令

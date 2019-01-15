@@ -44,20 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\ControlStatusRegisterConstants.cs" />
-    <Compile Include="Constants\PageTableEntryConstants.cs" />
-    <Compile Include="Constants\RegisterConstants.cs" />
-    <Compile Include="Exceptions\RiscvException.cs" />
     <Compile Include="RV32_FloatPointLsu.cs" />
-    <Compile Include="MainMemoryHandler\RV32_AtomicMemoryHandler.cs" />
-    <Compile Include="MainMemoryHandler\RV32_MemoryHandler.cs" />
     <Compile Include="RV32_AmoLsu.cs" />
     <Compile Include="RV32_LoadStoreUnit.cs" />
     <Compile Include="RV32_IntegerLsu.cs" />
-    <Compile Include="RegisterSet\RV32_ControlStatusRegisters.cs" />
-    <Compile Include="RegisterSet\RV32_RegisterSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\RV32_Register\RV32_Register.csproj">
+      <Project>{9a6be135-e566-4d40-a274-fdae529d5670}</Project>
+      <Name>RV32_Register</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

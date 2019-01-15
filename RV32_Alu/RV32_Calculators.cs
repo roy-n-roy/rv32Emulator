@@ -1,4 +1,4 @@
-﻿using RV32_Lsu.RegisterSet;
+﻿using RV32_Register;
 using System;
 using System.Collections.Generic;
 

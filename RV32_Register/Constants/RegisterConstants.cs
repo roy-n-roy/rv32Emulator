@@ -1,4 +1,4 @@
-﻿namespace RV32_Lsu.Constants {
+﻿namespace RV32_Register.Constants {
 
     #region RV32レジスタ名定義
     /***********************

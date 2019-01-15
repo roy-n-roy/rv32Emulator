@@ -2,10 +2,10 @@
 using RV32_Alu;
 using RV32_Decoder;
 using RV32_Lsu;
-using RV32_Lsu.Constants;
-using RV32_Lsu.Exceptions;
-using RV32_Lsu.MemoryHandler;
-using RV32_Lsu.RegisterSet;
+using RV32_Register;
+using RV32_Register.Constants;
+using RV32_Register.Exceptions;
+using RV32_Register.MemoryHandler;
 using System;
 using System.IO;
 
@@ -204,7 +204,7 @@ namespace RV32_Cpu {
                     registerSet.IncrementCycle();
                 } else {
                     // 割り込みが無ければ、命令レジスタから命令を取り出して、デコード・実行する
-                    RISC_V_Instruction.RiscvInstruction ins = RISC_V_Instruction.Converter.getInstruction(registerSet.IR);
+                    RISC_V_Instruction.RiscvInstruction ins = RISC_V_Instruction.Converter.GetInstruction(registerSet.IR);
                     decoder.Decode();
                 }
 

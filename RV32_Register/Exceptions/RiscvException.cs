@@ -1,8 +1,7 @@
-﻿using RV32_Lsu.Constants;
-using RV32_Lsu.RegisterSet;
+﻿using RV32_Register.Constants;
 using System;
 
-namespace RV32_Lsu.Exceptions {
+namespace RV32_Register.Exceptions {
     /// <summary>Risc-V CPUで発生した例外を表します</summary>
     public class RiscvException : Exception {
 

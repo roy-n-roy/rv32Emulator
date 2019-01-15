@@ -1,8 +1,8 @@
 ﻿using RV32_Alu;
 using RV32_Lsu;
-using RV32_Lsu.Constants;
-using RV32_Lsu.Exceptions;
-using RV32_Lsu.RegisterSet;
+using RV32_Register;
+using RV32_Register.Constants;
+using RV32_Register.Exceptions;
 using System;
 using System.Collections.Generic;
 

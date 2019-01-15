@@ -1,11 +1,10 @@
-﻿using RV32_Lsu.Constants;
-using RV32_Lsu.Exceptions;
-using RV32_Lsu.RegisterSet;
+﻿using RV32_Register.Constants;
+using RV32_Register.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RV32_Lsu.MemoryHandler {
+namespace RV32_Register.MemoryHandler {
     /// <summary>メインメモリハンドラ</summary>
     public class RV32_MemoryHandler : RV32_AbstractMemoryHandler {
 

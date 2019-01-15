@@ -1,6 +1,6 @@
-﻿using RV32_Lsu.Constants;
-using RV32_Lsu.Exceptions;
-using RV32_Lsu.RegisterSet;
+﻿using RV32_Register;
+using RV32_Register.Constants;
+using RV32_Register.Exceptions;
 using System;
 
 namespace RV32_Alu {

@@ -103,6 +103,10 @@
       <Project>{fa819d4a-5080-468f-a2b9-b80fb581cd41}</Project>
       <Name>RV32_Lsu</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RV32_Register\RV32_Register.csproj">
+      <Project>{9a6be135-e566-4d40-a274-fdae529d5670}</Project>
+      <Name>RV32_Register</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

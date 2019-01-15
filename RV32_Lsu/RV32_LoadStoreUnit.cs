@@ -1,5 +1,5 @@
-﻿using RV32_Lsu.MemoryHandler;
-using RV32_Lsu.RegisterSet;
+﻿using RV32_Register.MemoryHandler;
+using RV32_Register;
 using System;
 using System.Collections.Generic;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RV32_Lsu.Constants {
+namespace RV32_Register.Constants {
     /************************
      * CSR 定数、構造体定義 *
      ************************/

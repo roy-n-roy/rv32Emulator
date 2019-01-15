@@ -1,7 +1,7 @@
 ﻿using RV32_Alu;
 using RV32_Decoder.Constants;
 using RV32_Lsu;
-using RV32_Lsu.Constants;
+using RV32_Register.Constants;
 using System;
 
 namespace RV32_Decoder {
@@ -49,44 +49,41 @@ namespace RV32_Decoder {
 
                 case Opcode.jal: // jal命令
                     immediate = GetImmediate('J', ins);
-                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
-                    result = lsu.Jal(rd, immediate);
+                    result = Decoder.Reg.Jal(rd, immediate);
                     break;
 
                 case Opcode.jalr: // jalr命令
                     if (funct3 == Funct3.jalr) {
                         immediate = GetImmediate('I', ins);
-                        lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
-                        result = lsu.Jalr(rd, rs1, immediate);
+                        result = Decoder.Reg.Jalr(rd, rs1, immediate);
                     }
                     break;
 
                 case Opcode.branch: // Branch系命令
                     immediate = GetImmediate('B', ins);
-                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     switch (funct3) {
                         case Funct3.beq: // beq命令
-                            result = lsu.Beq(rs1, rs2, immediate);
+                            result = Decoder.Reg.Beq(rs1, rs2, immediate);
                             break;
 
                         case Funct3.bne: // bne命令
-                            result = lsu.Bne(rs1, rs2, immediate);
+                            result = Decoder.Reg.Bne(rs1, rs2, immediate);
                             break;
 
                         case Funct3.blt: // blt命令
-                            result = lsu.Blt(rs1, rs2, immediate);
+                            result = Decoder.Reg.Blt(rs1, rs2, immediate);
                             break;
 
                         case Funct3.bge: // bge命令
-                            result = lsu.Bge(rs1, rs2, immediate);
+                            result = Decoder.Reg.Bge(rs1, rs2, immediate);
                             break;
 
                         case Funct3.bltu: // bltu命令
-                            result = lsu.Bltu(rs1, rs2, immediate);
+                            result = Decoder.Reg.Bltu(rs1, rs2, immediate);
                             break;
 
                         case Funct3.bgeu: // bgeu命令
-                            result = lsu.Bgeu(rs1, rs2, immediate);
+                            result = Decoder.Reg.Bgeu(rs1, rs2, immediate);
                             break;
                     }
                     break;
