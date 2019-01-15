@@ -1,11 +1,13 @@
 ﻿using RV32_Alu;
-using RV32_Cpu.Decoder.Constants;
+using RV32_Decoder.Constants;
 using RV32_Lsu;
 using RV32_Lsu.Constants;
 using System;
 
-namespace RV32_Cpu.Decoder {
+namespace RV32_Decoder {
     public class RV32F_Decoder : RV32_AbstractDecoder {
+
+        public RV32F_Decoder(RV32_InstructionDecoder decoder) : base(decoder) { }
 
         /// <summary>
         /// 引数で渡された32bit長の命令をデコードし、cpuで実行する
@@ -13,7 +15,7 @@ namespace RV32_Cpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(UInt32[] ins, RV32_HaedwareThread cpu) {
+        internal protected override bool Exec(UInt32[] ins) {
             bool result = false;
 
             // 命令の0～1bit目が "11" でない場合は対象なし
@@ -38,39 +40,39 @@ namespace RV32_Cpu.Decoder {
                 case Opcode.fl when funct3 == Funct3.flw_fsw: // flw命令
 
                     immediate = GetImmediate('I', ins);
-                    lsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    lsu = (RV32_FloatPointLsu)Decoder.Lsu(typeof(RV32_FloatPointLsu));
                     result = lsu.Flw(rd, (Register)rs1, immediate);
                     break;
 
                 case Opcode.fs when funct3 == Funct3.flw_fsw: // fsw命令
                     immediate = GetImmediate('S', ins);
-                    lsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    lsu = (RV32_FloatPointLsu)Decoder.Lsu(typeof(RV32_FloatPointLsu));
                     result = lsu.Fsw((Register)rs1, rs2, immediate);
                     break;
 
 
                 case Opcode.fmadd when (ins[5] & 0x3u) == 0x0u: // fmadds命令
-                    fpu = (RV32_SingleFpu)cpu.Alu(typeof(RV32_SingleFpu));
+                    fpu = (RV32_SingleFpu)Decoder.Alu(typeof(RV32_SingleFpu));
                     result = fpu.FmaddS(rd, rs1, rs2, rs3, frm);
                     break;
 
                 case Opcode.fmsub when (ins[5] & 0x3u) == 0x0u: // fmsubs命令
-                    fpu = (RV32_SingleFpu)cpu.Alu(typeof(RV32_SingleFpu));
+                    fpu = (RV32_SingleFpu)Decoder.Alu(typeof(RV32_SingleFpu));
                     result = fpu.FmsubS(rd, rs1, rs2, rs3, frm);
                     break;
 
                 case Opcode.fnmadd when (ins[5] & 0x3u) == 0x0u: // fnmadds命令
-                    fpu = (RV32_SingleFpu)cpu.Alu(typeof(RV32_SingleFpu));
+                    fpu = (RV32_SingleFpu)Decoder.Alu(typeof(RV32_SingleFpu));
                     result = fpu.FnmaddS(rd, rs1, rs2, rs3, frm);
                     break;
 
                 case Opcode.fnmsub when (ins[5] & 0x3u) == 0x0u: // fnmsubs命令
-                    fpu = (RV32_SingleFpu)cpu.Alu(typeof(RV32_SingleFpu));
+                    fpu = (RV32_SingleFpu)Decoder.Alu(typeof(RV32_SingleFpu));
                     result = fpu.FnmsubS(rd, rs1, rs2, rs3, frm);
                     break;
 
                 case Opcode.fmiscOp when (ins[5] & 0x3u) == 0x0u: // Single Float-Point Op系命令(算術論理演算)
-                    fpu = (RV32_SingleFpu)cpu.Alu(typeof(RV32_SingleFpu));
+                    fpu = (RV32_SingleFpu)Decoder.Alu(typeof(RV32_SingleFpu));
                     switch (funct5) {
                         case Funct5.fadd: // fadds命令
                             result = fpu.FaddS(rd, rs1, rs2, frm);

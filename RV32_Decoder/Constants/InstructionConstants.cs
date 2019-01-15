@@ -1,4 +1,4 @@
-﻿namespace RV32_Cpu.Decoder.Constants {
+﻿namespace RV32_Decoder.Constants {
     /***********************
      * RISC-V命令 定数定義 *
      ***********************/

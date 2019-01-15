@@ -1,10 +1,12 @@
 ﻿using RV32_Alu;
-using RV32_Cpu.Decoder.Constants;
+using RV32_Decoder.Constants;
 using RV32_Lsu.Constants;
 using System;
 
-namespace RV32_Cpu.Decoder {
+namespace RV32_Decoder {
     public class RV32M_Decoder : RV32_AbstractDecoder {
+
+        public RV32M_Decoder(RV32_InstructionDecoder decoder) : base(decoder) { }
 
         /// <summary>
         /// 引数で渡された32bit長の命令をデコードし、cpuで実行する
@@ -12,7 +14,7 @@ namespace RV32_Cpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(UInt32[] ins, RV32_HaedwareThread cpu) {
+        internal protected override bool Exec(UInt32[] ins) {
             bool result = false;
 
             // 命令の0～1bit目が "11" でない場合は対象なし
@@ -30,7 +32,7 @@ namespace RV32_Cpu.Decoder {
 
 
             if (opcode == Opcode.miscOp && funct7 == Funct7.mul_div) { // Op系命令(算術論理演算)
-                alu = (RV32_Mac)cpu.Alu(typeof(RV32_Mac));
+                alu = (RV32_Mac)Decoder.Alu(typeof(RV32_Mac));
                 switch (funct3) {
 
                     case Funct3.mul: // mul命令

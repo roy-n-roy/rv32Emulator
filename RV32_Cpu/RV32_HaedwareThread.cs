@@ -1,6 +1,6 @@
 ﻿using ElfLoader;
 using RV32_Alu;
-using RV32_Cpu.Decoder;
+using RV32_Decoder;
 using RV32_Lsu;
 using RV32_Lsu.Constants;
 using RV32_Lsu.Exceptions;
@@ -8,7 +8,6 @@ using RV32_Lsu.MemoryHandler;
 using RV32_Lsu.RegisterSet;
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using static RV32_Cpu.InstructionConverter;
 
 namespace RV32_Cpu {
@@ -16,7 +15,7 @@ namespace RV32_Cpu {
         /// <summary>
         /// 命令デコーダ
         /// </summary>
-        private readonly RV32_Decoder decoder;
+        private readonly RV32_InstructionDecoder decoder;
         /// <summary>
         /// 算術演算器
         /// </summary>
@@ -46,11 +45,11 @@ namespace RV32_Cpu {
             // 基本命令セットRV32I
             registerSet = new RV32_RegisterSet(new RV32_MemoryHandler(mem));
 
-            decoder = new RV32_Decoder();
-            decoder.AddDecoder(typeof(RV32I_Decoder));
-
             alu = new RV32_Calculators(registerSet);
             lsu = new RV32_LoadStoreUnit(registerSet);
+
+            decoder = new RV32_InstructionDecoder(registerSet, alu, lsu);
+            decoder.AddDecoder(typeof(RV32I_Decoder));
 
             registerSet.AddMisa('I');
             registerSet.AddMisa('S');
@@ -114,19 +113,6 @@ namespace RV32_Cpu {
         #endregion
 
         #region メソッド
-
-        /// <summary>
-        /// 指定した型の算術演算器インスタンスを返す
-        /// </summary>
-        /// <param name="type">ALUの型</param>
-        /// <returns></returns>
-        public RV32_AbstractCalculator Alu(Type type) { return alu.GetInstance(type); }
-
-        /// <summary>
-        /// 指定した型のロード/ストアユニットインスタンスを返す
-        /// </summary>
-        /// <param name="type">LSUの型</param>
-        public RV32_AbstractLoadStoreUnit Lsu(Type type) { return lsu.GetInstance(type); }
 
         /// <summary>
         /// 外部からプログラムをメモリにロードする
@@ -220,7 +206,7 @@ namespace RV32_Cpu {
                 } else {
                     // 割り込みが無ければ、命令レジスタから命令を取り出して、デコード・実行する
                     RiscvInstruction ins = InstructionConverter.Decode(registerSet.IR);
-                    decoder.Decode(this);
+                    decoder.Decode();
                 }
 
 #if DEBUG

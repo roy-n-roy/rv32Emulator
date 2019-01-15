@@ -1,10 +1,13 @@
-﻿using RV32_Cpu.Decoder.Constants;
+﻿using RV32_Decoder.Constants;
 using RV32_Lsu;
 using RV32_Lsu.Constants;
 using System;
 
-namespace RV32_Cpu.Decoder {
+namespace RV32_Decoder {
     public class RV32A_Decoder : RV32_AbstractDecoder {
+
+        public RV32A_Decoder(RV32_InstructionDecoder decoder) : base(decoder) { }
+
 
         /// <summary>
         /// 引数で渡された32bit長の命令をデコードし、cpuで実行する
@@ -12,7 +15,7 @@ namespace RV32_Cpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(UInt32[] ins, RV32_HaedwareThread cpu) {
+        internal protected override bool Exec(UInt32[] ins) {
             bool result = false;
 
             // 命令の0～1bit目が "11" でない場合は対象なし
@@ -30,7 +33,7 @@ namespace RV32_Cpu.Decoder {
 
 
             if (opcode == Opcode.amo && funct3 == Funct3.amo) { // 不可分命令
-                lsu = (RV32_AmoLsu)cpu.Lsu(typeof(RV32_AmoLsu));
+                lsu = (RV32_AmoLsu)Decoder.Lsu(typeof(RV32_AmoLsu));
                 bool ac = (ins[5] & 0b10) > 0,
                      rl = (ins[5] & 0b01) > 0;
                 switch (funct5) {

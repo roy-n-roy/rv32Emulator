@@ -1,17 +1,51 @@
-﻿using RV32_Lsu.Constants;
+﻿using RV32_Alu;
+using RV32_Lsu;
+using RV32_Lsu.Constants;
 using RV32_Lsu.Exceptions;
+using RV32_Lsu.RegisterSet;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace RV32_Cpu.Decoder {
+namespace RV32_Decoder {
 
     /// <summary>
     /// 
     /// </summary>
-    public class RV32_Decoder {
+    public class RV32_InstructionDecoder {
 
         private static readonly Dictionary<Type, RV32_AbstractDecoder> decoders = new Dictionary<Type, RV32_AbstractDecoder>();
+
+        public RV32_InstructionDecoder(RV32_RegisterSet reg, RV32_Calculators alu, RV32_LoadStoreUnit lsu) {
+            Reg = reg;
+            this.alu = alu;
+            this.lsu = lsu;
+        }
+
+        #region プロパティ
+
+        /// <summary>レジスタ</summary>
+        internal RV32_RegisterSet Reg { get; set; }
+        
+        /// <summary>ロード・ストアユニット</summary>
+        private RV32_LoadStoreUnit lsu;
+
+        /// <summary>
+        /// 指定した型のロード/ストアユニットインスタンスを返す
+        /// </summary>
+        /// <param name="type">LSUの型</param>
+        internal RV32_AbstractLoadStoreUnit Lsu(Type type) { return lsu.GetInstance(type); }
+
+        /// <summary>演算器</summary>
+        private RV32_Calculators alu;
+
+        /// <summary>
+        /// 指定した型の算術演算器インスタンスを返す
+        /// </summary>
+        /// <param name="type">ALUの型</param>
+        /// <returns></returns>
+        internal RV32_AbstractCalculator Alu(Type type) { return alu.GetInstance(type); }
+
+        #endregion
 
         /// <summary>
         /// デコーダに命令セットを追加する
@@ -19,7 +53,7 @@ namespace RV32_Cpu.Decoder {
         /// <param name="type">任意の命令セットを実装したRV32_AbstractDecoder派生クラスの型</param>
         public void AddDecoder(Type type) {
             if (!decoders.ContainsKey(type)) {
-                decoders.Add(type, (RV32_AbstractDecoder)Activator.CreateInstance(type));
+                decoders.Add(type, (RV32_AbstractDecoder)Activator.CreateInstance(type, new object[] { this }));
             }
         }
 
@@ -28,16 +62,16 @@ namespace RV32_Cpu.Decoder {
         /// </summary>
         /// <param name="instruction">32bit長の命令を格納したUInt32型配列</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
-        public void Decode(RV32_HaedwareThread cpu) {
+        public void Decode() {
             bool successed = false;
-            UInt32[] ins = SplitInstruction(cpu.registerSet.IR);
+            UInt32[] ins = SplitInstruction(Reg.IR);
 
             foreach (RV32_AbstractDecoder d in decoders.Values) {
-                successed |= d.Exec(ins, cpu);
+                successed |= d.Exec(ins);
                 if (successed) break;
             }
             if (!successed) {
-                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, cpu.registerSet.IR, cpu.registerSet);
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, Reg.IR, Reg);
             }
         }
 
@@ -70,7 +104,10 @@ namespace RV32_Cpu.Decoder {
     /// </summary>
     public abstract class RV32_AbstractDecoder {
 
-        internal RV32_AbstractDecoder() {
+        private protected RV32_InstructionDecoder Decoder { get; private set; }
+
+        internal protected RV32_AbstractDecoder(RV32_InstructionDecoder decoder) {
+            Decoder = decoder;
         }
 
         /// <summary>
@@ -79,7 +116,7 @@ namespace RV32_Cpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected abstract bool Exec(UInt32[] instruction, RV32_HaedwareThread cpu);
+        internal protected abstract bool Exec(UInt32[] instruction);
 
         #region 共用メソッド
 

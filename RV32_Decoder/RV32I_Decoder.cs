@@ -1,11 +1,13 @@
 ﻿using RV32_Alu;
-using RV32_Cpu.Decoder.Constants;
+using RV32_Decoder.Constants;
 using RV32_Lsu;
 using RV32_Lsu.Constants;
 using System;
 
-namespace RV32_Cpu.Decoder {
+namespace RV32_Decoder {
     public class RV32I_Decoder : RV32_AbstractDecoder {
+
+        public RV32I_Decoder(RV32_InstructionDecoder decoder) : base(decoder) { }
 
         /// <summary>
         /// 引数で渡された32bit長の命令をデコードし、cpuで実行する
@@ -13,7 +15,7 @@ namespace RV32_Cpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(UInt32[] ins, RV32_HaedwareThread cpu) {
+        internal protected override bool Exec(UInt32[] ins) {
             bool result = false;
 
             // 命令の0～1bit目が "11" でない場合は対象なし
@@ -34,34 +36,34 @@ namespace RV32_Cpu.Decoder {
             switch (opcode) {
                 case Opcode.lui: // lui命令
                     immediate = GetImmediate('U', ins);
-                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
+                    alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
                     result = alu.Lui(rd, immediate);
                     break;
 
 
                 case Opcode.auipc: // auipc命令
                     immediate = GetImmediate('U', ins);
-                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
+                    alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
                     result = alu.Auipc(rd, immediate);
                     break;
 
                 case Opcode.jal: // jal命令
                     immediate = GetImmediate('J', ins);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Jal(rd, immediate);
                     break;
 
                 case Opcode.jalr: // jalr命令
                     if (funct3 == Funct3.jalr) {
                         immediate = GetImmediate('I', ins);
-                        lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                        lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                         result = lsu.Jalr(rd, rs1, immediate);
                     }
                     break;
 
                 case Opcode.branch: // Branch系命令
                     immediate = GetImmediate('B', ins);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     switch (funct3) {
                         case Funct3.beq: // beq命令
                             result = lsu.Beq(rs1, rs2, immediate);
@@ -91,7 +93,7 @@ namespace RV32_Cpu.Decoder {
 
                 case Opcode.load: // Load系命令
                     immediate = GetImmediate('I', ins);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     switch (funct3) {
 
                         case Funct3.lb: // lb命令
@@ -118,7 +120,7 @@ namespace RV32_Cpu.Decoder {
 
                 case Opcode.store: // Store系命令
                     immediate = GetImmediate('S', ins);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     switch (funct3) {
                         case Funct3.sb: // sb命令
                             result = lsu.Sb(rs1, rs2, immediate);
@@ -135,7 +137,7 @@ namespace RV32_Cpu.Decoder {
                     break;
 
                 case Opcode.miscOpImm: // Op-imm系命令(即値算術論理演算)
-                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
+                    alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
                     switch (funct3) {
                         case Funct3.addi: // addi命令
                             immediate = GetImmediate('I', ins);
@@ -186,7 +188,7 @@ namespace RV32_Cpu.Decoder {
                     break;
 
                 case Opcode.miscOp: // Op系命令(算術論理演算)
-                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
+                    alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
                     switch (((UInt16)funct3 | ((UInt16)funct7 << 3))) {
                         case (UInt16)Funct3.add_sub | ((UInt16)Funct7.add << 3): // add命令
                             result = alu.Add(rd, rs1, rs2);
@@ -234,11 +236,11 @@ namespace RV32_Cpu.Decoder {
                 case Opcode.miscMem: // 同期命令
                     switch (funct3) {
                         case Funct3.fence: // fence命令
-                            result = cpu.registerSet.Fence((byte)(((ins[5] & 0x7 ) << 5) | ins[4]));
+                            result = Decoder.Reg.Fence((byte)(((ins[5] & 0x7 ) << 5) | ins[4]));
                             break;
 
                         case Funct3.fenceI: // fence.i命令
-                            result = cpu.registerSet.FenceI();
+                            result = Decoder.Reg.FenceI();
                             break;
                     }
                     break;
@@ -247,32 +249,32 @@ namespace RV32_Cpu.Decoder {
                         case Funct3.privilege: // 特権命令
                             if (rd == 0) {
                                 if (funct7 == Funct7.sfenceVma) {
-                                    result = cpu.registerSet.SfenceVma(rs1, rs2);
+                                    result = Decoder.Reg.SfenceVma(rs1, rs2);
                                 } else {
                                     Funct12 funct12 = (Funct12)(ins[4] | (ins[5] << 5) | (ins[6] << 11)); ;
                                     switch (funct12) {
                                         case Funct12.ecall:
-                                            result = cpu.registerSet.Ecall();
+                                            result = Decoder.Reg.Ecall();
                                             break;
 
                                         case Funct12.ebreak:
-                                            result = cpu.registerSet.Ebreak();
+                                            result = Decoder.Reg.Ebreak();
                                             break;
 
                                         case Funct12.mret:
-                                            result = cpu.registerSet.Mret();
+                                            result = Decoder.Reg.Mret();
                                             break;
 
                                         case Funct12.sret:
-                                            result = cpu.registerSet.Sret();
+                                            result = Decoder.Reg.Sret();
                                             break;
 
                                         case Funct12.uret:
-                                            result = cpu.registerSet.Uret();
+                                            result = Decoder.Reg.Uret();
                                             break;
 
                                         case Funct12.wfi:
-                                            result = cpu.registerSet.Wfi();
+                                            result = Decoder.Reg.Wfi();
                                             break;
                                     }
 
@@ -282,32 +284,32 @@ namespace RV32_Cpu.Decoder {
 
                         case Funct3.csrrw: // csrrw命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.registerSet.Csrrw(rd, rs1, (CSR)immediate);
+                            result = Decoder.Reg.Csrrw(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrs: // csrrs命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.registerSet.Csrrs(rd, rs1, (CSR)immediate);
+                            result = Decoder.Reg.Csrrs(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrc: // csrrc命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.registerSet.Csrrc(rd, rs1, (CSR)immediate);
+                            result = Decoder.Reg.Csrrc(rd, rs1, (CSR)immediate);
                             break;
 
                         case Funct3.csrrwi: // csrrwi命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.registerSet.Csrrwi(rd, (byte)ins[3], (CSR)immediate);
+                            result = Decoder.Reg.Csrrwi(rd, (byte)ins[3], (CSR)immediate);
                             break;
 
                         case Funct3.csrrsi: // csrrsi命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.registerSet.Csrrsi(rd, (byte)ins[3], (CSR)immediate);
+                            result = Decoder.Reg.Csrrsi(rd, (byte)ins[3], (CSR)immediate);
                             break;
 
                         case Funct3.csrrci: // csrrci命令
                             immediate = (GetImmediate('I', ins) & 0xfff);
-                            result = cpu.registerSet.Csrrci(rd, (byte)ins[3], (CSR)immediate);
+                            result = Decoder.Reg.Csrrci(rd, (byte)ins[3], (CSR)immediate);
                             break;
                     }
                     break;

@@ -1,12 +1,13 @@
 ﻿using RV32_Alu;
-using RV32_Cpu.Decoder.Constants;
+using RV32_Decoder.Constants;
 using RV32_Lsu;
 using RV32_Lsu.Constants;
 using System;
-using System.Linq;
 
-namespace RV32_Cpu.Decoder {
+namespace RV32_Decoder {
     public class RV32C_Decoder : RV32_AbstractDecoder {
+
+        public RV32C_Decoder(RV32_InstructionDecoder decoder) : base(decoder) { }
 
         /// <summary>命令長(Byte)</summary>
         const UInt32 InstructionLength = 2u;
@@ -17,7 +18,7 @@ namespace RV32_Cpu.Decoder {
         /// <param name="instruction">32bit長の命令</param>
         /// <param name="cpu">命令を実行するRV32CPU</param>
         /// <returns>実行の成否</returns>
-        internal protected override bool Exec(UInt32[] ins, RV32_HaedwareThread cpu) {
+        internal protected override bool Exec(UInt32[] ins) {
             bool result = false;
 
             // 命令の0～1bit目が "11" の場合は対象なし
@@ -39,13 +40,13 @@ namespace RV32_Cpu.Decoder {
 
             switch (opcode) {
                 case CompressedOpcode.addi: // addi命令
-                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
+                    alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
                     immediate = GetSignedImmediate("CI", cins);
                     result = alu.Addi(rd_rs1, rd_rs1, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.misc_alu:
-                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
+                    alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
                     switch (cins[2] & 0b011000) {
                         case 0b000000: // srli命令
                             immediate = GetUnsignedImmediate("CI", cins);
@@ -88,43 +89,43 @@ namespace RV32_Cpu.Decoder {
                 case CompressedOpcode.slli: // slli命令
                     immediate = GetUnsignedImmediate("CI", cins);
                     immediate = immediate != 0 ? immediate : 64;
-                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
+                    alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
                     result = alu.Slli(crd_rs1, crd_rs1, immediate, InstructionLength);
                     break;
 
                  case CompressedOpcode.jr_mv_add:
                     if (cins[1] != 0 && (cins[2] & 0x1f) != 0) {
-                        alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
+                        alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
                         if ((cins[2] & 0b100000) == 0) { // mv命令
                             result = alu.Add(rd_rs1, Register.zero, rs2, InstructionLength);
                         } else { // add命令
                             result = alu.Add(rd_rs1, rd_rs1, rs2, InstructionLength);
                         }
                     } else if (cins[1] == 0 && (cins[2] & 0x1f) != 0) { // jalr,jr命令
-                        lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                        lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                         result = lsu.Jalr((Register)(cins[2] >> 5), rd_rs1, 0, InstructionLength);
 
                     } else if (cins[1] == 0 && cins[2] == 0b100000) { // ebreak命令
-                        result = cpu.registerSet.Ebreak(InstructionLength);
+                        result = Decoder.Reg.Ebreak(InstructionLength);
                     }
                     break;
 
                 case CompressedOpcode.addi4spn: // addi4spn命令
                     immediate = GetUnsignedImmediate("CIW", cins);
                     if (immediate != 0) {
-                        alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
+                        alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
                         result = alu.Addi(crs2, Register.sp, immediate, InstructionLength);
                     }
                     break;
 
                 case CompressedOpcode.li: // li命令
-                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
+                    alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
                     immediate = GetSignedImmediate("CI", cins);
                     result = alu.Addi(rd_rs1, Register.zero, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.lui_addi16sp: // lui_addi16sp命令
-                    alu = (RV32_IntegerAlu)cpu.Alu(typeof(RV32_IntegerAlu));
+                    alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
                     immediate = GetSignedImmediate("CI", cins);
                     if (immediate != 0) { // addi16sp命令
                         if ((cins[2] & 0x1f) == 0b000010) {
@@ -143,97 +144,97 @@ namespace RV32_Cpu.Decoder {
 
                 case CompressedOpcode.jal: // jal命令
                     immediate = GetUnsignedImmediate("CJ", cins);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Jal(Register.ra, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.j: // j命令
                     immediate = GetUnsignedImmediate("CJ", cins);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Jal(Register.zero, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.beqz: // beqz命令
                     immediate = GetUnsignedImmediate("CB", cins);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Beq(crd_rs1, Register.zero, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.bnez: // bnez命令
                     immediate = GetUnsignedImmediate("CB", cins);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Bne(crd_rs1, Register.zero, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.lw: // lw命令
                     immediate = GetUnsignedImmediate("CL", cins, 2);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Lw(crs2, crd_rs1, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.flw: // flw命令
                     immediate = GetUnsignedImmediate("CL", cins, 2);
-                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    fplsu = (RV32_FloatPointLsu)Decoder.Lsu(typeof(RV32_FloatPointLsu));
                     result = fplsu.Flw((FPRegister)crs2, crd_rs1, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.fld: // fld命令
                     immediate = GetUnsignedImmediate("CL", cins, 3);
-                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    fplsu = (RV32_FloatPointLsu)Decoder.Lsu(typeof(RV32_FloatPointLsu));
                     result = fplsu.Fld((FPRegister)crs2, crd_rs1, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.sw: // sw命令
                     immediate = GetUnsignedImmediate("CL", cins, 2);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Sw(crd_rs1, crs2, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.fsw: // fsw命令
                     immediate = GetUnsignedImmediate("CL", cins, 2);
-                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    fplsu = (RV32_FloatPointLsu)Decoder.Lsu(typeof(RV32_FloatPointLsu));
                     result = fplsu.Fsw(crd_rs1, (FPRegister)crs2, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.fsd: // fsd命令
                     immediate = GetUnsignedImmediate("CL", cins, 3);
-                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    fplsu = (RV32_FloatPointLsu)Decoder.Lsu(typeof(RV32_FloatPointLsu));
                     result = fplsu.Fsd(crd_rs1, (FPRegister)crs2, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.lwsp: // lwsp命令
                     immediate = GetUnsignedImmediate("CI", cins, 2);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Lw(rd_rs1, Register.sp, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.flwsp: // flwsp命令
                     immediate = GetUnsignedImmediate("CI", cins, 2);
-                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    fplsu = (RV32_FloatPointLsu)Decoder.Lsu(typeof(RV32_FloatPointLsu));
                     result = fplsu.Flw((FPRegister)rd_rs1, Register.sp, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.fldsp: // fldsp命令
                     immediate = GetUnsignedImmediate("CI", cins, 3);
-                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    fplsu = (RV32_FloatPointLsu)Decoder.Lsu(typeof(RV32_FloatPointLsu));
                     result = fplsu.Fld((FPRegister)rd_rs1, Register.sp, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.swsp: // swsp命令
                     immediate = GetUnsignedImmediate("CSS", cins, 2);
-                    lsu = (RV32_IntegerLsu)cpu.Lsu(typeof(RV32_IntegerLsu));
+                    lsu = (RV32_IntegerLsu)Decoder.Lsu(typeof(RV32_IntegerLsu));
                     result = lsu.Sw(Register.sp, rs2, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.fswsp: // fswsp命令
                     immediate = GetUnsignedImmediate("CSS", cins, 2);
-                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    fplsu = (RV32_FloatPointLsu)Decoder.Lsu(typeof(RV32_FloatPointLsu));
                     result = fplsu.Fsw(Register.sp, (FPRegister)rs2, immediate, InstructionLength);
                     break;
 
                 case CompressedOpcode.fsdsp: // fsdsp命令
                     immediate = GetUnsignedImmediate("CSS", cins, 3);
-                    fplsu = (RV32_FloatPointLsu)cpu.Lsu(typeof(RV32_FloatPointLsu));
+                    fplsu = (RV32_FloatPointLsu)Decoder.Lsu(typeof(RV32_FloatPointLsu));
                     result = fplsu.Fsd(Register.sp, (FPRegister)rs2, immediate, InstructionLength);
                     break;
 
@@ -250,9 +251,9 @@ namespace RV32_Cpu.Decoder {
             UInt16 instruction = (UInt16)(ins[0] | (ins[1] << 7) | (ins[2] << 12) | (ins[3] << 15));
 
             UInt32[] cIns = new UInt32[3];
-            cIns[0] = (byte)(RV32_Decoder.Slice(instruction, 0, 2) | (RV32_Decoder.Slice(instruction, 13, 3) << 2));
-            cIns[1] = (byte)RV32_Decoder.Slice(instruction, 2, 5);
-            cIns[2] = (byte)RV32_Decoder.Slice(instruction, 7, 6);
+            cIns[0] = (byte)(RV32_InstructionDecoder.Slice(instruction, 0, 2) | (RV32_InstructionDecoder.Slice(instruction, 13, 3) << 2));
+            cIns[1] = (byte)RV32_InstructionDecoder.Slice(instruction, 2, 5);
+            cIns[2] = (byte)RV32_InstructionDecoder.Slice(instruction, 7, 6);
             return cIns;
         }
 
