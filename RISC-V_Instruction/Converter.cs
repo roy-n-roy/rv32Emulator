@@ -8,7 +8,7 @@ namespace RISC_V_Instruction {
 
     public static class Converter {
 
-        public static RiscvInstruction getInstruction(uint ins) {
+        public static RiscvInstruction GetInstruction(uint ins) {
 
 
             string name = "";
