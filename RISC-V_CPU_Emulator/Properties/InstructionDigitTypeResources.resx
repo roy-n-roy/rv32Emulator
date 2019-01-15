@@ -117,37 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ArgumentsGroupBox_Text" xml:space="preserve">
-    <value>Arguments</value>
+  <data name="A" xml:space="preserve">
+    <value>----Opcode---- -aq/rl- --------rs2-------  -------rs1-------   -Opcode-    ------rd--------    -------Opcode--------</value>
   </data>
-  <data name="BinaryInstructionLabel_Text_Defalut" xml:space="preserve">
-    <value>0000000 00000 00000 000 00000 0000000</value>
+  <data name="B" xml:space="preserve">
+    <value>------Immediate------   -------rs2--------   -------rs1-------   -Opcide-   ---Immediate---    -------Opcode--------</value>
   </data>
-  <data name="CurrentModeGroupBox_Text" xml:space="preserve">
-    <value>Current Mode</value>
+  <data name="CSR" xml:space="preserve">
+    <value>--------------------CSR------------------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode--------</value>
   </data>
-  <data name="CurrentModeLabel_Text" xml:space="preserve">
-    <value>MachineMode</value>
+  <data name="FENCE" xml:space="preserve">
+    <value>-----------------------------------------------------OpCode-------------------------------------------------------------</value>
   </data>
-  <data name="FloatPointRegistersGroupBox_Text" xml:space="preserve">
-    <value>Float-Point Registers</value>
+  <data name="FMV" xml:space="preserve">
+    <value>------------------Opcode-----------------  -------rs1-------   -Opcode-    ------rd--------    -------Opcode--------</value>
   </data>
-  <data name="InstructionRegisterGroupBox_Text" xml:space="preserve">
-    <value>Instruction Register</value>
+  <data name="I" xml:space="preserve">
+    <value>----------------Immediate---------------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode--------</value>
   </data>
-  <data name="InstructionViewerForm_Text" xml:space="preserve">
-    <value>Risc-V Instruction Viewer</value>
+  <data name="J" xml:space="preserve">
+    <value>-------------------------------Immediate-------------------------------    ------rd--------    -------Opcode--------</value>
   </data>
-  <data name="IntegerRegistersGroupBox_Text" xml:space="preserve">
-    <value>Integer Registers</value>
+  <data name="NONE" xml:space="preserve">
+    <value>-----------------------------------------------------OpCode-------------------------------------------------------------</value>
   </data>
-  <data name="PCValueLabel_Text_Default" xml:space="preserve">
-    <value>0x00000000</value>
+  <data name="R" xml:space="preserve">
+    <value>--------Opcode-------  -------rs2--------    -------rs1-------  -Opcide-    ------rd--------    -------Opcode--------</value>
   </data>
-  <data name="ProgramCounterGroupBox_Text" xml:space="preserve">
-    <value>Program Counter</value>
+  <data name="R4" xml:space="preserve">
+    <value>-------rs3------- -Op- --------rs2-------    -------rs1-------   -Opcode-    ------rd--------    -------Opcode--------</value>
   </data>
-  <data name="StepExecuteButton_Text" xml:space="preserve">
-    <value>ス テ ッ プ 実 行</value>
+  <data name="RF" xml:space="preserve">
+    <value>--------Opcode-------  -------rs2--------  -------rs1--------  ---rm---    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="S" xml:space="preserve">
+    <value>------Immediate------   -------rs2--------   -------rs1-------   -Opcide-   ---Immediate---    -------Opcode--------</value>
+  </data>
+  <data name="SHIFT" xml:space="preserve">
+    <value>------Opcode---------  ------shamt------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="U" xml:space="preserve">
+    <value>-------------------------------Immediate-------------------------------    ------rd--------    -------Opcode--------</value>
   </data>
 </root>

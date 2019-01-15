@@ -4,47 +4,48 @@
 //     ランタイム バージョン:4.0.30319.42000
 //
 //     このファイルへの変更は、以下の状況下で不正な動作の原因になったり、
-//     コードが再生成されるときに損失したりします
+//     コードが再生成されるときに損失したりします。
 // </auto-generated>
 //------------------------------------------------------------------------------
 
 namespace RISC_V_CPU_Emulator.Properties {
-
-
+    using System;
+    
+    
     /// <summary>
     ///   ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
     /// </summary>
     // このクラスは StronglyTypedResourceBuilder クラスが ResGen
     // または Visual Studio のようなツールを使用して自動生成されました。
     // メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
-    // ResGen を実行し直すか、または VS プロジェクトをリビルドします。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    // ResGen を実行し直すか、または VS プロジェクトをビルドし直します。
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Resources() {
         }
-
+        
         /// <summary>
-        ///   このクラスで使用されるキャッシュされた ResourceManager インスタンスを返します。
+        ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
-                if ((resourceMan == null)) {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RISC_V_CPU_Emulator.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   すべてについて、現在のスレッドの CurrentUICulture プロパティをオーバーライドします
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
@@ -56,6 +57,105 @@ namespace RISC_V_CPU_Emulator.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Arguments に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ArgumentsGroupBox_Text {
+            get {
+                return ResourceManager.GetString("ArgumentsGroupBox_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   0000000 00000 00000 000 00000 0000000 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string BinaryInstructionLabel_Text_Defalut {
+            get {
+                return ResourceManager.GetString("BinaryInstructionLabel_Text_Defalut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Current Mode に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string CurrentModeGroupBox_Text {
+            get {
+                return ResourceManager.GetString("CurrentModeGroupBox_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   MachineMode に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string CurrentModeLabel_Text {
+            get {
+                return ResourceManager.GetString("CurrentModeLabel_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Float-Point Registers に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string FloatPointRegistersGroupBox_Text {
+            get {
+                return ResourceManager.GetString("FloatPointRegistersGroupBox_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Instruction Register に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string InstructionRegisterGroupBox_Text {
+            get {
+                return ResourceManager.GetString("InstructionRegisterGroupBox_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Risc-V Instruction Viewer に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string InstructionViewerForm_Text {
+            get {
+                return ResourceManager.GetString("InstructionViewerForm_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Integer Registers に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string IntegerRegistersGroupBox_Text {
+            get {
+                return ResourceManager.GetString("IntegerRegistersGroupBox_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   0x00000000 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string PCValueLabel_Text_Default {
+            get {
+                return ResourceManager.GetString("PCValueLabel_Text_Default", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Program Counter に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string ProgramCounterGroupBox_Text {
+            get {
+                return ResourceManager.GetString("ProgramCounterGroupBox_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ス テ ッ プ 実 行 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string StepExecuteButton_Text {
+            get {
+                return ResourceManager.GetString("StepExecuteButton_Text", resourceCulture);
             }
         }
     }
