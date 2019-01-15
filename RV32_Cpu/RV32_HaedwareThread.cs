@@ -8,7 +8,6 @@ using RV32_Lsu.MemoryHandler;
 using RV32_Lsu.RegisterSet;
 using System;
 using System.IO;
-using static RV32_Cpu.InstructionConverter;
 
 namespace RV32_Cpu {
     public class RV32_HaedwareThread {
@@ -205,7 +204,7 @@ namespace RV32_Cpu {
                     registerSet.IncrementCycle();
                 } else {
                     // 割り込みが無ければ、命令レジスタから命令を取り出して、デコード・実行する
-                    RiscvInstruction ins = InstructionConverter.Decode(registerSet.IR);
+                    RISC_V_Instruction.RiscvInstruction ins = RISC_V_Instruction.Converter.getInstruction(registerSet.IR);
                     decoder.Decode();
                 }
 

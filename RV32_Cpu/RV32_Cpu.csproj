@@ -37,7 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,7 +47,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -64,7 +64,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InstructionConverter.cs" />
     <Compile Include="RV32_HaedwareThread.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -87,6 +86,10 @@
     <ProjectReference Include="..\ElfLoader\ElfLoader.csproj">
       <Project>{28e3a2c3-67de-4542-803b-5db07a3bc6bb}</Project>
       <Name>ElfLoader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RiscvInstructionDictionry\RISC-V_Instruction.csproj">
+      <Project>{c59d98ba-b3ef-497b-9f40-ff63fa9725e2}</Project>
+      <Name>RISC-V_Instruction</Name>
     </ProjectReference>
     <ProjectReference Include="..\RV32_Alu\RV32_Alu.csproj">
       <Project>{28c36aee-cd6d-4185-80c9-142d86e5b585}</Project>
