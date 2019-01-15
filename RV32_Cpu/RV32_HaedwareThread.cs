@@ -30,6 +30,10 @@ namespace RV32_Cpu {
         /// </summary>
         public readonly RV32_RegisterSet registerSet;
 
+        /// <summary>
+        /// ステップ実行で発生した例外、割り込み
+        /// </summary>
+        public RiscvException CpuExceptionInterrupt { get; private set; }
 
         #region コンストラクタ
         /// <summary>
@@ -203,6 +207,10 @@ namespace RV32_Cpu {
         /// </summary>
         public void StepExecute() {
             try {
+                // 前回ステップの割り込み、例外の記録をクリアする
+                CpuExceptionInterrupt = null;
+
+                // 割り込みチェックとハンドリング
                 if (registerSet.CheckAndHandleInterrupt()) {
                     registerSet.Mem.Reset();
 
@@ -210,7 +218,7 @@ namespace RV32_Cpu {
 
                     registerSet.IncrementCycle();
                 } else {
-
+                    // 割り込みが無ければ、命令レジスタから命令を取り出して、デコード・実行する
                     RiscvInstruction ins = InstructionConverter.Decode(registerSet.IR);
                     decoder.Decode(this);
                 }
@@ -223,12 +231,16 @@ namespace RV32_Cpu {
                         (RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.EnvironmentCallFromSMode &&
                         (RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.EnvironmentCallFromUMode) {
 
+                CpuExceptionInterrupt = e;
+
                 Console.Error.WriteLine("\r\n例外発生");
                 Console.Error.WriteLine("    PC        = 0x" + ((uint)e.Data["pc"]).ToString("X"));
                 Console.Error.WriteLine("    TrapValue = 0x" + ((uint)e.Data["tval"]).ToString("X"));
                 Console.Error.WriteLine(e.ToString());
 #endif
-            } catch (RiscvException) {
+            } catch (RiscvException e) {
+                CpuExceptionInterrupt = e;
+
             } finally {
                 registerSet.IncrementCycle();
             }
