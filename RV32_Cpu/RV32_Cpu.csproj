@@ -87,7 +87,7 @@
       <Project>{28e3a2c3-67de-4542-803b-5db07a3bc6bb}</Project>
       <Name>ElfLoader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RiscvInstructionDictionry\RISC-V_Instruction.csproj">
+    <ProjectReference Include="..\RISC-V_Instruction\RISC-V_Instruction.csproj">
       <Project>{c59d98ba-b3ef-497b-9f40-ff63fa9725e2}</Project>
       <Name>RISC-V_Instruction</Name>
     </ProjectReference>
