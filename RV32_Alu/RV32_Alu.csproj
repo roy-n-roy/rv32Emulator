@@ -43,11 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alu\RV32_DoubleFpu.cs" />
-    <Compile Include="Alu\RV32_SingleFpu.cs" />
-    <Compile Include="Alu\RV32_IntegerAlu.cs" />
-    <Compile Include="Alu\RV32_Mac.cs" />
-    <Compile Include="Alu\RV32_Calculators.cs" />
+    <Compile Include="RV32_DoubleFpu.cs" />
+    <Compile Include="RV32_SingleFpu.cs" />
+    <Compile Include="RV32_IntegerAlu.cs" />
+    <Compile Include="RV32_Mac.cs" />
+    <Compile Include="RV32_Calculators.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
