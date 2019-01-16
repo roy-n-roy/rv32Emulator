@@ -601,11 +601,11 @@ namespace RV32_Register.Constants {
 
         // 定数
         /// <summary>マシンモードで読み書き可能なビット</summary>
-        public static uint MModeMask = 0b1000_0000_0111_1111_1111_1001_1011_1011u;
+        public const uint MModeMask = 0b1000_0000_0111_1111_1111_1001_1011_1011u;
         /// <summary>スーパーバイザモードで読み書き可能なビット</summary>
-        public static uint SModeMask = 0b1000_0000_0000_1101_1110_0001_0011_0011u;
+        public const uint SModeMask = 0b1000_0000_0000_1101_1110_0001_0011_0011u;
         /// <summary>ユーザモードで読み書き可能なビット</summary>
-        public static uint UModeMask = 0b1000_0000_0000_1101_1110_0000_0001_0001u;
+        public const uint UModeMask = 0b1000_0000_0000_1101_1110_0000_0001_0001u;
 
         // 変数
         /// <summary></summary>
@@ -644,56 +644,56 @@ namespace RV32_Register.Constants {
         public bool UIE { get; set; }
 
         // コンストラクタ
-        public StatusCSR(uint v) : this() {
+        public StatusCSR(uint value) : this() {
             Mode = PrivilegeLevels.MachineMode;
-            SD = (v & 0x80000000) > 0;
-            TSR = (v & 0x00400000) > 0;
-            TW = (v & 0x00200000) > 0;
-            TVM = (v & 0x00100000) > 0;
-            MXR = (v & 0x00080000) > 0;
-            SUM = (v & 0x00040000) > 0;
-            MPRV = (v & 0x00020000) > 0;
-            XS = (byte)((v & 0x00018000) >> 15);
-            FS = (byte)((v & 0x00006000) >> 13);
-            MPP = (byte)((v & 0x00001800) >> 11);
-            SPP = (v & 0x00000100) > 0;
-            MPIE = (v & 0x00000080) > 0;
-            SPIE = (v & 0x00000020) > 0;
-            UPIE = (v & 0x00000010) > 0;
-            MIE = (v & 0x00000008) > 0;
-            SIE = (v & 0x00000002) > 0;
-            UIE = (v & 0x00000001) > 0;
+            SD = (value & 0x80000000) > 0;
+            TSR = (value & 0x00400000) > 0;
+            TW = (value & 0x00200000) > 0;
+            TVM = (value & 0x00100000) > 0;
+            MXR = (value & 0x00080000) > 0;
+            SUM = (value & 0x00040000) > 0;
+            MPRV = (value & 0x00020000) > 0;
+            XS = (byte)((value & 0x00018000) >> 15);
+            FS = (byte)((value & 0x00006000) >> 13);
+            MPP = (byte)((value & 0x00001800) >> 11);
+            SPP = (value & 0x00000100) > 0;
+            MPIE = (value & 0x00000080) > 0;
+            SPIE = (value & 0x00000020) > 0;
+            UPIE = (value & 0x00000010) > 0;
+            MIE = (value & 0x00000008) > 0;
+            SIE = (value & 0x00000002) > 0;
+            UIE = (value & 0x00000001) > 0;
         }
 
         // キャスト
-        public static implicit operator StatusCSR(uint v) {
-            return new StatusCSR(v);
+        public static implicit operator StatusCSR(uint value) {
+            return new StatusCSR(value);
         }
 
-        public static implicit operator uint(StatusCSR v) {
+        public static implicit operator uint(StatusCSR status) {
             uint value = 0;
 
-            value |= v.SD ? 1u << 31 : 0u;
-            value |= v.TSR ? 1u << 22 : 0u;
-            value |= v.TW ? 1u << 21 : 0u;
-            value |= v.TVM ? 1u << 20 : 0u;
-            value |= v.MXR ? 1u << 19 : 0u;
-            value |= v.SUM ? 1u << 18 : 0u;
-            value |= v.MPRV ? 1u << 17 : 0u;
-            value |= (v.XS & 0x3u) << 15;
-            value |= (v.FS & 0x3u) << 13;
-            value |= (v.MPP & 0x3u) << 11;
-            value |= v.SPP ? 1u << 8 : 0u;
-            value |= v.MPIE ? 1u << 7 : 0u;
-            value |= v.SPIE ? 1u << 5 : 0u;
-            value |= v.UPIE ? 1u << 4 : 0u;
-            value |= v.MIE ? 1u << 3 : 0u;
-            value |= v.SIE ? 1u << 1 : 0u;
-            value |= v.UIE ? 1u << 0 : 0u;
+            value |= status.SD ? 1u << 31 : 0u;
+            value |= status.TSR ? 1u << 22 : 0u;
+            value |= status.TW ? 1u << 21 : 0u;
+            value |= status.TVM ? 1u << 20 : 0u;
+            value |= status.MXR ? 1u << 19 : 0u;
+            value |= status.SUM ? 1u << 18 : 0u;
+            value |= status.MPRV ? 1u << 17 : 0u;
+            value |= (status.XS & 0x3u) << 15;
+            value |= (status.FS & 0x3u) << 13;
+            value |= (status.MPP & 0x3u) << 11;
+            value |= status.SPP ? 1u << 8 : 0u;
+            value |= status.MPIE ? 1u << 7 : 0u;
+            value |= status.SPIE ? 1u << 5 : 0u;
+            value |= status.UPIE ? 1u << 4 : 0u;
+            value |= status.MIE ? 1u << 3 : 0u;
+            value |= status.SIE ? 1u << 1 : 0u;
+            value |= status.UIE ? 1u << 0 : 0u;
 
-            if (v.Mode == PrivilegeLevels.SupervisorMode) {
+            if (status.Mode == PrivilegeLevels.SupervisorMode) {
                 value &= SModeMask;
-            } else if (v.Mode == PrivilegeLevels.UserMode) {
+            } else if (status.Mode == PrivilegeLevels.UserMode) {
                 value &= UModeMask;
             }
 
@@ -719,18 +719,18 @@ namespace RV32_Register.Constants {
         }
         // 定数
         /// <summary>マシンモードで読み込み可能なビット</summary>
-        public static uint MModeReadMask = 0b1011_0011_1011u;
+        public const uint MModeReadMask = 0b1011_0011_1011u;
         /// <summary>スーパーバイザモードで読み込み可能なビット</summary>
-        public static uint SModeReadMask = 0b0011_0011_0011u;
+        public const uint SModeReadMask = 0b0011_0011_0011u;
         /// <summary>ユーザモードで読み込み可能なビット</summary>
-        public static uint UModeReadMask = 0b0001_0001_0001u;
+        public const uint UModeReadMask = 0b0001_0001_0001u;
 
         /// <summary>マシンモードで書き込み可能なビット</summary>
-        public static uint MModeWriteMask = 0b0011_0011_1011u;
+        public const uint MModeWriteMask = 0b0011_0011_1011u;
         /// <summary>スーパーバイザモードで書き込み可能なビット</summary>
-        public static uint SModeWriteMask = 0b0001_0000_0011u;
+        public const uint SModeWriteMask = 0b0001_0000_0011u;
         /// <summary>ユーザモードで書き込み可能なビット</summary>
-        public static uint UModeWriteMask = 0b0000_0000_0001u;
+        public const uint UModeWriteMask = 0b0000_0000_0001u;
 
         // 変数
         /// <summary>マシン外部割り込み保留ビット</summary>
@@ -753,38 +753,38 @@ namespace RV32_Register.Constants {
         public bool USIP { get; set; }
 
         /// <summary>mip, sipなどの割り込み保留CSRを表す構造体</summary>
-        public InterruptPendingCSR(uint v) : this() {
-            MEIP = (v & 0x00000800) > 0;
-            SEIP = (v & 0x00000200) > 0;
-            UEIP = (v & 0x00000100) > 0;
-            MTIP = (v & 0x00000080) > 0;
-            STIP = (v & 0x00000020) > 0;
-            UTIP = (v & 0x00000010) > 0;
-            MSIP = (v & 0x00000008) > 0;
-            SSIP = (v & 0x00000002) > 0;
-            USIP = (v & 0x00000001) > 0;
+        public InterruptPendingCSR(uint value) : this() {
+            MEIP = (value & 0x00000800) > 0;
+            SEIP = (value & 0x00000200) > 0;
+            UEIP = (value & 0x00000100) > 0;
+            MTIP = (value & 0x00000080) > 0;
+            STIP = (value & 0x00000020) > 0;
+            UTIP = (value & 0x00000010) > 0;
+            MSIP = (value & 0x00000008) > 0;
+            SSIP = (value & 0x00000002) > 0;
+            USIP = (value & 0x00000001) > 0;
         }
 
         // キャスト
-        public static implicit operator InterruptPendingCSR(uint v) {
-            return new InterruptPendingCSR(v);
+        public static implicit operator InterruptPendingCSR(uint value) {
+            return new InterruptPendingCSR(value);
         }
 
-        public static implicit operator uint(InterruptPendingCSR v) {
+        public static implicit operator uint(InterruptPendingCSR ip) {
             uint value = 0;
-            value |= v.MEIP ? 1u << 11 : 0u;
-            value |= v.SEIP ? 1u << 9 : 0u;
-            value |= v.UEIP ? 1u << 8 : 0u;
-            value |= v.MTIP ? 1u << 7 : 0u;
-            value |= v.STIP ? 1u << 5 : 0u;
-            value |= v.UTIP ? 1u << 4 : 0u;
-            value |= v.MSIP ? 1u << 3 : 0u;
-            value |= v.SSIP ? 1u << 1 : 0u;
-            value |= v.USIP ? 1u << 0 : 0u;
+            value |= ip.MEIP ? 1u << 11 : 0u;
+            value |= ip.SEIP ? 1u << 9 : 0u;
+            value |= ip.UEIP ? 1u << 8 : 0u;
+            value |= ip.MTIP ? 1u << 7 : 0u;
+            value |= ip.STIP ? 1u << 5 : 0u;
+            value |= ip.UTIP ? 1u << 4 : 0u;
+            value |= ip.MSIP ? 1u << 3 : 0u;
+            value |= ip.SSIP ? 1u << 1 : 0u;
+            value |= ip.USIP ? 1u << 0 : 0u;
 
-            if (v.Mode == PrivilegeLevels.SupervisorMode) {
+            if (ip.Mode == PrivilegeLevels.SupervisorMode) {
                 value &= SModeReadMask;
-            } else if (v.Mode == PrivilegeLevels.UserMode) {
+            } else if (ip.Mode == PrivilegeLevels.UserMode) {
                 value &= UModeReadMask;
             }
             return value;
@@ -810,11 +810,11 @@ namespace RV32_Register.Constants {
 
         // 定数
         /// <summary>マシンモードで読み書き可能なビット</summary>
-        public static uint MModeMask = 0b1011_1011_1011u;
+        public const uint MModeMask = 0b1011_1011_1011u;
         /// <summary>スーパーバイザモードで読み書き可能なビット</summary>
-        public static uint SModeMask = 0b0011_0011_0011u;
+        public const uint SModeMask = 0b0011_0011_0011u;
         /// <summary>ユーザモードで読み書き可能なビット</summary>
-        public static uint UModeMask = 0b0001_0001_0001u;
+        public const uint UModeMask = 0b0001_0001_0001u;
 
         // 変数
         /// <summary>マシン外部割り込み有効ビット</summary>
@@ -838,38 +838,38 @@ namespace RV32_Register.Constants {
 
         // コンストラクタ
         /// <summary>mip, sipなどの割り込み有効CSRを表す構造体</summary>
-        public InterruptEnableCSR(uint v) : this() {
-            MEIE = (v & 0x00000800u) > 0;
-            SEIE = (v & 0x00000200u) > 0;
-            UEIE = (v & 0x00000100u) > 0;
-            MTIE = (v & 0x00000080u) > 0;
-            STIE = (v & 0x00000020u) > 0;
-            UTIE = (v & 0x00000010u) > 0;
-            MSIE = (v & 0x00000008u) > 0;
-            SSIE = (v & 0x00000002u) > 0;
-            USIE = (v & 0x00000001u) > 0;
+        public InterruptEnableCSR(uint value) : this() {
+            MEIE = (value & 0x00000800u) > 0;
+            SEIE = (value & 0x00000200u) > 0;
+            UEIE = (value & 0x00000100u) > 0;
+            MTIE = (value & 0x00000080u) > 0;
+            STIE = (value & 0x00000020u) > 0;
+            UTIE = (value & 0x00000010u) > 0;
+            MSIE = (value & 0x00000008u) > 0;
+            SSIE = (value & 0x00000002u) > 0;
+            USIE = (value & 0x00000001u) > 0;
         }
 
         // キャスト
-        public static implicit operator InterruptEnableCSR(uint v) {
-            return new InterruptEnableCSR(v);
+        public static implicit operator InterruptEnableCSR(uint value) {
+            return new InterruptEnableCSR(value);
         }
 
-        public static implicit operator uint(InterruptEnableCSR v) {
+        public static implicit operator uint(InterruptEnableCSR ie) {
             uint value = 0;
-            value |= v.MEIE ? 1u << 11 : 0u;
-            value |= v.SEIE ? 1u << 9 : 0u;
-            value |= v.UEIE ? 1u << 8 : 0u;
-            value |= v.MTIE ? 1u << 7 : 0u;
-            value |= v.STIE ? 1u << 5 : 0u;
-            value |= v.UTIE ? 1u << 4 : 0u;
-            value |= v.MSIE ? 1u << 3 : 0u;
-            value |= v.SSIE ? 1u << 1 : 0u;
-            value |= v.USIE ? 1u << 0 : 0u;
+            value |= ie.MEIE ? 1u << 11 : 0u;
+            value |= ie.SEIE ? 1u << 9 : 0u;
+            value |= ie.UEIE ? 1u << 8 : 0u;
+            value |= ie.MTIE ? 1u << 7 : 0u;
+            value |= ie.STIE ? 1u << 5 : 0u;
+            value |= ie.UTIE ? 1u << 4 : 0u;
+            value |= ie.MSIE ? 1u << 3 : 0u;
+            value |= ie.SSIE ? 1u << 1 : 0u;
+            value |= ie.USIE ? 1u << 0 : 0u;
 
-            if (v.Mode == PrivilegeLevels.SupervisorMode) {
+            if (ie.Mode == PrivilegeLevels.SupervisorMode) {
                 value &= SModeMask;
-            } else if (v.Mode == PrivilegeLevels.UserMode) {
+            } else if (ie.Mode == PrivilegeLevels.UserMode) {
                 value &= UModeMask;
             }
             return value;
@@ -946,80 +946,80 @@ namespace RV32_Register.Constants {
         public bool HPM31 { get; set; }
 
         /// <summary>mip, sipなどの割り込み有効CSRを表す構造体</summary>
-        public CounterEnableCSR(uint v) : this() {
-            CY = (v & 0x00000001) > 0;
-            TM = (v & 0x00000002) > 0;
-            IR = (v & 0x00000004) > 0;
-            HPM3 = (v & 0x00000008) > 0;
-            HPM4 = (v & 0x00000010) > 0;
-            HPM5 = (v & 0x00000020) > 0;
-            HPM6 = (v & 0x00000040) > 0;
-            HPM7 = (v & 0x00000080) > 0;
-            HPM8 = (v & 0x00000100) > 0;
-            HPM9 = (v & 0x00000200) > 0;
-            HPM10 = (v & 0x00000400) > 0;
-            HPM11 = (v & 0x00000800) > 0;
-            HPM12 = (v & 0x00001000) > 0;
-            HPM13 = (v & 0x00002000) > 0;
-            HPM14 = (v & 0x00004000) > 0;
-            HPM15 = (v & 0x00008000) > 0;
-            HPM16 = (v & 0x00010000) > 0;
-            HPM17 = (v & 0x00020000) > 0;
-            HPM18 = (v & 0x00040000) > 0;
-            HPM19 = (v & 0x00080000) > 0;
-            HPM20 = (v & 0x00100000) > 0;
-            HPM21 = (v & 0x00200000) > 0;
-            HPM22 = (v & 0x00400000) > 0;
-            HPM23 = (v & 0x00800000) > 0;
-            HPM24 = (v & 0x01000000) > 0;
-            HPM25 = (v & 0x02000000) > 0;
-            HPM26 = (v & 0x04000000) > 0;
-            HPM27 = (v & 0x08000000) > 0;
-            HPM28 = (v & 0x10000000) > 0;
-            HPM29 = (v & 0x20000000) > 0;
-            HPM30 = (v & 0x40000000) > 0;
-            HPM31 = (v & 0x80000000) > 0;
+        public CounterEnableCSR(uint value) : this() {
+            CY = (value & 0x00000001) > 0;
+            TM = (value & 0x00000002) > 0;
+            IR = (value & 0x00000004) > 0;
+            HPM3 = (value & 0x00000008) > 0;
+            HPM4 = (value & 0x00000010) > 0;
+            HPM5 = (value & 0x00000020) > 0;
+            HPM6 = (value & 0x00000040) > 0;
+            HPM7 = (value & 0x00000080) > 0;
+            HPM8 = (value & 0x00000100) > 0;
+            HPM9 = (value & 0x00000200) > 0;
+            HPM10 = (value & 0x00000400) > 0;
+            HPM11 = (value & 0x00000800) > 0;
+            HPM12 = (value & 0x00001000) > 0;
+            HPM13 = (value & 0x00002000) > 0;
+            HPM14 = (value & 0x00004000) > 0;
+            HPM15 = (value & 0x00008000) > 0;
+            HPM16 = (value & 0x00010000) > 0;
+            HPM17 = (value & 0x00020000) > 0;
+            HPM18 = (value & 0x00040000) > 0;
+            HPM19 = (value & 0x00080000) > 0;
+            HPM20 = (value & 0x00100000) > 0;
+            HPM21 = (value & 0x00200000) > 0;
+            HPM22 = (value & 0x00400000) > 0;
+            HPM23 = (value & 0x00800000) > 0;
+            HPM24 = (value & 0x01000000) > 0;
+            HPM25 = (value & 0x02000000) > 0;
+            HPM26 = (value & 0x04000000) > 0;
+            HPM27 = (value & 0x08000000) > 0;
+            HPM28 = (value & 0x10000000) > 0;
+            HPM29 = (value & 0x20000000) > 0;
+            HPM30 = (value & 0x40000000) > 0;
+            HPM31 = (value & 0x80000000) > 0;
         }
 
         // キャスト
-        public static implicit operator CounterEnableCSR(uint v) {
-            return new CounterEnableCSR(v);
+        public static implicit operator CounterEnableCSR(uint value) {
+            return new CounterEnableCSR(value);
         }
 
-        public static implicit operator uint(CounterEnableCSR v) {
+        public static implicit operator uint(CounterEnableCSR counteren) {
             uint value = 0;
-            value += v.CY ? 1u << 0 : 0u;
-            value += v.TM ? 1u << 1 : 0u;
-            value += v.IR ? 1u << 2 : 0u;
-            value += v.HPM3 ? 1u << 3 : 0u;
-            value += v.HPM4 ? 1u << 4 : 0u;
-            value += v.HPM5 ? 1u << 5 : 0u;
-            value += v.HPM6 ? 1u << 6 : 0u;
-            value += v.HPM7 ? 1u << 7 : 0u;
-            value += v.HPM8 ? 1u << 8 : 0u;
-            value += v.HPM9 ? 1u << 9 : 0u;
-            value += v.HPM10 ? 1u << 10 : 0u;
-            value += v.HPM11 ? 1u << 11 : 0u;
-            value += v.HPM12 ? 1u << 12 : 0u;
-            value += v.HPM13 ? 1u << 13 : 0u;
-            value += v.HPM14 ? 1u << 14 : 0u;
-            value += v.HPM15 ? 1u << 15 : 0u;
-            value += v.HPM16 ? 1u << 16 : 0u;
-            value += v.HPM17 ? 1u << 17 : 0u;
-            value += v.HPM18 ? 1u << 18 : 0u;
-            value += v.HPM19 ? 1u << 19 : 0u;
-            value += v.HPM20 ? 1u << 20 : 0u;
-            value += v.HPM21 ? 1u << 21 : 0u;
-            value += v.HPM22 ? 1u << 22 : 0u;
-            value += v.HPM23 ? 1u << 23 : 0u;
-            value += v.HPM24 ? 1u << 24 : 0u;
-            value += v.HPM25 ? 1u << 25 : 0u;
-            value += v.HPM26 ? 1u << 26 : 0u;
-            value += v.HPM27 ? 1u << 27 : 0u;
-            value += v.HPM28 ? 1u << 28 : 0u;
-            value += v.HPM29 ? 1u << 29 : 0u;
-            value += v.HPM30 ? 1u << 30 : 0u;
-            value += v.HPM31 ? 1u << 31 : 0u;
+            value += counteren.CY ? 1u << 0 : 0u;
+            value += counteren.TM ? 1u << 1 : 0u;
+            value += counteren.IR ? 1u << 2 : 0u;
+            value += counteren.HPM3 ? 1u << 3 : 0u;
+            value += counteren.HPM4 ? 1u << 4 : 0u;
+            value += counteren.HPM5 ? 1u << 5 : 0u;
+            value += counteren.HPM6 ? 1u << 6 : 0u;
+            value += counteren.HPM7 ? 1u << 7 : 0u;
+            value += counteren.HPM8 ? 1u << 8 : 0u;
+            value += counteren.HPM9 ? 1u << 9 : 0u;
+            value += counteren.HPM10 ? 1u << 10 : 0u;
+            value += counteren.HPM11 ? 1u << 11 : 0u;
+            value += counteren.HPM12 ? 1u << 12 : 0u;
+            value += counteren.HPM13 ? 1u << 13 : 0u;
+            value += counteren.HPM14 ? 1u << 14 : 0u;
+            value += counteren.HPM15 ? 1u << 15 : 0u;
+            value += counteren.HPM16 ? 1u << 16 : 0u;
+            value += counteren.HPM17 ? 1u << 17 : 0u;
+            value += counteren.HPM18 ? 1u << 18 : 0u;
+            value += counteren.HPM19 ? 1u << 19 : 0u;
+            value += counteren.HPM20 ? 1u << 20 : 0u;
+            value += counteren.HPM21 ? 1u << 21 : 0u;
+            value += counteren.HPM22 ? 1u << 22 : 0u;
+            value += counteren.HPM23 ? 1u << 23 : 0u;
+            value += counteren.HPM24 ? 1u << 24 : 0u;
+            value += counteren.HPM25 ? 1u << 25 : 0u;
+            value += counteren.HPM26 ? 1u << 26 : 0u;
+            value += counteren.HPM27 ? 1u << 27 : 0u;
+            value += counteren.HPM28 ? 1u << 28 : 0u;
+            value += counteren.HPM29 ? 1u << 29 : 0u;
+            value += counteren.HPM30 ? 1u << 30 : 0u;
+            value += counteren.HPM31 ? 1u << 31 : 0u;
             return value;
         }
     }
@@ -1047,28 +1047,28 @@ namespace RV32_Register.Constants {
         public bool NX { get; set; }
 
         // コンストラクタ
-        public FloatCSR(uint v) {
-            Frm = (FloatRoundingMode)((v & 0xe0u) >> 5);
-            NV = (v & 0x10u) > 0;
-            DZ = (v & 0x08u) > 0;
-            OF = (v & 0x04u) > 0;
-            UF = (v & 0x02u) > 0;
-            NX = (v & 0x01u) > 0;
+        public FloatCSR(uint value) {
+            Frm = (FloatRoundingMode)((value & 0xe0u) >> 5);
+            NV = (value & 0x10u) > 0;
+            DZ = (value & 0x08u) > 0;
+            OF = (value & 0x04u) > 0;
+            UF = (value & 0x02u) > 0;
+            NX = (value & 0x01u) > 0;
         }
 
         // キャスト
-        public static implicit operator FloatCSR(uint v) {
-            return new FloatCSR(v);
+        public static implicit operator FloatCSR(uint value) {
+            return new FloatCSR(value);
         }
 
-        public static implicit operator uint(FloatCSR v) {
+        public static implicit operator uint(FloatCSR fcsr) {
             uint value = 0;
-            value |= (uint)v.Frm << 5;
-            value |= v.NV ? 1u << 4 : 0u;
-            value |= v.DZ ? 1u << 3 : 0u;
-            value |= v.OF ? 1u << 2 : 0u;
-            value |= v.UF ? 1u << 1 : 0u;
-            value |= v.NX ? 1u << 0 : 0u;
+            value |= (uint)fcsr.Frm << 5;
+            value |= fcsr.NV ? 1u << 4 : 0u;
+            value |= fcsr.DZ ? 1u << 3 : 0u;
+            value |= fcsr.OF ? 1u << 2 : 0u;
+            value |= fcsr.UF ? 1u << 1 : 0u;
+            value |= fcsr.NX ? 1u << 0 : 0u;
             return value;
         }
     }
@@ -1083,21 +1083,21 @@ namespace RV32_Register.Constants {
         /// <summary>物理ページ番号 (Physical Page Number)</summary>
         public uint PPN { get; set; }
 
-        public SatpCSR(uint v) {
-            MODE = (v & 0x8000_0000u) > 0;
-            ASID = (ushort)((v & 0x7fc0_0000u) >> 22);
-            PPN = (v & 0x003f_ffffu);
+        public SatpCSR(uint value) {
+            MODE = (value & 0x8000_0000u) > 0;
+            ASID = (ushort)((value & 0x7fc0_0000u) >> 22);
+            PPN = (value & 0x003f_ffffu);
         }
 
-        public static implicit operator SatpCSR(uint v) {
-            return new SatpCSR(v);
+        public static implicit operator SatpCSR(uint value) {
+            return new SatpCSR(value);
         }
 
-        public static implicit operator uint(SatpCSR v) {
+        public static implicit operator uint(SatpCSR satp) {
             uint value = 0;
-            value |= v.MODE ? 1u << 31 : 0u;
-            value |= (v.ASID & 0x01ffu) << 22;
-            value |= (v.PPN & 0x003f_ffffu) << 0;
+            value |= satp.MODE ? 1u << 31 : 0u;
+            value |= (satp.ASID & 0x01ffu) << 22;
+            value |= (satp.PPN & 0x003f_ffffu) << 0;
             return value;
         }
     }
@@ -1110,20 +1110,20 @@ namespace RV32_Register.Constants {
         public byte MODE { get; set; }
 
         // コンストラクタ
-        public TvecCSR(uint v) {
-            BASE = v & 0xffff_fffcu; ;
-            MODE = (byte)(v & 0x3u);
+        public TvecCSR(uint value) {
+            BASE = value & 0xffff_fffcu; ;
+            MODE = (byte)(value & 0x3u);
         }
 
         // キャスト
-        public static implicit operator TvecCSR(uint v) {
-            return new TvecCSR(v);
+        public static implicit operator TvecCSR(uint value) {
+            return new TvecCSR(value);
         }
 
-        public static implicit operator uint(TvecCSR v) {
+        public static implicit operator uint(TvecCSR tvec) {
             uint value = 0;
-            value |= v.BASE & 0xffff_fffcu;
-            value |= v.MODE & 0x3u;
+            value |= tvec.BASE & 0xffff_fffcu;
+            value |= tvec.MODE & 0x3u;
             return value;
         }
     }
