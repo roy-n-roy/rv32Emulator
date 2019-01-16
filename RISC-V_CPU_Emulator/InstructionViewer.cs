@@ -24,7 +24,7 @@ namespace RISC_V_CPU_Emulator {
         public InstructionViewerForm(RV32_HaedwareThread cpu) {
             this.cpu = cpu;
             string dirPath = @"..\..\..\..\riscv-tests\build\isa\";
-            string exePath = dirPath + "rv32uf-p-fadd";
+            string exePath = dirPath + "rv32si-p-wfi";
             this.cpu.LoadProgram(exePath);
             this.cpu.registerSet.Mem.HostAccessAddress.Add(this.cpu.GetToHostAddr());
 
@@ -278,8 +278,13 @@ namespace RISC_V_CPU_Emulator {
                 UpdateLabelsText();
                 ChangeColorCurrentStep();
 
-            } catch (HostAccessTrap) {
-
+            } catch (HostAccessTrap t) {
+                MessageBox.Show(this,
+                    "処理が完了しました\r\n" +
+                    "値: " + t.Data["value"],
+                    "実行完了",
+                    MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+                this.StepExecuteButton.Enabled = false;
             }
 
 

@@ -64,13 +64,13 @@ namespace RV32_Register.MemoryHandler {
                 }
                 mainMemory[address - PAddr + Offset] = value;
                 if (HostAccessAddress.Contains(address)) {
-                    throw new HostAccessTrap();
+                    throw new HostAccessTrap(value);
                 }
             }
             // メモリからのロード
             get {
                 if (HostAccessAddress.Contains(address)) {
-                    throw new HostAccessTrap();
+                    throw new HostAccessTrap(mainMemory[address - PAddr + Offset]);
                 }
                 if (address < PAddr || address >= Size - PAddr + Offset) {
                     throw new RiscvException(RiscvExceptionCause.LoadPageFault, address, reg);
@@ -86,7 +86,7 @@ namespace RV32_Register.MemoryHandler {
         /// <returns>32bit長 Risc-V命令</returns>
         public UInt32 FetchInstruction(UInt32 address) {
             if (HostAccessAddress.Contains(address)) {
-                throw new HostAccessTrap();
+                throw new HostAccessTrap(BitConverter.ToUInt32(mainMemory, (int)(address - PAddr + Offset)));
             }
             if (address < PAddr || address >= Size - PAddr + Offset) {
                 throw new RiscvException(RiscvExceptionCause.InstructionPageFault, address, reg);
@@ -271,6 +271,9 @@ namespace RV32_Register.MemoryHandler {
     /// <summary>
     /// ホストへトラップを返す
     /// </summary>
-    public class HostAccessTrap : Exception {
+    public class HostAccessTrap : ArgumentException {
+        public HostAccessTrap(UInt32 value) {
+            Data.Add("value", value);
+        }
     }
 }
