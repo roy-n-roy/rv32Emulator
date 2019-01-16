@@ -29,9 +29,17 @@ namespace RV32_Cpu {
         public readonly RV32_RegisterSet registerSet;
 
         /// <summary>
-        /// ステップ実行で発生した例外、割り込み
+        /// 例外、割り込がステップ実行で発生したか
         /// </summary>
-        public RiscvException CpuExceptionInterrupt { get; private set; }
+        public bool HasException { get; private set; }
+        /// <summary>
+        /// ステップ実行で発生した例外、割り込み要因
+        /// </summary>
+        public RiscvExceptionCause ExceptionCause { get; private set; }
+        /// <summary>
+        /// ステップ実行で発生した例外、割り込みのトラップ値
+        /// </summary>
+        public UInt32 ExceptionTrapValue { get; private set; }
 
         #region コンストラクタ
         /// <summary>
@@ -192,11 +200,9 @@ namespace RV32_Cpu {
         /// </summary>
         public void StepExecute() {
             try {
-                // 前回ステップの割り込み、例外の記録をクリアする
-                CpuExceptionInterrupt = null;
-
+                (HasException, ExceptionCause) = registerSet.CheckAndHandleInterrupt();
                 // 割り込みチェックとハンドリング
-                if (registerSet.CheckAndHandleInterrupt()) {
+                if (HasException) {
                     // メモリアドレスの予約開放
                     registerSet.Mem.Reset();
 
@@ -209,24 +215,23 @@ namespace RV32_Cpu {
                     decoder.Decode();
                 }
 
-#if DEBUG
-                // デバッグモードの際、ブレークポイント/環境呼び出し例外以外の例外・割り込みをコンソールに出力する。
-            } catch (RiscvException e)
-                  when ((RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.Breakpoint &&
-                        (RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.EnvironmentCallFromMMode &&
-                        (RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.EnvironmentCallFromSMode &&
-                        (RiscvExceptionCause)e.Data["cause"] != RiscvExceptionCause.EnvironmentCallFromUMode) {
-
-                CpuExceptionInterrupt = e;
-
-                Console.Error.WriteLine("\r\n例外発生");
-                Console.Error.WriteLine("    PC        = 0x" + ((uint)e.Data["pc"]).ToString("X"));
-                Console.Error.WriteLine("    TrapValue = 0x" + ((uint)e.Data["tval"]).ToString("X"));
-                Console.Error.WriteLine(e.ToString());
-#endif
+            // デバッグモードの際、ブレークポイント/環境呼び出し例外以外の例外・割り込みをコンソールに出力する。
             } catch (RiscvException e) {
-                CpuExceptionInterrupt = e;
+                HasException = true;
+                ExceptionCause = (RiscvExceptionCause)e.Data["cause"];
+                ExceptionTrapValue = (uint)e.Data["tval"];
+#if DEBUG
+                if (ExceptionCause != RiscvExceptionCause.Breakpoint &&
+                    ExceptionCause != RiscvExceptionCause.EnvironmentCallFromMMode &&
+                    ExceptionCause != RiscvExceptionCause.EnvironmentCallFromSMode &&
+                    ExceptionCause != RiscvExceptionCause.EnvironmentCallFromUMode) {
 
+                    Console.Error.WriteLine("\r\n例外発生");
+                    Console.Error.WriteLine("    PC        = 0x" + ((uint)e.Data["pc"]).ToString("X"));
+                    Console.Error.WriteLine("    TrapValue = 0x" + ((uint)ExceptionTrapValue).ToString("X"));
+                    Console.Error.WriteLine(e.ToString());
+                }
+#endif
             } finally {
                 registerSet.IncrementCycle();
             }

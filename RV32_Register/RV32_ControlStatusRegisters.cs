@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace RV32_Register {
+    [Serializable]
     public class RV32_ControlStatusRegisters : Dictionary<CSR, UInt32> {
 
         public UInt32 Misa { get => base[CSR.misa]; set => base[CSR.misa] = value; }
@@ -119,7 +120,7 @@ namespace RV32_Register {
                     // fcsr,fflags,frm
                     // fcsrへのアクセスとして読み替える
                     case CSR.fcsr:
-                        base[CSR.fcsr] =  value & (FloatCSR.FflagsMask | FloatCSR.FrmMask);
+                        base[CSR.fcsr] = value & (FloatCSR.FflagsMask | FloatCSR.FrmMask);
                         StatusCSR status;
                         status = new StatusCSR { FS = 0x3 };
                         base[CSR.mstatus] |= status;
@@ -146,7 +147,7 @@ namespace RV32_Register {
                         base[name] = value;
                         break;
                 }
+            }
         }
-    }
     }
 }
