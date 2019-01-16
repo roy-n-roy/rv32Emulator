@@ -7,6 +7,11 @@ namespace RV32_Register.Exceptions {
 
         /// <summary>Risc-V CPU例外のインスタンスを初期化します</summary>
         public RiscvException(RiscvExceptionCause cause, UInt32 tval, RV32_RegisterSet reg) : base(Enum.GetName(typeof(RiscvExceptionCause), cause)) {
+            // nullチェック
+            if (reg is null) {
+                throw new ArgumentNullException("reg");
+            }
+
             Data.Add("pc", reg.PC);
             Data.Add("cause", cause);
             Data.Add("tval", tval);
@@ -15,6 +20,14 @@ namespace RV32_Register.Exceptions {
         /// <summary>指定したメッセージを使用して、Risc-V CPU例外のインスタンスを初期化します</summary>
         /// <param name="message">エラーを説明するメッセージ</param>
         public RiscvException(RiscvExceptionCause cause, UInt32 tval, RV32_RegisterSet reg, string message) : base(Enum.GetName(typeof(RiscvExceptionCause), cause) + "\r\n" + message) {
+            // nullチェック
+            if (reg is null) {
+                throw new ArgumentNullException("reg");
+            }
+            if (message is null) {
+                throw new ArgumentNullException("message");
+            }
+
             Data.Add("pc", reg.PC);
             Data.Add("cause", cause);
             Data.Add("tval", tval);
@@ -25,6 +38,17 @@ namespace RV32_Register.Exceptions {
         /// <param name="message">エラーを説明するメッセージ</param>
         /// <param name="innerException">現在の例外の原因である例外</param>
         public RiscvException(RiscvExceptionCause cause, UInt32 tval, RV32_RegisterSet reg, string message, Exception innerException) : base(Enum.GetName(typeof(RiscvExceptionCause), cause) + "\r\n" + message, innerException) {
+            // nullチェック
+            if (reg is null) {
+                throw new ArgumentNullException("reg");
+            }
+            if (message is null) {
+                throw new ArgumentNullException("message");
+            }
+            if (innerException is null) {
+                throw new ArgumentNullException("innerException");
+            }
+
             Data.Add("pc", reg.PC);
             Data.Add("cause", cause);
             Data.Add("tval", tval);
