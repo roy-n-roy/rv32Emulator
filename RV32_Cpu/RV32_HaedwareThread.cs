@@ -197,11 +197,12 @@ namespace RV32_Cpu {
 
                 // 割り込みチェックとハンドリング
                 if (registerSet.CheckAndHandleInterrupt()) {
+                    // メモリアドレスの予約開放
                     registerSet.Mem.Reset();
 
                     // ToDo: 標準入力制御の実装
+                    // ToDo: GUIから参照用の割り込み変数へのデータ格納
 
-                    registerSet.IncrementCycle();
                 } else {
                     // 割り込みが無ければ、命令レジスタから命令を取り出して、デコード・実行する
                     RISC_V_Instruction.RiscvInstruction ins = RISC_V_Instruction.Converter.GetInstruction(registerSet.IR);

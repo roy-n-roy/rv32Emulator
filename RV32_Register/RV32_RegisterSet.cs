@@ -751,16 +751,19 @@ namespace RV32_Register {
             // 割り込みトラップモード
             PrivilegeLevels trapLevel = 0u;
 
-            UInt32 pendingInterrupt = CSRegisters[CSR.mie] & CSRegisters[CSR.mip];
             StatusCSR mstatus = CSRegisters[CSR.mstatus];
 
             UInt32 mideleg = CSRegisters[CSR.mideleg];
             UInt32 sideleg = CSRegisters[CSR.sideleg];
 
+            // 割り込み待ち変数(>0なら割り込み待ち中)
+            UInt32 pendingInterrupt = CSRegisters[CSR.mie] & CSRegisters[CSR.mip];
 
-            // 割り込み条件の判定とトラップモードの特定
+
+
+            // 割り込み有効の判定
             if ((pendingInterrupt & ~mideleg) > 0u) {
-                // 割り込み待ち状態でマシンモードより下位モードに割り込みトラップ委譲されていない場合
+                // 割り込みがマシンモードより下位モードに割り込みトラップ委譲されていない場合
 
                 if (IsWaitMode) {
                     // ハードウェアスレッドが割り込み待ち状態の場合
@@ -779,7 +782,7 @@ namespace RV32_Register {
                 }
             } else if ((pendingInterrupt & mideleg) > 0u && (pendingInterrupt & ~sideleg) > 0u &&
                 ((CSRegisters[CSR.misa] & (1u << ('U' - 'A'))) == 0u || (CSRegisters[CSR.misa] & (1u << ('N' - 'A'))) == 0u)) {
-                // 割り込み待ち状態で、割り込み委譲されているかつ、スーパーバイザモードより下位モードに割り込みトラップ委譲されていないかつ、
+                // 割り込みがスーパーバイザモードより下位モードに割り込みトラップ委譲されていないかつ、
                 // ユーザモード割り込みがサポートされていない場合
 
                 if (IsWaitMode) {
