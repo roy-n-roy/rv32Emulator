@@ -38,6 +38,11 @@ namespace RV32_Register {
         /// </summary>
         public RV32_RegisterSet(RV32_AbstractMemoryHandler mem) {
 
+            // nullチェック
+            if (mem is null) {
+                throw new ArgumentNullException("mem");
+            }
+
             // レジスタ初期化
             Registers = Enumerable.Range(0, 32).ToDictionary(key => (Register)key, value => 0u);
             FPRegisters = Enumerable.Range(0, 32).ToDictionary(key => (FPRegister)key, value => BitConverter.ToUInt64(BitConverter.GetBytes(0d), 0));
@@ -76,14 +81,24 @@ namespace RV32_Register {
         /// <summary>現在の実行モード</summary>
         public PrivilegeLevels CurrentMode { get; set; }
 
-         /// <summary>割り込み待ちモード</summary>
+        /// <summary>割り込み待ちモード</summary>
         public bool IsWaitMode { get; set; }
 
-       /// <summary>メインメモリ</summary>
+        /// <summary>割り込み待ちタイムアウトタイマー</summary>
+        private uint WaitTimer { get; set; }
+
+        /// <summary>割り込み待ちタイムアウト値</summary>
+        private const uint WaitTimerMax = 0u;
+
+        /// <summary>メインメモリ</summary>
         private RV32_AbstractMemoryHandler mainMemory;
         public RV32_AbstractMemoryHandler Mem {
             get => mainMemory;
             set {
+                // nullチェック
+                if (value is null) {
+                    throw new ArgumentNullException("value");
+                }
                 mainMemory = value;
                 mainMemory.SetRegisterSet(this);
             }
@@ -91,16 +106,9 @@ namespace RV32_Register {
 
         #endregion
 
-        /// <summary>
-        /// プログラムカウントを 引数で指定した分 増加させ、次の命令アドレスを指すように更新する
-        /// 引数で指定しない場合は 4 増加させる
-        /// </summary>
-        /// <param name="instructionLength">PCの増数 32bit長命令の場合は4、16bit長命令の場合は2を指定する</param>
-        public void IncrementPc(UInt32 instructionLength = 4u) {
-            PC += instructionLength;
-        }
-
         #region Risc-V CPU命令
+
+        #region RISC-V CPU Jump系命令
 
         /// <summary>
         /// Jump And Link命令
@@ -128,6 +136,8 @@ namespace RV32_Register {
             SetValue(rd, t);
             return true;
         }
+
+        #endregion
 
         #region Risv-V CPU Branch系命令
 
@@ -230,12 +240,13 @@ namespace RV32_Register {
         #endregion
 
         #region Risc-V CPU 特権命令
+
         /// <summary>
         /// Fence Memory and I/O命令
         /// </summary>
-        /// <param name="pred_succ"></param>
+        /// <param name="predsucc"></param>
         /// <returns>処理の成否</returns>
-        public bool Fence(byte pred_succ, UInt32 insLength = 4u) {
+        public bool Fence(byte predsucc, UInt32 insLength = 4u) {
             IncrementPc(insLength);
             return true;
         }
@@ -275,11 +286,13 @@ namespace RV32_Register {
         /// </summary>
         /// <returns>処理の成否</returns>
         public bool Wfi(UInt32 insLength = 4u) {
-            if (((StatusCSR)CSRegisters[CSR.mstatus]).TW && CurrentMode <= PrivilegeLevels.SupervisorMode) {
-                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
-            }
+
+            // 割り込み待ちモードにセット
             IsWaitMode = true;
             
+            // 割り込み待ちタイマーリセット
+            WaitTimer = 0;
+
             return true;
         }
 
@@ -372,7 +385,6 @@ namespace RV32_Register {
 
             return true;
         }
-
 
         /// <summary>
         /// Control Status Register Read and Write命令
@@ -471,9 +483,9 @@ namespace RV32_Register {
 
         #endregion
 
-        #region 内部用メソッド
+        #region RISC-V命令メソッド用インターフェース
 
-        #region private コントロール・ステータスレジスタ操作
+        #region コントロール・ステータスレジスタ操作 for CSR命令
 
         /// <summary>
         /// CSRに値を設定する
@@ -562,7 +574,7 @@ namespace RV32_Register {
 
         #endregion
 
-        #region public 整数レジスタ操作
+        #region public 整数レジスタ操作 for ALU/LSUクラス
 
         /// <summary>
         /// 整数レジスタに値を設定する
@@ -591,7 +603,7 @@ namespace RV32_Register {
 
         #endregion
 
-        #region public 浮動小数点レジスタ
+        #region public 浮動小数点レジスタ for ALU/LSUクラス
 
         /// <summary>
         /// 浮動小数点レジスタに値を設定する
@@ -646,7 +658,18 @@ namespace RV32_Register {
         }
         #endregion
 
-        #region public コントロール・ステータスレジスタ
+        #endregion
+
+        #region 外部(ハードウェアスレッド/ユーザ)用インターフェース
+
+        /// <summary>
+        /// プログラムカウントを 引数で指定した分 増加させ、次の命令アドレスを指すように更新する
+        /// 引数で指定しない場合は 4 増加させる
+        /// </summary>
+        /// <param name="instructionLength">PCの増数 32bit長命令の場合は4、16bit長命令の場合は2を指定する</param>
+        public void IncrementPc(UInt32 instructionLength = 4u) {
+            PC += instructionLength;
+        }
 
         /// <summary>
         /// サイクルカウントを 1 増加させる
@@ -745,6 +768,7 @@ namespace RV32_Register {
         /// <returns>割り込み有無(true: 割り込みあり, false:割り込みなし)</returns>
         public bool CheckAndHandleInterrupt() {
 
+
             // 割り込み有効判定用変数
             UInt32 enableInterrupt = 0u;
 
@@ -755,6 +779,11 @@ namespace RV32_Register {
 
             UInt32 mideleg = CSRegisters[CSR.mideleg];
             UInt32 sideleg = CSRegisters[CSR.sideleg];
+
+            // mstatusのタイムアウト待機フラグがセットされていて、タイムアウト値を越えた場合、不正命令例外を発生させる
+            if (mstatus.TW && WaitTimer++ >= WaitTimerMax) {
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, this);
+            }
 
             // 割り込み待ち変数(>0なら割り込み待ち中)
             UInt32 pendingInterrupt = CSRegisters[CSR.mie] & CSRegisters[CSR.mip];
@@ -957,8 +986,6 @@ namespace RV32_Register {
             }
         }
 
-
-        #endregion
 
         #endregion
 

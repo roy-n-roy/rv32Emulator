@@ -107,7 +107,7 @@ namespace RV32_Register.MemoryHandler {
 
         /// <summary>メインメモリハンドラ</summary>
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
-        public RV32_AbstractMemoryHandler(byte[] mainMemory) {
+        protected RV32_AbstractMemoryHandler(byte[] mainMemory) {
             this.mainMemory = mainMemory;
             HostAccessAddress = new HashSet<UInt64>();
         }
@@ -150,7 +150,7 @@ namespace RV32_Register.MemoryHandler {
                 return (ulong)v_add;
 
             } else {
-                VirtAddr virt_addr = v_add;
+                VirtAddr32 virt_addr = v_add;
 
                 RiscvExceptionCause pageFaultCouse;
                 switch (accMode) {
@@ -175,7 +175,7 @@ namespace RV32_Register.MemoryHandler {
                 uint pte_addr = satp.PPN * PageSize;
                 int i = Levels - 1;
 
-                PageTableEntry pte = 0;
+                PageTableEntry32 pte = 0;
 
                 /* 2.アドレスa + vaにあるPTEの値をpteとします。vpn [i]×PTESIZE。 （Sv32の場合、PTESIZE = 4）
                  * pteにアクセスしてPMAまたはPMPチェックに違反した場合は、アクセス例外を発生させます。
@@ -184,7 +184,7 @@ namespace RV32_Register.MemoryHandler {
                 while (i >= 0) {
 
                     pte_addr += virt_addr.VPN[i] * PteSize;
-                    pte = (PageTableEntry)BitConverter.ToUInt32(mainMemory, (int)(pte_addr - PAddr + Offset));
+                    pte = (PageTableEntry32)BitConverter.ToUInt32(mainMemory, (int)(pte_addr - PAddr + Offset));
 
                     if (false) {
                         // ToDo: PMA,PMPチェックの実装
