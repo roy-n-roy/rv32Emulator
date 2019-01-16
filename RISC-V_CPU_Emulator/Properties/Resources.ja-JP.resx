@@ -117,196 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DefaultLabel_BackColor" xml:space="preserve">
-    <value>Control</value>
-  </data>
-  <data name="DefaultTextBox_BackColor" xml:space="preserve">
-    <value>Window</value>
-  </data>
-  <data name="DumpTextBox_CurrentStepLine_BackColor" xml:space="preserve">
-    <value>LightPink</value>
-  </data>
   <data name="ExceptionCause_00000000" xml:space="preserve">
-    <value>Instruction Address Misaligned Exception </value>
+    <value>命令アドレス非整列化例外</value>
   </data>
   <data name="ExceptionCause_00000001" xml:space="preserve">
-    <value>Instruction Access Fault Exception </value>
+    <value>命令アクセス・フォールト例外</value>
   </data>
   <data name="ExceptionCause_00000002" xml:space="preserve">
-    <value>Illegal Instruction Exception </value>
+    <value>不正命令例外</value>
   </data>
   <data name="ExceptionCause_00000003" xml:space="preserve">
-    <value>Breakpoint Exception </value>
+    <value>ブレークポイント例外</value>
   </data>
   <data name="ExceptionCause_00000004" xml:space="preserve">
-    <value>Load Address Misaligned Exception </value>
+    <value>ロードアドレス非整列化例外</value>
   </data>
   <data name="ExceptionCause_00000005" xml:space="preserve">
-    <value>Load Access Fault Exception </value>
+    <value>ロードアクセス・フォールト例外</value>
   </data>
   <data name="ExceptionCause_00000006" xml:space="preserve">
-    <value>AMO Address Misaligned Exception </value>
+    <value>ストアアドレス非整列化例外</value>
   </data>
   <data name="ExceptionCause_00000007" xml:space="preserve">
-    <value>Store AMO AccessFault Exception </value>
+    <value>ストアアクセス・フォールト例外</value>
   </data>
   <data name="ExceptionCause_00000008" xml:space="preserve">
-    <value>Environment Call From User Mode Exception </value>
+    <value>ユーザモードからの環境呼び出し例外</value>
   </data>
   <data name="ExceptionCause_00000009" xml:space="preserve">
-    <value>Environment Call From Supervisor Mode Exception </value>
+    <value>スーパーバイザモードからの環境呼び出し例外</value>
   </data>
   <data name="ExceptionCause_0000000b" xml:space="preserve">
-    <value>Environment Call From Machine ode Exception </value>
+    <value>マシンモードからの環境呼び出し例外</value>
   </data>
   <data name="ExceptionCause_0000000c" xml:space="preserve">
-    <value>Instruction Page Fault Exception </value>
+    <value>命令ページ・フォールト例外</value>
   </data>
   <data name="ExceptionCause_0000000d" xml:space="preserve">
-    <value>Load Page Fault Exception </value>
+    <value>ロードページ・フォールト例外</value>
   </data>
   <data name="ExceptionCause_0000000f" xml:space="preserve">
-    <value>Store AMO Page Fault Exception </value>
+    <value>ストアページ・フォールト例外</value>
   </data>
   <data name="ExceptionCause_80000000" xml:space="preserve">
-    <value>User Software Interrupt </value>
+    <value>ユーザソフトウェア割り込み</value>
   </data>
   <data name="ExceptionCause_80000001" xml:space="preserve">
-    <value>Supervisor Software Interrupt </value>
+    <value>スーパーバイザソフトウェア割り込み</value>
   </data>
   <data name="ExceptionCause_80000003" xml:space="preserve">
-    <value>Machine Software Interrupt </value>
+    <value>マシンソフトウェア割り込み</value>
   </data>
   <data name="ExceptionCause_80000004" xml:space="preserve">
-    <value>User Timer Interrupt </value>
+    <value>ユーザタイマ割り込み</value>
   </data>
   <data name="ExceptionCause_80000005" xml:space="preserve">
-    <value>Supervisor Timer Interrupt </value>
+    <value>スーパーバイザタイマ割り込み</value>
   </data>
   <data name="ExceptionCause_80000007" xml:space="preserve">
-    <value>Machine Timer Interrupt </value>
+    <value>マシンタイマ割り込み</value>
   </data>
   <data name="ExceptionCause_80000008" xml:space="preserve">
-    <value>User External Interrupt </value>
+    <value>ユーザ外部割り込み</value>
   </data>
   <data name="ExceptionCause_80000009" xml:space="preserve">
-    <value>Supervisor External Interrupt </value>
+    <value>スーパーバイザ外部割り込み</value>
   </data>
   <data name="ExceptionCause_8000000b" xml:space="preserve">
-    <value>Machine External Interrupt </value>
-  </data>
-  <data name="FloatPointStatusRegisterTextBox_ExceptionFlag_01" xml:space="preserve">
-    <value>Inexact</value>
-  </data>
-  <data name="FloatPointStatusRegisterTextBox_ExceptionFlag_02" xml:space="preserve">
-    <value>Underow</value>
-  </data>
-  <data name="FloatPointStatusRegisterTextBox_ExceptionFlag_04" xml:space="preserve">
-    <value>Overflow</value>
-  </data>
-  <data name="FloatPointStatusRegisterTextBox_ExceptionFlag_08" xml:space="preserve">
-    <value>Divide by Zero</value>
-  </data>
-  <data name="FloatPointStatusRegisterTextBox_ExceptionFlag_10" xml:space="preserve">
-    <value>Invalid Operation</value>
-  </data>
-  <data name="FloatPointStatusRegisterTextBox_RoundMode_0" xml:space="preserve">
-    <value>RNE</value>
-  </data>
-  <data name="FloatPointStatusRegisterTextBox_RoundMode_1" xml:space="preserve">
-    <value>RTZ</value>
-  </data>
-  <data name="FloatPointStatusRegisterTextBox_RoundMode_2" xml:space="preserve">
-    <value>RDN</value>
-  </data>
-  <data name="FloatPointStatusRegisterTextBox_RoundMode_3" xml:space="preserve">
-    <value>RUP</value>
-  </data>
-  <data name="FloatPointStatusRegisterTextBox_RoundMode_4" xml:space="preserve">
-    <value>RMM</value>
-  </data>
-  <data name="FloatPointStatusRegisterTextBox_RoundMode_7" xml:space="preserve">
-    <value>Dynamic</value>
-  </data>
-  <data name="InstructionType_A" xml:space="preserve">
-    <value>----Opcode---- -aq/rl- --------rs2-------  -------rs1-------   -Opcode-    ------rd--------    -------Opcode--------</value>
-  </data>
-  <data name="InstructionType_B" xml:space="preserve">
-    <value>------Immediate------   -------rs2--------   -------rs1-------   -Opcide-   ---Immediate---    -------Opcode--------</value>
-  </data>
-  <data name="InstructionType_CSR" xml:space="preserve">
-    <value>--------------------CSR------------------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode--------</value>
-  </data>
-  <data name="InstructionType_FENCE" xml:space="preserve">
-    <value>-----------------------------------------------------OpCode-------------------------------------------------------------</value>
-  </data>
-  <data name="InstructionType_FMV" xml:space="preserve">
-    <value>------------------Opcode-----------------  -------rs1-------   -Opcode-    ------rd--------    -------Opcode--------</value>
-  </data>
-  <data name="InstructionType_I" xml:space="preserve">
-    <value>----------------Immediate---------------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode--------</value>
-  </data>
-  <data name="InstructionType_J" xml:space="preserve">
-    <value>-------------------------------Immediate-------------------------------    ------rd--------    -------Opcode--------</value>
-  </data>
-  <data name="InstructionType_NONE" xml:space="preserve">
-    <value>-----------------------------------------------------OpCode-------------------------------------------------------------</value>
-  </data>
-  <data name="InstructionType_R" xml:space="preserve">
-    <value>--------Opcode-------  -------rs2--------    -------rs1-------  -Opcide-    ------rd--------    -------Opcode--------</value>
-  </data>
-  <data name="InstructionType_R4" xml:space="preserve">
-    <value>-------rs3------- -Op- --------rs2-------    -------rs1-------   -Opcode-    ------rd--------    -------Opcode--------</value>
-  </data>
-  <data name="InstructionType_RF" xml:space="preserve">
-    <value>--------Opcode-------  -------rs2--------  -------rs1--------  ---rm---    ------rd--------    -------Opcode--------</value>
-  </data>
-  <data name="InstructionType_S" xml:space="preserve">
-    <value>------Immediate------   -------rs2--------   -------rs1-------   -Opcide-   ---Immediate---    -------Opcode--------</value>
-  </data>
-  <data name="InstructionType_SHIFT" xml:space="preserve">
-    <value>------Opcode---------  ------shamt------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode--------</value>
-  </data>
-  <data name="InstructionType_U" xml:space="preserve">
-    <value>-------------------------------Immediate-------------------------------    ------rd--------    -------Opcode--------</value>
-  </data>
-  <data name="RegisterLabel_BackColor_frd" xml:space="preserve">
-    <value>Khaki</value>
-  </data>
-  <data name="RegisterLabel_BackColor_frs1" xml:space="preserve">
-    <value>PaleGreen</value>
-  </data>
-  <data name="RegisterLabel_BackColor_frs2" xml:space="preserve">
-    <value>PaleGreen</value>
-  </data>
-  <data name="RegisterLabel_BackColor_rd" xml:space="preserve">
-    <value>Khaki</value>
-  </data>
-  <data name="RegisterLabel_BackColor_rs1" xml:space="preserve">
-    <value>PaleGreen</value>
-  </data>
-  <data name="RegisterLabel_BackColor_rs2" xml:space="preserve">
-    <value>PaleGreen</value>
-  </data>
-  <data name="RegisterLabel_BackColor_rs3" xml:space="preserve">
-    <value>PaleGreen</value>
-  </data>
-  <data name="RegisterLabel_ForeColor_frd" xml:space="preserve">
-    <value>Red</value>
-  </data>
-  <data name="RegisterLabel_ForeColor_rd" xml:space="preserve">
-    <value>Red</value>
+    <value>マシン外部割り込み</value>
   </data>
   <data name="StatusLabel_Text_Exception" xml:space="preserve">
-    <value>Status : </value>
+    <value>ステータス : </value>
   </data>
   <data name="StatusLabel_Text_Interrupt" xml:space="preserve">
-    <value>Status :</value>
+    <value>ステータス : </value>
   </data>
   <data name="StatusLabel_Text_Running" xml:space="preserve">
-    <value>Status : Running</value>
+    <value>ステータス : 実行中</value>
   </data>
   <data name="StatusLabel_Text_Wait" xml:space="preserve">
-    <value>Status : Waiting Interrupt</value>
+    <value>ステータス : 割り込み待ち中</value>
   </data>
 </root>

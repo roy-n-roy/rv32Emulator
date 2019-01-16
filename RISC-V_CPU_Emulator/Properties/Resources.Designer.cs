@@ -22,7 +22,7 @@ namespace RISC_V_CPU_Emulator.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace RISC_V_CPU_Emulator.Properties {
         ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RISC_V_CPU_Emulator.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace RISC_V_CPU_Emulator.Properties {
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,101 +61,578 @@ namespace RISC_V_CPU_Emulator.Properties {
         }
         
         /// <summary>
-        ///   Arguments に類似しているローカライズされた文字列を検索します。
+        ///   Control に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string ArgumentsGroupBox_Text {
+        public static string DefaultLabel_BackColor {
             get {
-                return ResourceManager.GetString("ArgumentsGroupBox_Text", resourceCulture);
+                return ResourceManager.GetString("DefaultLabel_BackColor", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   0000000 00000 00000 000 00000 0000000 に類似しているローカライズされた文字列を検索します。
+        ///   Window に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string BinaryInstructionLabel_Text_Defalut {
+        public static string DefaultTextBox_BackColor {
             get {
-                return ResourceManager.GetString("BinaryInstructionLabel_Text_Defalut", resourceCulture);
+                return ResourceManager.GetString("DefaultTextBox_BackColor", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Current Mode に類似しているローカライズされた文字列を検索します。
+        ///   LightPink に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string CurrentModeGroupBox_Text {
+        public static string DumpTextBox_CurrentStepLine_BackColor {
             get {
-                return ResourceManager.GetString("CurrentModeGroupBox_Text", resourceCulture);
+                return ResourceManager.GetString("DumpTextBox_CurrentStepLine_BackColor", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   MachineMode に類似しているローカライズされた文字列を検索します。
+        ///   Instruction Address Misaligned Exception  に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string CurrentModeLabel_Text {
+        public static string ExceptionCause_00000000 {
             get {
-                return ResourceManager.GetString("CurrentModeLabel_Text", resourceCulture);
+                return ResourceManager.GetString("ExceptionCause_00000000", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Float-Point Registers に類似しているローカライズされた文字列を検索します。
+        ///   Instruction Access Fault Exception  に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string FloatPointRegistersGroupBox_Text {
+        public static string ExceptionCause_00000001 {
             get {
-                return ResourceManager.GetString("FloatPointRegistersGroupBox_Text", resourceCulture);
+                return ResourceManager.GetString("ExceptionCause_00000001", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Instruction Register に類似しているローカライズされた文字列を検索します。
+        ///   Illegal Instruction Exception  に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string InstructionRegisterGroupBox_Text {
+        public static string ExceptionCause_00000002 {
             get {
-                return ResourceManager.GetString("InstructionRegisterGroupBox_Text", resourceCulture);
+                return ResourceManager.GetString("ExceptionCause_00000002", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Risc-V Instruction Viewer に類似しているローカライズされた文字列を検索します。
+        ///   Breakpoint Exception  に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string InstructionViewerForm_Text {
+        public static string ExceptionCause_00000003 {
             get {
-                return ResourceManager.GetString("InstructionViewerForm_Text", resourceCulture);
+                return ResourceManager.GetString("ExceptionCause_00000003", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Integer Registers に類似しているローカライズされた文字列を検索します。
+        ///   Load Address Misaligned Exception  に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string IntegerRegistersGroupBox_Text {
+        public static string ExceptionCause_00000004 {
             get {
-                return ResourceManager.GetString("IntegerRegistersGroupBox_Text", resourceCulture);
+                return ResourceManager.GetString("ExceptionCause_00000004", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   0x00000000 に類似しているローカライズされた文字列を検索します。
+        ///   Load Access Fault Exception  に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string PCValueLabel_Text_Default {
+        public static string ExceptionCause_00000005 {
             get {
-                return ResourceManager.GetString("PCValueLabel_Text_Default", resourceCulture);
+                return ResourceManager.GetString("ExceptionCause_00000005", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Program Counter に類似しているローカライズされた文字列を検索します。
+        ///   AMO Address Misaligned Exception  に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string ProgramCounterGroupBox_Text {
+        public static string ExceptionCause_00000006 {
             get {
-                return ResourceManager.GetString("ProgramCounterGroupBox_Text", resourceCulture);
+                return ResourceManager.GetString("ExceptionCause_00000006", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   ス テ ッ プ 実 行 に類似しているローカライズされた文字列を検索します。
+        ///   Store AMO AccessFault Exception  に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        internal static string StepExecuteButton_Text {
+        public static string ExceptionCause_00000007 {
             get {
-                return ResourceManager.GetString("StepExecuteButton_Text", resourceCulture);
+                return ResourceManager.GetString("ExceptionCause_00000007", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Environment Call From User Mode Exception  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_00000008 {
+            get {
+                return ResourceManager.GetString("ExceptionCause_00000008", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Environment Call From Supervisor Mode Exception  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_00000009 {
+            get {
+                return ResourceManager.GetString("ExceptionCause_00000009", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Environment Call From Machine ode Exception  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_0000000b {
+            get {
+                return ResourceManager.GetString("ExceptionCause_0000000b", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Instruction Page Fault Exception  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_0000000c {
+            get {
+                return ResourceManager.GetString("ExceptionCause_0000000c", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Load Page Fault Exception  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_0000000d {
+            get {
+                return ResourceManager.GetString("ExceptionCause_0000000d", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Store AMO Page Fault Exception  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_0000000f {
+            get {
+                return ResourceManager.GetString("ExceptionCause_0000000f", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   User Software Interrupt  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_80000000 {
+            get {
+                return ResourceManager.GetString("ExceptionCause_80000000", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Supervisor Software Interrupt  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_80000001 {
+            get {
+                return ResourceManager.GetString("ExceptionCause_80000001", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Machine Software Interrupt  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_80000003 {
+            get {
+                return ResourceManager.GetString("ExceptionCause_80000003", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   User Timer Interrupt  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_80000004 {
+            get {
+                return ResourceManager.GetString("ExceptionCause_80000004", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Supervisor Timer Interrupt  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_80000005 {
+            get {
+                return ResourceManager.GetString("ExceptionCause_80000005", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Machine Timer Interrupt  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_80000007 {
+            get {
+                return ResourceManager.GetString("ExceptionCause_80000007", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   User External Interrupt  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_80000008 {
+            get {
+                return ResourceManager.GetString("ExceptionCause_80000008", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Supervisor External Interrupt  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_80000009 {
+            get {
+                return ResourceManager.GetString("ExceptionCause_80000009", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Machine External Interrupt  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ExceptionCause_8000000b {
+            get {
+                return ResourceManager.GetString("ExceptionCause_8000000b", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Inexact に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FloatPointStatusRegisterTextBox_ExceptionFlag_01 {
+            get {
+                return ResourceManager.GetString("FloatPointStatusRegisterTextBox_ExceptionFlag_01", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Underow に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FloatPointStatusRegisterTextBox_ExceptionFlag_02 {
+            get {
+                return ResourceManager.GetString("FloatPointStatusRegisterTextBox_ExceptionFlag_02", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Overflow に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FloatPointStatusRegisterTextBox_ExceptionFlag_04 {
+            get {
+                return ResourceManager.GetString("FloatPointStatusRegisterTextBox_ExceptionFlag_04", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Divide by Zero に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FloatPointStatusRegisterTextBox_ExceptionFlag_08 {
+            get {
+                return ResourceManager.GetString("FloatPointStatusRegisterTextBox_ExceptionFlag_08", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Invalid Operation に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FloatPointStatusRegisterTextBox_ExceptionFlag_10 {
+            get {
+                return ResourceManager.GetString("FloatPointStatusRegisterTextBox_ExceptionFlag_10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   RNE に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FloatPointStatusRegisterTextBox_RoundMode_0 {
+            get {
+                return ResourceManager.GetString("FloatPointStatusRegisterTextBox_RoundMode_0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   RTZ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FloatPointStatusRegisterTextBox_RoundMode_1 {
+            get {
+                return ResourceManager.GetString("FloatPointStatusRegisterTextBox_RoundMode_1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   RDN に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FloatPointStatusRegisterTextBox_RoundMode_2 {
+            get {
+                return ResourceManager.GetString("FloatPointStatusRegisterTextBox_RoundMode_2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   RUP に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FloatPointStatusRegisterTextBox_RoundMode_3 {
+            get {
+                return ResourceManager.GetString("FloatPointStatusRegisterTextBox_RoundMode_3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   RMM に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FloatPointStatusRegisterTextBox_RoundMode_4 {
+            get {
+                return ResourceManager.GetString("FloatPointStatusRegisterTextBox_RoundMode_4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Dynamic に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string FloatPointStatusRegisterTextBox_RoundMode_7 {
+            get {
+                return ResourceManager.GetString("FloatPointStatusRegisterTextBox_RoundMode_7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ----Opcode---- -aq/rl- --------rs2-------  -------rs1-------   -Opcode-    ------rd--------    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_A {
+            get {
+                return ResourceManager.GetString("InstructionType_A", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ------Immediate------   -------rs2--------   -------rs1-------   -Opcide-   ---Immediate---    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_B {
+            get {
+                return ResourceManager.GetString("InstructionType_B", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   --------------------CSR------------------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_CSR {
+            get {
+                return ResourceManager.GetString("InstructionType_CSR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   -----------------------------------------------------OpCode------------------------------------------------------------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_FENCE {
+            get {
+                return ResourceManager.GetString("InstructionType_FENCE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ------------------Opcode-----------------  -------rs1-------   -Opcode-    ------rd--------    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_FMV {
+            get {
+                return ResourceManager.GetString("InstructionType_FMV", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ----------------Immediate---------------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_I {
+            get {
+                return ResourceManager.GetString("InstructionType_I", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   -------------------------------Immediate-------------------------------    ------rd--------    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_J {
+            get {
+                return ResourceManager.GetString("InstructionType_J", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   -----------------------------------------------------OpCode------------------------------------------------------------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_NONE {
+            get {
+                return ResourceManager.GetString("InstructionType_NONE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   --------Opcode-------  -------rs2--------    -------rs1-------  -Opcide-    ------rd--------    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_R {
+            get {
+                return ResourceManager.GetString("InstructionType_R", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   -------rs3------- -Op- --------rs2-------    -------rs1-------   -Opcode-    ------rd--------    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_R4 {
+            get {
+                return ResourceManager.GetString("InstructionType_R4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   --------Opcode-------  -------rs2--------  -------rs1--------  ---rm---    ------rd--------    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_RF {
+            get {
+                return ResourceManager.GetString("InstructionType_RF", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ------Immediate------   -------rs2--------   -------rs1-------   -Opcide-   ---Immediate---    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_S {
+            get {
+                return ResourceManager.GetString("InstructionType_S", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ------Opcode---------  ------shamt------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_SHIFT {
+            get {
+                return ResourceManager.GetString("InstructionType_SHIFT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   -------------------------------Immediate-------------------------------    ------rd--------    -------Opcode-------- に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InstructionType_U {
+            get {
+                return ResourceManager.GetString("InstructionType_U", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Khaki に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RegisterLabel_BackColor_frd {
+            get {
+                return ResourceManager.GetString("RegisterLabel_BackColor_frd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   PaleGreen に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RegisterLabel_BackColor_frs1 {
+            get {
+                return ResourceManager.GetString("RegisterLabel_BackColor_frs1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   PaleGreen に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RegisterLabel_BackColor_frs2 {
+            get {
+                return ResourceManager.GetString("RegisterLabel_BackColor_frs2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Khaki に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RegisterLabel_BackColor_rd {
+            get {
+                return ResourceManager.GetString("RegisterLabel_BackColor_rd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   PaleGreen に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RegisterLabel_BackColor_rs1 {
+            get {
+                return ResourceManager.GetString("RegisterLabel_BackColor_rs1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   PaleGreen に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RegisterLabel_BackColor_rs2 {
+            get {
+                return ResourceManager.GetString("RegisterLabel_BackColor_rs2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   PaleGreen に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RegisterLabel_BackColor_rs3 {
+            get {
+                return ResourceManager.GetString("RegisterLabel_BackColor_rs3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Red に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RegisterLabel_ForeColor_frd {
+            get {
+                return ResourceManager.GetString("RegisterLabel_ForeColor_frd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Red に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string RegisterLabel_ForeColor_rd {
+            get {
+                return ResourceManager.GetString("RegisterLabel_ForeColor_rd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Status :  に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string StatusLabel_Text_Exception {
+            get {
+                return ResourceManager.GetString("StatusLabel_Text_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Status : に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string StatusLabel_Text_Interrupt {
+            get {
+                return ResourceManager.GetString("StatusLabel_Text_Interrupt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Status : Running に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string StatusLabel_Text_Running {
+            get {
+                return ResourceManager.GetString("StatusLabel_Text_Running", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Status : Waiting Interrupt に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string StatusLabel_Text_Wait {
+            get {
+                return ResourceManager.GetString("StatusLabel_Text_Wait", resourceCulture);
             }
         }
     }

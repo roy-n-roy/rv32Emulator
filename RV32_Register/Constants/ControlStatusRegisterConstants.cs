@@ -31,8 +31,8 @@ namespace RV32_Register.Constants {
         DYN = 0b111,
     }
 
-    /// <summary>割り込み要因</summary>
-    public enum RiscvInterruptCause : uint {
+    /// <summary>割り込み・例外要因</summary>
+    public enum RiscvExceptionCause : uint {
         /// <summary>ユーザソフトウェア割り込み</summary>
         UserSoftware = 0x8000_0000u,
         /// <summary>スーパーバイザソフトウェア割り込み</summary>
@@ -51,10 +51,6 @@ namespace RV32_Register.Constants {
         SupervisorExternal = 0x8000_0009u,
         /// <summary>マシン外部割り込み</summary>
         MachineExternal = 0x8000_000bu,
-    }
-
-    /// <summary>例外要因</summary>
-    public enum RiscvExceptionCause : uint {
         /// <summary>命令アドレス非整列化例外</summary>
         InstructionAddressMisaligned = 0x0000_0000u,
         /// <summary>命令アクセス・フォールト例外</summary>

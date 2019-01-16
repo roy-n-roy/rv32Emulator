@@ -738,6 +738,20 @@ namespace RV32_Register {
         }
 
         /// <summary>
+        /// <para>整数レジスタ、浮動小数点レジスタ、コントロール・ステータスレジスタを結合したDictionary型データを取得します。</para>
+        /// <para>Key: 整数レジスタの場合は"x0"～"x31"、浮動小数点レジスタの場合は"f0"～"f31"、コントロール・ステータスレジスタは <see cref="CSR"/>列挙型の名前を指定します</para>
+        /// <para>Value: 整数レジスタ、CSRは32bit長intの値を64bit長long型にキャストした値、浮動小数点レジスタの場合はIEEE 754フォーマットに準拠した単精度・倍精度浮動小数点数バイト配列をlong型にキャストした値</para>
+        /// <para>浮動小数点数の値を取得するには <see cref="BitConverter.GetBytes(long)"/>、 および、<see cref="BitConverter.ToSingle(byte[], int)"/> <see cref="BitConverter.ToDouble(byte[], int)"/> を使用してください</para>
+        /// </summary>
+        /// <returns></returns>
+        public Dictionary<string, ulong> GetAllRegisterData() {
+            Dictionary<string, ulong> intReg = Registers.ToDictionary(i => "x" + ((int)i.Key), i => (ulong)i.Value);
+            Dictionary<string, ulong> fltReg = FPRegisters.ToDictionary(f => "f" + ((int)f.Key), f => (ulong)f.Value);
+            Dictionary<string, ulong> csrReg = CSRegisters.ToDictionary(c => Enum.GetName(typeof(CSR), c.Key), c => (ulong)c.Value);
+            return intReg.Concat(fltReg).Concat(csrReg).ToDictionary(r => r.Key, r => r.Value);
+        }
+
+        /// <summary>
         /// 例外発生時のCSR処理を行う
         /// </summary>
         /// <param name="cause">例外の原因</param>
@@ -766,14 +780,14 @@ namespace RV32_Register {
         /// 割り込み有無の確認と、割り込みがある場合はCSR処理を行う
         /// </summary>
         /// <returns>割り込み有無(true: 割り込みあり, false:割り込みなし)</returns>
-        public bool CheckAndHandleInterrupt() {
-
+        public (bool, RiscvExceptionCause) CheckAndHandleInterrupt() {
 
             // 割り込み有効判定用変数
             UInt32 enableInterrupt = 0u;
 
             // 割り込みトラップモード
             PrivilegeLevels trapLevel = 0u;
+
 
             StatusCSR mstatus = CSRegisters[CSR.mstatus];
 
@@ -845,51 +859,53 @@ namespace RV32_Register {
                 }
             }
 
+            // 割り込み要因
+            RiscvExceptionCause cause = (RiscvExceptionCause)0;
+
             if (enableInterrupt == 0u) {
                 // 割り込みなしと判定
-                return false;
+                return (false, cause);
             }
 
             if (IsWaitMode) IsWaitMode = false;
 
+
             // 割り込み要因の特定
             //   *複数の要因での割り込みの可能性があるため、順位の高いものから特定する
             //   *外部割り込み => ソフトウェア割り込み => タイマ割り込み の順
-            RiscvInterruptCause cause;
-            if ((enableInterrupt & (1u << (int)((uint)RiscvInterruptCause.MachineExternal - 0x8000_0000u))) > 0) {
-                // 
-                cause = RiscvInterruptCause.MachineExternal;
+            if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.MachineExternal - 0x8000_0000u))) > 0) {
+                cause = RiscvExceptionCause.MachineExternal;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvInterruptCause.SupervisorExternal - 0x8000_0000u))) > 0) {
-                cause = RiscvInterruptCause.SupervisorExternal;
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.SupervisorExternal - 0x8000_0000u))) > 0) {
+                cause = RiscvExceptionCause.SupervisorExternal;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvInterruptCause.UserExternal - 0x8000_0000u))) > 0) {
-                cause = RiscvInterruptCause.UserExternal;
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.UserExternal - 0x8000_0000u))) > 0) {
+                cause = RiscvExceptionCause.UserExternal;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvInterruptCause.MachineSoftware - 0x8000_0000u))) > 0){
-                cause = RiscvInterruptCause.MachineSoftware;
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.MachineSoftware - 0x8000_0000u))) > 0){
+                cause = RiscvExceptionCause.MachineSoftware;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvInterruptCause.SupervisorSoftware - 0x8000_0000u))) > 0) {
-                cause = RiscvInterruptCause.SupervisorSoftware;
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.SupervisorSoftware - 0x8000_0000u))) > 0) {
+                cause = RiscvExceptionCause.SupervisorSoftware;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvInterruptCause.UserSoftware - 0x8000_0000u))) > 0) {
-                cause = RiscvInterruptCause.UserSoftware;
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.UserSoftware - 0x8000_0000u))) > 0) {
+                cause = RiscvExceptionCause.UserSoftware;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvInterruptCause.MachineTimer - 0x8000_0000u))) > 0){
-                cause = RiscvInterruptCause.MachineTimer;
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.MachineTimer - 0x8000_0000u))) > 0){
+                cause = RiscvExceptionCause.MachineTimer;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvInterruptCause.SupervisorTimer - 0x8000_0000u))) > 0) {
-                cause = RiscvInterruptCause.SupervisorTimer;
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.SupervisorTimer - 0x8000_0000u))) > 0) {
+                cause = RiscvExceptionCause.SupervisorTimer;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvInterruptCause.UserTimer - 0x8000_0000u))) > 0) {
-                cause = RiscvInterruptCause.UserTimer;
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.UserTimer - 0x8000_0000u))) > 0) {
+                cause = RiscvExceptionCause.UserTimer;
             } else {
-                return false;
+                return (false, cause);
             }
 
             // 特定したモード、要因でトラップ
             TrapAndSetCSR(trapLevel, (UInt32)cause, 0u);
-            return true;
+            return (true, cause);
         }
 
         /// <summary>
