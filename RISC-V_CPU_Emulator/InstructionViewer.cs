@@ -14,34 +14,36 @@ using appRes = global::RISC_V_CPU_Emulator.Properties.Resources;
 namespace RISC_V_CPU_Emulator {
     public partial class InstructionViewerForm : Form {
 
+        /// <summary>RISC-V命令をエミュレートする Hardware Thread(Hart)</summary>
         private RV32_HaedwareThread cpu;
 
+        /// <summary>32bit長バイナリ形式命令ラベルの配列</summary>
         private (Label, int, string)[] BinaryInstructionLabels;
+        /// <summary>16bit漁バイナリ形式命令ラベルの配列</summary>
         private (Label, int, string)[] ComplexedBinaryInstructionLabels;
 
+        /// <summary>命令引数(レジスタ名・即値など)用ラベルの配列配列</summary>
         private Label[] ArgLabels;
 
-        private Label[] IntegerRegisterLabels;
-        private TextBox[] IntegerRegisterTextBoxes;
-        private Label[] FloatPointRegisterLabels;
-        private TextBox[] FloatPointRegisterTextBoxes;
-
+        /// <summary>幅広の画面を使用し、縦に小さいレイアウトモードかのフラグ</summary>
         private bool IsWideMode = false;
+
+        private ControlStatusRegisterViewer csrViewer;
 
         /// <summary>
         /// 通常のラベル背景色
         /// </summary>
-        private Color DefaultLabelBackColor = Color.FromName(appRes.ResourceManager.GetString("DefaultLabel_BackColor") ?? "Control");
-        
+        internal readonly Color DefaultLabelBackColor = Color.FromName(appRes.ResourceManager.GetString("DefaultLabel_BackColor") ?? "Control");
+
         /// <summary>
         /// 通常のテキストボックス背景色
         /// </summary>
-        private Color DefaultTextBoxBackColor = Color.FromName(appRes.ResourceManager.GetString("DefaultTextBox_BackColor") ?? "Window");
+        internal readonly Color DefaultTextBoxBackColor = Color.FromName(appRes.ResourceManager.GetString("DefaultTextBox_BackColor") ?? "Window");
 
         /// <summary>
         /// 通常の文字色
         /// </summary>
-        private Color DefaultTextColor = Color.FromName(appRes.ResourceManager.GetString("DefaultTextBox_ForeColor") ?? "ControlText");
+        internal readonly Color DefaultTextColor = Color.FromName(appRes.ResourceManager.GetString("DefaultTextBox_ForeColor") ?? "ControlText");
 
         public InstructionViewerForm(RV32_HaedwareThread cpu) {
             this.cpu = cpu;
@@ -80,104 +82,24 @@ namespace RISC_V_CPU_Emulator {
                 this.Arg5Name, this.Arg5Value
             };
 
-            // 整数レジスタ名ラベル
-            IntegerRegisterLabels = new Label[] {
-                IntegerRegisterLabel0, IntegerRegisterLabel1, IntegerRegisterLabel2, IntegerRegisterLabel3, IntegerRegisterLabel4,
-                IntegerRegisterLabel5, IntegerRegisterLabel6, IntegerRegisterLabel7, IntegerRegisterLabel8, IntegerRegisterLabel9,
-                IntegerRegisterLabel10, IntegerRegisterLabel11, IntegerRegisterLabel12, IntegerRegisterLabel13, IntegerRegisterLabel14,
-                IntegerRegisterLabel15, IntegerRegisterLabel16, IntegerRegisterLabel17, IntegerRegisterLabel18, IntegerRegisterLabel19,
-                IntegerRegisterLabel20, IntegerRegisterLabel21, IntegerRegisterLabel22, IntegerRegisterLabel23, IntegerRegisterLabel24,
-                IntegerRegisterLabel25, IntegerRegisterLabel26, IntegerRegisterLabel27, IntegerRegisterLabel28, IntegerRegisterLabel29,
-                IntegerRegisterLabel30, IntegerRegisterLabel31
-            };
-
-            // 整数レジスタ値テキストボックス
-            IntegerRegisterTextBoxes = new TextBox[] {
-                IntegerRegisterTextBox0, IntegerRegisterTextBox1, IntegerRegisterTextBox2, IntegerRegisterTextBox3, IntegerRegisterTextBox4,
-                IntegerRegisterTextBox5, IntegerRegisterTextBox6, IntegerRegisterTextBox7, IntegerRegisterTextBox8, IntegerRegisterTextBox9,
-                IntegerRegisterTextBox10, IntegerRegisterTextBox11, IntegerRegisterTextBox12, IntegerRegisterTextBox13, IntegerRegisterTextBox14,
-                IntegerRegisterTextBox15, IntegerRegisterTextBox16, IntegerRegisterTextBox17, IntegerRegisterTextBox18, IntegerRegisterTextBox19,
-                IntegerRegisterTextBox20, IntegerRegisterTextBox21, IntegerRegisterTextBox22, IntegerRegisterTextBox23, IntegerRegisterTextBox24,
-                IntegerRegisterTextBox25, IntegerRegisterTextBox26, IntegerRegisterTextBox27, IntegerRegisterTextBox28, IntegerRegisterTextBox29,
-                IntegerRegisterTextBox30, IntegerRegisterTextBox31
-            };
-
-            // 浮動小数点レジスタ名ラベル
-            FloatPointRegisterLabels = new Label[] {
-                FloatPointRegisterLabel0, FloatPointRegisterLabel1, FloatPointRegisterLabel2, FloatPointRegisterLabel3, FloatPointRegisterLabel4,
-                FloatPointRegisterLabel5, FloatPointRegisterLabel6, FloatPointRegisterLabel7, FloatPointRegisterLabel8, FloatPointRegisterLabel9,
-                FloatPointRegisterLabel10, FloatPointRegisterLabel11, FloatPointRegisterLabel12, FloatPointRegisterLabel13, FloatPointRegisterLabel14,
-                FloatPointRegisterLabel15, FloatPointRegisterLabel16, FloatPointRegisterLabel17, FloatPointRegisterLabel18, FloatPointRegisterLabel19,
-                FloatPointRegisterLabel20, FloatPointRegisterLabel21, FloatPointRegisterLabel22, FloatPointRegisterLabel23, FloatPointRegisterLabel24,
-                FloatPointRegisterLabel25, FloatPointRegisterLabel26, FloatPointRegisterLabel27, FloatPointRegisterLabel28, FloatPointRegisterLabel29,
-                FloatPointRegisterLabel30, FloatPointRegisterLabel31
-            };
-
-            // 浮動小数点レジスタ値テキストボックス
-            FloatPointRegisterTextBoxes = new TextBox[] {
-                FloatPointRegisterTextBox0, FloatPointRegisterTextBox1, FloatPointRegisterTextBox2, FloatPointRegisterTextBox3, FloatPointRegisterTextBox4,
-                FloatPointRegisterTextBox5, FloatPointRegisterTextBox6, FloatPointRegisterTextBox7, FloatPointRegisterTextBox8, FloatPointRegisterTextBox9,
-                FloatPointRegisterTextBox10, FloatPointRegisterTextBox11, FloatPointRegisterTextBox12, FloatPointRegisterTextBox13, FloatPointRegisterTextBox14,
-                FloatPointRegisterTextBox15, FloatPointRegisterTextBox16, FloatPointRegisterTextBox17, FloatPointRegisterTextBox18, FloatPointRegisterTextBox19,
-                FloatPointRegisterTextBox20, FloatPointRegisterTextBox21, FloatPointRegisterTextBox22, FloatPointRegisterTextBox23, FloatPointRegisterTextBox24,
-                FloatPointRegisterTextBox25, FloatPointRegisterTextBox26, FloatPointRegisterTextBox27, FloatPointRegisterTextBox28, FloatPointRegisterTextBox29,
-                FloatPointRegisterTextBox30, FloatPointRegisterTextBox31
-            };
-
             #endregion
 
-            InitializeRegisterNameLabels();
 
-            RiscvInstruction ins = Converter.GetInstruction(cpu.registerSet.IR);
+            RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+            Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
 
             UpdateInstructionLabels(ins);
             UpdateArgumentLabels(ins);
-            UpdateRegisterTextBoxes(ins);
+            this.IntegerRegistersControl.UpdateRegisterTextBoxes(ins, reg);
+            this.FloatPointRegistersControl.UpdateRegisterTextBoxes(ins, reg);
             UpdateStatusLabels();
             ChangeColorDumpTextBox();
 
+            csrViewer = new ControlStatusRegisterViewer();
+            csrViewer.ControlStatusRegistersControl.UpdateData(reg);
+            csrViewer.Show();
+
             this.Update();
-        }
-
-        /// <summary>
-        /// 整数・浮動小数点レジスタ名のテキストラベルを初期化する
-        /// </summary>
-        private void InitializeRegisterNameLabels() {
-            for (int i = 0; i < 32; i++) {
-                IntegerRegisterLabels[i].Text = RISC_V_Instruction.Converter.IntergerRegisterName[i];
-                FloatPointRegisterLabels[i].Text = RISC_V_Instruction.Converter.FloatPointRegisterName[i];
-            }
-        }
-
-        /// <summary>
-        /// ステップ実行前の命令を引数として、
-        /// 前回の実行時に書き換えられたレジスタ値テキストボックスの文字色を変更する
-        /// </summary>
-        /// <param name="ins"></param>
-        private void ChangeColorRegisterTextBoxesBeforeExecute(RiscvInstruction ins) {
-            // テキストボックスの文字色を黒に戻す
-            for (int i = 0; i < 16; i++) {
-                IntegerRegisterTextBoxes[i].ForeColor = DefaultTextColor;
-                FloatPointRegisterTextBoxes[i].ForeColor = DefaultTextColor;
-            }
-
-            // 
-            foreach (string key in ins.Arguments.Keys) {
-                TextBox target = null;
-                if (key.Equals("rd")) {
-                    target = IntegerRegisterTextBoxes[(int)ins.Arguments[key]];
-
-                    // 浮動小数点レジスタ名
-                } else if (key.Equals("frd")) {
-                    target = FloatPointRegisterTextBoxes[(int)ins.Arguments[key]];
-                }
-
-                Color color = Color.FromName(appRes.ResourceManager.GetString("RegisterLabel_ForeColor_" + key) ?? "");
-
-                if (!(target is null) && color != Color.Black) {
-                    target.ForeColor = color;
-                }
-            }
         }
 
         /// <summary>
@@ -227,11 +149,11 @@ namespace RISC_V_CPU_Emulator {
 
                 if (key.StartsWith("rs") || key.Equals("rd")) {
                     // 整数レジスタ名
-                    ArgLabels[i].Text = RISC_V_Instruction.Converter.IntergerRegisterName[(int)ins.Arguments[key]];
+                    ArgLabels[i].Text = RISC_V_Instruction.InstConverter.IntergerRegisterName[(int)ins.Arguments[key]];
 
                 } else if (key.StartsWith("frs") || key.Equals("frd")) {
                     // 浮動小数点レジスタ名
-                    ArgLabels[i].Text = RISC_V_Instruction.Converter.FloatPointRegisterName[(int)ins.Arguments[key]];
+                    ArgLabels[i].Text = RISC_V_Instruction.InstConverter.FloatPointRegisterName[(int)ins.Arguments[key]];
 
                 } else if (key.Equals("csr")) {
                     //コントロール・ステータスレジスタ名
@@ -268,50 +190,6 @@ namespace RISC_V_CPU_Emulator {
 
         }
 
-        /// <summary>
-        /// レジスタ値テキストボックスを更新する
-        /// </summary>
-        private void UpdateRegisterTextBoxes(RiscvInstruction ins) {
-            Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
-            // テキストボックスの値を更新する
-            for (int i = 0; i < 32; i++) {
-                IntegerRegisterTextBoxes[i].Text = "0x" + ((int)reg["x"+ i]).ToString("X").PadLeft(8, '0');
-                if ((reg["f" + i] & 0xffff_ffff_0000_0000u) == 0xffff_ffff_0000_0000u) {
-                    FloatPointRegisterTextBoxes[i].Text = BitConverter.ToSingle(BitConverter.GetBytes(reg["f" + i]), 0).ToString("0.0#");
-                } else {
-                    FloatPointRegisterTextBoxes[i].Text = BitConverter.ToDouble(BitConverter.GetBytes(reg["f" + i]), 0).ToString("0.0#");
-                }
-            }
-
-            // テキストボックスの背景を白に戻す
-            for (int i = 0; i < 16; i++) {
-                IntegerRegisterTextBoxes[i].BackColor = DefaultTextBoxBackColor;
-                FloatPointRegisterTextBoxes[i].BackColor = DefaultTextBoxBackColor;
-            }
-
-            // レジスタ名がRISC-V命令の引数内にあるか確認する
-            foreach (string key in ins.Arguments.Keys) {
-                TextBox target = null;
-
-                if (key.Equals("rd") || key.StartsWith("rs")) {
-                    target = IntegerRegisterTextBoxes[(int)ins.Arguments[key]];
-
-                    // 浮動小数点レジスタ名
-                } else if (key.Equals("frd") || key.StartsWith("frs")) {
-                    target = FloatPointRegisterTextBoxes[(int)ins.Arguments[key]];
-                }
-
-                Color color = Color.FromName(appRes.ResourceManager.GetString("RegisterLabel_BackColor_" + key) ?? "");
-
-                if (!(target is null) && color != Color.Black && target.BackColor.Equals(DefaultTextBoxBackColor)) {
-                    target.BackColor = color;
-                }
-            }
-
-            string frm = appRes.ResourceManager.GetString("FloatPointStatusRegisterTextBox_RoundMode_" + ((reg["fcsr"] & 0xe0u) >> 5).ToString("X").ToLower());
-            string fflag = appRes.ResourceManager.GetString("FloatPointStatusRegisterTextBox_ExceptionFlag_" + (reg["fcsr"] & 0x1fu).ToString("X").ToLower().PadLeft(2, '0'));
-            this.FloatPointStatusRegisterTextBox.Text = " " + (frm is null ? "" : frm) + (fflag is null ? "" : " + " + fflag);
-        }
 
         /// <summary>
         /// ステータスラベルを更新する
@@ -381,17 +259,17 @@ namespace RISC_V_CPU_Emulator {
                 this.ArgumentsGroupBox.Left -= offsetWidth;
                 this.ProgramCounterGroupBox.Left -= offsetWidth/2;
                 this.CurrentModeGroupBox.Left -= offsetWidth;
-                this.IntegerRegistersGroupBox.Left -= offsetWidth;
+                this.IntegerRegistersControl.Left -= offsetWidth;
 
                 // 横サイズ変更
                 this.DumpViewTextBox.Width -= offsetWidth;
 
                 // 縦移動
                 this.ArgumentsGroupBox.Top -= this.BinaryInstructionPanel.Height - 10;
-                this.IntegerRegistersGroupBox.Top -= this.BinaryInstructionPanel.Height - 10;
+                this.IntegerRegistersControl.Top -= this.BinaryInstructionPanel.Height - 10;
                 this.ProgramCounterGroupBox.Top -= offsetHeight;
                 this.CurrentModeGroupBox.Top -= this.ArgumentsGroupBox.Height - this.CurrentModeGroupBox.Height;
-                this.FloatPointRegistersGroupBox.Top -= offsetHeight * 2 + this.IntegerRegistersGroupBox.Height;
+                this.FloatPointRegistersControl.Top -= offsetHeight * 2 + this.IntegerRegistersControl.Height;
 
             } else if (((Control)sender).Width <= windowsDefaultWidth + offsetWidth && IsWideMode) {
                 IsWideMode = false;
@@ -400,48 +278,53 @@ namespace RISC_V_CPU_Emulator {
                 this.ArgumentsGroupBox.Left += offsetWidth;
                 this.ProgramCounterGroupBox.Left += offsetWidth / 2;
                 this.CurrentModeGroupBox.Left += offsetWidth;
-                this.IntegerRegistersGroupBox.Left += offsetWidth;
+                this.IntegerRegistersControl.Left += offsetWidth;
 
                 // 横サイズ変更
                 this.DumpViewTextBox.Width += offsetWidth;
 
                 // 縦移動
                 this.ArgumentsGroupBox.Top += this.BinaryInstructionPanel.Height - 10;
-                this.IntegerRegistersGroupBox.Top += this.BinaryInstructionPanel.Height - 10;
+                this.IntegerRegistersControl.Top += this.BinaryInstructionPanel.Height - 10;
                 this.ProgramCounterGroupBox.Top += offsetHeight;
                 this.CurrentModeGroupBox.Top += this.ArgumentsGroupBox.Height - this.CurrentModeGroupBox.Height;
-                this.FloatPointRegistersGroupBox.Top += offsetHeight * 2 + this.IntegerRegistersGroupBox.Height;
+                this.FloatPointRegistersControl.Top += offsetHeight * 2 + this.IntegerRegistersControl.Height;
             }
 
 
-            if (!this.IntegerRegistersGroupBox.Visible && ((Control)sender).Height > (IsWideMode ? 1055 - ((offsetHeight * 2) + this.IntegerRegistersGroupBox.Height) : 730)) {
-                this.IntegerRegistersGroupBox.Visible = true;
-            } else if (this.IntegerRegistersGroupBox.Visible && ((Control)sender).Height <= (IsWideMode ? 1055 - ((offsetHeight * 2) + this.IntegerRegistersGroupBox.Height) : 730)) {
-                this.IntegerRegistersGroupBox.Visible = false;
+            if (!this.IntegerRegistersControl.Visible && ((Control)sender).Height > (IsWideMode ? 1055 - ((offsetHeight * 2) + this.IntegerRegistersControl.Height) : 730)) {
+                this.IntegerRegistersControl.Visible = true;
+            } else if (this.IntegerRegistersControl.Visible && ((Control)sender).Height <= (IsWideMode ? 1055 - ((offsetHeight * 2) + this.IntegerRegistersControl.Height) : 730)) {
+                this.IntegerRegistersControl.Visible = false;
             }
-            if (!this.FloatPointRegistersGroupBox.Visible && ((Control)sender).Height > 1055 - (IsWideMode ? (offsetHeight * 2) + this.IntegerRegistersGroupBox.Height : 0)) {
-                this.FloatPointRegistersGroupBox.Visible = true;
-            } else if (this.FloatPointRegistersGroupBox.Visible && ((Control)sender).Height <= 1055 - (IsWideMode ? (offsetHeight * 2) + this.IntegerRegistersGroupBox.Height : 0)) {
-                this.FloatPointRegistersGroupBox.Visible = false;
+            if (!this.FloatPointRegistersControl.Visible && ((Control)sender).Height > 1055 - (IsWideMode ? (offsetHeight * 2) + this.IntegerRegistersControl.Height : 0)) {
+                this.FloatPointRegistersControl.Visible = true;
+            } else if (this.FloatPointRegistersControl.Visible && ((Control)sender).Height <= 1055 - (IsWideMode ? (offsetHeight * 2) + this.IntegerRegistersControl.Height : 0)) {
+                this.FloatPointRegistersControl.Visible = false;
             }
         }
 
         private void StepExecuteButton_Click(object sender, EventArgs e) {
 
             try {
-                RiscvInstruction boforeIns = Converter.GetInstruction(cpu.registerSet.IR);
-                ChangeColorRegisterTextBoxesBeforeExecute(boforeIns);
+                RiscvInstruction boforeIns = InstConverter.GetInstruction(cpu.registerSet.IR);
+                this.IntegerRegistersControl.ChangeColorRegisterTextBoxesBeforeExecute(boforeIns);
+                this.FloatPointRegistersControl.ChangeColorRegisterTextBoxesBeforeExecute(boforeIns);
 
                 // プログラムを1ステップ実行
                 cpu.StepExecute();
 
-                RiscvInstruction ins = Converter.GetInstruction(cpu.registerSet.IR);
+                RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+                Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
 
                 UpdateInstructionLabels(ins);
                 UpdateArgumentLabels(ins);
-                UpdateRegisterTextBoxes(ins);
+                this.IntegerRegistersControl.UpdateRegisterTextBoxes(ins, reg);
+                this.FloatPointRegistersControl.UpdateRegisterTextBoxes(ins, reg);
                 UpdateStatusLabels();
                 ChangeColorDumpTextBox();
+
+                csrViewer.ControlStatusRegistersControl.UpdateData(reg);
 
             } catch (HostAccessTrap t) {
                 MessageBox.Show(this,
@@ -451,9 +334,6 @@ namespace RISC_V_CPU_Emulator {
                     MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 this.StepExecuteButton.Enabled = false;
             }
-
-
-            this.Update();
         }
 
         #endregion

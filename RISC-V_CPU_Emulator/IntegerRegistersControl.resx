@@ -1,0 +1,1800 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="IntegerRegisterLabel9.Text" xml:space="preserve">
+    <value>x9</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel19.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="IntegerRegisterTextBox15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 221</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel4.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel4</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel28.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterTextBox6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="IntegerRegisterLabel0.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterLabel31.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterLabel8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 18</value>
+  </data>
+  <data name="IntegerRegisterLabel30.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox16.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox16</value>
+  </data>
+  <data name="IntegerRegisterLabel24.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox0.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox11.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox11</value>
+  </data>
+  <data name="IntegerRegisterTextBox20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox22.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox5.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel9.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel9</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox17.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel29.Text" xml:space="preserve">
+    <value>x29</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="IntegerRegisterLabel8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterTextBox15.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterLabel8.Text" xml:space="preserve">
+    <value>x8</value>
+  </data>
+  <data name="IntegerRegisterLabel14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterTextBox24.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterLabel27.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterTextBox14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 193</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox29.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox21.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox7.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox3.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox3</value>
+  </data>
+  <data name="IntegerRegistersGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel2.ZOrder" xml:space="preserve">
+    <value>61</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox25.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox25.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel14.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterLabel19.Text" xml:space="preserve">
+    <value>x19</value>
+  </data>
+  <data name="IntegerRegisterTextBox28.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel3.ZOrder" xml:space="preserve">
+    <value>60</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel17.Location" type="System.Drawing.Point, System.Drawing">
+    <value>283, 56</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox27.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox25.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox11.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="IntegerRegisterLabel10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="IntegerRegisterLabel3.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterLabel9.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox7.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel25.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel19.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel29.ZOrder" xml:space="preserve">
+    <value>34</value>
+  </data>
+  <data name="IntegerRegisterTextBox20.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterTextBox22.Location" type="System.Drawing.Point, System.Drawing">
+    <value>333, 193</value>
+  </data>
+  <data name="IntegerRegisterTextBox28.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel15.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel26.ZOrder" xml:space="preserve">
+    <value>37</value>
+  </data>
+  <data name="IntegerRegisterLabel20.Location" type="System.Drawing.Point, System.Drawing">
+    <value>283, 140</value>
+  </data>
+  <data name="IntegerRegisterLabel30.Location" type="System.Drawing.Point, System.Drawing">
+    <value>419, 196</value>
+  </data>
+  <data name="IntegerRegisterLabel21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>283, 168</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel8.ZOrder" xml:space="preserve">
+    <value>55</value>
+  </data>
+  <data name="IntegerRegisterLabel31.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterTextBox27.Location" type="System.Drawing.Point, System.Drawing">
+    <value>469, 109</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox25.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox25</value>
+  </data>
+  <data name="IntegerRegisterLabel30.Text" xml:space="preserve">
+    <value>x30</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel8.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel23.ZOrder" xml:space="preserve">
+    <value>40</value>
+  </data>
+  <data name="IntegerRegisterLabel19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>283, 112</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel15.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel15</value>
+  </data>
+  <data name="IntegerRegisterTextBox12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterTextBox18.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterTextBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterLabel21.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel28.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel28</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel1.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel1</value>
+  </data>
+  <data name="IntegerRegisterLabel30.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox20.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox20</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox31.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel5.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox26.Location" type="System.Drawing.Point, System.Drawing">
+    <value>469, 81</value>
+  </data>
+  <data name="IntegerRegisterLabel29.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterLabel12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>145, 140</value>
+  </data>
+  <data name="IntegerRegisterLabel28.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox12.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox26.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel20.Text" xml:space="preserve">
+    <value>x20</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel17.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel22.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel22</value>
+  </data>
+  <data name="IntegerRegisterLabel29.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel28.ZOrder" xml:space="preserve">
+    <value>35</value>
+  </data>
+  <data name="IntegerRegisterTextBox6.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox1.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox5.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterTextBox14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterLabel26.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterTextBox13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel29.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel21.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox19.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox18.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="IntegerRegisterLabel5.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel27.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox30.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel11.ZOrder" xml:space="preserve">
+    <value>52</value>
+  </data>
+  <data name="IntegerRegisterTextBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 81</value>
+  </data>
+  <data name="IntegerRegisterLabel18.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterLabel19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel23.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox23.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox23</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel24.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox11.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 109</value>
+  </data>
+  <data name="IntegerRegisterLabel11.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox30.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterTextBox15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel7.ZOrder" xml:space="preserve">
+    <value>56</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel16.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel0.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel26.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox16.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel31.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox3.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox4.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel21.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="IntegerRegisterTextBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 53</value>
+  </data>
+  <data name="IntegerRegisterTextBox31.Location" type="System.Drawing.Point, System.Drawing">
+    <value>469, 221</value>
+  </data>
+  <data name="IntegerRegisterTextBox17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel7.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel7</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel25.Location" type="System.Drawing.Point, System.Drawing">
+    <value>419, 56</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox10.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterTextBox22.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterLabel25.Text" xml:space="preserve">
+    <value>x25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox27.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel10.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel10</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel10.ZOrder" xml:space="preserve">
+    <value>53</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegistersGroupBox.Name" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox27.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterLabel10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel30.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel30</value>
+  </data>
+  <data name="IntegerRegisterTextBox23.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterTextBox8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel6.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox21.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox8.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox8</value>
+  </data>
+  <data name="IntegerRegisterLabel16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>283, 28</value>
+  </data>
+  <data name="IntegerRegisterLabel24.Location" type="System.Drawing.Point, System.Drawing">
+    <value>419, 28</value>
+  </data>
+  <data name="IntegerRegisterTextBox16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>333, 25</value>
+  </data>
+  <data name="IntegerRegisterTextBox24.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox15.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox15</value>
+  </data>
+  <data name="IntegerRegisterTextBox23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterTextBox11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel30.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel15.Text" xml:space="preserve">
+    <value>x16</value>
+  </data>
+  <data name="IntegerRegisterLabel6.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel13.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel13</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox18.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox0.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel30.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterTextBox19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterTextBox0.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel23.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox14.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox10.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox10</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel21.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel21</value>
+  </data>
+  <data name="IntegerRegisterLabel8.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterLabel4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel18.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel29.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel29</value>
+  </data>
+  <data name="IntegerRegisterLabel9.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterLabel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 56</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel27.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel27</value>
+  </data>
+  <data name="IntegerRegisterTextBox8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterTextBox14.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterTextBox21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>333, 165</value>
+  </data>
+  <data name="IntegerRegisterTextBox22.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel26.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegistersGroupBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 9pt</value>
+  </data>
+  <data name="IntegerRegisterLabel4.Text" xml:space="preserve">
+    <value>x4</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel26.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel26</value>
+  </data>
+  <data name="IntegerRegisterLabel4.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterTextBox27.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel5.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel5</value>
+  </data>
+  <data name="IntegerRegisterLabel13.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel24.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel24</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel31.ZOrder" xml:space="preserve">
+    <value>32</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel9.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox8.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox22.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel16.Text" xml:space="preserve">
+    <value>x16</value>
+  </data>
+  <data name="IntegerRegisterLabel3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterLabel29.Location" type="System.Drawing.Point, System.Drawing">
+    <value>419, 168</value>
+  </data>
+  <data name="IntegerRegisterTextBox12.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox13.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox20.Location" type="System.Drawing.Point, System.Drawing">
+    <value>333, 137</value>
+  </data>
+  <data name="IntegerRegisterLabel25.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="IntegerRegisterLabel0.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 28</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox30.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox30</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel5.ZOrder" xml:space="preserve">
+    <value>58</value>
+  </data>
+  <data name="IntegerRegisterTextBox17.Location" type="System.Drawing.Point, System.Drawing">
+    <value>333, 53</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel15.ZOrder" xml:space="preserve">
+    <value>48</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox2.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox15.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="IntegerRegisterTextBox6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 193</value>
+  </data>
+  <data name="IntegerRegisterLabel29.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel17.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel0.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel28.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox28.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel12.ZOrder" xml:space="preserve">
+    <value>51</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox9.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterLabel23.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox0.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel19.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="IntegerRegisterTextBox30.Location" type="System.Drawing.Point, System.Drawing">
+    <value>469, 193</value>
+  </data>
+  <data name="IntegerRegisterLabel28.Location" type="System.Drawing.Point, System.Drawing">
+    <value>419, 140</value>
+  </data>
+  <data name="IntegerRegisterTextBox29.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterLabel31.Text" xml:space="preserve">
+    <value>x31</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox21.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox31.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox26.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel23.Location" type="System.Drawing.Point, System.Drawing">
+    <value>283, 224</value>
+  </data>
+  <data name="IntegerRegisterTextBox13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 165</value>
+  </data>
+  <data name="IntegerRegisterLabel11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>145, 112</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel19.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox19.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox19</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel17.ZOrder" xml:space="preserve">
+    <value>46</value>
+  </data>
+  <data name="IntegerRegisterTextBox0.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel18.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterLabel21.Text" xml:space="preserve">
+    <value>x21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox27.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox27</value>
+  </data>
+  <data name="IntegerRegisterLabel22.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel26.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="IntegerRegistersGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>558, 256</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox29.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox29</value>
+  </data>
+  <data name="IntegerRegisterLabel6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 196</value>
+  </data>
+  <data name="IntegerRegisterLabel2.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox8.ZOrder" xml:space="preserve">
+    <value>23</value>
+  </data>
+  <data name="IntegerRegisterTextBox25.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox5.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox5</value>
+  </data>
+  <data name="IntegerRegisterLabel10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>145, 84</value>
+  </data>
+  <data name="IntegerRegisterLabel7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 18</value>
+  </data>
+  <data name="IntegerRegisterLabel20.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel27.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox7.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox7</value>
+  </data>
+  <data name="IntegerRegisterTextBox31.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox29.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel4.ZOrder" xml:space="preserve">
+    <value>59</value>
+  </data>
+  <data name="IntegerRegisterLabel27.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel16.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel16</value>
+  </data>
+  <data name="IntegerRegisterLabel11.Text" xml:space="preserve">
+    <value>x11</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox2.ZOrder" xml:space="preserve">
+    <value>29</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel18.ZOrder" xml:space="preserve">
+    <value>45</value>
+  </data>
+  <data name="IntegerRegisterLabel16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="IntegerRegisterLabel7.Text" xml:space="preserve">
+    <value>x7</value>
+  </data>
+  <data name="IntegerRegisterTextBox9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 53</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox28.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel12.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox31.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterTextBox9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterLabel17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox24.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterTextBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterLabel6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 18</value>
+  </data>
+  <data name="IntegerRegisterLabel7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox5.ZOrder" xml:space="preserve">
+    <value>26</value>
+  </data>
+  <data name="IntegerRegisterTextBox26.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterLabel21.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel27.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox24.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="IntegerRegisterTextBox9.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterLabel17.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox22.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox22</value>
+  </data>
+  <data name="IntegerRegisterLabel20.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 224</value>
+  </data>
+  <data name="IntegerRegisterLabel4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel12.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterLabel22.Text" xml:space="preserve">
+    <value>x22</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel11.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel11</value>
+  </data>
+  <data name="IntegerRegisterTextBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox4.ZOrder" xml:space="preserve">
+    <value>27</value>
+  </data>
+  <data name="IntegerRegisterLabel28.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox18.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel31.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="IntegerRegisterTextBox30.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterTextBox0.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel12.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel12</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox28.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox28</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox12.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>145, 224</value>
+  </data>
+  <data name="IntegerRegisterLabel20.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel12.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel28.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="IntegerRegisterTextBox21.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox14.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox14</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox23.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel6.Text" xml:space="preserve">
+    <value>x6</value>
+  </data>
+  <data name="IntegerRegisterLabel1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterLabel5.Text" xml:space="preserve">
+    <value>x5</value>
+  </data>
+  <data name="IntegerRegisterLabel10.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterLabel12.Text" xml:space="preserve">
+    <value>x12</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox7.ZOrder" xml:space="preserve">
+    <value>24</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel8.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel8</value>
+  </data>
+  <data name="IntegerRegisterLabel27.Text" xml:space="preserve">
+    <value>x27</value>
+  </data>
+  <data name="IntegerRegisterLabel21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox9.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox9</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox23.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel19.ZOrder" xml:space="preserve">
+    <value>44</value>
+  </data>
+  <data name="IntegerRegisterLabel18.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel30.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox30.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="IntegerRegisterTextBox29.Location" type="System.Drawing.Point, System.Drawing">
+    <value>469, 165</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel30.ZOrder" xml:space="preserve">
+    <value>33</value>
+  </data>
+  <data name="IntegerRegisterLabel18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="IntegerRegisterLabel14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>145, 196</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel13.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox8.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox23.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel17.Text" xml:space="preserve">
+    <value>x17</value>
+  </data>
+  <data name="IntegerRegisterLabel11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox17.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox17</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel31.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterTextBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel3.Text" xml:space="preserve">
+    <value>x3</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>IntegerRegistersControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel21.ZOrder" xml:space="preserve">
+    <value>42</value>
+  </data>
+  <data name="IntegerRegisterLabel22.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterLabel6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 84</value>
+  </data>
+  <data name="IntegerRegisterLabel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 112</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel1.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 81</value>
+  </data>
+  <data name="IntegerRegisterLabel15.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel2.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel2</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox31.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox31</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox10.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox11.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox1.ZOrder" xml:space="preserve">
+    <value>30</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox26.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="IntegerRegisterTextBox26.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox28.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="IntegerRegisterLabel2.Text" xml:space="preserve">
+    <value>x2</value>
+  </data>
+  <data name="IntegerRegisterTextBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 18</value>
+  </data>
+  <data name="IntegerRegisterTextBox10.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterLabel28.Text" xml:space="preserve">
+    <value>x28</value>
+  </data>
+  <data name="IntegerRegisterLabel22.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox19.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel16.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterLabel5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterTextBox25.Location" type="System.Drawing.Point, System.Drawing">
+    <value>469, 53</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox17.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox0.ZOrder" xml:space="preserve">
+    <value>31</value>
+  </data>
+  <data name="IntegerRegisterLabel26.Text" xml:space="preserve">
+    <value>x26</value>
+  </data>
+  <data name="IntegerRegisterLabel25.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox29.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox6.ZOrder" xml:space="preserve">
+    <value>25</value>
+  </data>
+  <data name="IntegerRegisterLabel23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox6.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox6</value>
+  </data>
+  <data name="IntegerRegisterLabel27.Location" type="System.Drawing.Point, System.Drawing">
+    <value>419, 112</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel6.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel6</value>
+  </data>
+  <data name="IntegerRegisterLabel27.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel0.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox13.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterLabel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel22.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel20.ZOrder" xml:space="preserve">
+    <value>43</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox12.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox12</value>
+  </data>
+  <data name="IntegerRegisterTextBox19.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox24.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel0.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 18</value>
+  </data>
+  <data name="IntegerRegisterTextBox0.Text" xml:space="preserve">
+    <value>0x00000000</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel14.ZOrder" xml:space="preserve">
+    <value>49</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel17.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterTextBox16.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox24.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox24</value>
+  </data>
+  <data name="IntegerRegisterLabel25.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox3.ZOrder" xml:space="preserve">
+    <value>28</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel20.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel16.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterLabel13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="IntegerRegisterLabel0.Text" xml:space="preserve">
+    <value>x0/zero</value>
+  </data>
+  <data name="IntegerRegisterLabel15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel3.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel3</value>
+  </data>
+  <data name="IntegerRegisterLabel13.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel7.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterLabel31.Location" type="System.Drawing.Point, System.Drawing">
+    <value>419, 224</value>
+  </data>
+  <data name="IntegerRegisterTextBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 165</value>
+  </data>
+  <data name="IntegerRegisterLabel3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel17.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel22.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterLabel24.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel18.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel31.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 140</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox16.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel10.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel21.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterTextBox4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 137</value>
+  </data>
+  <data name="IntegerRegisterTextBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox22.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel19.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel19</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox2.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox2</value>
+  </data>
+  <data name="IntegerRegisterTextBox7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 221</value>
+  </data>
+  <data name="IntegerRegisterLabel22.Location" type="System.Drawing.Point, System.Drawing">
+    <value>283, 196</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel2.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 168</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel17.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel17</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegistersGroupBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel3.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel24.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="IntegerRegisterLabel19.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel31.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel31</value>
+  </data>
+  <data name="IntegerRegisterLabel30.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel12.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterTextBox4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel9.ZOrder" xml:space="preserve">
+    <value>54</value>
+  </data>
+  <data name="IntegerRegisterLabel14.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel14.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel14</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox13.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox13</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel25.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel25</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>558, 256</value>
+  </data>
+  <data name="IntegerRegisterLabel23.Text" xml:space="preserve">
+    <value>x23</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox21.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel23.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel23</value>
+  </data>
+  <data name="IntegerRegisterLabel18.Text" xml:space="preserve">
+    <value>x18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox15.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox6.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox17.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterLabel0.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterTextBox4.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterLabel8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>145, 28</value>
+  </data>
+  <data name="IntegerRegisterLabel14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterLabel26.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterTextBox24.Location" type="System.Drawing.Point, System.Drawing">
+    <value>469, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel14.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel20.Name" xml:space="preserve">
+    <value>IntegerRegisterLabel20</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel29.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel22.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel10.Text" xml:space="preserve">
+    <value>x10</value>
+  </data>
+  <data name="IntegerRegisterLabel28.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterTextBox10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterLabel13.Text" xml:space="preserve">
+    <value>x13</value>
+  </data>
+  <data name="IntegerRegisterTextBox7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterLabel18.Location" type="System.Drawing.Point, System.Drawing">
+    <value>283, 84</value>
+  </data>
+  <data name="IntegerRegisterTextBox11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 109</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel25.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel25.ZOrder" xml:space="preserve">
+    <value>38</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox4.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox4</value>
+  </data>
+  <data name="IntegerRegisterLabel1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterTextBox16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterTextBox31.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="IntegerRegisterLabel15.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox14.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="IntegerRegisterLabel26.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel11.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel22.ZOrder" xml:space="preserve">
+    <value>41</value>
+  </data>
+  <data name="IntegerRegisterLabel25.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox19.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox20.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegistersGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterTextBox23.Location" type="System.Drawing.Point, System.Drawing">
+    <value>333, 221</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox17.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel1.Text" xml:space="preserve">
+    <value>x1</value>
+  </data>
+  <data name="IntegerRegisterLabel18.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox20.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="IntegerRegisterLabel23.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterTextBox19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>333, 109</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox30.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterTextBox29.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox18.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel24.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel1.ZOrder" xml:space="preserve">
+    <value>62</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegistersGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterLabel24.Text" xml:space="preserve">
+    <value>x24</value>
+  </data>
+  <data name="IntegerRegisterTextBox18.Location" type="System.Drawing.Point, System.Drawing">
+    <value>333, 81</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox26.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox26</value>
+  </data>
+  <data name="IntegerRegisterLabel13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>145, 168</value>
+  </data>
+  <data name="IntegerRegisterLabel29.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel27.ZOrder" xml:space="preserve">
+    <value>36</value>
+  </data>
+  <data name="IntegerRegisterTextBox5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox9.ZOrder" xml:space="preserve">
+    <value>22</value>
+  </data>
+  <data name="IntegerRegisterLabel26.Location" type="System.Drawing.Point, System.Drawing">
+    <value>419, 84</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel16.ZOrder" xml:space="preserve">
+    <value>47</value>
+  </data>
+  <data name="IntegerRegisterTextBox12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>195, 137</value>
+  </data>
+  <data name="IntegerRegisterLabel0.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="IntegerRegisterLabel4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel24.ZOrder" xml:space="preserve">
+    <value>39</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox13.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="IntegerRegisterTextBox18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 25</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel4.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>145, 56</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox27.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel6.ZOrder" xml:space="preserve">
+    <value>57</value>
+  </data>
+  <data name="IntegerRegisterTextBox25.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="IntegerRegisterLabel13.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox20.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="IntegerRegisterLabel16.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegisterLabel14.Text" xml:space="preserve">
+    <value>x14</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel7.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="IntegerRegisterLabel9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>22, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterTextBox1.Name" xml:space="preserve">
+    <value>IntegerRegisterTextBox1</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel23.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegistersGroupBox.Text" xml:space="preserve">
+    <value>Integer Register</value>
+  </data>
+  <data name="IntegerRegisterLabel12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel0.ZOrder" xml:space="preserve">
+    <value>63</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegistersGroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="IntegerRegisterTextBox28.Location" type="System.Drawing.Point, System.Drawing">
+    <value>469, 137</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel20.Parent" xml:space="preserve">
+    <value>IntegerRegistersGroupBox</value>
+  </data>
+  <data name="IntegerRegisterLabel24.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegisterLabel13.ZOrder" xml:space="preserve">
+    <value>50</value>
+  </data>
+  <data name="IntegerRegisterLabel9.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+</root>

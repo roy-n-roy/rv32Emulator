@@ -67,20 +67,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlStatusRegistersControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlStatusRegistersControl.Designer.cs">
+      <DependentUpon>ControlStatusRegistersControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ControlStatusRegisterViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ControlStatusRegisterViewer.Designer.cs">
+      <DependentUpon>ControlStatusRegisterViewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FloatPointRegistersControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FloatPointRegistersControl.Designer.cs">
+      <DependentUpon>FloatPointRegistersControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="InstructionViewer.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="InstructionViewer.designer.cs">
       <DependentUpon>InstructionViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="IntegerRegistersControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IntegerRegistersControl.Designer.cs">
+      <DependentUpon>IntegerRegistersControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ControlStatusRegistersControl.resx">
+      <DependentUpon>ControlStatusRegistersControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ControlStatusRegisterViewer.resx">
+      <DependentUpon>ControlStatusRegisterViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FloatPointRegistersControl.ja-JP.resx">
+      <DependentUpon>FloatPointRegistersControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FloatPointRegistersControl.resx">
+      <DependentUpon>FloatPointRegistersControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InstructionViewer.ja-JP.resx">
       <DependentUpon>InstructionViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InstructionViewer.resx">
       <DependentUpon>InstructionViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IntegerRegistersControl.ja-JP.resx">
+      <DependentUpon>IntegerRegistersControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IntegerRegistersControl.resx">
+      <DependentUpon>IntegerRegistersControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.ja-JP.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
