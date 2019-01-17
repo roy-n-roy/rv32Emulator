@@ -211,7 +211,7 @@ namespace RV32_Cpu {
 
                 } else {
                     // 割り込みが無ければ、命令レジスタから命令を取り出して、デコード・実行する
-                    RISC_V_Instruction.RiscvInstruction ins = RISC_V_Instruction.Converter.GetInstruction(registerSet.IR);
+                    RISC_V_Instruction.RiscvInstruction ins = RISC_V_Instruction.InstConverter.GetInstruction(registerSet.IR);
                     decoder.Decode();
                 }
 
