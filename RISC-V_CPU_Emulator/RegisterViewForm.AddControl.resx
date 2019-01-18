@@ -117,4 +117,79 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="&gt;&gt;ControlStatusRegistersControl.Name" xml:space="preserve">
+    <value>ControlStatusRegistersControl</value>
+  </data>
+  <data name="&gt;&gt;ControlStatusRegistersControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ControlStatusRegistersControl.Type" xml:space="preserve">
+    <value>RISC_V_CPU_Emulator.ControlStatusRegistersControl, RISC-V_CPU_Emulator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;ControlStatusRegistersControl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersControl.Name" xml:space="preserve">
+    <value>FloatPointRegistersControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersControl.Type" xml:space="preserve">
+    <value>RISC_V_CPU_Emulator.FloatPointRegistersControl, RISC-V_CPU_Emulator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersControl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegistersControl.Name" xml:space="preserve">
+    <value>IntegerRegistersControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegistersControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegistersControl.Type" xml:space="preserve">
+    <value>RISC_V_CPU_Emulator.IntegerRegistersControl, RISC-V_CPU_Emulator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegistersControl.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ControlStatusRegistersControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ControlStatusRegistersControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 3</value>
+  </data>
+  <data name="ControlStatusRegistersControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>510, 631</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ControlStatusRegistersControl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegistersControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="FloatPointRegistersControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 3</value>
+  </data>
+  <data name="FloatPointRegistersControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>558, 372</value>
+  </data>
+  <data name="FloatPointRegistersControl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegistersControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="IntegerRegistersControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 3</value>
+  </data>
+  <data name="IntegerRegistersControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>558, 256</value>
+  </data>
+  <data name="IntegerRegistersControl.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
 </root>

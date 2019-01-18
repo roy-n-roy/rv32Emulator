@@ -73,12 +73,6 @@
     <Compile Include="ControlStatusRegistersControl.Designer.cs">
       <DependentUpon>ControlStatusRegistersControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ControlStatusRegisterViewer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ControlStatusRegisterViewer.Designer.cs">
-      <DependentUpon>ControlStatusRegisterViewer.cs</DependentUpon>
-    </Compile>
     <Compile Include="FloatPointRegistersControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -107,9 +101,6 @@
     </Compile>
     <EmbeddedResource Include="ControlStatusRegistersControl.resx">
       <DependentUpon>ControlStatusRegistersControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ControlStatusRegisterViewer.resx">
-      <DependentUpon>ControlStatusRegisterViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FloatPointRegistersControl.ja-JP.resx">
       <DependentUpon>FloatPointRegistersControl.cs</DependentUpon>

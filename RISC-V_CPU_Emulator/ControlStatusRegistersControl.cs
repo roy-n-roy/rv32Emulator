@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Text.RegularExpressions;
-using System.Runtime.CompilerServices;
+using System.Windows.Forms;
+using RISC_V_Instruction;
 
 namespace RISC_V_CPU_Emulator {
-    public partial class ControlStatusRegistersControl : UserControl {
+    public partial class ControlStatusRegistersControl : RegisterViewerForm.RegisterControl {
 
         private BindingList<KeyValuePair<string, ulong>> csr;
 
@@ -19,10 +16,17 @@ namespace RISC_V_CPU_Emulator {
             InitializeComponent();
         }
 
-        internal void UpdateData(Dictionary<string, ulong> registers) {
+        internal override void UpdateRegisterBeforeExecute(RiscvInstruction ins) {
+        }
+
+        internal override void UpdateRegisterData(RISC_V_Instruction.RiscvInstruction ins, Dictionary<string, ulong> registers) {
             if (this.CSRDataGrid.DataSource is null) {
-                Regex regex = new Regex("[fx][0-9]+$", RegexOptions.Compiled);
-                csr = new BindingList<KeyValuePair<string, ulong>>(registers.Where(r => !regex.IsMatch(r.Key)).ToDictionary(r => r.Key, r => r.Value).ToList());
+                Regex ifregex = new Regex("[fx][0-9]+$", RegexOptions.Compiled);
+                Regex cntregex = new Regex("^(m|)(cycle|time|insret|hpmcounter[0-9]+|hpmevent[0-9]+)(h|)$", RegexOptions.Compiled);
+                List<KeyValuePair<string, ulong>> noCounterCsr = registers.Where(r => !ifregex.IsMatch(r.Key)).Where(r => !cntregex.IsMatch(r.Key)).ToDictionary(r => r.Key, r => r.Value).ToList();
+                List<KeyValuePair<string, ulong>> counterCsr = registers.Where(r => !ifregex.IsMatch(r.Key)).Where(r => cntregex.IsMatch(r.Key)).ToDictionary(r => r.Key, r => r.Value).ToList();
+                csr = new BindingList<KeyValuePair<string, ulong>>(noCounterCsr.Concat(counterCsr).ToList());
+
                 this.CSRDataGrid.DataSource = csr;
                 this.CSRDataGrid.Columns[0].HeaderText = "Name";
                 this.CSRDataGrid.Columns[1].HeaderText = "Value";

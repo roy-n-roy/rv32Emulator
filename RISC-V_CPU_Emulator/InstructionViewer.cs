@@ -14,6 +14,8 @@ using appRes = global::RISC_V_CPU_Emulator.Properties.Resources;
 namespace RISC_V_CPU_Emulator {
     public partial class InstructionViewerForm : Form {
 
+        #region 変数・定数定義
+
         /// <summary>RISC-V命令をエミュレートする Hardware Thread(Hart)</summary>
         private RV32_HaedwareThread cpu;
 
@@ -28,24 +30,23 @@ namespace RISC_V_CPU_Emulator {
         /// <summary>幅広の画面を使用し、縦に小さいレイアウトモードかのフラグ</summary>
         private bool IsWideMode = false;
 
-        private ControlStatusRegisterViewer csrViewer;
-        private RegisterViewForm irViewer;
-        private RegisterViewForm fprViewer;
+        /// <summary>整数レジスタ表示画面</summary>
+        private RegisterViewerForm irViewer;
+        /// <summary>浮動小数点レジスタ表示画面</summary>
+        private RegisterViewerForm fprViewer;
+        /// <summary>コントロール・ステータスレジスタ表示画面</summary>
+        private RegisterViewerForm csrViewer;
 
-        /// <summary>
-        /// 通常のラベル背景色
-        /// </summary>
-        internal readonly Color DefaultLabelBackColor = Color.FromName(appRes.ResourceManager.GetString("DefaultLabel_BackColor") ?? "Control");
+        /// <summary>通常のラベル背景色</summary>
+        internal static readonly Color DefaultLabelBackColor = Color.FromName(appRes.ResourceManager.GetString("DefaultLabel_BackColor") ?? "Control");
 
-        /// <summary>
-        /// 通常のテキストボックス背景色
-        /// </summary>
-        internal readonly Color DefaultTextBoxBackColor = Color.FromName(appRes.ResourceManager.GetString("DefaultTextBox_BackColor") ?? "Window");
+        /// <summary>通常のテキストボックス背景色</summary>
+        internal static readonly Color DefaultTextBoxBackColor = Color.FromName(appRes.ResourceManager.GetString("DefaultTextBox_BackColor") ?? "Window");
 
-        /// <summary>
-        /// 通常の文字色
-        /// </summary>
-        internal readonly Color DefaultTextColor = Color.FromName(appRes.ResourceManager.GetString("DefaultTextBox_ForeColor") ?? "ControlText");
+        /// <summary>通常の文字色</summary>
+        internal static readonly Color DefaultTextColor = Color.FromName(appRes.ResourceManager.GetString("DefaultTextBox_ForeColor") ?? "ControlText");
+
+        #endregion
 
         public InstructionViewerForm(RV32_HaedwareThread cpu) {
             this.cpu = cpu;
@@ -92,8 +93,8 @@ namespace RISC_V_CPU_Emulator {
 
             UpdateInstructionLabels(ins);
             UpdateArgumentLabels(ins);
-            this.IntegerRegistersControl.UpdateRegisterTextBoxes(ins, reg);
-            this.FloatPointRegistersControl.UpdateRegisterTextBoxes(ins, reg);
+            this.IntegerRegistersControl.UpdateRegisterData(ins, reg);
+            this.FloatPointRegistersControl.UpdateRegisterData(ins, reg);
             UpdateStatusLabels();
             ChangeColorDumpTextBox();
 
@@ -246,15 +247,14 @@ namespace RISC_V_CPU_Emulator {
 
         #endregion
 
-        #region イベント時呼び出しメソッド
-
-        private void InstructionViewerForm_Resize(object sender, EventArgs e) {
-            Console.WriteLine(((Control)sender).Width + ", " + ((Control)sender).Height);
-
+        /// <summary>
+        /// メインウインドウ内のコンポーネントを条件に応じて再配置する
+        /// </summary>
+        private void ReplaceComponents() {
             const int offsetWidth = 570;
             const int offsetHeight = 100;
             const int windowsDefaultWidth = 1160;
-            if (((Control)sender).Width > windowsDefaultWidth + offsetWidth && !IsWideMode) {
+            if (this.Width > windowsDefaultWidth + offsetWidth && !IsWideMode) {
                 IsWideMode = true;
 
                 // 横移動
@@ -273,7 +273,7 @@ namespace RISC_V_CPU_Emulator {
                 this.CurrentModeGroupBox.Top -= this.ArgumentsGroupBox.Height - this.CurrentModeGroupBox.Height;
                 this.FloatPointRegistersControl.Top -= offsetHeight * 2 + this.IntegerRegistersControl.Height;
 
-            } else if (((Control)sender).Width <= windowsDefaultWidth + offsetWidth && IsWideMode) {
+            } else if (this.Width <= windowsDefaultWidth + offsetWidth && IsWideMode) {
                 IsWideMode = false;
 
                 // 横移動
@@ -294,24 +294,35 @@ namespace RISC_V_CPU_Emulator {
             }
 
 
-            if (!this.IntegerRegistersControl.Visible && ((Control)sender).Height > (IsWideMode ? 1055 - ((offsetHeight * 2) + this.IntegerRegistersControl.Height) : 730)) {
+            if (!this.IntegerRegistersControl.Visible && this.Height > (IsWideMode ? 1055 - ((offsetHeight * 2) + this.IntegerRegistersControl.Height) : 730) && irViewer is null) {
                 this.IntegerRegistersControl.Visible = true;
-            } else if (this.IntegerRegistersControl.Visible && ((Control)sender).Height <= (IsWideMode ? 1055 - ((offsetHeight * 2) + this.IntegerRegistersControl.Height) : 730)) {
+            } else if (this.IntegerRegistersControl.Visible && this.Height <= (IsWideMode ? 1055 - ((offsetHeight * 2) + this.IntegerRegistersControl.Height) : 730) && fprViewer is null) {
                 this.IntegerRegistersControl.Visible = false;
             }
-            if (!this.FloatPointRegistersControl.Visible && ((Control)sender).Height > 1055 - (IsWideMode ? (offsetHeight * 2) + this.IntegerRegistersControl.Height : 0)) {
+            if (!this.FloatPointRegistersControl.Visible && this.Height > 1055 - (IsWideMode ? (offsetHeight * 2) + this.IntegerRegistersControl.Height : 0) && fprViewer is null) {
                 this.FloatPointRegistersControl.Visible = true;
-            } else if (this.FloatPointRegistersControl.Visible && ((Control)sender).Height <= 1055 - (IsWideMode ? (offsetHeight * 2) + this.IntegerRegistersControl.Height : 0)) {
+            } else if (this.FloatPointRegistersControl.Visible && this.Height <= 1055 - (IsWideMode ? (offsetHeight * 2) + this.IntegerRegistersControl.Height : 0) && fprViewer is null) {
                 this.FloatPointRegistersControl.Visible = false;
             }
         }
 
+        #region イベント時呼び出しメソッド
+
+        // ウインドウリサイズ時
+        private void InstructionViewerForm_Resize(object sender, EventArgs e) {
+            //Console.WriteLine(((Control)sender).Width + ", " + ((Control)sender).Height);
+            ReplaceComponents();
+        }
+
+        // 実行ボタン押下時
         private void StepExecuteButton_Click(object sender, EventArgs e) {
 
             try {
                 RiscvInstruction boforeIns = InstConverter.GetInstruction(cpu.registerSet.IR);
-                this.IntegerRegistersControl.ChangeColorRegisterTextBoxesBeforeExecute(boforeIns);
-                this.FloatPointRegistersControl.ChangeColorRegisterTextBoxesBeforeExecute(boforeIns);
+                this.irViewer?.RegisgerControl.UpdateRegisterBeforeExecute(boforeIns);
+                this.fprViewer?.RegisgerControl.UpdateRegisterBeforeExecute(boforeIns);
+                this.IntegerRegistersControl.UpdateRegisterBeforeExecute(boforeIns);
+                this.FloatPointRegistersControl.UpdateRegisterBeforeExecute(boforeIns);
 
                 // プログラムを1ステップ実行
                 cpu.StepExecute();
@@ -321,12 +332,14 @@ namespace RISC_V_CPU_Emulator {
 
                 UpdateInstructionLabels(ins);
                 UpdateArgumentLabels(ins);
-                this.IntegerRegistersControl.UpdateRegisterTextBoxes(ins, reg);
-                this.FloatPointRegistersControl.UpdateRegisterTextBoxes(ins, reg);
                 UpdateStatusLabels();
                 ChangeColorDumpTextBox();
 
-                csrViewer?.ControlStatusRegistersControl.UpdateData(reg);
+                this.IntegerRegistersControl.UpdateRegisterData(ins, reg);
+                this.FloatPointRegistersControl.UpdateRegisterData(ins, reg);
+                this.irViewer?.RegisgerControl.UpdateRegisterData(ins, reg);
+                this.fprViewer?.RegisgerControl.UpdateRegisterData(ins, reg);
+                this.csrViewer?.RegisgerControl.UpdateRegisterData(ins, reg);
 
             } catch (HostAccessTrap t) {
                 MessageBox.Show(this,
@@ -338,66 +351,120 @@ namespace RISC_V_CPU_Emulator {
             }
         }
 
-        #endregion
-
+        // 整数レジスタ表示チェックボックス変更時
         private void DisplayIRegisterCheckBox_CheckedChanged(object sender, EventArgs e) {
             if (this.DisplayIRegisterCheckBox.Checked) {
+                RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
                 Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
-                this.irViewer = new RegisterViewForm();
-                /*
-                this.irViewer.RegisgerControl = new RISC_V_CPU_Emulator.IntegerRegistersControl();
-                this.irViewer.RegisgerControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-           | System.Windows.Forms.AnchorStyles.Left)
-           | System.Windows.Forms.AnchorStyles.Right)));
-                this.irViewer.RegisgerControl.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
-                this.irViewer.RegisgerControl.Location = new System.Drawing.Point(12, 13);
-                this.irViewer.RegisgerControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-                this.irViewer.RegisgerControl.Name = "ControlStatusRegistersControl";
-                this.irViewer.RegisgerControl.TabIndex = 0;
-                */
-                this.irViewer.RegisgerControl = this.IntegerRegistersControl;
-                this.irViewer.FormClosed += IrViewer_FormClosed;
-                this.irViewer.Controls.Add(this.irViewer.RegisgerControl);
-                this.Text = "Integer Register Viewer";
 
+                // RegisterViewFormを使用して整数レジスタウィンドウを表示する
+                this.irViewer = new RegisterViewerForm();
+                this.irViewer.ResumeLayout(true);
+                this.irViewer.SuspendLayout();
+                this.irViewer.RegisgerControl = new RISC_V_CPU_Emulator.IntegerRegistersControl {
+                    Name = "IntegerRegistersControl",
+                    Location = new Point(5, 5),
+                    Padding = new Padding(5)
+                };
+                this.irViewer.Controls.Add(this.irViewer.RegisgerControl);
+                this.irViewer.Text = "Integer Register Viewer";
+                this.irViewer.AutoSize = true;
+                this.irViewer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                this.irViewer.ResumeLayout(false);
+
+                this.irViewer.RegisgerControl.UpdateRegisterData(ins, reg);
+                this.irViewer.FormClosed += IrViewer_FormClosed;
                 this.irViewer.Show();
+                this.IntegerRegistersControl.Visible = false;
             } else {
                 this.irViewer?.Close();
+                this.ReplaceComponents();
             }
         }
 
+        // 浮動小数点レジスタ表示チェックボックス変更時
         private void DisplayFPRegisterCheckBox_CheckedChanged(object sender, EventArgs e) {
             if (DisplayFPRegisterCheckBox.Checked) {
+                RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+                Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
 
+                // RegisterViewFormを使用して浮動小数点レジスタウィンドウを表示する
+                this.fprViewer = new RegisterViewerForm();
+                this.fprViewer.ResumeLayout(true);
+                this.fprViewer.SuspendLayout();
+                this.fprViewer.RegisgerControl = new RISC_V_CPU_Emulator.FloatPointRegistersControl {
+                    Name = "FloatPointRegistersControl",
+                    Location = new Point(5, 5),
+                    Padding = new Padding(5)
+                };
+                this.fprViewer.Controls.Add(this.fprViewer.RegisgerControl);
+                this.fprViewer.Text = "Float-Point Register Viewer";
+                this.fprViewer.AutoSize = true;
+                this.fprViewer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+                this.fprViewer.ResumeLayout(false);
+
+                this.fprViewer.RegisgerControl.UpdateRegisterData(ins, reg);
+                this.fprViewer.FormClosed += FprViewer_FormClosed;
+                this.fprViewer.Show();
+                this.FloatPointRegistersControl.Visible = false;
             } else {
-
+                this.fprViewer?.Close();
+                this.ReplaceComponents();
             }
         }
 
+        // CSR表示チェックボックス変更時
         private void DisplayCSRegisterCheckBox_CheckedChanged(object sender, EventArgs e) {
             if (DisplayCSRegisterCheckBox.Checked) {
                 Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
-                csrViewer = new ControlStatusRegisterViewer();
-                csrViewer.ControlStatusRegistersControl.UpdateData(reg);
-                csrViewer.FormClosed += CsrViewer_FormClosed;
-                csrViewer.Show();
+                RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+
+                // RegisterViewFormを使用してCSRウィンドウを表示する
+                this.csrViewer = new RegisterViewerForm();
+                this.csrViewer.ResumeLayout(true);
+                this.csrViewer.SuspendLayout();
+                this.csrViewer.RegisgerControl = new RISC_V_CPU_Emulator.ControlStatusRegistersControl {
+                    Name = "ControlStatusRegistersControl",
+                    Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom,
+                    Location = new Point(0, 0),
+                    Padding = new Padding(5),
+                    Size = new Size(500, 500)
+                };
+                this.csrViewer.Controls.Add(this.csrViewer.RegisgerControl);
+                this.csrViewer.Text = "Control-Status Register Viewer";
+                this.csrViewer.Height = this.csrViewer.RegisgerControl.Height + 40;
+                this.csrViewer.Width = this.csrViewer.RegisgerControl.Width + 20;
+                this.csrViewer.AutoSizeMode = AutoSizeMode.GrowOnly;
+
+
+                this.csrViewer.ResumeLayout(false);
+
+                this.csrViewer.RegisgerControl.UpdateRegisterData(ins, reg);
+                this.csrViewer.FormClosed += CsrViewer_FormClosed;
+                this.csrViewer.Show();
             } else {
-                csrViewer?.Close();
+                this.csrViewer?.Close();
             }
         }
 
+        // 整数レジスタ表示ウィンドウクローズ時
         private void IrViewer_FormClosed(object sender, FormClosedEventArgs e) {
             this.DisplayIRegisterCheckBox.Checked = false;
             this.irViewer = null;
         }
+
+        // 浮動小数点レジスタ表示ウィンドウクローズ時
         private void FprViewer_FormClosed(object sender, FormClosedEventArgs e) {
             this.DisplayFPRegisterCheckBox.Checked = false;
             this.fprViewer = null;
         }
+
+        // CSR表示ウィンドウクローズ時
         private void CsrViewer_FormClosed(object sender, FormClosedEventArgs e) {
             this.DisplayCSRegisterCheckBox.Checked = false;
             this.csrViewer = null;
         }
 
+        #endregion
     }
 }

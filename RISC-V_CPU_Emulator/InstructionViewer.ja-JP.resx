@@ -126,6 +126,9 @@
   <data name="ProgramCounterGroupBox.Text" xml:space="preserve">
     <value>プログラムカウンタ</value>
   </data>
+  <data name="CurrentModeGroupBox.Text" xml:space="preserve">
+    <value>実行モード</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="CurrentModeLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>199, 36</value>
@@ -142,10 +145,25 @@
   <data name="statusLabel.Text" xml:space="preserve">
     <value>ステータス : 実行中</value>
   </data>
-  <data name="CurrentModeGroupBox.Text" xml:space="preserve">
-    <value>実行モード</value>
-  </data>
   <data name="StepExecuteButton.Text" xml:space="preserve">
     <value>ス テ ッ プ 実 行</value>
+  </data>
+  <data name="DisplayCSRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>363, 22</value>
+  </data>
+  <data name="DisplayCSRegisterCheckBox.Text" xml:space="preserve">
+    <value>コントロール・ステータスレジスタを別ウィンドウで表示する</value>
+  </data>
+  <data name="DisplayFPRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>279, 22</value>
+  </data>
+  <data name="DisplayFPRegisterCheckBox.Text" xml:space="preserve">
+    <value>浮動小数点レジスタを別ウィンドウで表示する</value>
+  </data>
+  <data name="DisplayIRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>243, 22</value>
+  </data>
+  <data name="DisplayIRegisterCheckBox.Text" xml:space="preserve">
+    <value>整数レジスタを別ウィンドウで表示する</value>
   </data>
 </root>

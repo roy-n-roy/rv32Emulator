@@ -55,7 +55,7 @@ namespace RISC_V_CPU_Emulator {
             this.BinaryInstructionLabel_12_8 = new System.Windows.Forms.Label();
             this.BinaryInstructionLabel_1_7 = new System.Windows.Forms.Label();
             this.BinaryInstructionPanel = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.DisplayRegisterCheckBox = new System.Windows.Forms.Panel();
             this.DisplayCSRegisterCheckBox = new System.Windows.Forms.CheckBox();
             this.DisplayFPRegisterCheckBox = new System.Windows.Forms.CheckBox();
             this.DisplayIRegisterCheckBox = new System.Windows.Forms.CheckBox();
@@ -66,7 +66,7 @@ namespace RISC_V_CPU_Emulator {
             this.ProgramCounterGroupBox.SuspendLayout();
             this.CurrentModeGroupBox.SuspendLayout();
             this.BinaryInstructionPanel.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.DisplayRegisterCheckBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // DumpViewTextBox
@@ -240,13 +240,13 @@ namespace RISC_V_CPU_Emulator {
             this.BinaryInstructionPanel.Controls.Add(this.BinaryInstructionDigitLabel);
             this.BinaryInstructionPanel.Name = "BinaryInstructionPanel";
             // 
-            // panel1
+            // DisplayRegisterCheckBox
             // 
-            this.panel1.Controls.Add(this.DisplayCSRegisterCheckBox);
-            this.panel1.Controls.Add(this.DisplayFPRegisterCheckBox);
-            this.panel1.Controls.Add(this.DisplayIRegisterCheckBox);
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Name = "panel1";
+            resources.ApplyResources(this.DisplayRegisterCheckBox, "DisplayRegisterCheckBox");
+            this.DisplayRegisterCheckBox.Controls.Add(this.DisplayCSRegisterCheckBox);
+            this.DisplayRegisterCheckBox.Controls.Add(this.DisplayFPRegisterCheckBox);
+            this.DisplayRegisterCheckBox.Controls.Add(this.DisplayIRegisterCheckBox);
+            this.DisplayRegisterCheckBox.Name = "DisplayRegisterCheckBox";
             // 
             // DisplayCSRegisterCheckBox
             // 
@@ -283,7 +283,7 @@ namespace RISC_V_CPU_Emulator {
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.DisplayRegisterCheckBox);
             this.Controls.Add(this.DumpViewTextBox);
             this.Controls.Add(this.StepExecuteButton);
             this.Controls.Add(this.CurrentModeGroupBox);
@@ -307,8 +307,8 @@ namespace RISC_V_CPU_Emulator {
             this.CurrentModeGroupBox.PerformLayout();
             this.BinaryInstructionPanel.ResumeLayout(false);
             this.BinaryInstructionPanel.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.DisplayRegisterCheckBox.ResumeLayout(false);
+            this.DisplayRegisterCheckBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -345,7 +345,7 @@ namespace RISC_V_CPU_Emulator {
         private System.Windows.Forms.Panel BinaryInstructionPanel;
         private IntegerRegistersControl IntegerRegistersControl;
         private FloatPointRegistersControl FloatPointRegistersControl;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel DisplayRegisterCheckBox;
         private System.Windows.Forms.CheckBox DisplayCSRegisterCheckBox;
         private System.Windows.Forms.CheckBox DisplayFPRegisterCheckBox;
         private System.Windows.Forms.CheckBox DisplayIRegisterCheckBox;

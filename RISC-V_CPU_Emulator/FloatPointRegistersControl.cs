@@ -1,17 +1,12 @@
-﻿using System;
+﻿using RISC_V_Instruction;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using RISC_V_Instruction;
 using appRes = global::RISC_V_CPU_Emulator.Properties.Resources;
 
 namespace RISC_V_CPU_Emulator {
-    public partial class FloatPointRegistersControl : UserControl {
+    public partial class FloatPointRegistersControl : RegisterViewerForm.RegisterControl {
 
         /// <summary></summary>
         private readonly Label[] FloatPointRegisterLabels;
@@ -64,13 +59,13 @@ namespace RISC_V_CPU_Emulator {
         /// 前回の実行時に書き換えられたレジスタ値テキストボックスの文字色を変更する
         /// </summary>
         /// <param name="ins"></param>
-        internal void ChangeColorRegisterTextBoxesBeforeExecute(RiscvInstruction ins) {
+        internal override void UpdateRegisterBeforeExecute(RiscvInstruction ins) {
 
             InstructionViewerForm parent = ((InstructionViewerForm)this.Parent);
 
             // テキストボックスの文字色を黒に戻す
             for (int i = 0; i < 16; i++) {
-                FloatPointRegisterTextBoxes[i].ForeColor = ((InstructionViewerForm)this.Parent).DefaultTextColor;
+                FloatPointRegisterTextBoxes[i].ForeColor = global::RISC_V_CPU_Emulator.InstructionViewerForm.DefaultTextColor;
             }
 
             // 
@@ -92,7 +87,7 @@ namespace RISC_V_CPU_Emulator {
         /// <summary>
         /// レジスタ値テキストボックスを更新する
         /// </summary>
-        internal void UpdateRegisterTextBoxes(RiscvInstruction ins, Dictionary<string, ulong> registers) {
+        internal override void UpdateRegisterData(RiscvInstruction ins, Dictionary<string, ulong> registers) {
 
             // テキストボックスの値を更新する
             for (int i = 0; i < 32; i++) {
@@ -105,7 +100,7 @@ namespace RISC_V_CPU_Emulator {
 
             // テキストボックスの背景を白に戻す
             for (int i = 0; i < 16; i++) {
-                FloatPointRegisterTextBoxes[i].BackColor = ((InstructionViewerForm)this.Parent).DefaultTextBoxBackColor;
+                FloatPointRegisterTextBoxes[i].BackColor = global::RISC_V_CPU_Emulator.InstructionViewerForm.DefaultTextBoxBackColor;
             }
 
             // レジスタ名がRISC-V命令の引数内にあるか確認する
@@ -120,7 +115,7 @@ namespace RISC_V_CPU_Emulator {
 
                 Color color = Color.FromName(appRes.ResourceManager.GetString("RegisterLabel_BackColor_" + key) ?? "");
 
-                if (!(target is null) && color != Color.Black && target.BackColor.Equals(((InstructionViewerForm)this.Parent).DefaultTextBoxBackColor)) {
+                if (!(target is null) && color != Color.Black && target.BackColor.Equals(global::RISC_V_CPU_Emulator.InstructionViewerForm.DefaultTextBoxBackColor)) {
                     target.BackColor = color;
                 }
             }

@@ -1,5 +1,5 @@
 ﻿namespace RISC_V_CPU_Emulator {
-    partial class RegisterViewForm {
+    partial class RegisterViewerForm {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -25,16 +25,13 @@
         private void InitializeComponent() {
             this.SuspendLayout();
             // 
-            // RegisterViewForm
+            // RegisterViewerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(484, 261);
-            this.Name = "RegisterViewForm";
+            this.Name = "RegisterViewerForm";
             this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
             this.ResumeLayout(false);
 
         }

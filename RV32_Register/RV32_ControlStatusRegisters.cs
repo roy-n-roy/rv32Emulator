@@ -8,69 +8,75 @@ using System.Threading.Tasks;
 
 namespace RV32_Register {
     [Serializable]
-    public class RV32_ControlStatusRegisters : Dictionary<CSR, UInt32> {
+    public class RV32_ControlStatusRegisters : IDictionary<CSR, UInt32> {
 
-        public UInt32 Misa { get => base[CSR.misa]; set => base[CSR.misa] = value; }
+        private Dictionary<CSR, UInt32> csr;
 
-        public RV32_ControlStatusRegisters(IDictionary<CSR, uint> dictionary) : base(dictionary) {
+        public UInt32 Misa { get => csr[CSR.misa]; set => csr[CSR.misa] = value; }
+
+        public RV32_ControlStatusRegisters(IDictionary<CSR, UInt32> dictionary) {
+            csr = new Dictionary<CSR, uint>(dictionary);
+        }
+        public Dictionary<CSR, UInt32> GetDictionary() {
+            return csr;
         }
 
-        public new UInt32 this[CSR name] {
+        public UInt32 this[CSR name] {
             get {
                 switch (name) {
                     // sstatus,ustatus
                     // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
                     case CSR.sstatus:
-                        return base[CSR.mstatus] & StatusCSR.SModeMask;
+                        return csr[CSR.mstatus] & StatusCSR.SModeMask;
 
                     case CSR.ustatus:
-                        return base[CSR.mstatus] & StatusCSR.UModeMask;
+                        return csr[CSR.mstatus] & StatusCSR.UModeMask;
 
                     // sip,uip
                     case CSR.sip:
-                        return base[CSR.mip] & InterruptPendingCSR.SModeReadMask;
+                        return csr[CSR.mip] & InterruptPendingCSR.SModeReadMask;
 
                     case CSR.uip:
-                        return base[CSR.mip] & InterruptPendingCSR.UModeReadMask;
+                        return csr[CSR.mip] & InterruptPendingCSR.UModeReadMask;
 
                     // sie,sideleg,uie,uideleg
                     case CSR.sie:
-                        return base[CSR.mie] & InterruptEnableCSR.SModeMask;
+                        return csr[CSR.mie] & InterruptEnableCSR.SModeMask;
 
                     case CSR.uie:
-                        return base[CSR.mie] & InterruptEnableCSR.UModeMask;
+                        return csr[CSR.mie] & InterruptEnableCSR.UModeMask;
 
                     // fflags,frm
                     // fcsrへのアクセスとして読み替える
                     case CSR.fflags:
-                        return base[CSR.fcsr] & FloatCSR.FflagsMask;
+                        return csr[CSR.fcsr] & FloatCSR.FflagsMask;
 
                     case CSR.frm:
-                        return (base[CSR.fcsr] & FloatCSR.FrmMask) >> 5;
+                        return (csr[CSR.fcsr] & FloatCSR.FrmMask) >> 5;
 
                     // mtvec,stvec,utvec
                     // ベクタードモードかつ割り込みの場合は、ベースアドレス+(cause * 4)として読み替える
                     case CSR.mtvec:
                         TvecCSR tvec;
-                        tvec = base[CSR.mtvec];
-                        return (tvec.MODE == 1 && (base[CSR.mcause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (base[CSR.mcause] * 4) : tvec.BASE;
+                        tvec = csr[CSR.mtvec];
+                        return (tvec.MODE == 1 && (csr[CSR.mcause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (csr[CSR.mcause] * 4) : tvec.BASE;
 
                     case CSR.stvec:
-                        tvec = base[CSR.stvec];
-                        return (tvec.MODE == 1 && (base[CSR.scause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (base[CSR.scause] * 4) : tvec.BASE;
+                        tvec = csr[CSR.stvec];
+                        return (tvec.MODE == 1 && (csr[CSR.scause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (csr[CSR.scause] * 4) : tvec.BASE;
 
                     case CSR.utvec:
-                        tvec = base[CSR.utvec];
-                        return (tvec.MODE == 1 && (base[CSR.ucause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (base[CSR.ucause] * 4) : tvec.BASE;
+                        tvec = csr[CSR.utvec];
+                        return (tvec.MODE == 1 && (csr[CSR.ucause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (csr[CSR.ucause] * 4) : tvec.BASE;
 
                     default:
                         // cycle,time,insret,hpmcounter3～31
                         // mcycle,mtime,minsret,mhpcounterの読み込み専用シャドウとしてアクセスする
                         if ((CSR.cycle <= name && name <= CSR.hpmcounter31) || (CSR.cycleh <= name && name <= CSR.hpmcounter31h)) {
-                            return base[CSR.mcycle | (name & (CSR)0xffu)];
+                            return csr[CSR.mcycle | (name & (CSR)0xffu)];
 
                         } else {
-                            return base[name];
+                            return csr[name];
                         }
                 }
 
@@ -80,33 +86,33 @@ namespace RV32_Register {
                     // sstatus,ustatus
                     // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
                     case CSR.sstatus:
-                        base[CSR.mstatus] = base[CSR.mstatus] & ~StatusCSR.SModeMask | value & StatusCSR.SModeMask;
+                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.SModeMask | value & StatusCSR.SModeMask;
                         break;
 
                     case CSR.ustatus:
-                        base[CSR.mstatus] = base[CSR.mstatus] & ~StatusCSR.UModeMask | value & StatusCSR.UModeMask;
+                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.UModeMask | value & StatusCSR.UModeMask;
                         break;
 
                     // mip,sip,uip
                     case CSR.mip:
-                        base[CSR.mip] = base[CSR.mip] & ~InterruptPendingCSR.MModeWriteMask | value & InterruptPendingCSR.MModeWriteMask;
+                        csr[CSR.mip] = csr[CSR.mip] & ~InterruptPendingCSR.MModeWriteMask | value & InterruptPendingCSR.MModeWriteMask;
                         break;
 
                     case CSR.sip:
-                        base[CSR.mip] = base[CSR.mip] & ~InterruptPendingCSR.SModeWriteMask | value & InterruptPendingCSR.SModeWriteMask;
+                        csr[CSR.mip] = csr[CSR.mip] & ~InterruptPendingCSR.SModeWriteMask | value & InterruptPendingCSR.SModeWriteMask;
                         break;
 
                     case CSR.uip:
-                        base[CSR.mip] = base[CSR.mip] & ~InterruptPendingCSR.UModeWriteMask | value & InterruptPendingCSR.UModeWriteMask;
+                        csr[CSR.mip] = csr[CSR.mip] & ~InterruptPendingCSR.UModeWriteMask | value & InterruptPendingCSR.UModeWriteMask;
                         break;
 
                     // sie,uie
                     case CSR.sie:
-                        base[CSR.mie] = base[CSR.mie] & ~InterruptEnableCSR.SModeMask | value & InterruptEnableCSR.SModeMask;
+                        csr[CSR.mie] = csr[CSR.mie] & ~InterruptEnableCSR.SModeMask | value & InterruptEnableCSR.SModeMask;
                         break;
 
                     case CSR.uie:
-                        base[CSR.mie] = base[CSR.mie] & ~InterruptEnableCSR.UModeMask | value & InterruptEnableCSR.UModeMask;
+                        csr[CSR.mie] = csr[CSR.mie] & ~InterruptEnableCSR.UModeMask | value & InterruptEnableCSR.UModeMask;
                         break;
 
                     // mepc,sepc,uepc
@@ -114,28 +120,28 @@ namespace RV32_Register {
                     case CSR.mepc:
                     case CSR.sepc:
                     case CSR.uepc:
-                        base[name] = value & 0xffff_fffc;
+                        csr[name] = value & 0xffff_fffc;
                         break;
 
                     // fcsr,fflags,frm
                     // fcsrへのアクセスとして読み替える
                     case CSR.fcsr:
-                        base[CSR.fcsr] = value & (FloatCSR.FflagsMask | FloatCSR.FrmMask);
+                        csr[CSR.fcsr] = value & (FloatCSR.FflagsMask | FloatCSR.FrmMask);
                         StatusCSR status;
                         status = new StatusCSR { FS = 0x3 };
-                        base[CSR.mstatus] |= status;
+                        csr[CSR.mstatus] |= status;
                         break;
 
                     case CSR.fflags:
-                        base[CSR.fcsr] = base[CSR.fcsr] & ~FloatCSR.FflagsMask | value & FloatCSR.FflagsMask;
+                        csr[CSR.fcsr] = csr[CSR.fcsr] & ~FloatCSR.FflagsMask | value & FloatCSR.FflagsMask;
                         status = new StatusCSR { FS = 0x3 };
-                        base[CSR.mstatus] |= status;
+                        csr[CSR.mstatus] |= status;
                         break;
 
                     case CSR.frm:
-                        base[CSR.fcsr] = base[CSR.fcsr] & ~FloatCSR.FrmMask | (value << 5) & FloatCSR.FrmMask;
+                        csr[CSR.fcsr] = csr[CSR.fcsr] & ~FloatCSR.FrmMask | (value << 5) & FloatCSR.FrmMask;
                         status = new StatusCSR { FS = 0x3 };
-                        base[CSR.mstatus] |= status;
+                        csr[CSR.mstatus] |= status;
                         break;
 
                     // misa
@@ -144,10 +150,32 @@ namespace RV32_Register {
                         break;
 
                     default:
-                        base[name] = value;
+                        csr[name] = value;
                         break;
                 }
             }
         }
+
+        ICollection<CSR> IDictionary<CSR, uint>.Keys => throw new NotImplementedException();
+        ICollection<uint> IDictionary<CSR, uint>.Values => throw new NotImplementedException();
+        public bool IsReadOnly => throw new NotImplementedException();
+        public bool IsFixedSize => throw new NotImplementedException();
+        public int Count => csr.Count();
+        public object SyncRoot => throw new NotImplementedException();
+        public bool IsSynchronized => throw new NotImplementedException();
+        public bool Contains(KeyValuePair<CSR, uint> item) => throw new NotImplementedException();
+        public void Add(CSR key, UInt32 value) => csr.Add(key, value);
+        public void Add(KeyValuePair<CSR, uint> item) => csr.Add(item.Key, item.Value);
+        public void Clear() => csr.Clear();
+        public IDictionaryEnumerator GetEnumerator() => csr.GetEnumerator();
+        public void Remove(CSR key) => csr.Remove(key);
+        public void CopyTo(Array array, int index) => throw new NotImplementedException();
+        IEnumerator IEnumerable.GetEnumerator() => csr.GetEnumerator();
+        public bool ContainsKey(CSR key) => throw new NotImplementedException();
+        bool IDictionary<CSR, uint>.Remove(CSR key) => csr.Remove(key);
+        public bool TryGetValue(CSR key, out uint value) => csr.TryGetValue(key, out value);
+        public void CopyTo(KeyValuePair<CSR, uint>[] array, int arrayIndex) => throw new NotImplementedException();
+        public bool Remove(KeyValuePair<CSR, uint> item) => csr.Remove(item.Key);
+        IEnumerator<KeyValuePair<CSR, uint>> IEnumerable<KeyValuePair<CSR, uint>>.GetEnumerator() => csr.GetEnumerator();
     }
 }
