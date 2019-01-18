@@ -36,6 +36,7 @@
             this.CSRDataGrid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.CSRDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.CSRDataGrid.Name = "CSRDataGrid";
+            this.CSRDataGrid.ReadOnly = true;
             this.CSRDataGrid.RowTemplate.Height = 21;
             // 
             // ControlStatusRegistersControl

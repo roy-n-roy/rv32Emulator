@@ -29,6 +29,8 @@ namespace RISC_V_CPU_Emulator {
         private bool IsWideMode = false;
 
         private ControlStatusRegisterViewer csrViewer;
+        private RegisterViewForm irViewer;
+        private RegisterViewForm fprViewer;
 
         /// <summary>
         /// 通常のラベル背景色
@@ -65,8 +67,8 @@ namespace RISC_V_CPU_Emulator {
                 (BinaryInstructionLabel_21_25, 5, "rs2"),
                 (BinaryInstructionLabel_16_20, 5, "rs1"),
                 (BinaryInstructionLabel_13_15, 3, ""),
-                (label4, 5, "rd"),
-                (label5, 7, "")
+                (BinaryInstructionLabel_12_8, 5, "rd"),
+                (BinaryInstructionLabel_1_7, 7, "")
             };
 
             // 16bit長バイナリ形式命令ラベル
@@ -95,12 +97,10 @@ namespace RISC_V_CPU_Emulator {
             UpdateStatusLabels();
             ChangeColorDumpTextBox();
 
-            csrViewer = new ControlStatusRegisterViewer();
-            csrViewer.ControlStatusRegistersControl.UpdateData(reg);
-            csrViewer.Show();
-
             this.Update();
         }
+
+        #region ラベル・テキストボックス更新メソッド
 
         /// <summary>
         /// 命令テキストラベルを更新する
@@ -202,7 +202,7 @@ namespace RISC_V_CPU_Emulator {
                 string exCauseCode = ((uint)cpu.ExceptionCause).ToString("X").ToLower().PadLeft(8, '0');
                 string exCauseText = appRes.ResourceManager.GetString("ExceptionCause_" + exCauseCode) ?? "";
 
-                if(((UInt32)cpu.ExceptionCause & 0x8000_0000u) == 0u) {
+                if (((UInt32)cpu.ExceptionCause & 0x8000_0000u) == 0u) {
                     this.statusLabel.Text = appRes.StatusLabel_Text_Exception + " " + exCauseText;
                 } else {
                     this.statusLabel.Text = appRes.StatusLabel_Text_Interrupt + " " + exCauseText;
@@ -244,6 +244,8 @@ namespace RISC_V_CPU_Emulator {
             dump.ScrollToCaret();
         }
 
+        #endregion
+
         #region イベント時呼び出しメソッド
 
         private void InstructionViewerForm_Resize(object sender, EventArgs e) {
@@ -257,7 +259,7 @@ namespace RISC_V_CPU_Emulator {
 
                 // 横移動
                 this.ArgumentsGroupBox.Left -= offsetWidth;
-                this.ProgramCounterGroupBox.Left -= offsetWidth/2;
+                this.ProgramCounterGroupBox.Left -= offsetWidth / 2;
                 this.CurrentModeGroupBox.Left -= offsetWidth;
                 this.IntegerRegistersControl.Left -= offsetWidth;
 
@@ -324,7 +326,7 @@ namespace RISC_V_CPU_Emulator {
                 UpdateStatusLabels();
                 ChangeColorDumpTextBox();
 
-                csrViewer.ControlStatusRegistersControl.UpdateData(reg);
+                csrViewer?.ControlStatusRegistersControl.UpdateData(reg);
 
             } catch (HostAccessTrap t) {
                 MessageBox.Show(this,
@@ -337,5 +339,65 @@ namespace RISC_V_CPU_Emulator {
         }
 
         #endregion
+
+        private void DisplayIRegisterCheckBox_CheckedChanged(object sender, EventArgs e) {
+            if (this.DisplayIRegisterCheckBox.Checked) {
+                Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
+                this.irViewer = new RegisterViewForm();
+                /*
+                this.irViewer.RegisgerControl = new RISC_V_CPU_Emulator.IntegerRegistersControl();
+                this.irViewer.RegisgerControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+           | System.Windows.Forms.AnchorStyles.Left)
+           | System.Windows.Forms.AnchorStyles.Right)));
+                this.irViewer.RegisgerControl.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
+                this.irViewer.RegisgerControl.Location = new System.Drawing.Point(12, 13);
+                this.irViewer.RegisgerControl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+                this.irViewer.RegisgerControl.Name = "ControlStatusRegistersControl";
+                this.irViewer.RegisgerControl.TabIndex = 0;
+                */
+                this.irViewer.RegisgerControl = this.IntegerRegistersControl;
+                this.irViewer.FormClosed += IrViewer_FormClosed;
+                this.irViewer.Controls.Add(this.irViewer.RegisgerControl);
+                this.Text = "Integer Register Viewer";
+
+                this.irViewer.Show();
+            } else {
+                this.irViewer?.Close();
+            }
+        }
+
+        private void DisplayFPRegisterCheckBox_CheckedChanged(object sender, EventArgs e) {
+            if (DisplayFPRegisterCheckBox.Checked) {
+
+            } else {
+
+            }
+        }
+
+        private void DisplayCSRegisterCheckBox_CheckedChanged(object sender, EventArgs e) {
+            if (DisplayCSRegisterCheckBox.Checked) {
+                Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
+                csrViewer = new ControlStatusRegisterViewer();
+                csrViewer.ControlStatusRegistersControl.UpdateData(reg);
+                csrViewer.FormClosed += CsrViewer_FormClosed;
+                csrViewer.Show();
+            } else {
+                csrViewer?.Close();
+            }
+        }
+
+        private void IrViewer_FormClosed(object sender, FormClosedEventArgs e) {
+            this.DisplayIRegisterCheckBox.Checked = false;
+            this.irViewer = null;
+        }
+        private void FprViewer_FormClosed(object sender, FormClosedEventArgs e) {
+            this.DisplayFPRegisterCheckBox.Checked = false;
+            this.fprViewer = null;
+        }
+        private void CsrViewer_FormClosed(object sender, FormClosedEventArgs e) {
+            this.DisplayCSRegisterCheckBox.Checked = false;
+            this.csrViewer = null;
+        }
+
     }
 }
