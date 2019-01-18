@@ -1,6 +1,5 @@
 ﻿using RV32_Register;
 using RV32_Register.Constants;
-using RV32_Register.Exceptions;
 using System;
 
 namespace RV32_Alu {
@@ -138,7 +137,6 @@ namespace RV32_Alu {
         /// <param name="immediate">即値</param>
         /// <returns>処理の成否</returns>
         public bool Slli(Register rd, Register rs1, Int32 immediate, UInt32 insLength = 4u) {
-            if ((immediate >> 5) != 0) throw new RiscvException(RiscvExceptionCause.IllegalInstruction, reg.IR & ((1u << (int)insLength) - 1u), reg);
             reg.SetValue(rd, reg.GetValue(rs1) << immediate);
             reg.IncrementPc(insLength);
             return true;
@@ -153,7 +151,6 @@ namespace RV32_Alu {
         /// <param name="immediate">即値</param>
         /// <returns>処理の成否</returns>
         public bool Srli(Register rd, Register rs1, Int32 immediate, UInt32 insLength = 4u) {
-            if ((immediate >> 5) != 0) throw new RiscvException(RiscvExceptionCause.IllegalInstruction, reg.IR & ((1u << (int)insLength) - 1u), reg);
             reg.SetValue(rd, reg.GetValue(rs1) >> immediate);
             reg.IncrementPc(insLength);
             return true;
@@ -167,7 +164,6 @@ namespace RV32_Alu {
         /// <param name="immediate"></param>
         /// <returns>処理の成否</returns>
         public bool Srai(Register rd, Register rs1, Int32 immediate, UInt32 insLength = 4u) {
-            if ((immediate >> 5) != 0) throw new RiscvException(RiscvExceptionCause.IllegalInstruction, reg.IR & ((1u << (int)insLength) - 1u), reg);
             reg.SetValue(rd, (UInt32)((Int32)reg.GetValue(rs1) >> immediate));
             reg.IncrementPc(insLength);
             return true;

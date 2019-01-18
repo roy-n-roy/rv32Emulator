@@ -167,17 +167,19 @@ namespace RV32_Decoder {
                             break;
 
                         case Funct3.slli: // slli命令
-                            result = alu.Slli(rd, rs1, (Int32)(ins[4] | ((ins[5] & 0b1) << 5)));
+                            if (funct7 == Funct7.slli) {
+                                result = alu.Slli(rd, rs1, (Int32)ins[4]);
+                            }
                             break;
 
                         case Funct3.srli_srai: // srli/srai命令
                             switch (funct7) {
                                 case Funct7.srli:
-                                    result = alu.Srli(rd, rs1, (Int32)(ins[4] | ((ins[5] & 0b1) << 5)));
+                                    result = alu.Srli(rd, rs1, (Int32)ins[4]);
                                     break;
 
                                 case Funct7.srai:
-                                    result = alu.Srai(rd, rs1, (Int32)(ins[4] | ((ins[5] & 0b1) << 5)));
+                                    result = alu.Srai(rd, rs1, (Int32)ins[4]);
                                     break;
                             }
                             break;
