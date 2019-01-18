@@ -207,11 +207,9 @@ namespace RV32_Cpu {
                     registerSet.Mem.Reset();
 
                     // ToDo: 標準入力制御の実装
-                    // ToDo: GUIから参照用の割り込み変数へのデータ格納
 
                 } else {
                     // 割り込みが無ければ、命令レジスタから命令を取り出して、デコード・実行する
-                    RISC_V_Instruction.RiscvInstruction ins = RISC_V_Instruction.InstConverter.GetInstruction(registerSet.IR);
                     decoder.Decode();
                 }
 
