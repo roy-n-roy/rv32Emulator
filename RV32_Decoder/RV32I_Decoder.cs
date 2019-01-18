@@ -244,38 +244,36 @@ namespace RV32_Decoder {
                 case Opcode.privilege: // 特権命令
                     switch (funct3) {
                         case Funct3.privilege: // 特権命令
-                            if (rd == 0) {
-                                if (funct7 == Funct7.sfenceVma) {
-                                    result = Decoder.Reg.SfenceVma(rs1, rs2);
-                                } else {
-                                    Funct12 funct12 = (Funct12)(ins[4] | (ins[5] << 5) | (ins[6] << 11)); ;
-                                    switch (funct12) {
-                                        case Funct12.ecall:
-                                            result = Decoder.Reg.Ecall();
-                                            break;
+                            if (rd == 0 && funct7 == Funct7.sfenceVma) {
+                                result = Decoder.Reg.SfenceVma(rs1, rs2);
+                            } else if (rd == 0 && rs1 == 0) {
+                                Funct12 funct12 = (Funct12)(ins[4] | (ins[5] << 5) | (ins[6] << 11)); ;
+                                switch (funct12) {
+                                    case Funct12.ecall:
+                                        result = Decoder.Reg.Ecall();
+                                        break;
 
-                                        case Funct12.ebreak:
-                                            result = Decoder.Reg.Ebreak();
-                                            break;
+                                    case Funct12.ebreak:
+                                        result = Decoder.Reg.Ebreak();
+                                        break;
 
-                                        case Funct12.mret:
-                                            result = Decoder.Reg.Mret();
-                                            break;
+                                    case Funct12.mret:
+                                        result = Decoder.Reg.Mret();
+                                        break;
 
-                                        case Funct12.sret:
-                                            result = Decoder.Reg.Sret();
-                                            break;
+                                    case Funct12.sret:
+                                        result = Decoder.Reg.Sret();
+                                        break;
 
-                                        case Funct12.uret:
-                                            result = Decoder.Reg.Uret();
-                                            break;
+                                    case Funct12.uret:
+                                        result = Decoder.Reg.Uret();
+                                        break;
 
-                                        case Funct12.wfi:
-                                            result = Decoder.Reg.Wfi();
-                                            break;
-                                    }
-
+                                    case Funct12.wfi:
+                                        result = Decoder.Reg.Wfi();
+                                        break;
                                 }
+
                             }
                             break;
 

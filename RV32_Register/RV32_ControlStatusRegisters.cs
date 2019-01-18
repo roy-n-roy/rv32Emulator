@@ -17,9 +17,8 @@ namespace RV32_Register {
         public RV32_ControlStatusRegisters(IDictionary<CSR, UInt32> dictionary) {
             csr = new Dictionary<CSR, uint>(dictionary);
         }
-        public Dictionary<CSR, UInt32> GetDictionary() {
-            return csr;
-        }
+
+        public Dictionary<CSR, UInt32> GetDictionary() => csr;
 
         public UInt32 this[CSR name] {
             get {
@@ -156,25 +155,27 @@ namespace RV32_Register {
             }
         }
 
-        ICollection<CSR> IDictionary<CSR, uint>.Keys => throw new NotImplementedException();
-        ICollection<uint> IDictionary<CSR, uint>.Values => throw new NotImplementedException();
-        public bool IsReadOnly => throw new NotImplementedException();
-        public bool IsFixedSize => throw new NotImplementedException();
+        ICollection<CSR> IDictionary<CSR, uint>.Keys => this.Keys;
+        ICollection<uint> IDictionary<CSR, uint>.Values => this.Values;
+        protected ICollection<CSR> Keys { get => csr.Keys; }
+        protected ICollection<uint> Values { get => csr.Values; }
+        public bool IsReadOnly => false;
+        public bool IsFixedSize => true;
         public int Count => csr.Count();
-        public object SyncRoot => throw new NotImplementedException();
-        public bool IsSynchronized => throw new NotImplementedException();
-        public bool Contains(KeyValuePair<CSR, uint> item) => throw new NotImplementedException();
-        public void Add(CSR key, UInt32 value) => csr.Add(key, value);
-        public void Add(KeyValuePair<CSR, uint> item) => csr.Add(item.Key, item.Value);
-        public void Clear() => csr.Clear();
+        public object SyncRoot => this;
+        public bool IsSynchronized => false;
+        public bool Contains(KeyValuePair<CSR, uint> item) => csr.Contains(item);
+        public void Add(CSR key, UInt32 value) { }
+        public void Add(KeyValuePair<CSR, uint> item) { }
+        public void Clear() { }
         public IDictionaryEnumerator GetEnumerator() => csr.GetEnumerator();
-        public void Remove(CSR key) => csr.Remove(key);
-        public void CopyTo(Array array, int index) => throw new NotImplementedException();
+        public void Remove(CSR key) { }
+        public void CopyTo(Array array, int index) => csr.ToArray().CopyTo(array, index);
         IEnumerator IEnumerable.GetEnumerator() => csr.GetEnumerator();
-        public bool ContainsKey(CSR key) => throw new NotImplementedException();
+        public bool ContainsKey(CSR key) => csr.ContainsKey(key);
         bool IDictionary<CSR, uint>.Remove(CSR key) => csr.Remove(key);
         public bool TryGetValue(CSR key, out uint value) => csr.TryGetValue(key, out value);
-        public void CopyTo(KeyValuePair<CSR, uint>[] array, int arrayIndex) => throw new NotImplementedException();
+        public void CopyTo(KeyValuePair<CSR, uint>[] array, int arrayIndex) => csr.ToArray().CopyTo(array, arrayIndex);
         public bool Remove(KeyValuePair<CSR, uint> item) => csr.Remove(item.Key);
         IEnumerator<KeyValuePair<CSR, uint>> IEnumerable<KeyValuePair<CSR, uint>>.GetEnumerator() => csr.GetEnumerator();
     }

@@ -795,7 +795,7 @@ namespace RV32_Register {
             UInt32 sideleg = CSRegisters[CSR.sideleg];
 
             // mstatusのタイムアウト待機フラグがセットされていて、タイムアウト値を越えた場合、不正命令例外を発生させる
-            if (mstatus.TW && WaitTimer++ >= WaitTimerMax) {
+            if (IsWaitMode && CurrentMode == PrivilegeLevels.SupervisorMode && mstatus.TW && WaitTimer++ >= WaitTimerMax) {
                 throw new RiscvException(RiscvExceptionCause.IllegalInstruction, 0, this);
             }
 
@@ -808,12 +808,7 @@ namespace RV32_Register {
             if ((pendingInterrupt & ~mideleg) > 0u) {
                 // 割り込みがマシンモードより下位モードに割り込みトラップ委譲されていない場合
 
-                if (IsWaitMode) {
-                    // ハードウェアスレッドが割り込み待ち状態の場合
-                    enableInterrupt = pendingInterrupt & ~mideleg; ;
-                    trapLevel = PrivilegeLevels.MachineMode;
-
-                } else if (CurrentMode == PrivilegeLevels.MachineMode && mstatus.MIE) {
+                if (CurrentMode == PrivilegeLevels.MachineMode && mstatus.MIE) {
                     // 現在がマシンモードかつ、mstatusのマシンモード割り込みが許可されている場合
                     enableInterrupt = pendingInterrupt & ~mideleg; ;
                     trapLevel = PrivilegeLevels.MachineMode;
@@ -828,12 +823,7 @@ namespace RV32_Register {
                 // 割り込みがスーパーバイザモードより下位モードに割り込みトラップ委譲されていないかつ、
                 // ユーザモード割り込みがサポートされていない場合
 
-                if (IsWaitMode) {
-                    // ハードウェアスレッドが割り込み待ち状態の場合
-                    enableInterrupt = pendingInterrupt & ~sideleg;
-                    trapLevel = PrivilegeLevels.SupervisorMode;
-
-                } else if (CurrentMode == PrivilegeLevels.SupervisorMode && mstatus.SIE) {
+                if (CurrentMode == PrivilegeLevels.SupervisorMode && mstatus.SIE) {
                     // 現在がスーパーバイザモードかつ、mstatusのスーパーバイザモード割り込みが許可されている場合
                     enableInterrupt = pendingInterrupt & ~sideleg;
                     trapLevel = PrivilegeLevels.SupervisorMode;
@@ -847,12 +837,7 @@ namespace RV32_Register {
             } else if ((pendingInterrupt & sideleg) > 0u) {
                 // 割り込み待ち状態で、割り込み委譲されている場合
 
-                if (IsWaitMode) {
-                    // ハードウェアスレッドが割り込み待ち状態の場合
-                    enableInterrupt = pendingInterrupt & sideleg;
-                    trapLevel = PrivilegeLevels.UserMode;
-
-                } else if (CurrentMode == PrivilegeLevels.UserMode && mstatus.UIE) {
+                if (CurrentMode == PrivilegeLevels.UserMode && mstatus.UIE) {
                     // 現在がスーパーバイザモードかつ、mstatusのユーザモード割り込みが許可されている場合
                     enableInterrupt = pendingInterrupt & sideleg;
                     trapLevel = PrivilegeLevels.UserMode;
@@ -864,11 +849,15 @@ namespace RV32_Register {
 
             if (enableInterrupt == 0u) {
                 // 割り込みなしと判定
+
+                if (IsWaitMode) {
+                    IsWaitMode = false;
+                    WaitTimer = 0;
+                    PC += 4u;
+                }
+
                 return (false, cause);
             }
-
-            if (IsWaitMode) IsWaitMode = false;
-
 
             // 割り込み要因の特定
             //   *複数の要因での割り込みの可能性があるため、順位の高いものから特定する
@@ -905,6 +894,8 @@ namespace RV32_Register {
 
             // 特定したモード、要因でトラップ
             TrapAndSetCSR(trapLevel, (UInt32)cause, 0u);
+            IsWaitMode = false;
+            WaitTimer = 0;
             return (true, cause);
         }
 

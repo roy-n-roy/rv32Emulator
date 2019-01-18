@@ -2,8 +2,9 @@
 using System;
 
 namespace RV32_Register.Exceptions {
+    [Serializable]
     /// <summary>Risc-V CPUで発生した例外を表します</summary>
-    public class RiscvException : Exception {
+    public class RiscvException : ArgumentException {
 
         /// <summary>Risc-V CPU例外のインスタンスを初期化します</summary>
         public RiscvException(RiscvExceptionCause cause, UInt32 tval, RV32_RegisterSet reg) : base(Enum.GetName(typeof(RiscvExceptionCause), cause)) {
@@ -56,6 +57,7 @@ namespace RV32_Register.Exceptions {
         }
     }
 
+    [Serializable]
     /// <summary>Risc-V CPUで発生した環境呼び出し例外を表します</summary>
     public class RiscvEnvironmentCallException : RiscvException {
         /// <summary>Risc-V CPU 環境呼び出し例外のインスタンスを初期化します</summary>
