@@ -142,132 +142,134 @@ namespace RV32_Register.MemoryHandler {
         /// </summary>
         public abstract void Reset();
 
+
+
         private protected UInt64 GetPhysicalAddr(UInt32 v_add, MemoryAccessMode accMode) {
 
             SatpCSR satp = reg.CSRegisters[CSR.satp];
 
-            if (!satp.MODE || true) {
+            if (!satp.MODE) {
                 return (ulong)v_add;
+            }
+            VirtAddr32 virt_addr = v_add;
 
-            } else {
-                VirtAddr32 virt_addr = v_add;
+            RiscvExceptionCause pageFaultCouse;
+            switch (accMode) {
+                case MemoryAccessMode.Execute:
+                    pageFaultCouse = RiscvExceptionCause.InstructionPageFault;
+                    break;
+                case MemoryAccessMode.Write:
+                    pageFaultCouse = RiscvExceptionCause.StoreAMOPageFault;
+                    break;
+                case MemoryAccessMode.Read:
+                    pageFaultCouse = RiscvExceptionCause.LoadPageFault;
+                    break;
+                default:
+                    return 0;
+            }
 
-                RiscvExceptionCause pageFaultCouse;
-                switch (accMode) {
-                    case MemoryAccessMode.Execute:
-                        pageFaultCouse = RiscvExceptionCause.InstructionPageFault;
-                        break;
-                    case MemoryAccessMode.Write:
-                        pageFaultCouse = RiscvExceptionCause.StoreAMOPageFault;
-                        break;
-                    case MemoryAccessMode.Read:
-                        pageFaultCouse = RiscvExceptionCause.LoadPageFault;
-                        break;
-                    default:
-                        return 0;
+            /* 1.pte_addrをsatp：ppn×PAGESIZEとし、i = LEVELS - 1とする（Sv32の場合、PAGESIZE = 2^12、LEVELS = 2）
+             */
+            const uint PageSize = 0x1000u;
+            const int Levels = 2;
+
+            uint pte_addr = satp.PPN * PageSize;
+
+            int i = Levels - 1;
+
+            PageTableEntry32 pte = 0;
+
+            /* 2.アドレスpte_addr + vaにあるPTEの値をpteとします。vpn [i]×PTESIZE。 （Sv32の場合、PTESIZE = 4）
+             * pteにアクセスしてPMAまたはPMPチェックに違反した場合は、アクセス例外を発生させます。
+             */
+            const uint PteSize = 4u;
+            while (i >= 0) {
+
+                pte_addr += virt_addr.VPN[i] * PteSize;
+                pte = (PageTableEntry32)BitConverter.ToUInt32(mainMemory, (int)(pte_addr - PAddr + Offset));
+
+                if (false) {
+                    // ToDo: PMA,PMPチェックの実装
                 }
 
-                /* 1.aをsatp：ppn×PAGESIZEとし、i = LEVELS - 1とする（Sv32の場合、PAGESIZE = 212およびLEVELS = 2）
+
+                /* 3.pte.v = 0の場合、またはpte.r = 0かつpte.w = 1の場合、停止してページフォルト例外を発生させます。
                  */
-                const uint PageSize = 0x1000u;
-                const int Levels = 2;
+                if (!pte.IsValid || (((int)pte.Permission & 0b110) == 0b010)) {
+                    throw new RiscvException(pageFaultCouse, v_add, reg);
+                }
 
-                uint pte_addr = satp.PPN * PageSize;
-                int i = Levels - 1;
-
-                PageTableEntry32 pte = 0;
-
-                /* 2.アドレスa + vaにあるPTEの値をpteとします。vpn [i]×PTESIZE。 （Sv32の場合、PTESIZE = 4）
-                 * pteにアクセスしてPMAまたはPMPチェックに違反した場合は、アクセス例外を発生させます。
+                /* 4.それ以外の場合、PTEは有効です。
+                 * pte：r = 1またはpte：x = 1の場合、手順5に進みます。
                  */
-                const uint PteSize = 4u;
-                while (i >= 0) {
-
-                    pte_addr += virt_addr.VPN[i] * PteSize;
-                    pte = (PageTableEntry32)BitConverter.ToUInt32(mainMemory, (int)(pte_addr - PAddr + Offset));
-
-                    if (false) {
-                        // ToDo: PMA,PMPチェックの実装
-                    }
-
-                    
-                    /* 3.pte.v = 0の場合、またはpte.r = 0かつpte.w = 1の場合、停止してページフォルト例外を発生させます。
+                if (pte.Permission != PtPermission.Pointer) {
+                    // ループを抜けて次の手順へ
+                    break;
+                } else {
+                    /* それ以外の場合、このPTEはページテーブルの次のレベルへのポインタです。
+                     * ｉ ＝ ｉ － １とします。
+                     * i <0の場合、停止してページ不在例外を発生させます。
+                     * それ以外の場合は、a = pte.ppn×PAGESIZEとし、手順2に進みます。
                      */
-                    if (Enum.GetValues(typeof(PtPermission)).Cast<PtPermission>().Contains(pte.Permission) || !pte.IsValid) {
+                    i--;
+                    if (i < 0) {
                         throw new RiscvException(pageFaultCouse, v_add, reg);
                     }
-
-                    /* 4.それ以外の場合、PTEは有効です。
-                     * pte：r = 1またはpte：x = 1の場合、手順5に進みます。
-                     */
-                    if (pte.Permission != PtPermission.Pointer) {
-                        // ループを抜けて次の手順へ
-                        break;
-                    } else {
-                        /* それ以外の場合、このPTEはページテーブルの次のレベルへのポインタです。
-                         * ｉ ＝ ｉ － １とします。
-                         * i <0の場合、停止してページ不在例外を発生させます。
-                         * それ以外の場合は、a = pte.ppn×PAGESIZEとし、手順2に進みます。
-                         */
-                        i--;
-                        if (i < 0) {
-                            throw new RiscvException(pageFaultCouse, v_add, reg);
-                        }
-                        pte_addr = pte.PPN[i] * PageSize;
-                        continue;
-                    }
+                    pte_addr = pte.PPN[i] * PageSize;
+                    continue;
                 }
-
-                /* 5.リーフPTEが見つかりました。
-                 * 現在の特権モードと、mstatusレジスタのSUMおよびMXRフィールドの値を考慮して、要求されたメモリアクセスが
-                 * pte.r、pte.w、pte.x、およびpte.uビットによって許可されているかどうかを確認します。
-                 * そうでない場合は、停止してページ不在例外を発生させます。
-                 */
-                StatusCSR status = reg.CSRegisters[CSR.mstatus];
-                bool allowUser = pte.IsUserMode ^ (reg.CurrentMode != PrivilegeLevels.UserMode);
-                bool allowUserWithSUM = reg.CurrentMode == PrivilegeLevels.SupervisorMode && status.SUM;
-
-                bool allowPermission = ((byte)accMode & (byte)pte.Permission) != 0;
-                bool allowPermissionWithMXR = pte.Permission == PtPermission.ExecuteOnly && status.MXR;
-
-                if (!((allowUser || allowUserWithSUM) && (allowPermission || allowPermissionWithMXR))) {
-                    throw new RiscvException(pageFaultCouse, v_add, reg);
-                }
-
-                /* 6. i> 0かつpa.ppn [i － 1：0]≠0の場合、これは位置ずれしたスーパーページです。
-                 * ページフォルト例外を停止して発生させます。
-                 */
-                if (i > 0 && pte.PPN[i - 1] != 0) {
-                    throw new RiscvException(pageFaultCouse, v_add, reg);
-                }
-
-                /* 7. pte.a = 0の場合、またはメモリアクセスがストアでpte.d = 0の場合、ページフォルト例外が発生するか、または、
-                 * ・pte.aを1に設定し、メモリアクセスがストアの場合はpte.dも1に設定します。
-                 * ・このアクセスがPMAまたはPMPチェックに違反している場合は、アクセス例外を発生させます。
-                 * ・この更新と手順2のpteのロードはアトミックでなければなりません。
-                 * 特に、PTEへの介在ストアがその間に発生したと認識されることはありません。
-                 */
-                if (!pte.IsAccessed || pte.IsDarty && accMode == MemoryAccessMode.Write) {
-                    throw new RiscvException(pageFaultCouse, v_add, reg);
-                }
-
-                /* 8.変換は成功しました。変換された物理アドレスは以下のように与えられます。
-                 * ・pa.pgoff = va.pgoff
-                 * ・i> 0の場合、これはスーパーページ変換であり、pa：ppn [i - 1：0] = va：vpn [i - 1：0]です。
-                 * ・pa.ppn [LEVELS - 1：i] = pte.ppn [LEVELS - 1：i]
-                 */
-                UInt64 phy_addr = 0u;
-                phy_addr |= virt_addr.PageOffset;
-                phy_addr |= (UInt64)(i > 0 ? virt_addr.VPN[i - 1] : pte.PPN[i ]) << 12;
-                phy_addr |= (UInt64)pte.PPN[Levels - 1] << 22;
-                return phy_addr;
-
             }
+
+            /* 5.リーフPTEが見つかりました。
+             * 現在の特権モードと、mstatusレジスタのSUMおよびMXRフィールドの値を考慮して、要求されたメモリアクセスが
+             * pte.r、pte.w、pte.x、およびpte.uビットによって許可されているかどうかを確認します。
+             * そうでない場合は、停止してページ不在例外を発生させます。
+             */
+            StatusCSR status = reg.CSRegisters[CSR.mstatus];
+            bool allowUser = pte.IsUserMode ^ (reg.CurrentMode != PrivilegeLevels.UserMode);
+            bool allowUserWithSUM = reg.CurrentMode == PrivilegeLevels.SupervisorMode && status.SUM;
+
+            bool allowPermission = ((byte)accMode & (byte)pte.Permission) != 0;
+            bool allowPermissionWithMXR = pte.Permission == PtPermission.ExecuteOnly && status.MXR;
+
+            if (!((allowUser || allowUserWithSUM) && (allowPermission || allowPermissionWithMXR))) {
+                throw new RiscvException(pageFaultCouse, v_add, reg);
+            }
+
+            /* 6. i> 0かつpa.ppn [i － 1：0]≠0の場合、これは位置ずれしたスーパーページです。
+             * ページフォルト例外を停止して発生させます。
+             */
+            if (i > 0 && pte.PPN[i - 1] != 0) {
+                throw new RiscvException(pageFaultCouse, v_add, reg);
+            }
+
+            /* 7. pte.a = 0の場合、またはメモリアクセスがストアでpte.d = 0の場合、ページフォルト例外が発生するか、または、
+             * ・pte.aを1に設定し、メモリアクセスがストアの場合はpte.dも1に設定します。
+             * ・このアクセスがPMAまたはPMPチェックに違反している場合は、アクセス例外を発生させます。
+             * ・この更新と手順2のpteのロードはアトミックでなければなりません。
+             * 特に、PTEへの介在ストアがその間に発生したと認識されることはありません。
+             */
+            if (!pte.IsAccessed || (!pte.IsDarty && accMode == MemoryAccessMode.Write)) {
+                throw new RiscvException(pageFaultCouse, v_add, reg);
+            }
+
+            /* 8.変換は成功しました。変換された物理アドレスは以下のように与えられます。
+             * ・pa.pgoff = va.pgoff
+             * ・i> 0の場合、これはスーパーページ変換であり、pa：ppn [i - 1：0] = va：vpn [i - 1：0]です。
+             * ・pa.ppn [LEVELS - 1：i] = pte.ppn [LEVELS - 1：i]
+             */
+            UInt64 phy_addr = 0u;
+            phy_addr |= virt_addr.PageOffset;
+            phy_addr |= (UInt64)(i > 0 ? virt_addr.VPN[i - 1] : pte.PPN[i]) << 12;
+            phy_addr |= (UInt64)pte.PPN[Levels - 1] << 22;
+            return phy_addr;
+
 
         }
 
     }
 
+    [Serializable]
     /// <summary>
     /// ホストへトラップを返す
     /// </summary>
