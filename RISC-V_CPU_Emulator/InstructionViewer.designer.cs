@@ -26,12 +26,11 @@ namespace RISC_V_CPU_Emulator {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InstructionViewerForm));
             this.DumpViewTextBox = new System.Windows.Forms.RichTextBox();
             this.BinaryInstructionDigitLabel = new System.Windows.Forms.Label();
             this.ArgumentsGroupBox = new System.Windows.Forms.GroupBox();
-            this.Arg5Value = new System.Windows.Forms.Label();
-            this.Arg5Name = new System.Windows.Forms.Label();
             this.Arg4Value = new System.Windows.Forms.Label();
             this.Arg4Name = new System.Windows.Forms.Label();
             this.Arg3Value = new System.Windows.Forms.Label();
@@ -61,12 +60,14 @@ namespace RISC_V_CPU_Emulator {
             this.DisplayIRegisterCheckBox = new System.Windows.Forms.CheckBox();
             this.IntegerRegistersControl = new RISC_V_CPU_Emulator.IntegerRegistersControl();
             this.FloatPointRegistersControl = new RISC_V_CPU_Emulator.FloatPointRegistersControl();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.ArgumentsGroupBox.SuspendLayout();
             this.InstructionRegisterGroupBox.SuspendLayout();
             this.ProgramCounterGroupBox.SuspendLayout();
             this.CurrentModeGroupBox.SuspendLayout();
             this.BinaryInstructionPanel.SuspendLayout();
             this.DisplayRegisterCheckBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // DumpViewTextBox
@@ -75,6 +76,7 @@ namespace RISC_V_CPU_Emulator {
             this.DumpViewTextBox.BackColor = System.Drawing.Color.White;
             this.DumpViewTextBox.Name = "DumpViewTextBox";
             this.DumpViewTextBox.ReadOnly = true;
+            this.DumpViewTextBox.TabStop = false;
             // 
             // BinaryInstructionDigitLabel
             // 
@@ -84,8 +86,6 @@ namespace RISC_V_CPU_Emulator {
             // ArgumentsGroupBox
             // 
             resources.ApplyResources(this.ArgumentsGroupBox, "ArgumentsGroupBox");
-            this.ArgumentsGroupBox.Controls.Add(this.Arg5Value);
-            this.ArgumentsGroupBox.Controls.Add(this.Arg5Name);
             this.ArgumentsGroupBox.Controls.Add(this.Arg4Value);
             this.ArgumentsGroupBox.Controls.Add(this.Arg4Name);
             this.ArgumentsGroupBox.Controls.Add(this.Arg3Value);
@@ -96,16 +96,6 @@ namespace RISC_V_CPU_Emulator {
             this.ArgumentsGroupBox.Controls.Add(this.Arg1Name);
             this.ArgumentsGroupBox.Name = "ArgumentsGroupBox";
             this.ArgumentsGroupBox.TabStop = false;
-            // 
-            // Arg5Value
-            // 
-            resources.ApplyResources(this.Arg5Value, "Arg5Value");
-            this.Arg5Value.Name = "Arg5Value";
-            // 
-            // Arg5Name
-            // 
-            resources.ApplyResources(this.Arg5Name, "Arg5Name");
-            this.Arg5Name.Name = "Arg5Name";
             // 
             // Arg4Value
             // 
@@ -273,11 +263,13 @@ namespace RISC_V_CPU_Emulator {
             // 
             resources.ApplyResources(this.IntegerRegistersControl, "IntegerRegistersControl");
             this.IntegerRegistersControl.Name = "IntegerRegistersControl";
+            this.IntegerRegistersControl.TabStop = false;
             // 
             // FloatPointRegistersControl
             // 
             resources.ApplyResources(this.FloatPointRegistersControl, "FloatPointRegistersControl");
             this.FloatPointRegistersControl.Name = "FloatPointRegistersControl";
+            this.FloatPointRegistersControl.TabStop = false;
             // 
             // InstructionViewerForm
             // 
@@ -309,6 +301,7 @@ namespace RISC_V_CPU_Emulator {
             this.BinaryInstructionPanel.PerformLayout();
             this.DisplayRegisterCheckBox.ResumeLayout(false);
             this.DisplayRegisterCheckBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -324,12 +317,10 @@ namespace RISC_V_CPU_Emulator {
         private System.Windows.Forms.Label Arg2Name;
         private System.Windows.Forms.Label Arg3Name;
         private System.Windows.Forms.Label Arg4Name;
-        private System.Windows.Forms.Label Arg5Name;
         private System.Windows.Forms.Label Arg1Value;
         private System.Windows.Forms.Label Arg2Value;
         private System.Windows.Forms.Label Arg3Value;
         private System.Windows.Forms.Label Arg4Value;
-        private System.Windows.Forms.Label Arg5Value;
         private System.Windows.Forms.GroupBox ProgramCounterGroupBox;
         private System.Windows.Forms.Label PCValueLabel;
         private System.Windows.Forms.GroupBox CurrentModeGroupBox;
@@ -349,5 +340,6 @@ namespace RISC_V_CPU_Emulator {
         private System.Windows.Forms.CheckBox DisplayCSRegisterCheckBox;
         private System.Windows.Forms.CheckBox DisplayFPRegisterCheckBox;
         private System.Windows.Forms.CheckBox DisplayIRegisterCheckBox;
+        private System.Windows.Forms.BindingSource bindingSource1;
     }
 }

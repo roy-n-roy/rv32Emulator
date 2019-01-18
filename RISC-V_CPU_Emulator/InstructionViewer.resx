@@ -117,236 +117,347 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="&gt;&gt;Arg3Value.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="DumpViewTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="DisplayCSRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 22</value>
+  <data name="DumpViewTextBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Yu Gothic UI, 9pt</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="BinaryInstructionLabel_1_7.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;DisplayIRegisterCheckBox.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;Arg1Name.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="BinaryInstructionLabel_16_20.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="DisplayRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>566, 348</value>
-  </data>
-  <data name="&gt;&gt;Arg2Value.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="ArgumentsGroupBox.Text" xml:space="preserve">
-    <value>Arguments</value>
-  </data>
-  <data name="Arg5Value.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;DisplayRegisterCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Arg5Value.Name" xml:space="preserve">
-    <value>Arg5Value</value>
-  </data>
-  <data name="IntegerRegistersControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 345</value>
-  </data>
-  <data name="&gt;&gt;Arg1Value.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="CurrentModeGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>900, 243</value>
-  </data>
-  <data name="statusLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;Arg1Value.Name" xml:space="preserve">
-    <value>Arg1Value</value>
-  </data>
-  <data name="DisplayIRegisterCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="BinaryInstructionLabel_13_15.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="Arg4Value.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 179</value>
-  </data>
-  <data name="Arg4Name.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 36</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_1_7.Name" xml:space="preserve">
-    <value>BinaryInstructionLabel_1_7</value>
-  </data>
-  <data name="BinaryInstructionLabel_12_8.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="Arg2Value.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 18pt</value>
-  </data>
-  <data name="&gt;&gt;InstructionNameLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="DumpViewTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>12, 12</value>
   </data>
   <data name="DumpViewTextBox.ScrollBars" type="System.Windows.Forms.RichTextBoxScrollBars, System.Windows.Forms">
     <value>Vertical</value>
   </data>
-  <data name="Arg1Name.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 36</value>
+  <data name="DumpViewTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>533, 352</value>
   </data>
-  <data name="&gt;&gt;PCValueLabel.Parent" xml:space="preserve">
-    <value>ProgramCounterGroupBox</value>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="DumpViewTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="InstructionRegisterGroupBox.Text" xml:space="preserve">
-    <value>Instruction Register</value>
+  <data name="DumpViewTextBox.Text" xml:space="preserve">
+    <value />
   </data>
-  <data name="CurrentModeLabel.Text" xml:space="preserve">
-    <value>MachineMode</value>
+  <data name="&gt;&gt;DumpViewTextBox.Name" xml:space="preserve">
+    <value>DumpViewTextBox</value>
   </data>
-  <data name="BinaryInstructionDigitLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Yu Gothic UI, 9pt</value>
+  <data name="&gt;&gt;DumpViewTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ProgramCounterGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="IntegerRegistersControl.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;Arg3Value.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="DisplayIRegisterCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionDigitLabel.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;InstructionRegisterGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;DisplayFPRegisterCheckBox.Name" xml:space="preserve">
-    <value>DisplayFPRegisterCheckBox</value>
-  </data>
-  <data name="&gt;&gt;Arg4Value.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="BinaryInstructionLabel_21_25.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="Arg5Name.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 36</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionPanel.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeLabel.Parent" xml:space="preserve">
-    <value>CurrentModeGroupBox</value>
-  </data>
-  <data name="&gt;&gt;Arg2Name.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;StepExecuteButton.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="BinaryInstructionLabel_12_8.Text" xml:space="preserve">
-    <value>00000</value>
-  </data>
-  <data name="&gt;&gt;Arg2Name.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;DisplayIRegisterCheckBox.Name" xml:space="preserve">
-    <value>DisplayIRegisterCheckBox</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_1_7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ProgramCounterGroupBox.Parent" xml:space="preserve">
+  <data name="&gt;&gt;DumpViewTextBox.Parent" xml:space="preserve">
     <value>$this</value>
-  </data>
-  <data name="FloatPointRegistersControl.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
-  </data>
-  <data name="BinaryInstructionDigitLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>Risc-V Instruction Viewer</value>
-  </data>
-  <data name="Arg2Name.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="Arg5Name.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 18pt</value>
-  </data>
-  <data name="BinaryInstructionLabel_16_20.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
   </data>
   <data name="&gt;&gt;DumpViewTextBox.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="ProgramCounterGroupBox.Text" xml:space="preserve">
-    <value>Program Counter</value>
+  <data name="BinaryInstructionDigitLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
-  <data name="&gt;&gt;CurrentModeGroupBox.Name" xml:space="preserve">
-    <value>CurrentModeGroupBox</value>
+  <data name="BinaryInstructionDigitLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="InstructionRegisterGroupBox.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 9pt</value>
+  <data name="BinaryInstructionDigitLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Yu Gothic UI, 9pt</value>
   </data>
-  <data name="&gt;&gt;BinaryInstructionDigitLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="BinaryInstructionDigitLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="FloatPointRegistersControl.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="BinaryInstructionDigitLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 40</value>
   </data>
-  <data name="BinaryInstructionLabel_26_32.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Yu Gothic UI, 21.75pt</value>
+  <data name="BinaryInstructionDigitLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>593, 15</value>
   </data>
-  <data name="ProgramCounterGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>900, 153</value>
+  <data name="BinaryInstructionDigitLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
   </data>
-  <data name="Arg1Name.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 29</value>
+  <data name="BinaryInstructionDigitLabel.Text" xml:space="preserve">
+    <value>--------Opcode-------  -------rs2--------    -------rs1-------  -Opcide-    ------rd--------    -------Opcode--------</value>
   </data>
   <data name="BinaryInstructionDigitLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
-  <data name="Arg1Name.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="&gt;&gt;BinaryInstructionDigitLabel.Name" xml:space="preserve">
+    <value>BinaryInstructionDigitLabel</value>
   </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_21_25.Name" xml:space="preserve">
-    <value>BinaryInstructionLabel_21_25</value>
+  <data name="&gt;&gt;BinaryInstructionDigitLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionDigitLabel.Parent" xml:space="preserve">
+    <value>BinaryInstructionPanel</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionDigitLabel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="ArgumentsGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="&gt;&gt;Arg4Value.Name" xml:space="preserve">
     <value>Arg4Value</value>
   </data>
-  <data name="BinaryInstructionLabel_12_8.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;Arg4Value.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg4Value.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg4Value.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;Arg4Name.Name" xml:space="preserve">
+    <value>Arg4Name</value>
+  </data>
+  <data name="&gt;&gt;Arg4Name.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg4Name.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg4Name.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;Arg3Value.Name" xml:space="preserve">
+    <value>Arg3Value</value>
+  </data>
+  <data name="&gt;&gt;Arg3Value.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg3Value.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg3Value.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;Arg3Name.Name" xml:space="preserve">
+    <value>Arg3Name</value>
+  </data>
+  <data name="&gt;&gt;Arg3Name.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg3Name.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg3Name.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;Arg2Value.Name" xml:space="preserve">
+    <value>Arg2Value</value>
+  </data>
+  <data name="&gt;&gt;Arg2Value.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg2Value.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg2Value.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;Arg2Name.Name" xml:space="preserve">
+    <value>Arg2Name</value>
+  </data>
+  <data name="&gt;&gt;Arg2Name.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg2Name.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg2Name.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;Arg1Value.Name" xml:space="preserve">
+    <value>Arg1Value</value>
+  </data>
+  <data name="&gt;&gt;Arg1Value.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg1Value.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg1Value.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;Arg1Name.Name" xml:space="preserve">
+    <value>Arg1Name</value>
+  </data>
+  <data name="&gt;&gt;Arg1Name.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg1Name.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg1Name.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="ArgumentsGroupBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 9pt</value>
+  </data>
+  <data name="ArgumentsGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>570, 63</value>
   </data>
   <data name="ArgumentsGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>310, 279</value>
+    <value>310, 226</value>
+  </data>
+  <data name="ArgumentsGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ArgumentsGroupBox.Text" xml:space="preserve">
+    <value>Arguments</value>
+  </data>
+  <data name="&gt;&gt;ArgumentsGroupBox.Name" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;ArgumentsGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ArgumentsGroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ArgumentsGroupBox.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="Arg4Value.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="Arg4Value.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Arg4Value.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 18pt</value>
+  </data>
+  <data name="Arg4Value.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Arg4Value.Location" type="System.Drawing.Point, System.Drawing">
+    <value>147, 179</value>
+  </data>
+  <data name="Arg4Value.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 36</value>
+  </data>
+  <data name="Arg4Value.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;Arg4Value.Name" xml:space="preserve">
+    <value>Arg4Value</value>
+  </data>
+  <data name="&gt;&gt;Arg4Value.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg4Value.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg4Value.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="Arg4Name.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="Arg4Name.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Arg4Name.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 18pt</value>
+  </data>
+  <data name="Arg4Name.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Arg4Name.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 179</value>
+  </data>
+  <data name="Arg4Name.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 36</value>
+  </data>
+  <data name="Arg4Name.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;Arg4Name.Name" xml:space="preserve">
+    <value>Arg4Name</value>
+  </data>
+  <data name="&gt;&gt;Arg4Name.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg4Name.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg4Name.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="Arg3Value.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="Arg3Value.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="Arg3Value.Font" type="System.Drawing.Font, System.Drawing">
     <value>メイリオ, 18pt</value>
   </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_13_15.Parent" xml:space="preserve">
-    <value>BinaryInstructionPanel</value>
+  <data name="Arg3Value.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_1_7.Parent" xml:space="preserve">
-    <value>BinaryInstructionPanel</value>
+  <data name="Arg3Value.Location" type="System.Drawing.Point, System.Drawing">
+    <value>147, 129</value>
+  </data>
+  <data name="Arg3Value.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 36</value>
   </data>
   <data name="Arg3Value.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="DisplayIRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>302, 22</value>
+  <data name="&gt;&gt;Arg3Value.Name" xml:space="preserve">
+    <value>Arg3Value</value>
+  </data>
+  <data name="&gt;&gt;Arg3Value.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg3Value.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg3Value.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="Arg3Name.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="Arg3Name.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Arg3Name.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 18pt</value>
+  </data>
+  <data name="Arg3Name.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Arg3Name.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 129</value>
+  </data>
+  <data name="Arg3Name.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 36</value>
+  </data>
+  <data name="Arg3Name.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;Arg3Name.Name" xml:space="preserve">
+    <value>Arg3Name</value>
+  </data>
+  <data name="&gt;&gt;Arg3Name.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg3Name.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;Arg3Name.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="Arg2Value.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="Arg2Value.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Arg2Value.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 18pt</value>
   </data>
   <data name="Arg2Value.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -354,293 +465,194 @@
   <data name="Arg2Value.Location" type="System.Drawing.Point, System.Drawing">
     <value>147, 79</value>
   </data>
-  <data name="BinaryInstructionLabel_13_15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 40</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionPanel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="InstructionNameLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 44</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_21_25.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="PCValueLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 24</value>
-  </data>
-  <data name="BinaryInstructionDigitLabel.Text" xml:space="preserve">
-    <value>--------Opcode-------  -------rs2--------    -------rs1-------  -Opcide-    ------rd--------    -------Opcode--------</value>
-  </data>
-  <data name="&gt;&gt;Arg5Name.Name" xml:space="preserve">
-    <value>Arg5Name</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
-  </data>
-  <data name="&gt;&gt;DumpViewTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Arg3Name.Name" xml:space="preserve">
-    <value>Arg3Name</value>
-  </data>
-  <data name="Arg4Value.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 18pt</value>
-  </data>
-  <data name="DisplayFPRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>322, 22</value>
-  </data>
-  <data name="&gt;&gt;statusLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="InstructionRegisterGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 78</value>
-  </data>
-  <data name="StepExecuteButton.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="CurrentModeGroupBox.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 9pt</value>
-  </data>
-  <data name="BinaryInstructionLabel_12_8.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="Arg1Value.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="CurrentModeLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ArgumentsGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 63</value>
-  </data>
-  <data name="Arg4Name.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;FloatPointRegistersControl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="BinaryInstructionLabel_21_25.Text" xml:space="preserve">
-    <value>00000</value>
-  </data>
-  <data name="Arg1Value.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 36</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="BinaryInstructionLabel_26_32.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="StepExecuteButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>185, 51</value>
-  </data>
-  <data name="&gt;&gt;InstructionNameLabel.Parent" xml:space="preserve">
-    <value>InstructionRegisterGroupBox</value>
-  </data>
-  <data name="statusLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_26_32.Name" xml:space="preserve">
-    <value>BinaryInstructionLabel_26_32</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="statusLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_26_32.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="BinaryInstructionLabel_16_20.Text" xml:space="preserve">
-    <value>00000</value>
-  </data>
   <data name="Arg2Value.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 36</value>
   </data>
-  <data name="Arg3Value.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 36</value>
+  <data name="Arg2Value.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="&gt;&gt;statusLabel.Parent" xml:space="preserve">
-    <value>CurrentModeGroupBox</value>
+  <data name="&gt;&gt;Arg2Value.Name" xml:space="preserve">
+    <value>Arg2Value</value>
   </data>
-  <data name="Arg4Name.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+  <data name="&gt;&gt;Arg2Value.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_26_32.Parent" xml:space="preserve">
-    <value>BinaryInstructionPanel</value>
+  <data name="&gt;&gt;Arg2Value.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
   </data>
-  <data name="BinaryInstructionLabel_1_7.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Yu Gothic UI, 21.75pt</value>
+  <data name="&gt;&gt;Arg2Value.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="Arg2Name.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="Arg2Name.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="Arg2Name.Font" type="System.Drawing.Font, System.Drawing">
     <value>メイリオ, 18pt</value>
   </data>
-  <data name="&gt;&gt;Arg4Value.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="CurrentModeLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="DumpViewTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 12</value>
-  </data>
-  <data name="&gt;&gt;ProgramCounterGroupBox.Name" xml:space="preserve">
-    <value>ProgramCounterGroupBox</value>
-  </data>
-  <data name="ProgramCounterGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 79</value>
-  </data>
-  <data name="CurrentModeLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 18pt</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_16_20.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="BinaryInstructionLabel_26_32.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="Arg2Name.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="PCValueLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+  <data name="Arg2Name.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 79</value>
   </data>
-  <data name="&gt;&gt;InstructionNameLabel.Name" xml:space="preserve">
-    <value>InstructionNameLabel</value>
-  </data>
-  <data name="Arg4Value.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="Arg2Name.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 36</value>
   </data>
-  <data name="Arg5Value.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="Arg2Name.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
-  <data name="&gt;&gt;DisplayIRegisterCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;Arg2Name.Name" xml:space="preserve">
+    <value>Arg2Name</value>
   </data>
-  <data name="PCValueLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 21.75pt</value>
-  </data>
-  <data name="BinaryInstructionLabel_16_20.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="&gt;&gt;Arg3Name.Type" xml:space="preserve">
+  <data name="&gt;&gt;Arg2Name.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Arg4Name.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;Arg2Name.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
   </data>
-  <data name="PCValueLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 44</value>
+  <data name="&gt;&gt;Arg2Name.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
-  <data name="CurrentModeGroupBox.Text" xml:space="preserve">
-    <value>Current Mode</value>
+  <data name="Arg1Value.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
-  <data name="BinaryInstructionLabel_26_32.AutoSize" type="System.Boolean, mscorlib">
+  <data name="Arg1Value.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="BinaryInstructionLabel_13_15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="Arg1Value.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 18pt</value>
+  </data>
+  <data name="Arg1Value.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;statusLabel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="statusLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="DisplayCSRegisterCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
   </data>
   <data name="Arg1Value.Location" type="System.Drawing.Point, System.Drawing">
     <value>147, 29</value>
   </data>
-  <data name="Arg3Name.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 18pt</value>
+  <data name="Arg1Value.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 36</value>
   </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_12_8.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="Arg1Value.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="&gt;&gt;Arg3Name.Parent" xml:space="preserve">
+  <data name="&gt;&gt;Arg1Value.Name" xml:space="preserve">
+    <value>Arg1Value</value>
+  </data>
+  <data name="&gt;&gt;Arg1Value.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Arg1Value.Parent" xml:space="preserve">
     <value>ArgumentsGroupBox</value>
   </data>
-  <data name="InstructionRegisterGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="&gt;&gt;Arg1Value.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="Arg1Name.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="&gt;&gt;ArgumentsGroupBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="Arg5Name.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 229</value>
-  </data>
-  <data name="&gt;&gt;IntegerRegistersControl.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;DisplayRegisterCheckBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="Arg3Name.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="BinaryInstructionLabel_12_8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 40</value>
+  <data name="Arg1Name.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="Arg1Name.Font" type="System.Drawing.Font, System.Drawing">
     <value>メイリオ, 18pt</value>
   </data>
-  <data name="BinaryInstructionLabel_12_8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>378, 0</value>
-  </data>
-  <data name="&gt;&gt;Arg4Value.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionPanel.Name" xml:space="preserve">
-    <value>BinaryInstructionPanel</value>
-  </data>
-  <data name="Arg3Value.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 129</value>
-  </data>
-  <data name="statusLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>17, 58</value>
-  </data>
-  <data name="&gt;&gt;DisplayIRegisterCheckBox.Parent" xml:space="preserve">
-    <value>DisplayRegisterCheckBox</value>
-  </data>
-  <data name="PCValueLabel.Text" xml:space="preserve">
-    <value>0x00000000</value>
-  </data>
-  <data name="StepExecuteButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>943, 358</value>
-  </data>
-  <data name="IntegerRegistersControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="BinaryInstructionLabel_26_32.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="PCValueLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="Arg1Name.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="CurrentModeLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="Arg1Name.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 29</value>
   </data>
-  <data name="Arg5Name.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="Arg1Name.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 36</value>
   </data>
-  <data name="&gt;&gt;IntegerRegistersControl.Name" xml:space="preserve">
-    <value>IntegerRegistersControl</value>
+  <data name="Arg1Name.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="&gt;&gt;Arg4Name.Type" xml:space="preserve">
+  <data name="&gt;&gt;Arg1Name.Name" xml:space="preserve">
+    <value>Arg1Name</value>
+  </data>
+  <data name="&gt;&gt;Arg1Name.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;Arg3Value.Name" xml:space="preserve">
-    <value>Arg3Value</value>
+  <data name="&gt;&gt;Arg1Name.Parent" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
   </data>
-  <data name="DisplayFPRegisterCheckBox.AutoSize" type="System.Boolean, mscorlib">
+  <data name="&gt;&gt;Arg1Name.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="InstructionRegisterGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="&gt;&gt;InstructionNameLabel.Name" xml:space="preserve">
+    <value>InstructionNameLabel</value>
+  </data>
+  <data name="&gt;&gt;InstructionNameLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;InstructionNameLabel.Parent" xml:space="preserve">
+    <value>InstructionRegisterGroupBox</value>
+  </data>
+  <data name="&gt;&gt;InstructionNameLabel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="InstructionRegisterGroupBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 9pt</value>
+  </data>
+  <data name="InstructionRegisterGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>897, 63</value>
+  </data>
+  <data name="InstructionRegisterGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>231, 65</value>
+  </data>
+  <data name="InstructionRegisterGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="InstructionRegisterGroupBox.Text" xml:space="preserve">
+    <value>Instruction Register</value>
+  </data>
+  <data name="&gt;&gt;InstructionRegisterGroupBox.Name" xml:space="preserve">
+    <value>InstructionRegisterGroupBox</value>
+  </data>
+  <data name="&gt;&gt;InstructionRegisterGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;InstructionRegisterGroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;InstructionRegisterGroupBox.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="InstructionNameLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="DisplayRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 71</value>
+  <data name="InstructionNameLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 21.75pt</value>
+  </data>
+  <data name="InstructionNameLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="InstructionNameLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 17</value>
+  </data>
+  <data name="InstructionNameLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 44</value>
+  </data>
+  <data name="InstructionNameLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;InstructionNameLabel.Name" xml:space="preserve">
+    <value>InstructionNameLabel</value>
+  </data>
+  <data name="&gt;&gt;InstructionNameLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;InstructionNameLabel.Parent" xml:space="preserve">
+    <value>InstructionRegisterGroupBox</value>
+  </data>
+  <data name="&gt;&gt;InstructionNameLabel.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="ProgramCounterGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -648,230 +660,410 @@
   <data name="&gt;&gt;PCValueLabel.Name" xml:space="preserve">
     <value>PCValueLabel</value>
   </data>
-  <data name="BinaryInstructionLabel_12_8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BinaryInstructionLabel_16_20.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="&gt;&gt;StepExecuteButton.Name" xml:space="preserve">
-    <value>StepExecuteButton</value>
-  </data>
-  <data name="DisplayCSRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="BinaryInstructionPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="Arg2Name.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 36</value>
-  </data>
-  <data name="DisplayCSRegisterCheckBox.Text" xml:space="preserve">
-    <value>Display Control-Status Register in a separate windows</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_21_25.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;ProgramCounterGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;InstructionRegisterGroupBox.Name" xml:space="preserve">
-    <value>InstructionRegisterGroupBox</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_16_20.Type" xml:space="preserve">
+  <data name="&gt;&gt;PCValueLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="BinaryInstructionLabel_1_7.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="&gt;&gt;Arg1Value.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeLabel.Name" xml:space="preserve">
-    <value>CurrentModeLabel</value>
-  </data>
-  <data name="&gt;&gt;InstructionRegisterGroupBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;Arg2Name.Name" xml:space="preserve">
-    <value>Arg2Name</value>
-  </data>
-  <data name="Arg4Value.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="Arg4Name.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="FloatPointRegistersControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>558, 372</value>
-  </data>
-  <data name="Arg5Value.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BinaryInstructionLabel_21_25.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Yu Gothic UI, 21.75pt</value>
-  </data>
-  <data name="InstructionNameLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 23</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_13_15.Name" xml:space="preserve">
-    <value>BinaryInstructionLabel_13_15</value>
-  </data>
-  <data name="BinaryInstructionLabel_21_25.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 40</value>
-  </data>
-  <data name="BinaryInstructionLabel_16_20.Location" type="System.Drawing.Point, System.Drawing">
-    <value>222, 0</value>
-  </data>
-  <data name="&gt;&gt;Arg1Value.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="CurrentModeGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>228, 99</value>
-  </data>
-  <data name="&gt;&gt;Arg2Value.Name" xml:space="preserve">
-    <value>Arg2Value</value>
-  </data>
-  <data name="Arg1Value.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="Arg2Name.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 79</value>
-  </data>
-  <data name="Arg5Name.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="BinaryInstructionLabel_12_8.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="ProgramCounterGroupBox.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 9pt</value>
-  </data>
-  <data name="Arg2Name.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="DisplayCSRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 48</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_12_8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="DisplayFPRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="Arg3Name.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 36</value>
-  </data>
-  <data name="&gt;&gt;InstructionNameLabel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;FloatPointRegistersControl.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;DisplayFPRegisterCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="BinaryInstructionLabel_12_8.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Yu Gothic UI, 21.75pt</value>
-  </data>
-  <data name="BinaryInstructionDigitLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 40</value>
-  </data>
-  <data name="ArgumentsGroupBox.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 9pt</value>
-  </data>
-  <data name="BinaryInstructionPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>544, 7</value>
-  </data>
-  <data name="BinaryInstructionLabel_21_25.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 0</value>
-  </data>
-  <data name="&gt;&gt;DisplayRegisterCheckBox.Name" xml:space="preserve">
-    <value>DisplayRegisterCheckBox</value>
-  </data>
-  <data name="Arg4Value.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionDigitLabel.Name" xml:space="preserve">
-    <value>BinaryInstructionDigitLabel</value>
-  </data>
-  <data name="Arg3Name.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_21_25.Parent" xml:space="preserve">
-    <value>BinaryInstructionPanel</value>
-  </data>
-  <data name="BinaryInstructionLabel_13_15.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="BinaryInstructionLabel_26_32.Size" type="System.Drawing.Size, System.Drawing">
-    <value>129, 40</value>
-  </data>
-  <data name="CurrentModeGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="&gt;&gt;Arg1Name.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeLabel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="StepExecuteButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;StepExecuteButton.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="DisplayRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
-  </data>
-  <data name="BinaryInstructionLabel_1_7.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="DisplayIRegisterCheckBox.Text" xml:space="preserve">
-    <value>Display Integer Register in a separate windows</value>
-  </data>
-  <data name="&gt;&gt;DisplayCSRegisterCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_13_15.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="InstructionNameLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="BinaryInstructionLabel_13_15.Text" xml:space="preserve">
-    <value>000</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeGroupBox.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="Arg2Value.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Arg5Value.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 229</value>
-  </data>
-  <data name="&gt;&gt;Arg5Name.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Arg2Value.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="BinaryInstructionLabel_1_7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>472, 0</value>
-  </data>
-  <data name="BinaryInstructionPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>601, 63</value>
+  <data name="&gt;&gt;PCValueLabel.Parent" xml:space="preserve">
+    <value>ProgramCounterGroupBox</value>
   </data>
   <data name="&gt;&gt;PCValueLabel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="BinaryInstructionLabel_1_7.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="ProgramCounterGroupBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 9pt</value>
+  </data>
+  <data name="ProgramCounterGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>897, 133</value>
+  </data>
+  <data name="ProgramCounterGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>231, 67</value>
+  </data>
+  <data name="ProgramCounterGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ProgramCounterGroupBox.Text" xml:space="preserve">
+    <value>Program Counter</value>
+  </data>
+  <data name="&gt;&gt;ProgramCounterGroupBox.Name" xml:space="preserve">
+    <value>ProgramCounterGroupBox</value>
+  </data>
+  <data name="&gt;&gt;ProgramCounterGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ProgramCounterGroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ProgramCounterGroupBox.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="PCValueLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="PCValueLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 21.75pt</value>
+  </data>
+  <data name="PCValueLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="PCValueLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 21</value>
+  </data>
+  <data name="PCValueLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 44</value>
+  </data>
+  <data name="PCValueLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="PCValueLabel.Text" xml:space="preserve">
+    <value>0x00000000</value>
+  </data>
+  <data name="&gt;&gt;PCValueLabel.Name" xml:space="preserve">
+    <value>PCValueLabel</value>
+  </data>
+  <data name="&gt;&gt;PCValueLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PCValueLabel.Parent" xml:space="preserve">
+    <value>ProgramCounterGroupBox</value>
+  </data>
+  <data name="&gt;&gt;PCValueLabel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="CurrentModeGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeLabel.Name" xml:space="preserve">
+    <value>CurrentModeLabel</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeLabel.Parent" xml:space="preserve">
+    <value>CurrentModeGroupBox</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeLabel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;statusLabel.Name" xml:space="preserve">
+    <value>statusLabel</value>
+  </data>
+  <data name="&gt;&gt;statusLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;statusLabel.Parent" xml:space="preserve">
+    <value>CurrentModeGroupBox</value>
+  </data>
+  <data name="&gt;&gt;statusLabel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="CurrentModeGroupBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 9pt</value>
+  </data>
+  <data name="CurrentModeGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>897, 203</value>
+  </data>
+  <data name="CurrentModeGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>231, 86</value>
+  </data>
+  <data name="CurrentModeGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="CurrentModeGroupBox.Text" xml:space="preserve">
+    <value>Current Mode</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeGroupBox.Name" xml:space="preserve">
+    <value>CurrentModeGroupBox</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeGroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeGroupBox.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="CurrentModeLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="CurrentModeLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 15.75pt</value>
+  </data>
+  <data name="CurrentModeLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="CurrentModeLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>34, 21</value>
+  </data>
+  <data name="CurrentModeLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>151, 31</value>
+  </data>
+  <data name="CurrentModeLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="CurrentModeLabel.Text" xml:space="preserve">
+    <value>MachineMode</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeLabel.Name" xml:space="preserve">
+    <value>CurrentModeLabel</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeLabel.Parent" xml:space="preserve">
+    <value>CurrentModeGroupBox</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeLabel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="statusLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="statusLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 14.25pt</value>
+  </data>
+  <data name="statusLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="statusLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 55</value>
+  </data>
+  <data name="statusLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 28</value>
+  </data>
+  <data name="statusLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="statusLabel.Text" xml:space="preserve">
+    <value>Status : Running</value>
+  </data>
+  <data name="&gt;&gt;statusLabel.Name" xml:space="preserve">
+    <value>statusLabel</value>
+  </data>
+  <data name="&gt;&gt;statusLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;statusLabel.Parent" xml:space="preserve">
+    <value>CurrentModeGroupBox</value>
+  </data>
+  <data name="&gt;&gt;statusLabel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="StepExecuteButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="StepExecuteButton.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Meiryo UI, 14.25pt, style=Bold</value>
+  </data>
+  <data name="StepExecuteButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="StepExecuteButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>943, 312</value>
+  </data>
+  <data name="StepExecuteButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>185, 51</value>
+  </data>
+  <data name="StepExecuteButton.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="StepExecuteButton.Text" xml:space="preserve">
+    <value>Step Execute</value>
+  </data>
+  <data name="&gt;&gt;StepExecuteButton.Name" xml:space="preserve">
+    <value>StepExecuteButton</value>
+  </data>
+  <data name="&gt;&gt;StepExecuteButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;StepExecuteButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;StepExecuteButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="BinaryInstructionLabel_26_32.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="BinaryInstructionLabel_26_32.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="BinaryInstructionLabel_26_32.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Yu Gothic UI, 21.75pt</value>
+  </data>
+  <data name="BinaryInstructionLabel_26_32.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BinaryInstructionLabel_26_32.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 0</value>
+  </data>
+  <data name="BinaryInstructionLabel_26_32.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="BinaryInstructionLabel_26_32.Size" type="System.Drawing.Size, System.Drawing">
     <value>129, 40</value>
   </data>
-  <data name="InstructionNameLabel.AutoSize" type="System.Boolean, mscorlib">
+  <data name="BinaryInstructionLabel_26_32.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="BinaryInstructionLabel_26_32.Text" xml:space="preserve">
+    <value>0000000</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_26_32.Name" xml:space="preserve">
+    <value>BinaryInstructionLabel_26_32</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_26_32.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_26_32.Parent" xml:space="preserve">
+    <value>BinaryInstructionPanel</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_26_32.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="BinaryInstructionLabel_21_25.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="BinaryInstructionLabel_21_25.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="BinaryInstructionLabel_21_25.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Yu Gothic UI, 21.75pt</value>
+  </data>
+  <data name="BinaryInstructionLabel_21_25.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BinaryInstructionLabel_21_25.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 0</value>
+  </data>
+  <data name="BinaryInstructionLabel_21_25.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="BinaryInstructionLabel_21_25.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 40</value>
+  </data>
+  <data name="BinaryInstructionLabel_21_25.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="BinaryInstructionLabel_21_25.Text" xml:space="preserve">
+    <value>00000</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_21_25.Name" xml:space="preserve">
+    <value>BinaryInstructionLabel_21_25</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_21_25.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_21_25.Parent" xml:space="preserve">
+    <value>BinaryInstructionPanel</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_21_25.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="BinaryInstructionLabel_16_20.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="BinaryInstructionLabel_16_20.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="BinaryInstructionLabel_16_20.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Yu Gothic UI, 21.75pt</value>
+  </data>
+  <data name="BinaryInstructionLabel_16_20.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BinaryInstructionLabel_16_20.Location" type="System.Drawing.Point, System.Drawing">
+    <value>222, 0</value>
+  </data>
+  <data name="BinaryInstructionLabel_16_20.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="BinaryInstructionLabel_16_20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 40</value>
+  </data>
+  <data name="BinaryInstructionLabel_16_20.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="BinaryInstructionLabel_16_20.Text" xml:space="preserve">
+    <value>00000</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_16_20.Name" xml:space="preserve">
+    <value>BinaryInstructionLabel_16_20</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_16_20.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_16_20.Parent" xml:space="preserve">
+    <value>BinaryInstructionPanel</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_16_20.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="BinaryInstructionLabel_13_15.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="BinaryInstructionLabel_13_15.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="BinaryInstructionLabel_13_15.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Yu Gothic UI, 21.75pt</value>
+  </data>
+  <data name="BinaryInstructionLabel_13_15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BinaryInstructionLabel_13_15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>317, 0</value>
+  </data>
+  <data name="BinaryInstructionLabel_13_15.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="BinaryInstructionLabel_13_15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>65, 40</value>
+  </data>
+  <data name="BinaryInstructionLabel_13_15.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="BinaryInstructionLabel_13_15.Text" xml:space="preserve">
+    <value>000</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_13_15.Name" xml:space="preserve">
+    <value>BinaryInstructionLabel_13_15</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_13_15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_13_15.Parent" xml:space="preserve">
+    <value>BinaryInstructionPanel</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_13_15.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="BinaryInstructionLabel_12_8.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="BinaryInstructionLabel_12_8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="BinaryInstructionLabel_12_8.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Yu Gothic UI, 21.75pt</value>
+  </data>
+  <data name="BinaryInstructionLabel_12_8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="BinaryInstructionLabel_12_8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>378, 0</value>
+  </data>
+  <data name="BinaryInstructionLabel_12_8.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="BinaryInstructionLabel_12_8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 40</value>
+  </data>
+  <data name="BinaryInstructionLabel_12_8.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="BinaryInstructionLabel_12_8.Text" xml:space="preserve">
+    <value>00000</value>
   </data>
   <data name="BinaryInstructionLabel_12_8.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleCenter</value>
@@ -879,382 +1071,274 @@
   <data name="&gt;&gt;BinaryInstructionLabel_12_8.Name" xml:space="preserve">
     <value>BinaryInstructionLabel_12_8</value>
   </data>
-  <data name="&gt;&gt;IntegerRegistersControl.Type" xml:space="preserve">
-    <value>RISC_V_CPU_Emulator.IntegerRegistersControl, RISC-V_CPU_Emulator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;ArgumentsGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="BinaryInstructionDigitLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="DisplayFPRegisterCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;ArgumentsGroupBox.Name" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="Arg4Name.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="IntegerRegistersControl.TabIndex" type="System.Int32, mscorlib">
-    <value>25</value>
-  </data>
-  <data name="&gt;&gt;Arg5Name.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="BinaryInstructionLabel_1_7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="&gt;&gt;ProgramCounterGroupBox.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="StepExecuteButton.Text" xml:space="preserve">
-    <value>Step Execute</value>
-  </data>
-  <data name="DumpViewTextBox.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Yu Gothic UI, 9pt</value>
-  </data>
-  <data name="&gt;&gt;PCValueLabel.Type" xml:space="preserve">
+  <data name="&gt;&gt;BinaryInstructionLabel_12_8.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Arg1Value.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 18pt</value>
-  </data>
-  <data name="&gt;&gt;Arg2Value.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="CurrentModeLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 21</value>
-  </data>
-  <data name="&gt;&gt;Arg4Name.Name" xml:space="preserve">
-    <value>Arg4Name</value>
-  </data>
-  <data name="&gt;&gt;Arg5Name.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="Arg2Name.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Arg3Name.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;DisplayFPRegisterCheckBox.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="BinaryInstructionLabel_21_25.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="FloatPointRegistersControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="BinaryInstructionLabel_26_32.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 0</value>
-  </data>
-  <data name="BinaryInstructionDigitLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
-  </data>
-  <data name="DisplayRegisterCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
-  </data>
-  <data name="Arg3Value.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="Arg1Value.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="&gt;&gt;InstructionRegisterGroupBox.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="statusLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 14.25pt</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>InstructionViewerForm</value>
-  </data>
-  <data name="ArgumentsGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="Arg5Value.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="BinaryInstructionLabel_13_15.Location" type="System.Drawing.Point, System.Drawing">
-    <value>317, 0</value>
-  </data>
-  <data name="&gt;&gt;statusLabel.Name" xml:space="preserve">
-    <value>statusLabel</value>
-  </data>
-  <data name="PCValueLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="DisplayFPRegisterCheckBox.Text" xml:space="preserve">
-    <value>Display Float-Point Register in a separate windows</value>
-  </data>
-  <data name="&gt;&gt;FloatPointRegistersControl.Name" xml:space="preserve">
-    <value>FloatPointRegistersControl</value>
-  </data>
-  <data name="DisplayIRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 3</value>
-  </data>
-  <data name="Arg5Value.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 18pt</value>
-  </data>
-  <data name="Arg4Value.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="BinaryInstructionLabel_21_25.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="Arg5Name.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="Arg1Name.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="DumpViewTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="DisplayRegisterCheckBox.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 9pt</value>
-  </data>
-  <data name="&gt;&gt;Arg5Value.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;DumpViewTextBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_16_20.Parent" xml:space="preserve">
-    <value>BinaryInstructionPanel</value>
-  </data>
-  <data name="&gt;&gt;DumpViewTextBox.Name" xml:space="preserve">
-    <value>DumpViewTextBox</value>
-  </data>
-  <data name="FloatPointRegistersControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 601</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_16_20.Name" xml:space="preserve">
-    <value>BinaryInstructionLabel_16_20</value>
-  </data>
-  <data name="Arg4Name.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 18pt</value>
-  </data>
-  <data name="Arg3Value.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="CurrentModeLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>174, 36</value>
-  </data>
-  <data name="DisplayFPRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
-  </data>
-  <data name="&gt;&gt;DisplayCSRegisterCheckBox.Name" xml:space="preserve">
-    <value>DisplayCSRegisterCheckBox</value>
-  </data>
-  <data name="Arg2Name.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="CurrentModeGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="&gt;&gt;Arg3Name.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="BinaryInstructionLabel_21_25.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;ArgumentsGroupBox.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="ArgumentsGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="InstructionNameLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="DisplayIRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="DumpViewTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;DisplayFPRegisterCheckBox.Parent" xml:space="preserve">
-    <value>DisplayRegisterCheckBox</value>
-  </data>
-  <data name="BinaryInstructionPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
-  </data>
-  <data name="&gt;&gt;Arg1Name.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Arg3Name.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="StepExecuteButton.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Meiryo UI, 14.25pt, style=Bold</value>
-  </data>
-  <data name="DisplayCSRegisterCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="statusLabel.Text" xml:space="preserve">
-    <value>Status : Running</value>
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_1_7.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="BinaryInstructionLabel_21_25.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1144, 421</value>
-  </data>
-  <data name="Arg2Value.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="Arg5Name.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Arg1Name.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Arg2Value.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="InstructionRegisterGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>897, 63</value>
-  </data>
-  <data name="Arg1Name.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="BinaryInstructionLabel_13_15.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Yu Gothic UI, 21.75pt</value>
-  </data>
-  <data name="Arg1Value.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="statusLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 28</value>
-  </data>
-  <data name="BinaryInstructionLabel_26_32.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="Arg4Value.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="&gt;&gt;FloatPointRegistersControl.Type" xml:space="preserve">
-    <value>RISC_V_CPU_Emulator.FloatPointRegistersControl, RISC-V_CPU_Emulator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;Arg5Value.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="DumpViewTextBox.Text" xml:space="preserve">
-    <value />
-  </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_26_32.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;DisplayCSRegisterCheckBox.Parent" xml:space="preserve">
-    <value>DisplayRegisterCheckBox</value>
-  </data>
-  <data name="BinaryInstructionLabel_16_20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 40</value>
-  </data>
-  <data name="Arg4Name.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 179</value>
-  </data>
-  <data name="&gt;&gt;Arg5Value.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;Arg1Name.Name" xml:space="preserve">
-    <value>Arg1Name</value>
-  </data>
-  <data name="BinaryInstructionLabel_26_32.Text" xml:space="preserve">
-    <value>0000000</value>
-  </data>
-  <data name="&gt;&gt;Arg4Name.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="BinaryInstructionLabel_16_20.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="Arg3Value.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="Arg5Value.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 36</value>
-  </data>
-  <data name="InstructionRegisterGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
-  <data name="BinaryInstructionDigitLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>593, 15</value>
-  </data>
-  <data name="&gt;&gt;Arg3Value.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="BinaryInstructionLabel_13_15.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="BinaryInstructionLabel_13_15.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
   </data>
   <data name="&gt;&gt;BinaryInstructionLabel_12_8.Parent" xml:space="preserve">
     <value>BinaryInstructionPanel</value>
   </data>
-  <data name="DumpViewTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>533, 397</value>
+  <data name="&gt;&gt;BinaryInstructionLabel_12_8.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
-  <data name="&gt;&gt;BinaryInstructionDigitLabel.Parent" xml:space="preserve">
-    <value>BinaryInstructionPanel</value>
+  <data name="BinaryInstructionLabel_1_7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
-  <data name="BinaryInstructionDigitLabel.AutoSize" type="System.Boolean, mscorlib">
+  <data name="BinaryInstructionLabel_1_7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="InstructionNameLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 21.75pt</value>
-  </data>
-  <data name="BinaryInstructionLabel_1_7.Text" xml:space="preserve">
-    <value>0000000</value>
-  </data>
-  <data name="&gt;&gt;DisplayRegisterCheckBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="Arg3Name.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 129</value>
-  </data>
-  <data name="&gt;&gt;Arg2Name.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="IntegerRegistersControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>558, 256</value>
+  <data name="BinaryInstructionLabel_1_7.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Yu Gothic UI, 21.75pt</value>
   </data>
   <data name="BinaryInstructionLabel_1_7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="&gt;&gt;StepExecuteButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="BinaryInstructionLabel_1_7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>472, 0</value>
   </data>
-  <data name="&gt;&gt;BinaryInstructionLabel_13_15.Type" xml:space="preserve">
+  <data name="BinaryInstructionLabel_1_7.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="BinaryInstructionLabel_1_7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>129, 40</value>
+  </data>
+  <data name="BinaryInstructionLabel_1_7.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="BinaryInstructionLabel_1_7.Text" xml:space="preserve">
+    <value>0000000</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_1_7.Name" xml:space="preserve">
+    <value>BinaryInstructionLabel_1_7</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionLabel_1_7.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="BinaryInstructionLabel_16_20.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Yu Gothic UI, 21.75pt</value>
+  <data name="&gt;&gt;BinaryInstructionLabel_1_7.Parent" xml:space="preserve">
+    <value>BinaryInstructionPanel</value>
   </data>
-  <data name="&gt;&gt;CurrentModeGroupBox.Parent" xml:space="preserve">
+  <data name="&gt;&gt;BinaryInstructionLabel_1_7.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="BinaryInstructionPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="BinaryInstructionPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>544, 7</value>
+  </data>
+  <data name="BinaryInstructionPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>601, 63</value>
+  </data>
+  <data name="BinaryInstructionPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionPanel.Name" xml:space="preserve">
+    <value>BinaryInstructionPanel</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;BinaryInstructionPanel.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="DisplayRegisterCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="DisplayCSRegisterCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="DisplayCSRegisterCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="DisplayCSRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 48</value>
+  </data>
+  <data name="DisplayCSRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>344, 22</value>
+  </data>
+  <data name="DisplayCSRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="DisplayCSRegisterCheckBox.Text" xml:space="preserve">
+    <value>Display Control-Status Register in a separate windows</value>
+  </data>
+  <data name="&gt;&gt;DisplayCSRegisterCheckBox.Name" xml:space="preserve">
+    <value>DisplayCSRegisterCheckBox</value>
+  </data>
+  <data name="&gt;&gt;DisplayCSRegisterCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;DisplayCSRegisterCheckBox.Parent" xml:space="preserve">
+    <value>DisplayRegisterCheckBox</value>
+  </data>
+  <data name="&gt;&gt;DisplayCSRegisterCheckBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="DisplayFPRegisterCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="DisplayFPRegisterCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="DisplayFPRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 25</value>
+  </data>
+  <data name="DisplayFPRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>322, 22</value>
+  </data>
+  <data name="DisplayFPRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="DisplayFPRegisterCheckBox.Text" xml:space="preserve">
+    <value>Display Float-Point Register in a separate windows</value>
+  </data>
+  <data name="&gt;&gt;DisplayFPRegisterCheckBox.Name" xml:space="preserve">
+    <value>DisplayFPRegisterCheckBox</value>
+  </data>
+  <data name="&gt;&gt;DisplayFPRegisterCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;DisplayFPRegisterCheckBox.Parent" xml:space="preserve">
+    <value>DisplayRegisterCheckBox</value>
+  </data>
+  <data name="&gt;&gt;DisplayFPRegisterCheckBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="DisplayIRegisterCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="DisplayIRegisterCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="DisplayIRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 3</value>
+  </data>
+  <data name="DisplayIRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>302, 22</value>
+  </data>
+  <data name="DisplayIRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="DisplayIRegisterCheckBox.Text" xml:space="preserve">
+    <value>Display Integer Register in a separate windows</value>
+  </data>
+  <data name="&gt;&gt;DisplayIRegisterCheckBox.Name" xml:space="preserve">
+    <value>DisplayIRegisterCheckBox</value>
+  </data>
+  <data name="&gt;&gt;DisplayIRegisterCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;DisplayIRegisterCheckBox.Parent" xml:space="preserve">
+    <value>DisplayRegisterCheckBox</value>
+  </data>
+  <data name="&gt;&gt;DisplayIRegisterCheckBox.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="DisplayRegisterCheckBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 9pt</value>
+  </data>
+  <data name="DisplayRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>566, 302</value>
+  </data>
+  <data name="DisplayRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>360, 71</value>
+  </data>
+  <data name="DisplayRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;DisplayRegisterCheckBox.Name" xml:space="preserve">
+    <value>DisplayRegisterCheckBox</value>
+  </data>
+  <data name="&gt;&gt;DisplayRegisterCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;DisplayRegisterCheckBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;DisplayRegisterCheckBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="IntegerRegistersControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="IntegerRegistersControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>570, 298</value>
+  </data>
+  <data name="IntegerRegistersControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>558, 256</value>
+  </data>
+  <data name="IntegerRegistersControl.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="IntegerRegistersControl.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegistersControl.Name" xml:space="preserve">
+    <value>IntegerRegistersControl</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegistersControl.Type" xml:space="preserve">
+    <value>RISC_V_CPU_Emulator.IntegerRegistersControl, RISC-V_CPU_Emulator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;IntegerRegistersControl.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;IntegerRegistersControl.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="&gt;&gt;DisplayCSRegisterCheckBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="FloatPointRegistersControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
-  <data name="StepExecuteButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
+  <data name="FloatPointRegistersControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>570, 560</value>
   </data>
+  <data name="FloatPointRegistersControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>558, 372</value>
+  </data>
+  <data name="FloatPointRegistersControl.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="FloatPointRegistersControl.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersControl.Name" xml:space="preserve">
+    <value>FloatPointRegistersControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersControl.Type" xml:space="preserve">
+    <value>RISC_V_CPU_Emulator.FloatPointRegistersControl, RISC-V_CPU_Emulator, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersControl.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <metadata name="bindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>1144, 376</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Risc-V Instruction Viewer</value>
+  </data>
+  <data name="&gt;&gt;bindingSource1.Name" xml:space="preserve">
+    <value>bindingSource1</value>
+  </data>
+  <data name="&gt;&gt;bindingSource1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>InstructionViewerForm</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
