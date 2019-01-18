@@ -51,7 +51,7 @@ namespace RISC_V_CPU_Emulator {
         public InstructionViewerForm(RV32_HaedwareThread cpu) {
             this.cpu = cpu;
             string dirPath = @"..\..\..\..\riscv-tests\build\isa\";
-            string exePath = dirPath + "rv32si-p-wfi";
+            string exePath = dirPath + "rv32ua-p-lrsc";
             this.cpu.LoadProgram(exePath);
             this.cpu.registerSet.Mem.HostAccessAddress.Add(this.cpu.GetToHostAddr());
 
@@ -82,7 +82,6 @@ namespace RISC_V_CPU_Emulator {
                 this.Arg2Name, this.Arg2Value,
                 this.Arg3Name, this.Arg3Value,
                 this.Arg4Name, this.Arg4Value,
-                this.Arg5Name, this.Arg5Value
             };
 
             #endregion
@@ -252,7 +251,7 @@ namespace RISC_V_CPU_Emulator {
         /// </summary>
         private void ReplaceComponents() {
             const int offsetWidth = 570;
-            const int offsetHeight = 100;
+            const int offsetHeight = 60;
             const int windowsDefaultWidth = 1160;
             if (this.Width > windowsDefaultWidth + offsetWidth && !IsWideMode) {
                 IsWideMode = true;
@@ -271,7 +270,7 @@ namespace RISC_V_CPU_Emulator {
                 this.IntegerRegistersControl.Top -= this.BinaryInstructionPanel.Height - 10;
                 this.ProgramCounterGroupBox.Top -= offsetHeight;
                 this.CurrentModeGroupBox.Top -= this.ArgumentsGroupBox.Height - this.CurrentModeGroupBox.Height;
-                this.FloatPointRegistersControl.Top -= offsetHeight * 2 + this.IntegerRegistersControl.Height;
+                this.FloatPointRegistersControl.Top -= 150 + this.IntegerRegistersControl.Height;
 
             } else if (this.Width <= windowsDefaultWidth + offsetWidth && IsWideMode) {
                 IsWideMode = false;
@@ -290,29 +289,23 @@ namespace RISC_V_CPU_Emulator {
                 this.IntegerRegistersControl.Top += this.BinaryInstructionPanel.Height - 10;
                 this.ProgramCounterGroupBox.Top += offsetHeight;
                 this.CurrentModeGroupBox.Top += this.ArgumentsGroupBox.Height - this.CurrentModeGroupBox.Height;
-                this.FloatPointRegistersControl.Top += offsetHeight * 2 + this.IntegerRegistersControl.Height;
+                this.FloatPointRegistersControl.Top += 150 + this.IntegerRegistersControl.Height;
             }
 
 
-            if (!this.IntegerRegistersControl.Visible && this.Height > (IsWideMode ? 1055 - ((offsetHeight * 2) + this.IntegerRegistersControl.Height) : 730) && irViewer is null) {
+            if (!this.IntegerRegistersControl.Visible && this.Height > (IsWideMode ? 1040 - (150 + this.IntegerRegistersControl.Height) : 680) && irViewer is null) {
                 this.IntegerRegistersControl.Visible = true;
-            } else if (this.IntegerRegistersControl.Visible && this.Height <= (IsWideMode ? 1055 - ((offsetHeight * 2) + this.IntegerRegistersControl.Height) : 730) && fprViewer is null) {
+            } else if (this.IntegerRegistersControl.Visible && this.Height <= (IsWideMode ? 1040 - (150 + this.IntegerRegistersControl.Height) : 680) && fprViewer is null) {
                 this.IntegerRegistersControl.Visible = false;
             }
-            if (!this.FloatPointRegistersControl.Visible && this.Height > 1055 - (IsWideMode ? (offsetHeight * 2) + this.IntegerRegistersControl.Height : 0) && fprViewer is null) {
+            if (!this.FloatPointRegistersControl.Visible && this.Height > 1040 - (IsWideMode ? 150 + this.IntegerRegistersControl.Height : 0) && fprViewer is null) {
                 this.FloatPointRegistersControl.Visible = true;
-            } else if (this.FloatPointRegistersControl.Visible && this.Height <= 1055 - (IsWideMode ? (offsetHeight * 2) + this.IntegerRegistersControl.Height : 0) && fprViewer is null) {
+            } else if (this.FloatPointRegistersControl.Visible && this.Height <= 1040 - (IsWideMode ? 150 + this.IntegerRegistersControl.Height : 0) && fprViewer is null) {
                 this.FloatPointRegistersControl.Visible = false;
             }
         }
 
         #region イベント時呼び出しメソッド
-
-        // ウインドウリサイズ時
-        private void InstructionViewerForm_Resize(object sender, EventArgs e) {
-            //Console.WriteLine(((Control)sender).Width + ", " + ((Control)sender).Height);
-            ReplaceComponents();
-        }
 
         // 実行ボタン押下時
         private void StepExecuteButton_Click(object sender, EventArgs e) {
@@ -325,6 +318,10 @@ namespace RISC_V_CPU_Emulator {
                 this.FloatPointRegistersControl.UpdateRegisterBeforeExecute(boforeIns);
 
                 // プログラムを1ステップ実行
+                while (cpu.registerSet.PC < 0x800001a0) {
+                    cpu.StepExecute();
+
+                }
                 cpu.StepExecute();
 
                 RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
@@ -349,6 +346,12 @@ namespace RISC_V_CPU_Emulator {
                     MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 this.StepExecuteButton.Enabled = false;
             }
+        }
+
+        // ウインドウリサイズ時
+        private void InstructionViewerForm_Resize(object sender, EventArgs e) {
+            //Console.WriteLine(((Control)sender).Width + ", " + ((Control)sender).Height);
+            ReplaceComponents();
         }
 
         // 整数レジスタ表示チェックボックス変更時
