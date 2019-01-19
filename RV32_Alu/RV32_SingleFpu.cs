@@ -12,15 +12,15 @@ namespace RV32_Alu {
     /// </summary>
     public class RV32_SingleFpu : RV32_AbstractCalculator {
 
-        internal const Binary32 NaN = 0x7fc0_0000u;
-        internal const Binary32 Zero = 0x0000_0000u;
-        internal const Binary32 Infinity = 0x7f80_0000u;
+        internal const Binary32 NaN = 0x7fc0_0000U;
+        internal const Binary32 Zero = 0x0000_0000U;
+        internal const Binary32 Infinity = 0x7f80_0000U;
 
-        internal const Binary32 NegativeSign = 0x8000_0000u;
+        internal const Binary32 NegativeSign = 0x8000_0000U;
 
-        internal const Binary32 SignMask = 0x8000_0000u;
-        internal const Binary32 ExpMask = 0x7f80_0000u;
-        internal const Binary32 MantMask = 0x007f_ffffu;
+        internal const Binary32 SignMask = 0x8000_0000U;
+        internal const Binary32 ExpMask = 0x7f80_0000U;
+        internal const Binary32 MantMask = 0x007f_ffffU;
 
         /// <summary>
         /// Risc-V 単精度浮動小数算術論理演算 FPU
@@ -42,7 +42,7 @@ namespace RV32_Alu {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmaddS(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FmaddS(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 binary3 = (Binary32)reg.GetValue(rs3);
@@ -86,7 +86,7 @@ namespace RV32_Alu {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmsubS(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FmsubS(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 binary3 = (Binary32)reg.GetValue(rs3);
@@ -130,7 +130,7 @@ namespace RV32_Alu {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FnmaddS(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FnmaddS(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 binary3 = (Binary32)reg.GetValue(rs3);
@@ -174,7 +174,7 @@ namespace RV32_Alu {
         /// <param name="rs2">レジスタ番号</param>
         /// <param name="rs3">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FnmsubS(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FnmsubS(FPRegister rd, FPRegister rs1, FPRegister rs2, FPRegister rs3, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 binary3 = (Binary32)reg.GetValue(rs3);
@@ -217,7 +217,7 @@ namespace RV32_Alu {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FaddS(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FaddS(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 result;
@@ -258,7 +258,7 @@ namespace RV32_Alu {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FsubS(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FsubS(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 result;
@@ -299,7 +299,7 @@ namespace RV32_Alu {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmulS(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FmulS(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 result;
@@ -335,7 +335,7 @@ namespace RV32_Alu {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FdivS(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FdivS(FPRegister rd, FPRegister rs1, FPRegister rs2, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 result;
@@ -383,7 +383,7 @@ namespace RV32_Alu {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FsqrtS(FPRegister rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FsqrtS(FPRegister rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 result;
             FloatCSR fcsr = 0;
@@ -423,12 +423,12 @@ namespace RV32_Alu {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FsgnjS(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
+        public bool FsgnjS(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 result;
 
-            result = binary1 & 0x7fff_ffffu | binary2 & 0x8000_0000u;
+            result = binary1 & 0x7fff_ffffU | binary2 & 0x8000_0000U;
 
             reg.SetValue(rd, result);
             reg.IncrementPc(insLength);
@@ -444,13 +444,13 @@ namespace RV32_Alu {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FsgnjnS(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
+        public bool FsgnjnS(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 result;
             FloatCSR fcsr = 0;
 
-            result = binary1 & 0x7fff_ffffu | ~binary2 & 0x8000_0000u;
+            result = binary1 & 0x7fff_ffffU | ~binary2 & 0x8000_0000U;
 
             reg.SetValue(rd, result);
             reg.SetFflagsCSR(fcsr);
@@ -467,13 +467,13 @@ namespace RV32_Alu {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FsgnjxS(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
+        public bool FsgnjxS(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 result;
             FloatCSR fcsr = 0;
 
-            result = binary1 & 0x7fff_ffffu | (binary1 ^ binary2) & 0x8000_0000u;
+            result = binary1 & 0x7fff_ffffU | (binary1 ^ binary2) & 0x8000_0000U;
 
             reg.SetValue(rd, result);
             reg.SetFflagsCSR(fcsr);
@@ -489,7 +489,7 @@ namespace RV32_Alu {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FminS(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
+        public bool FminS(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 result;
@@ -516,7 +516,7 @@ namespace RV32_Alu {
         /// <param name="rs1">レジスタ番号</param>
         /// <param name="rs2">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmaxS(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
+        public bool FmaxS(FPRegister rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             Binary32 result;
@@ -543,13 +543,13 @@ namespace RV32_Alu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FeqS(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
+        public bool FeqS(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             UInt32 result;
             FloatCSR fcsr = 0;
 
-            result = ToSingle(binary1) == ToSingle(binary2) ? 1u : 0u;
+            result = ToSingle(binary1) == ToSingle(binary2) ? 1U : 0U;
 
             if (IsSigNaN(binary1) || IsSigNaN(binary2)) {
                 fcsr.NV = true;
@@ -569,13 +569,13 @@ namespace RV32_Alu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FltS(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
+        public bool FltS(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             UInt32 result;
             FloatCSR fcsr = 0;
 
-            result = ToSingle(binary1) < ToSingle(binary2) ? 1u : 0u;
+            result = ToSingle(binary1) < ToSingle(binary2) ? 1U : 0U;
 
             if (IsNaN(binary1) || IsNaN(binary2)) {
                 fcsr.NV = true;
@@ -595,13 +595,13 @@ namespace RV32_Alu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FleS(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4u) {
+        public bool FleS(Register rd, FPRegister rs1, FPRegister rs2, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Binary32 binary2 = (Binary32)reg.GetValue(rs2);
             UInt32 result;
             FloatCSR fcsr = 0;
 
-            result = ToSingle(binary1) <= ToSingle(binary2) ? 1u : 0u;
+            result = ToSingle(binary1) <= ToSingle(binary2) ? 1U : 0U;
 
             if (IsNaN(binary1) || IsNaN(binary2)) {
                 fcsr.NV = true;
@@ -620,7 +620,7 @@ namespace RV32_Alu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtWS(Register rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FcvtWS(Register rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Single value1 = ToSingle(binary1);
             Single rvalue1 = ToSingle(RoundNum(binary1, 0, frm));
@@ -662,7 +662,7 @@ namespace RV32_Alu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtWUS(Register rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FcvtWUS(Register rd, FPRegister rs1, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             Single value1 = ToSingle(binary1);
             Single rvalue1 = ToSingle(RoundNum(binary1, 0, frm));
@@ -704,7 +704,7 @@ namespace RV32_Alu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtSW(FPRegister rd, Register rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FcvtSW(FPRegister rd, Register rs1, FloatRoundingMode frm, UInt32 insLength = 4U) {
             Int32 value1 = (Int32)reg.GetValue(rs1);
             Binary32 result;
             FloatCSR fcsr = 0;
@@ -728,7 +728,7 @@ namespace RV32_Alu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FcvtSWU(FPRegister rd, Register rs1, FloatRoundingMode frm, UInt32 insLength = 4u) {
+        public bool FcvtSWU(FPRegister rd, Register rs1, FloatRoundingMode frm, UInt32 insLength = 4U) {
             UInt32 value1 = reg.GetValue(rs1);
             Binary32 result;
             FloatCSR fcsr = 0;
@@ -752,7 +752,7 @@ namespace RV32_Alu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmvXW(Register rd, FPRegister rs1, UInt32 insLength = 4u) {
+        public bool FmvXW(Register rd, FPRegister rs1, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
             UInt32 result;
 
@@ -770,7 +770,7 @@ namespace RV32_Alu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FmvWX(FPRegister rd, Register rs1, UInt32 insLength = 4u) {
+        public bool FmvWX(FPRegister rd, Register rs1, UInt32 insLength = 4U) {
             UInt32 value1 = reg.GetValue(rs1);
             Binary32 result;
 
@@ -788,9 +788,9 @@ namespace RV32_Alu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">レジスタ番号</param>
         /// <returns>処理の成否</returns>
-        public bool FclassS(Register rd, FPRegister rs1, UInt32 insLength = 4u) {
+        public bool FclassS(Register rd, FPRegister rs1, UInt32 insLength = 4U) {
             Binary32 binary1 = (Binary32)reg.GetValue(rs1);
-            UInt32 result = 0u;
+            UInt32 result = 0U;
 
             if (IsNegative(binary1) && IsInfinity(binary1)) {
                 // rs1が-∞の場合
@@ -844,12 +844,12 @@ namespace RV32_Alu {
 
         internal static bool IsZero(Binary32 binary) => (binary & (ExpMask | MantMask)) == Zero;
 
-        internal static bool IsDenormalNum(Binary32 binary) => (binary & ExpMask) == 0u && !IsZero(binary);
-        internal static bool IsNormalNum(Binary32 binary) => (binary & ExpMask) > 0u && (binary & ExpMask) < 0x7f80_0000u;
+        internal static bool IsDenormalNum(Binary32 binary) => (binary & ExpMask) == 0U && !IsZero(binary);
+        internal static bool IsNormalNum(Binary32 binary) => (binary & ExpMask) > 0U && (binary & ExpMask) < 0x7f80_0000U;
 
-        internal static bool IsNaN(Binary32 binary) => (binary & ExpMask) == 0x7f80_0000u && (binary & MantMask) > 0u;
-        internal static bool IsSigNaN(Binary32 binary) => IsNaN(binary) && (binary & 0x0040_0000u) == 0x0000_0000u;
-        internal static bool IsQuietNaN(Binary32 binary) => IsNaN(binary) && (binary & 0x0040_0000u) == 0x0040_0000u;
+        internal static bool IsNaN(Binary32 binary) => (binary & ExpMask) == 0x7f80_0000U && (binary & MantMask) > 0U;
+        internal static bool IsSigNaN(Binary32 binary) => IsNaN(binary) && (binary & 0x0040_0000U) == 0x0000_0000U;
+        internal static bool IsQuietNaN(Binary32 binary) => IsNaN(binary) && (binary & 0x0040_0000U) == 0x0040_0000U;
 
         internal static bool IsInfinity(Binary32 binary) => (binary & (ExpMask | MantMask)) == Infinity;
 
@@ -920,7 +920,7 @@ namespace RV32_Alu {
                     break;
 
                 default:
-                    result = 0u;
+                    result = 0U;
                     break;
             }
 

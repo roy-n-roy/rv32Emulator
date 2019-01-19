@@ -44,11 +44,11 @@ namespace RV32_Register {
             }
 
             // レジスタ初期化
-            Registers = Enumerable.Range(0, 32).ToDictionary(key => (Register)key, value => 0u);
+            Registers = Enumerable.Range(0, 32).ToDictionary(key => (Register)key, value => 0U);
             FPRegisters = Enumerable.Range(0, 32).ToDictionary(key => (FPRegister)key, value => BitConverter.ToUInt64(BitConverter.GetBytes(0d), 0));
 
             // コントロール・ステータスレジスタ初期化
-            CSRegisters = new RV32_ControlStatusRegisters(Enum.GetValues(typeof(CSR)).Cast<CSR>().ToDictionary(key => key, value => 0u));
+            CSRegisters = new RV32_ControlStatusRegisters(Enum.GetValues(typeof(CSR)).Cast<CSR>().ToDictionary(key => key, value => 0U));
 
             mainMemory = mem;
             mainMemory.SetRegisterSet(this);
@@ -56,7 +56,7 @@ namespace RV32_Register {
             //マシンモードに設定
             CurrentMode = PrivilegeLevels.MachineMode;
 
-            CSRegisters.Misa |= 0x4000_0000u;
+            CSRegisters.Misa |= 0x4000_0000U;
 
         }
 
@@ -88,7 +88,7 @@ namespace RV32_Register {
         private uint WaitTimer { get; set; }
 
         /// <summary>割り込み待ちタイムアウト値</summary>
-        private const uint WaitTimerMax = 0u;
+        private const uint WaitTimerMax = 0U;
 
         /// <summary>メインメモリ</summary>
         private RV32_AbstractMemoryHandler mainMemory;
@@ -116,7 +116,7 @@ namespace RV32_Register {
         /// </summary>
         /// <param name="rd">次の命令アドレスを格納するレジスタ番号</param>
         /// <param name="offset">ジャンプする現在のpcからの相対アドレス位置</param>
-        public bool Jal(Register rd, Int32 offset, UInt32 insLength = 4u) {
+        public bool Jal(Register rd, Int32 offset, UInt32 insLength = 4U) {
             SetValue(rd, PC + insLength);
             PC += (UInt32)offset;
             return true;
@@ -130,7 +130,7 @@ namespace RV32_Register {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ベースのアドレス</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Jalr(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
+        public bool Jalr(Register rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
             UInt32 t = PC + insLength;
             PC = (GetValue(rs1) + (UInt32)offset) & ~1u;
             SetValue(rd, t);
@@ -148,7 +148,7 @@ namespace RV32_Register {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Beq(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
+        public bool Beq(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if (GetValue(rs1) == GetValue(rs2)) {
                 PC += (UInt32)offset;
             } else {
@@ -164,7 +164,7 @@ namespace RV32_Register {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bne(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
+        public bool Bne(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if (GetValue(rs1) != GetValue(rs2)) {
                 PC += (UInt32)offset;
             } else {
@@ -180,7 +180,7 @@ namespace RV32_Register {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Blt(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
+        public bool Blt(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if ((Int32)GetValue(rs1) < (Int32)GetValue(rs2)) {
                 PC += (UInt32)offset;
             } else {
@@ -196,7 +196,7 @@ namespace RV32_Register {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bge(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
+        public bool Bge(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if ((Int32)GetValue(rs1) >= (Int32)GetValue(rs2)) {
                 PC += (UInt32)offset;
             } else {
@@ -212,7 +212,7 @@ namespace RV32_Register {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bltu(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
+        public bool Bltu(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if (GetValue(rs1) < GetValue(rs2)) {
                 PC += (UInt32)offset;
             } else {
@@ -228,7 +228,7 @@ namespace RV32_Register {
         /// <param name="rs1">被比較数</param>
         /// <param name="rs2">比較数</param>
         /// <param name="offset">ジャンプするオフセット値</param>
-        public bool Bgeu(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4u) {
+        public bool Bgeu(Register rs1, Register rs2, Int32 offset, UInt32 insLength = 4U) {
             if (GetValue(rs1) >= GetValue(rs2)) {
                 PC += (UInt32)offset;
             } else {
@@ -246,7 +246,7 @@ namespace RV32_Register {
         /// </summary>
         /// <param name="predsucc"></param>
         /// <returns>処理の成否</returns>
-        public bool Fence(byte predsucc, UInt32 insLength = 4u) {
+        public bool Fence(byte predsucc, UInt32 insLength = 4U) {
             IncrementPc(insLength);
             return true;
         }
@@ -255,7 +255,7 @@ namespace RV32_Register {
         /// Fence Instruction Stream命令
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool FenceI(UInt32 insLength = 4u) {
+        public bool FenceI(UInt32 insLength = 4U) {
             IncrementPc(insLength);
             return true;
         }
@@ -265,7 +265,7 @@ namespace RV32_Register {
         /// 環境呼び出し例外を起こして、実行環境を呼び出す
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool Ecall(UInt32 insLength = 4u) {
+        public bool Ecall(UInt32 insLength = 4U) {
             PrivilegeLevels prev_level = CurrentMode;
             CurrentMode = PrivilegeLevels.MachineMode;
             CSRegisters[CSR.mepc] = PC;
@@ -277,7 +277,7 @@ namespace RV32_Register {
         /// ブレークポイント例外を起こして、実行環境を呼び出す
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool Ebreak(UInt32 insLength = 4u) {
+        public bool Ebreak(UInt32 insLength = 4U) {
             throw new RiscvException(RiscvExceptionCause.Breakpoint, PC, this);
         }
 
@@ -285,7 +285,7 @@ namespace RV32_Register {
         /// Wait For Interrupt命令
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool Wfi(UInt32 insLength = 4u) {
+        public bool Wfi(UInt32 insLength = 4U) {
 
             // 割り込み待ちモードにセット
             IsWaitMode = true;
@@ -309,7 +309,7 @@ namespace RV32_Register {
         /// 0以外: rs2によって識別されるアドレス空間におけるアドレス変換のみが順序付けられる
         /// </param>
         /// <returns>処理の成否</returns>
-        public bool SfenceVma(Register rs1, Register rs2, UInt32 insLength = 4u) {
+        public bool SfenceVma(Register rs1, Register rs2, UInt32 insLength = 4U) {
             if (((StatusCSR)CSRegisters[CSR.mstatus]).TVM && CurrentMode <= PrivilegeLevels.SupervisorMode) {
                 throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
             }
@@ -322,7 +322,7 @@ namespace RV32_Register {
         /// マシンモードの例外ハンドラから戻る
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool Mret(UInt32 insLength = 4u) {
+        public bool Mret(UInt32 insLength = 4U) {
             PC = CSRegisters[CSR.mepc];
             StatusCSR mstatus = CSRegisters[CSR.mstatus];
 
@@ -343,7 +343,7 @@ namespace RV32_Register {
         /// スーパーバイザモードの例外ハンドラから戻る
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool Sret(UInt32 insLength = 4u) {
+        public bool Sret(UInt32 insLength = 4U) {
             if (((StatusCSR)CSRegisters[CSR.mstatus]).TSR && CurrentMode <= PrivilegeLevels.SupervisorMode) {
                 throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
             }
@@ -368,7 +368,7 @@ namespace RV32_Register {
         /// ユーザモードの例外ハンドラから戻る
         /// </summary>
         /// <returns>処理の成否</returns>
-        public bool Uret(UInt32 insLength = 4u) {
+        public bool Uret(UInt32 insLength = 4U) {
             if (((StatusCSR)CSRegisters[CSR.mstatus]).TSR) {
                 throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
             }
@@ -394,7 +394,7 @@ namespace RV32_Register {
         /// <param name="rs1">書き込む値が格納されているレジスタ</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrw(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
+        public bool Csrrw(Register rd, Register rs1, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = GetCSR(csr);
             SetCSR(csr, 'w', rs1);
             SetValue(rd, t);
@@ -409,7 +409,7 @@ namespace RV32_Register {
         /// <param name="rs1">セットする値が格納されているレジスタ</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrs(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
+        public bool Csrrs(Register rd, Register rs1, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = GetCSR(csr);
             SetCSR(csr, 's', rs1);
             SetValue(rd, t);
@@ -424,7 +424,7 @@ namespace RV32_Register {
         /// <param name="rs1">クリアする値が格納されているレジスタ</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrc(Register rd, Register rs1, CSR csr, UInt32 insLength = 4u) {
+        public bool Csrrc(Register rd, Register rs1, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = GetCSR(csr);
             SetCSR(csr, 'c', rs1);
             SetValue(rd, t);
@@ -439,7 +439,7 @@ namespace RV32_Register {
         /// <param name="zImmediate">即値</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrwi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
+        public bool Csrrwi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = GetCSR(csr);
             SetCSR(csr, 'w', zImmediate);
             SetValue(rd, t);
@@ -455,7 +455,7 @@ namespace RV32_Register {
         /// <param name="zImmediate">即値</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrsi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
+        public bool Csrrsi(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = GetCSR(csr);
             SetCSR(csr, 's', zImmediate);
             SetValue(rd, t);
@@ -471,7 +471,7 @@ namespace RV32_Register {
         /// <param name="zImmediate">即値</param>
         /// <param name="csr">CSRのアドレス</param>
         /// <returns>処理の成否</returns>
-        public bool Csrrci(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4u) {
+        public bool Csrrci(Register rd, byte zImmediate, CSR csr, UInt32 insLength = 4U) {
             UInt32 t = CSRegisters[csr];
             SetCSR(csr, 'c', zImmediate);
             SetValue(rd, t);
@@ -509,7 +509,7 @@ namespace RV32_Register {
 
             //CSRアドレスの11～12bitで読み書き可能 or 読み取り専用を
             //9～10bitがアクセス権限を表す
-            PrivilegeLevels instructionLevel = (PrivilegeLevels)(((UInt32)name >> 8) & 0x3u);
+            PrivilegeLevels instructionLevel = (PrivilegeLevels)(((UInt32)name >> 8) & 0x3U);
             if (((UInt16)name & 0xC00u) != 0xC00u && instructionLevel <= CurrentMode) {
 
                 // TVM=1かつスーパーバイザモード以下の場合、satpCSRの読み書きは不正命令例外を発生させる
@@ -545,7 +545,7 @@ namespace RV32_Register {
         /// <returns>CSRの値</returns>
         private UInt32 GetCSR(CSR name) {
             //CSRアドレスの9～10bitがアクセス権限を表す
-            PrivilegeLevels instructionLevel = (PrivilegeLevels)(((UInt32)name >> 8) & 0x3u);
+            PrivilegeLevels instructionLevel = (PrivilegeLevels)(((UInt32)name >> 8) & 0x3U);
             if (instructionLevel <= CurrentMode) {
 
                 // TVM=1かつスーパーバイザモード以下の場合、satpCSRの読み書きは不正命令例外を発生させる
@@ -565,7 +565,7 @@ namespace RV32_Register {
                             throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
                         }
                     } else if (CurrentMode == PrivilegeLevels.SupervisorMode) {
-                        if (((CSRegisters[CSR.mcounteren] >> ((int)name & 0x01f)) & 0x1u) == 0) {
+                        if (((CSRegisters[CSR.mcounteren] >> ((int)name & 0x01f)) & 0x1U) == 0) {
                             throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
                         }
                     }
@@ -654,7 +654,7 @@ namespace RV32_Register {
         /// </summary>
         /// <param name="fcsr"></param>
         public void SetFflagsCSR(FloatCSR fcsr) {
-            CSRegisters[CSR.fflags] = fcsr & 0x1fu;
+            CSRegisters[CSR.fflags] = fcsr & 0x1fU;
         }
 
         /// <summary>
@@ -675,7 +675,7 @@ namespace RV32_Register {
         /// 引数で指定しない場合は 4 増加させる
         /// </summary>
         /// <param name="instructionLength">PCの増数 32bit長命令の場合は4、16bit長命令の場合は2を指定する</param>
-        public void IncrementPc(UInt32 instructionLength = 4u) {
+        public void IncrementPc(UInt32 instructionLength = 4U) {
             PC += instructionLength;
         }
 
@@ -723,11 +723,11 @@ namespace RV32_Register {
         /// </summary>
         /// <param name="isa">拡張命令セットを表すA～Zの文字</param>
         public void AddMisa(char isa) {
-            CSRegisters.Misa |= 1u << (Char.ToUpper(isa) - 'A');
+            CSRegisters.Misa |= 1U << (Char.ToUpper(isa) - 'A');
 
             // 追加標準機能をサポートする場合、Gもセットする
             if (Char.ToUpper(isa) != 'E' && Char.ToUpper(isa) != 'I') {
-                CSRegisters.Misa |= 1u << ('G' - 'A');
+                CSRegisters.Misa |= 1U << ('G' - 'A');
             }
         }
 
@@ -766,13 +766,13 @@ namespace RV32_Register {
         /// <param name="tval">例外の原因となったアドレス(ない場合は0)</param>
         public void HandleException(RiscvExceptionCause cause, UInt32 tval) {
 
-            if ((CSRegisters[CSR.medeleg] & (1u << (int)cause)) == 0u || (CSRegisters[CSR.misa] & ((1u << ('S' - 'A')) | (1u << ('U' - 'A')))) == 0u) {
+            if ((CSRegisters[CSR.medeleg] & (1u << (int)cause)) == 0U || (CSRegisters[CSR.misa] & ((1u << ('S' - 'A')) | (1u << ('U' - 'A')))) == 0U) {
                 // マシンモードより下位モードに例外トラップ委譲されていない または、 ユーザモード・スーパーバイザモードの実装がない場合
 
                 // マシンモードでトラップ
                 TrapAndSetCSR(PrivilegeLevels.MachineMode, (UInt32)cause, tval);
 
-            } else if ((CSRegisters[CSR.sedeleg] & (1u << (int)cause)) == 0u || (CSRegisters[CSR.misa] & (1u << ('U' - 'A'))) == 0u) {
+            } else if ((CSRegisters[CSR.sedeleg] & (1u << (int)cause)) == 0U || (CSRegisters[CSR.misa] & (1u << ('U' - 'A'))) == 0U) {
                 // スーパーバイザモード下位モードに例外トラップ委譲されていない または、 ユーザモードの実装がない場合
 
                 // スーパーバイザモードでトラップ
@@ -791,10 +791,10 @@ namespace RV32_Register {
         public (bool, RiscvExceptionCause) CheckAndHandleInterrupt() {
 
             // 割り込み有効判定用変数
-            UInt32 enableInterrupt = 0u;
+            UInt32 enableInterrupt = 0U;
 
             // 割り込みトラップモード
-            PrivilegeLevels trapLevel = 0u;
+            PrivilegeLevels trapLevel = 0U;
 
 
             StatusCSR mstatus = CSRegisters[CSR.mstatus];
@@ -813,7 +813,7 @@ namespace RV32_Register {
 
 
             // 割り込み有効の判定
-            if ((pendingInterrupt & ~mideleg) > 0u) {
+            if ((pendingInterrupt & ~mideleg) > 0U) {
                 // 割り込みがマシンモードより下位モードに割り込みトラップ委譲されていない場合
 
                 if (CurrentMode == PrivilegeLevels.MachineMode && mstatus.MIE) {
@@ -826,8 +826,8 @@ namespace RV32_Register {
                     enableInterrupt = pendingInterrupt & ~mideleg; ;
                     trapLevel = PrivilegeLevels.MachineMode;
                 }
-            } else if ((pendingInterrupt & mideleg) > 0u && (pendingInterrupt & ~sideleg) > 0u &&
-                ((CSRegisters[CSR.misa] & (1u << ('U' - 'A'))) == 0u || (CSRegisters[CSR.misa] & (1u << ('N' - 'A'))) == 0u)) {
+            } else if ((pendingInterrupt & mideleg) > 0U && (pendingInterrupt & ~sideleg) > 0U &&
+                ((CSRegisters[CSR.misa] & (1u << ('U' - 'A'))) == 0U || (CSRegisters[CSR.misa] & (1u << ('N' - 'A'))) == 0U)) {
                 // 割り込みがスーパーバイザモードより下位モードに割り込みトラップ委譲されていないかつ、
                 // ユーザモード割り込みがサポートされていない場合
 
@@ -842,7 +842,7 @@ namespace RV32_Register {
                     trapLevel = PrivilegeLevels.SupervisorMode;
 
                 }
-            } else if ((pendingInterrupt & sideleg) > 0u) {
+            } else if ((pendingInterrupt & sideleg) > 0U) {
                 // 割り込み待ち状態で、割り込み委譲されている場合
 
                 if (CurrentMode == PrivilegeLevels.UserMode && mstatus.UIE) {
@@ -855,13 +855,13 @@ namespace RV32_Register {
             // 割り込み要因
             RiscvExceptionCause cause = (RiscvExceptionCause)0;
 
-            if (enableInterrupt == 0u) {
+            if (enableInterrupt == 0U) {
                 // 割り込みなしと判定
 
                 if (IsWaitMode) {
                     IsWaitMode = false;
                     WaitTimer = 0;
-                    PC += 4u;
+                    PC += 4U;
                 }
 
                 return (false, cause);
@@ -870,38 +870,38 @@ namespace RV32_Register {
             // 割り込み要因の特定
             //   *複数の要因での割り込みの可能性があるため、順位の高いものから特定する
             //   *外部割り込み => ソフトウェア割り込み => タイマ割り込み の順
-            if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.MachineExternal - 0x8000_0000u))) > 0) {
+            if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.MachineExternal - 0x8000_0000U))) > 0) {
                 cause = RiscvExceptionCause.MachineExternal;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.SupervisorExternal - 0x8000_0000u))) > 0) {
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.SupervisorExternal - 0x8000_0000U))) > 0) {
                 cause = RiscvExceptionCause.SupervisorExternal;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.UserExternal - 0x8000_0000u))) > 0) {
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.UserExternal - 0x8000_0000U))) > 0) {
                 cause = RiscvExceptionCause.UserExternal;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.MachineSoftware - 0x8000_0000u))) > 0){
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.MachineSoftware - 0x8000_0000U))) > 0){
                 cause = RiscvExceptionCause.MachineSoftware;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.SupervisorSoftware - 0x8000_0000u))) > 0) {
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.SupervisorSoftware - 0x8000_0000U))) > 0) {
                 cause = RiscvExceptionCause.SupervisorSoftware;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.UserSoftware - 0x8000_0000u))) > 0) {
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.UserSoftware - 0x8000_0000U))) > 0) {
                 cause = RiscvExceptionCause.UserSoftware;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.MachineTimer - 0x8000_0000u))) > 0){
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.MachineTimer - 0x8000_0000U))) > 0){
                 cause = RiscvExceptionCause.MachineTimer;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.SupervisorTimer - 0x8000_0000u))) > 0) {
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.SupervisorTimer - 0x8000_0000U))) > 0) {
                 cause = RiscvExceptionCause.SupervisorTimer;
 
-            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.UserTimer - 0x8000_0000u))) > 0) {
+            } else if ((enableInterrupt & (1u << (int)((uint)RiscvExceptionCause.UserTimer - 0x8000_0000U))) > 0) {
                 cause = RiscvExceptionCause.UserTimer;
             } else {
                 return (false, cause);
             }
 
             // 特定したモード、要因でトラップ
-            TrapAndSetCSR(trapLevel, (UInt32)cause, 0u);
+            TrapAndSetCSR(trapLevel, (UInt32)cause, 0U);
             IsWaitMode = false;
             WaitTimer = 0;
             return (true, cause);
@@ -919,7 +919,7 @@ namespace RV32_Register {
         private void TrapAndSetCSR(PrivilegeLevels level, UInt32 cause, UInt32 tval) {
             StatusCSR status;
 
-            UInt32 epc = (cause & 0x8000_0000u) == 0u ? PC : PC + 4;
+            UInt32 epc = (cause & 0x8000_0000U) == 0U ? PC : PC + 4;
 
             switch (level) {
                 case PrivilegeLevels.MachineMode:
@@ -961,7 +961,7 @@ namespace RV32_Register {
                     // 割り込み・例外前のステータスを設定
                     status = CSRegisters[CSR.sstatus];
                     status.SPIE = status.SIE;
-                    status.SPP = ((byte)CurrentMode & 1u) > 0u;
+                    status.SPP = ((byte)CurrentMode & 1U) > 0U;
                     status.SIE = false;
                     CSRegisters[CSR.sstatus] = status;
 

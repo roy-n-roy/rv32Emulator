@@ -1,5 +1,4 @@
-﻿using ElfLoader;
-using RV32_Register.Constants;
+﻿using RV32_Register.Constants;
 using RV32_Register.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -139,7 +138,7 @@ namespace RV32_Register.MemoryHandler {
 
         private protected UInt64 GetPhysicalAddr(UInt32 v_add, MemoryAccessMode accMode) {
 
-            UInt64 phy_addr = 0u;
+            UInt64 phy_addr = 0U;
 
             RiscvExceptionCause pageFaultCouse;
             switch (accMode) {
@@ -159,7 +158,7 @@ namespace RV32_Register.MemoryHandler {
             SatpCSR satp = reg.CSRegisters[CSR.satp];
 
             if (!satp.MODE || reg.CurrentMode == PrivilegeLevels.MachineMode) {
-                phy_addr = v_add - PAddr + Offset;
+                phy_addr = (v_add - PAddr + Offset) & 0xffff_ffffU;
                 if (phy_addr >= Size) {
                     throw new RiscvException(RiscvExceptionCause.LoadPageFault, v_add, reg);
                 }
@@ -169,7 +168,7 @@ namespace RV32_Register.MemoryHandler {
 
             /* 1.pte_addrをsatp：ppn×PAGESIZEとし、i = LEVELS - 1とする（Sv32の場合、PAGESIZE = 2^12、LEVELS = 2）
              */
-            const uint PageSize = 0x1000u;
+            const uint PageSize = 0x1000U;
             const int Levels = 2;
 
             uint pte_addr = satp.PPN * PageSize;
@@ -181,7 +180,7 @@ namespace RV32_Register.MemoryHandler {
             /* 2.アドレスpte_addr + vaにあるPTEの値をpteとします。vpn [i]×PTESIZE。 （Sv32の場合、PTESIZE = 4）
              * pteにアクセスしてPMAまたはPMPチェックに違反した場合は、アクセス例外を発生させます。
              */
-            const uint PteSize = 4u;
+            const uint PteSize = 4U;
             while (i >= 0) {
 
                 pte_addr += virt_addr.VPN[i] * PteSize;
@@ -273,6 +272,12 @@ namespace RV32_Register.MemoryHandler {
 
 
         }
+
+        private bool CheckPMP() {
+
+            return false;
+        }
+
     }
 
     [Serializable]

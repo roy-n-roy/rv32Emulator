@@ -10,7 +10,7 @@ namespace RV32_Decoder {
         public RV32C_Decoder(RV32_InstructionDecoder decoder) : base(decoder) { }
 
         /// <summary>命令長(Byte)</summary>
-        const UInt32 InstructionLength = 2u;
+        const UInt32 InstructionLength = 2U;
 
         /// <summary>
         /// 引数で渡された32bit長のうち、前半の16bitを命令としてデコードし、cpuで実行する
@@ -22,7 +22,7 @@ namespace RV32_Decoder {
             bool result = false;
 
             // 命令の0～1bit目が "11" の場合は対象なし
-            if ((ins[0] & 0b11u) == 0b11u) {
+            if ((ins[0] & 0b11U) == 0b11U) {
                 return result;
             }
 
@@ -268,11 +268,11 @@ namespace RV32_Decoder {
             switch (format) {
                 case "CI":
                     length = 6;
-                    result = cins[1] | cins[2] & 0b100000u;
+                    result = cins[1] | cins[2] & 0b100000U;
                     break;
                 case "CL":
                     length = 7;
-                    result = ((cins[1] & 0b11000u) >> 2) | (cins[2] & 0b111000u);
+                    result = ((cins[1] & 0b11000U) >> 2) | (cins[2] & 0b111000U);
                     j++;
                     scaleCount--;
                     break;
@@ -283,17 +283,17 @@ namespace RV32_Decoder {
                 case "CB":
                     scaleCount = 0;
                     length = 9;
-                    result = (cins[1] & 0b00110u) | (cins[2] & 0b11000u) | ((cins[1] & 0b00001u) >> 4) | (((cins[1] & 0b11000u) | (cins[2] & 0b100000u)) << 3);
+                    result = (cins[1] & 0b00110U) | (cins[2] & 0b11000U) | ((cins[1] & 0b00001U) >> 4) | (((cins[1] & 0b11000U) | (cins[2] & 0b100000U)) << 3);
                     break;
                 case "CJ":
                     scaleCount = 0;
                     length = 6;
-                    result = (cins[1] & 0b01110u) | (cins[2] & 0b010000u) | ((cins[1] & 0b00001u) << 5) | (((cins[2] & 0b101101u) | (cins[1] & 0b000001u)) << 6) | ((cins[1] & 0b10000u) << 3) | ((cins[1] & 0b10000u) << 5) | ((cins[2] & 0b000010u) << 9);
+                    result = (cins[1] & 0b01110U) | (cins[2] & 0b010000U) | ((cins[1] & 0b00001U) << 5) | (((cins[2] & 0b101101U) | (cins[1] & 0b000001U)) << 6) | ((cins[1] & 0b10000U) << 3) | ((cins[1] & 0b10000U) << 5) | ((cins[2] & 0b000010U) << 9);
                     break;
                 case "CIW":
                     scaleCount = 0;
                     length = 10;
-                    result = ((cins[1] & 0b10000u) >> 2) | (cins[1] & 0b01000u) | (cins[2] & 0b110000u) | ((cins[2] & 0b001111u) << 6);
+                    result = ((cins[1] & 0b10000U) >> 2) | (cins[1] & 0b01000U) | (cins[2] & 0b110000U) | ((cins[2] & 0b001111U) << 6);
                     break;
 
                 default:
@@ -324,7 +324,7 @@ namespace RV32_Decoder {
             switch (format) {
                 case "CI":
                     length = 6;
-                    result = (cins[2] & 0b100000u) == 0u ? cins[1] : 0xffffffe0u | cins[1];
+                    result = (cins[2] & 0b100000U) == 0U ? cins[1] : 0xffffffe0U | cins[1];
                     break;
                 default:
                     length = 1;

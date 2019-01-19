@@ -91,7 +91,7 @@ namespace RISC_V_CPU_Emulator {
 
             // テキストボックスの値を更新する
             for (int i = 0; i < 32; i++) {
-                if ((registers["f" + i] & 0xffff_ffff_0000_0000u) == 0xffff_ffff_0000_0000u) {
+                if ((registers["f" + i] & 0xffff_ffff_0000_0000U) == 0xffff_ffff_0000_0000U) {
                     FloatPointRegisterTextBoxes[i].Text = BitConverter.ToSingle(BitConverter.GetBytes(registers["f" + i]), 0).ToString("0.0#");
                 } else {
                     FloatPointRegisterTextBoxes[i].Text = BitConverter.ToDouble(BitConverter.GetBytes(registers["f" + i]), 0).ToString("0.0#");
@@ -120,8 +120,8 @@ namespace RISC_V_CPU_Emulator {
                 }
             }
 
-            string frm = appRes.ResourceManager.GetString("FloatPointStatusRegisterTextBox_RoundMode_" + ((registers["fcsr"] & 0xe0u) >> 5).ToString("X").ToLower());
-            string fflag = appRes.ResourceManager.GetString("FloatPointStatusRegisterTextBox_ExceptionFlag_" + (registers["fcsr"] & 0x1fu).ToString("X").ToLower().PadLeft(2, '0'));
+            string frm = appRes.ResourceManager.GetString("FloatPointStatusRegisterTextBox_RoundMode_" + ((registers["fcsr"] & 0xe0U) >> 5).ToString("X").ToLower());
+            string fflag = appRes.ResourceManager.GetString("FloatPointStatusRegisterTextBox_ExceptionFlag_" + (registers["fcsr"] & 0x1fU).ToString("X").ToLower().PadLeft(2, '0'));
             this.FloatPointStatusRegisterTextBox.Text = " " + (frm is null ? "" : frm) + (fflag is null ? "" : " + " + fflag);
         }
 

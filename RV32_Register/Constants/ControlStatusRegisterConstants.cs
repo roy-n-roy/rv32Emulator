@@ -34,51 +34,51 @@ namespace RV32_Register.Constants {
     /// <summary>割り込み・例外要因</summary>
     public enum RiscvExceptionCause : uint {
         /// <summary>ユーザソフトウェア割り込み</summary>
-        UserSoftware = 0x8000_0000u,
+        UserSoftware = 0x8000_0000U,
         /// <summary>スーパーバイザソフトウェア割り込み</summary>
-        SupervisorSoftware = 0x8000_0001u,
+        SupervisorSoftware = 0x8000_0001U,
         /// <summary>マシンソフトウェア割り込み</summary>
-        MachineSoftware = 0x8000_0003u,
+        MachineSoftware = 0x8000_0003U,
         /// <summary>ユーザタイマ割り込み</summary>
-        UserTimer = 0x8000_0004u,
+        UserTimer = 0x8000_0004U,
         /// <summary>スーパーバイザタイマ割り込み</summary>
-        SupervisorTimer = 0x8000_0005u,
+        SupervisorTimer = 0x8000_0005U,
         /// <summary>マシンタイマ割り込み</summary>
-        MachineTimer = 0x8000_0007u,
+        MachineTimer = 0x8000_0007U,
         /// <summary>ユーザ外部割り込み</summary>
-        UserExternal = 0x8000_0008u,
+        UserExternal = 0x8000_0008U,
         /// <summary>スーパーバイザ外部割り込み</summary>
-        SupervisorExternal = 0x8000_0009u,
+        SupervisorExternal = 0x8000_0009U,
         /// <summary>マシン外部割り込み</summary>
-        MachineExternal = 0x8000_000bu,
+        MachineExternal = 0x8000_000bU,
         /// <summary>命令アドレス非整列化例外</summary>
-        InstructionAddressMisaligned = 0x0000_0000u,
+        InstructionAddressMisaligned = 0x0000_0000U,
         /// <summary>命令アクセス・フォールト例外</summary>
-        InstructionAccessFault = 0x0000_0001u,
+        InstructionAccessFault = 0x0000_0001U,
         /// <summary>不正命令例外</summary>
-        IllegalInstruction = 0x0000_0002u,
+        IllegalInstruction = 0x0000_0002U,
         /// <summary>ブレークポイント例外</summary>
-        Breakpoint = 0x0000_0003u,
+        Breakpoint = 0x0000_0003U,
         /// <summary>ロードアドレス非整列化例外</summary>
-        LoadAddressMisaligned = 0x0000_0004u,
+        LoadAddressMisaligned = 0x0000_0004U,
         /// <summary>ロードアクセス・フォールト例外</summary>
-        LoadAccessFault = 0x0000_0005u,
+        LoadAccessFault = 0x0000_0005U,
         /// <summary>ストアアドレス非整列化例外</summary>
-        AMOAddressMisaligned = 0x0000_0006u,
+        AMOAddressMisaligned = 0x0000_0006U,
         /// <summary>ストアアクセス・フォールト例外</summary>
-        StoreAMOAccessFault = 0x0000_0007u,
+        StoreAMOAccessFault = 0x0000_0007U,
         /// <summary>ユーザモードからの環境呼び出し例外</summary>
-        EnvironmentCallFromUMode = 0x0000_0008u,
+        EnvironmentCallFromUMode = 0x0000_0008U,
         /// <summary>スーパーバイザモードからの環境呼び出し例外</summary>
-        EnvironmentCallFromSMode = 0x0000_0009u,
+        EnvironmentCallFromSMode = 0x0000_0009U,
         /// <summary>マシンモードからの環境呼び出し例外</summary>
-        EnvironmentCallFromMMode = 0x0000_000bu,
+        EnvironmentCallFromMMode = 0x0000_000bU,
         /// <summary>命令ページ・フォールト例外</summary>
-        InstructionPageFault = 0x0000_000cu,
+        InstructionPageFault = 0x0000_000cU,
         /// <summary>ロードページ・フォールト例外</summary>
-        LoadPageFault = 0x0000_000du,
+        LoadPageFault = 0x0000_000dU,
         /// <summary>ストアページ・フォールト例外</summary>
-        StoreAMOPageFault = 0x0000_000fu,
+        StoreAMOPageFault = 0x0000_000fU,
     }
 
     #region CSRアドレス定義
@@ -597,11 +597,11 @@ namespace RV32_Register.Constants {
 
         // 定数
         /// <summary>マシンモードで読み書き可能なビット</summary>
-        public const uint MModeMask = 0b1000_0000_0111_1111_1111_1001_1011_1011u;
+        public const uint MModeMask = 0b1000_0000_0111_1111_1111_1001_1011_1011U;
         /// <summary>スーパーバイザモードで読み書き可能なビット</summary>
-        public const uint SModeMask = 0b1000_0000_0000_1101_1110_0001_0011_0011u;
+        public const uint SModeMask = 0b1000_0000_0000_1101_1110_0001_0011_0011U;
         /// <summary>ユーザモードで読み書き可能なビット</summary>
-        public const uint UModeMask = 0b1000_0000_0000_1101_1110_0000_0001_0001u;
+        public const uint UModeMask = 0b1000_0000_0000_1101_1110_0000_0001_0001U;
 
         // 変数
         /// <summary></summary>
@@ -669,23 +669,23 @@ namespace RV32_Register.Constants {
         public static implicit operator uint(StatusCSR status) {
             uint value = 0;
 
-            value |= status.SD ? 1u << 31 : 0u;
-            value |= status.TSR ? 1u << 22 : 0u;
-            value |= status.TW ? 1u << 21 : 0u;
-            value |= status.TVM ? 1u << 20 : 0u;
-            value |= status.MXR ? 1u << 19 : 0u;
-            value |= status.SUM ? 1u << 18 : 0u;
-            value |= status.MPRV ? 1u << 17 : 0u;
-            value |= (status.XS & 0x3u) << 15;
-            value |= (status.FS & 0x3u) << 13;
-            value |= (status.MPP & 0x3u) << 11;
-            value |= status.SPP ? 1u << 8 : 0u;
-            value |= status.MPIE ? 1u << 7 : 0u;
-            value |= status.SPIE ? 1u << 5 : 0u;
-            value |= status.UPIE ? 1u << 4 : 0u;
-            value |= status.MIE ? 1u << 3 : 0u;
-            value |= status.SIE ? 1u << 1 : 0u;
-            value |= status.UIE ? 1u << 0 : 0u;
+            value |= status.SD ? 1U << 31 : 0U;
+            value |= status.TSR ? 1U << 22 : 0U;
+            value |= status.TW ? 1U << 21 : 0U;
+            value |= status.TVM ? 1U << 20 : 0U;
+            value |= status.MXR ? 1U << 19 : 0U;
+            value |= status.SUM ? 1U << 18 : 0U;
+            value |= status.MPRV ? 1U << 17 : 0U;
+            value |= (status.XS & 0x3U) << 15;
+            value |= (status.FS & 0x3U) << 13;
+            value |= (status.MPP & 0x3U) << 11;
+            value |= status.SPP ? 1U << 8 : 0U;
+            value |= status.MPIE ? 1U << 7 : 0U;
+            value |= status.SPIE ? 1U << 5 : 0U;
+            value |= status.UPIE ? 1U << 4 : 0U;
+            value |= status.MIE ? 1U << 3 : 0U;
+            value |= status.SIE ? 1U << 1 : 0U;
+            value |= status.UIE ? 1U << 0 : 0U;
 
             if (status.Mode == PrivilegeLevels.SupervisorMode) {
                 value &= SModeMask;
@@ -715,18 +715,18 @@ namespace RV32_Register.Constants {
         }
         // 定数
         /// <summary>マシンモードで読み込み可能なビット</summary>
-        public const uint MModeReadMask = 0b1011_0011_1011u;
+        public const uint MModeReadMask = 0b1011_0011_1011U;
         /// <summary>スーパーバイザモードで読み込み可能なビット</summary>
-        public const uint SModeReadMask = 0b0011_0011_0011u;
+        public const uint SModeReadMask = 0b0011_0011_0011U;
         /// <summary>ユーザモードで読み込み可能なビット</summary>
-        public const uint UModeReadMask = 0b0001_0001_0001u;
+        public const uint UModeReadMask = 0b0001_0001_0001U;
 
         /// <summary>マシンモードで書き込み可能なビット</summary>
-        public const uint MModeWriteMask = 0b0011_0011_1011u;
+        public const uint MModeWriteMask = 0b0011_0011_1011U;
         /// <summary>スーパーバイザモードで書き込み可能なビット</summary>
-        public const uint SModeWriteMask = 0b0001_0000_0011u;
+        public const uint SModeWriteMask = 0b0001_0000_0011U;
         /// <summary>ユーザモードで書き込み可能なビット</summary>
-        public const uint UModeWriteMask = 0b0000_0000_0001u;
+        public const uint UModeWriteMask = 0b0000_0000_0001U;
 
         // 変数
         /// <summary>マシン外部割り込み保留ビット</summary>
@@ -768,15 +768,15 @@ namespace RV32_Register.Constants {
 
         public static implicit operator uint(InterruptPendingCSR ip) {
             uint value = 0;
-            value |= ip.MEIP ? 1u << 11 : 0u;
-            value |= ip.SEIP ? 1u << 9 : 0u;
-            value |= ip.UEIP ? 1u << 8 : 0u;
-            value |= ip.MTIP ? 1u << 7 : 0u;
-            value |= ip.STIP ? 1u << 5 : 0u;
-            value |= ip.UTIP ? 1u << 4 : 0u;
-            value |= ip.MSIP ? 1u << 3 : 0u;
-            value |= ip.SSIP ? 1u << 1 : 0u;
-            value |= ip.USIP ? 1u << 0 : 0u;
+            value |= ip.MEIP ? 1U << 11 : 0U;
+            value |= ip.SEIP ? 1U << 9 : 0U;
+            value |= ip.UEIP ? 1U << 8 : 0U;
+            value |= ip.MTIP ? 1U << 7 : 0U;
+            value |= ip.STIP ? 1U << 5 : 0U;
+            value |= ip.UTIP ? 1U << 4 : 0U;
+            value |= ip.MSIP ? 1U << 3 : 0U;
+            value |= ip.SSIP ? 1U << 1 : 0U;
+            value |= ip.USIP ? 1U << 0 : 0U;
 
             if (ip.Mode == PrivilegeLevels.SupervisorMode) {
                 value &= SModeReadMask;
@@ -806,11 +806,11 @@ namespace RV32_Register.Constants {
 
         // 定数
         /// <summary>マシンモードで読み書き可能なビット</summary>
-        public const uint MModeMask = 0b1011_1011_1011u;
+        public const uint MModeMask = 0b1011_1011_1011U;
         /// <summary>スーパーバイザモードで読み書き可能なビット</summary>
-        public const uint SModeMask = 0b0011_0011_0011u;
+        public const uint SModeMask = 0b0011_0011_0011U;
         /// <summary>ユーザモードで読み書き可能なビット</summary>
-        public const uint UModeMask = 0b0001_0001_0001u;
+        public const uint UModeMask = 0b0001_0001_0001U;
 
         // 変数
         /// <summary>マシン外部割り込み有効ビット</summary>
@@ -835,15 +835,15 @@ namespace RV32_Register.Constants {
         // コンストラクタ
         /// <summary>mip, sipなどの割り込み有効CSRを表す構造体</summary>
         public InterruptEnableCSR(uint value) : this() {
-            MEIE = (value & 0x00000800u) > 0;
-            SEIE = (value & 0x00000200u) > 0;
-            UEIE = (value & 0x00000100u) > 0;
-            MTIE = (value & 0x00000080u) > 0;
-            STIE = (value & 0x00000020u) > 0;
-            UTIE = (value & 0x00000010u) > 0;
-            MSIE = (value & 0x00000008u) > 0;
-            SSIE = (value & 0x00000002u) > 0;
-            USIE = (value & 0x00000001u) > 0;
+            MEIE = (value & 0x00000800U) > 0;
+            SEIE = (value & 0x00000200U) > 0;
+            UEIE = (value & 0x00000100U) > 0;
+            MTIE = (value & 0x00000080U) > 0;
+            STIE = (value & 0x00000020U) > 0;
+            UTIE = (value & 0x00000010U) > 0;
+            MSIE = (value & 0x00000008U) > 0;
+            SSIE = (value & 0x00000002U) > 0;
+            USIE = (value & 0x00000001U) > 0;
         }
 
         // キャスト
@@ -853,15 +853,15 @@ namespace RV32_Register.Constants {
 
         public static implicit operator uint(InterruptEnableCSR ie) {
             uint value = 0;
-            value |= ie.MEIE ? 1u << 11 : 0u;
-            value |= ie.SEIE ? 1u << 9 : 0u;
-            value |= ie.UEIE ? 1u << 8 : 0u;
-            value |= ie.MTIE ? 1u << 7 : 0u;
-            value |= ie.STIE ? 1u << 5 : 0u;
-            value |= ie.UTIE ? 1u << 4 : 0u;
-            value |= ie.MSIE ? 1u << 3 : 0u;
-            value |= ie.SSIE ? 1u << 1 : 0u;
-            value |= ie.USIE ? 1u << 0 : 0u;
+            value |= ie.MEIE ? 1U << 11 : 0U;
+            value |= ie.SEIE ? 1U << 9 : 0U;
+            value |= ie.UEIE ? 1U << 8 : 0U;
+            value |= ie.MTIE ? 1U << 7 : 0U;
+            value |= ie.STIE ? 1U << 5 : 0U;
+            value |= ie.UTIE ? 1U << 4 : 0U;
+            value |= ie.MSIE ? 1U << 3 : 0U;
+            value |= ie.SSIE ? 1U << 1 : 0U;
+            value |= ie.USIE ? 1U << 0 : 0U;
 
             if (ie.Mode == PrivilegeLevels.SupervisorMode) {
                 value &= SModeMask;
@@ -984,38 +984,38 @@ namespace RV32_Register.Constants {
 
         public static implicit operator uint(CounterEnableCSR counteren) {
             uint value = 0;
-            value += counteren.CY ? 1u << 0 : 0u;
-            value += counteren.TM ? 1u << 1 : 0u;
-            value += counteren.IR ? 1u << 2 : 0u;
-            value += counteren.HPM3 ? 1u << 3 : 0u;
-            value += counteren.HPM4 ? 1u << 4 : 0u;
-            value += counteren.HPM5 ? 1u << 5 : 0u;
-            value += counteren.HPM6 ? 1u << 6 : 0u;
-            value += counteren.HPM7 ? 1u << 7 : 0u;
-            value += counteren.HPM8 ? 1u << 8 : 0u;
-            value += counteren.HPM9 ? 1u << 9 : 0u;
-            value += counteren.HPM10 ? 1u << 10 : 0u;
-            value += counteren.HPM11 ? 1u << 11 : 0u;
-            value += counteren.HPM12 ? 1u << 12 : 0u;
-            value += counteren.HPM13 ? 1u << 13 : 0u;
-            value += counteren.HPM14 ? 1u << 14 : 0u;
-            value += counteren.HPM15 ? 1u << 15 : 0u;
-            value += counteren.HPM16 ? 1u << 16 : 0u;
-            value += counteren.HPM17 ? 1u << 17 : 0u;
-            value += counteren.HPM18 ? 1u << 18 : 0u;
-            value += counteren.HPM19 ? 1u << 19 : 0u;
-            value += counteren.HPM20 ? 1u << 20 : 0u;
-            value += counteren.HPM21 ? 1u << 21 : 0u;
-            value += counteren.HPM22 ? 1u << 22 : 0u;
-            value += counteren.HPM23 ? 1u << 23 : 0u;
-            value += counteren.HPM24 ? 1u << 24 : 0u;
-            value += counteren.HPM25 ? 1u << 25 : 0u;
-            value += counteren.HPM26 ? 1u << 26 : 0u;
-            value += counteren.HPM27 ? 1u << 27 : 0u;
-            value += counteren.HPM28 ? 1u << 28 : 0u;
-            value += counteren.HPM29 ? 1u << 29 : 0u;
-            value += counteren.HPM30 ? 1u << 30 : 0u;
-            value += counteren.HPM31 ? 1u << 31 : 0u;
+            value += counteren.CY ? 1U << 0 : 0U;
+            value += counteren.TM ? 1U << 1 : 0U;
+            value += counteren.IR ? 1U << 2 : 0U;
+            value += counteren.HPM3 ? 1U << 3 : 0U;
+            value += counteren.HPM4 ? 1U << 4 : 0U;
+            value += counteren.HPM5 ? 1U << 5 : 0U;
+            value += counteren.HPM6 ? 1U << 6 : 0U;
+            value += counteren.HPM7 ? 1U << 7 : 0U;
+            value += counteren.HPM8 ? 1U << 8 : 0U;
+            value += counteren.HPM9 ? 1U << 9 : 0U;
+            value += counteren.HPM10 ? 1U << 10 : 0U;
+            value += counteren.HPM11 ? 1U << 11 : 0U;
+            value += counteren.HPM12 ? 1U << 12 : 0U;
+            value += counteren.HPM13 ? 1U << 13 : 0U;
+            value += counteren.HPM14 ? 1U << 14 : 0U;
+            value += counteren.HPM15 ? 1U << 15 : 0U;
+            value += counteren.HPM16 ? 1U << 16 : 0U;
+            value += counteren.HPM17 ? 1U << 17 : 0U;
+            value += counteren.HPM18 ? 1U << 18 : 0U;
+            value += counteren.HPM19 ? 1U << 19 : 0U;
+            value += counteren.HPM20 ? 1U << 20 : 0U;
+            value += counteren.HPM21 ? 1U << 21 : 0U;
+            value += counteren.HPM22 ? 1U << 22 : 0U;
+            value += counteren.HPM23 ? 1U << 23 : 0U;
+            value += counteren.HPM24 ? 1U << 24 : 0U;
+            value += counteren.HPM25 ? 1U << 25 : 0U;
+            value += counteren.HPM26 ? 1U << 26 : 0U;
+            value += counteren.HPM27 ? 1U << 27 : 0U;
+            value += counteren.HPM28 ? 1U << 28 : 0U;
+            value += counteren.HPM29 ? 1U << 29 : 0U;
+            value += counteren.HPM30 ? 1U << 30 : 0U;
+            value += counteren.HPM31 ? 1U << 31 : 0U;
             return value;
         }
     }
@@ -1024,7 +1024,7 @@ namespace RV32_Register.Constants {
     public struct FloatCSR {
         // 定数
         /// <summary>浮動小数点例外フラグ</summary>
-        public static uint FflagsMask = 0x1fu;
+        public static uint FflagsMask = 0x1fU;
         /// <summary>丸めモード</summary>
         public static uint FrmMask = 0xe0;
 
@@ -1044,12 +1044,12 @@ namespace RV32_Register.Constants {
 
         // コンストラクタ
         public FloatCSR(uint value) {
-            Frm = (FloatRoundingMode)((value & 0xe0u) >> 5);
-            NV = (value & 0x10u) > 0;
-            DZ = (value & 0x08u) > 0;
-            OF = (value & 0x04u) > 0;
-            UF = (value & 0x02u) > 0;
-            NX = (value & 0x01u) > 0;
+            Frm = (FloatRoundingMode)((value & 0xe0U) >> 5);
+            NV = (value & 0x10U) > 0;
+            DZ = (value & 0x08U) > 0;
+            OF = (value & 0x04U) > 0;
+            UF = (value & 0x02U) > 0;
+            NX = (value & 0x01U) > 0;
         }
 
         // キャスト
@@ -1060,11 +1060,11 @@ namespace RV32_Register.Constants {
         public static implicit operator uint(FloatCSR fcsr) {
             uint value = 0;
             value |= (uint)fcsr.Frm << 5;
-            value |= fcsr.NV ? 1u << 4 : 0u;
-            value |= fcsr.DZ ? 1u << 3 : 0u;
-            value |= fcsr.OF ? 1u << 2 : 0u;
-            value |= fcsr.UF ? 1u << 1 : 0u;
-            value |= fcsr.NX ? 1u << 0 : 0u;
+            value |= fcsr.NV ? 1U << 4 : 0U;
+            value |= fcsr.DZ ? 1U << 3 : 0U;
+            value |= fcsr.OF ? 1U << 2 : 0U;
+            value |= fcsr.UF ? 1U << 1 : 0U;
+            value |= fcsr.NX ? 1U << 0 : 0U;
             return value;
         }
     }
@@ -1080,9 +1080,9 @@ namespace RV32_Register.Constants {
         public uint PPN { get; set; }
 
         public SatpCSR(uint value) {
-            MODE = (value & 0x8000_0000u) > 0;
-            ASID = (ushort)((value & 0x7fc0_0000u) >> 22);
-            PPN = (value & 0x003f_ffffu);
+            MODE = (value & 0x8000_0000U) > 0;
+            ASID = (ushort)((value & 0x7fc0_0000U) >> 22);
+            PPN = (value & 0x003f_ffffU);
         }
 
         public static implicit operator SatpCSR(uint value) {
@@ -1091,9 +1091,9 @@ namespace RV32_Register.Constants {
 
         public static implicit operator uint(SatpCSR satp) {
             uint value = 0;
-            value |= satp.MODE ? 1u << 31 : 0u;
-            value |= (satp.ASID & 0x01ffu) << 22;
-            value |= (satp.PPN & 0x003f_ffffu) << 0;
+            value |= satp.MODE ? 1U << 31 : 0U;
+            value |= (satp.ASID & 0x01ffU) << 22;
+            value |= (satp.PPN & 0x003f_ffffU) << 0;
             return value;
         }
     }
@@ -1107,8 +1107,8 @@ namespace RV32_Register.Constants {
 
         // コンストラクタ
         public TvecCSR(uint value) {
-            BASE = value & 0xffff_fffcu; ;
-            MODE = (byte)(value & 0x3u);
+            BASE = value & 0xffff_fffcU; ;
+            MODE = (byte)(value & 0x3U);
         }
 
         // キャスト
@@ -1118,8 +1118,8 @@ namespace RV32_Register.Constants {
 
         public static implicit operator uint(TvecCSR tvec) {
             uint value = 0;
-            value |= tvec.BASE & 0xffff_fffcu;
-            value |= tvec.MODE & 0x3u;
+            value |= tvec.BASE & 0xffff_fffcU;
+            value |= tvec.MODE & 0x3U;
             return value;
         }
     }

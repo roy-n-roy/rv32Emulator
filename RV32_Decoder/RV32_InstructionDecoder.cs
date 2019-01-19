@@ -131,23 +131,23 @@ namespace RV32_Decoder {
             switch (format) {
                 case 'U':
                     result = (ins[2] << 12) | (ins[3] << 15) | (ins[4] << 20) | (ins[5] << 25);
-                    result |= ins[6] == 0u ? 0u : 0x8000_0000u;
+                    result |= ins[6] == 0U ? 0U : 0x8000_0000U;
                     break;
                 case 'J':
-                    result = (ins[4] & 0b11110u) | (ins[5] << 5) | ((ins[4] & 0b1u) << 11) | (ins[2] << 12) | (ins[3] << 15);
-                    result |= ins[6] == 0u ? 0u : 0xfff0_0000u;
+                    result = (ins[4] & 0b11110U) | (ins[5] << 5) | ((ins[4] & 0b1U) << 11) | (ins[2] << 12) | (ins[3] << 15);
+                    result |= ins[6] == 0U ? 0U : 0xfff0_0000U;
                     break;
                 case 'I':
                     result = ins[4] | (ins[5] << 5);
-                    result |= ins[6] == 0u ? 0u : 0xffff_f800u;
+                    result |= ins[6] == 0U ? 0U : 0xffff_f800U;
                     break;
                 case 'S':
                     result = ins[1] | (ins[5] << 5);
-                    result |= ins[6] == 0u ? 0u : 0xffff_f800u;
+                    result |= ins[6] == 0U ? 0U : 0xffff_f800U;
                     break;
                 case 'B':
                     result = (ins[1] & 0b11110) | (ins[5] << 5) | ((ins[1] & 0b1) << 11);
-                    result |= ins[6] == 0u ? 0u : 0xffff_f000u;
+                    result |= ins[6] == 0U ? 0U : 0xffff_f000U;
                     break;
                 default:
                     result = 0;

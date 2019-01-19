@@ -19,7 +19,7 @@ namespace RV32_Decoder {
             bool result = false;
 
             // 命令の0～1bit目が "11" でない場合は対象なし
-            if ((ins[0] & 0b11u) != 0b11u) {
+            if ((ins[0] & 0b11U) != 0b11U) {
                 return result;
             }
 
@@ -48,27 +48,27 @@ namespace RV32_Decoder {
                     result = lsu.Fsd((Register)rs1, rs2, immediate);
                     break;
 
-                case Opcode.fmadd when (ins[5] & 0x3u) == 0x1u: // fmaddd命令
+                case Opcode.fmadd when (ins[5] & 0x3U) == 0x1U: // fmaddd命令
                     fpu = (RV32_DoubleFpu)Decoder.Alu(typeof(RV32_DoubleFpu));
                     result = fpu.FmaddD(rd, rs1, rs2, rs3, frm);
                     break;
 
-                case Opcode.fmsub when (ins[5] & 0x3u) == 0x1u: // fmsubd命令
+                case Opcode.fmsub when (ins[5] & 0x3U) == 0x1U: // fmsubd命令
                     fpu = (RV32_DoubleFpu)Decoder.Alu(typeof(RV32_DoubleFpu));
                     result = fpu.FmsubD(rd, rs1, rs2, rs3, frm);
                     break;
 
-                case Opcode.fnmadd when (ins[5] & 0x3u) == 0x1u: // fnmaddd命令
+                case Opcode.fnmadd when (ins[5] & 0x3U) == 0x1U: // fnmaddd命令
                     fpu = (RV32_DoubleFpu)Decoder.Alu(typeof(RV32_DoubleFpu));
                     result = fpu.FnmaddD(rd, rs1, rs2, rs3, frm);
                     break;
 
-                case Opcode.fnmsub when (ins[5] & 0x3u) == 0x1u: // fnmsubd命令
+                case Opcode.fnmsub when (ins[5] & 0x3U) == 0x1U: // fnmsubd命令
                     fpu = (RV32_DoubleFpu)Decoder.Alu(typeof(RV32_DoubleFpu));
                     result = fpu.FnmsubD(rd, rs1, rs2, rs3, frm);
                     break;
 
-                case Opcode.fmiscOp when (ins[5] & 0x3u) == 0x1u: // Double Float-Point Op系命令(算術論理演算)
+                case Opcode.fmiscOp when (ins[5] & 0x3U) == 0x1U: // Double Float-Point Op系命令(算術論理演算)
                     fpu = (RV32_DoubleFpu)Decoder.Alu(typeof(RV32_DoubleFpu));
                     switch (funct5) {
                         case Funct5.fadd: // faddd命令
@@ -169,7 +169,7 @@ namespace RV32_Decoder {
                     }
                     break;
 
-                case Opcode.fmiscOp when (ins[5] & 0x3u) == 0x0u && funct5 == Funct5.fcvtSD:  // fcvtsd命令
+                case Opcode.fmiscOp when (ins[5] & 0x3U) == 0x0U && funct5 == Funct5.fcvtSD:  // fcvtsd命令
                     fpu = (RV32_DoubleFpu)Decoder.Alu(typeof(RV32_DoubleFpu));
                     result = fpu.FcvtSD(rd, rs1, frm);
                     break;

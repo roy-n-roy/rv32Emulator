@@ -19,7 +19,7 @@ namespace RV32_Decoder {
             bool result = false;
 
             // 命令の0～1bit目が "11" でない場合は対象なし
-            if ((ins[0] & 0b11u) != 0b11u) {
+            if ((ins[0] & 0b11U) != 0b11U) {
                 return result;
             }
 
@@ -51,27 +51,27 @@ namespace RV32_Decoder {
                     break;
 
 
-                case Opcode.fmadd when (ins[5] & 0x3u) == 0x0u: // fmadds命令
+                case Opcode.fmadd when (ins[5] & 0x3U) == 0x0U: // fmadds命令
                     fpu = (RV32_SingleFpu)Decoder.Alu(typeof(RV32_SingleFpu));
                     result = fpu.FmaddS(rd, rs1, rs2, rs3, frm);
                     break;
 
-                case Opcode.fmsub when (ins[5] & 0x3u) == 0x0u: // fmsubs命令
+                case Opcode.fmsub when (ins[5] & 0x3U) == 0x0U: // fmsubs命令
                     fpu = (RV32_SingleFpu)Decoder.Alu(typeof(RV32_SingleFpu));
                     result = fpu.FmsubS(rd, rs1, rs2, rs3, frm);
                     break;
 
-                case Opcode.fnmadd when (ins[5] & 0x3u) == 0x0u: // fnmadds命令
+                case Opcode.fnmadd when (ins[5] & 0x3U) == 0x0U: // fnmadds命令
                     fpu = (RV32_SingleFpu)Decoder.Alu(typeof(RV32_SingleFpu));
                     result = fpu.FnmaddS(rd, rs1, rs2, rs3, frm);
                     break;
 
-                case Opcode.fnmsub when (ins[5] & 0x3u) == 0x0u: // fnmsubs命令
+                case Opcode.fnmsub when (ins[5] & 0x3U) == 0x0U: // fnmsubs命令
                     fpu = (RV32_SingleFpu)Decoder.Alu(typeof(RV32_SingleFpu));
                     result = fpu.FnmsubS(rd, rs1, rs2, rs3, frm);
                     break;
 
-                case Opcode.fmiscOp when (ins[5] & 0x3u) == 0x0u: // Single Float-Point Op系命令(算術論理演算)
+                case Opcode.fmiscOp when (ins[5] & 0x3U) == 0x0U: // Single Float-Point Op系命令(算術論理演算)
                     fpu = (RV32_SingleFpu)Decoder.Alu(typeof(RV32_SingleFpu));
                     switch (funct5) {
                         case Funct5.fadd: // fadds命令

@@ -58,15 +58,15 @@ namespace RV32_Register {
                     case CSR.mtvec:
                         TvecCSR tvec;
                         tvec = csr[CSR.mtvec];
-                        return (tvec.MODE == 1 && (csr[CSR.mcause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (csr[CSR.mcause] * 4) : tvec.BASE;
+                        return (tvec.MODE == 1 && (csr[CSR.mcause] & 0x8000_0000U) == 0x8000_0000U) ? tvec.BASE + (csr[CSR.mcause] * 4) : tvec.BASE;
 
                     case CSR.stvec:
                         tvec = csr[CSR.stvec];
-                        return (tvec.MODE == 1 && (csr[CSR.scause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (csr[CSR.scause] * 4) : tvec.BASE;
+                        return (tvec.MODE == 1 && (csr[CSR.scause] & 0x8000_0000U) == 0x8000_0000U) ? tvec.BASE + (csr[CSR.scause] * 4) : tvec.BASE;
 
                     case CSR.utvec:
                         tvec = csr[CSR.utvec];
-                        return (tvec.MODE == 1 && (csr[CSR.ucause] & 0x8000_0000u) == 0x8000_0000u) ? tvec.BASE + (csr[CSR.ucause] * 4) : tvec.BASE;
+                        return (tvec.MODE == 1 && (csr[CSR.ucause] & 0x8000_0000U) == 0x8000_0000U) ? tvec.BASE + (csr[CSR.ucause] * 4) : tvec.BASE;
 
                     default:
                         // cycle,time,insret,hpmcounter3～31

@@ -61,19 +61,19 @@ namespace RV32_Register.Exceptions {
     /// <summary>Risc-V CPUで発生した環境呼び出し例外を表します</summary>
     public class RiscvEnvironmentCallException : RiscvException {
         /// <summary>Risc-V CPU 環境呼び出し例外のインスタンスを初期化します</summary>
-        public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, RV32_RegisterSet rs) : base((RiscvExceptionCause)((byte)currentLevel | 0x8u), 0, rs) {
+        public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, RV32_RegisterSet rs) : base((RiscvExceptionCause)((byte)currentLevel | 0x8U), 0, rs) {
         }
 
         /// <summary>指定したメッセージを使用して、Risc-V CPU 環境呼び出し例外のインスタンスを初期化します</summary>
         /// <param name="message">エラーを説明するメッセージ</param>
-        public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, RV32_RegisterSet rs, string message) : base((RiscvExceptionCause)((byte)currentLevel | 0x8u), 0, rs, message) {
+        public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, RV32_RegisterSet rs, string message) : base((RiscvExceptionCause)((byte)currentLevel | 0x8U), 0, rs, message) {
         }
 
         /// <summary>指定したメッセージおよびこの例外の原因となった内部例外への参照を使用して、Risc-V CPU 環境呼び出し例外のインスタンスを初期化します</summary>
         /// <param name="message">エラーを説明するメッセージ</param>
         /// <param name="innerException">現在の例外の原因である例外</param>
         public RiscvEnvironmentCallException(PrivilegeLevels currentLevel, RV32_RegisterSet rs, string message, Exception innerException) 
-            : base((RiscvExceptionCause)((byte)currentLevel | 0x8u), 0, rs, message, innerException) {
+            : base((RiscvExceptionCause)((byte)currentLevel | 0x8U), 0, rs, message, innerException) {
         }
     }
  }
