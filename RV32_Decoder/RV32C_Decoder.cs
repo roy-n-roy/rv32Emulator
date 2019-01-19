@@ -47,38 +47,38 @@ namespace RV32_Decoder {
 
                 case CompressedOpcode.misc_alu:
                     alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
-                    switch (cins[2] & 0b011000) {
+                    switch (cins[2] & 0b111000) {
                         case 0b000000: // srli命令
                             immediate = GetUnsignedImmediate("CI", cins);
-                            immediate = immediate != 0 ? immediate : 64;
                             result = alu.Srli(crd_rs1, crd_rs1, immediate, InstructionLength);
                             break;
 
                         case 0b001000: // srai命令
                             immediate = GetUnsignedImmediate("CI", cins);
-                            immediate = immediate != 0 ? immediate : 64;
                             result = alu.Srai(crd_rs1, crd_rs1, immediate, InstructionLength);
                             break;
 
-                        case 0b010000: // andi命令
+                        case 0b010000:
+                        case 0b110000: // andi命令
                             immediate = GetSignedImmediate("CI", cins);
                             result = alu.Andi(crd_rs1, crd_rs1, immediate, InstructionLength);
                             break;
+
                         case 0b011000:
-                            switch ((cins[2] & 0b100000) | (cins[1] & 0b11000)) {
-                                case 0b000000: // sub命令
+                            switch (cins[1] & 0b11000) {
+                                case 0b00000: // sub命令
                                     result = alu.Sub(crd_rs1, crd_rs1, crs2, InstructionLength);
                                     break;
 
-                                case 0b001000: // xor命令
+                                case 0b01000: // xor命令
                                     result = alu.Xor(crd_rs1, crd_rs1, crs2, InstructionLength);
                                     break;
 
-                                case 0b010000: // or命令
+                                case 0b10000: // or命令
                                     result = alu.Or(crd_rs1, crd_rs1, crs2, InstructionLength);
                                     break;
 
-                                case 0b011000: // and命令
+                                case 0b11000: // and命令
                                     result = alu.And(crd_rs1, crd_rs1, crs2, InstructionLength);
                                     break;
                             }
@@ -87,10 +87,11 @@ namespace RV32_Decoder {
                     break;
 
                 case CompressedOpcode.slli: // slli命令
-                    immediate = GetUnsignedImmediate("CI", cins);
-                    immediate = immediate != 0 ? immediate : 64;
-                    alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
-                    result = alu.Slli(crd_rs1, crd_rs1, immediate, InstructionLength);
+                    if ((cins[2] & 0b100000) == 0b000000) {
+                        immediate = GetUnsignedImmediate("CI", cins);
+                        alu = (RV32_IntegerAlu)Decoder.Alu(typeof(RV32_IntegerAlu));
+                        result = alu.Slli(crd_rs1, crd_rs1, immediate, InstructionLength);
+                    }
                     break;
 
                  case CompressedOpcode.jr_mv_add:
