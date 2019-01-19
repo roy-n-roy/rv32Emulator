@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RISC-V_CPU_ConsoleEmulator": {
+      "commandName": "Project",
+      "commandLineArgs": "\"..\\..\\..\\..\\..\\riscv-tests\\build\\isa\""
+    }
+  }
+}

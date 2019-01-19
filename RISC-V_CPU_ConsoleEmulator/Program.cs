@@ -11,7 +11,7 @@ namespace RISC_V_CPU_ConsoleEmulator {
     class Program {
         static void Main(string[] args) {
 
-            string dirPath = @"..\..\..\..\..\riscv-tests\build\isa\";
+            string dirPath = args[0];
 
             Regex rex;
             rex = new Regex("rv32[msu][a-z]-p-[a-z_]+$", RegexOptions.Compiled);
@@ -19,7 +19,7 @@ namespace RISC_V_CPU_ConsoleEmulator {
             string[] files = Directory.GetFiles(dirPath).Where<string>(
                 f => (rex.IsMatch(f))).ToArray();
 
-            byte[] mem = new byte[32 * 1024];
+            byte[] mem = new byte[128 * 1024];
 
             RV32_HaedwareThread cpu = new RV32_HaedwareThread("AMCFD", mem);
 
