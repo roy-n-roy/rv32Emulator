@@ -511,7 +511,9 @@ namespace RV32_Register {
             //9～10bitがアクセス権限を表す
             PrivilegeLevels instructionLevel = (PrivilegeLevels)(((UInt32)name >> 8) & 0x3u);
             if (((UInt16)name & 0xC00u) != 0xC00u && instructionLevel <= CurrentMode) {
-                if (((StatusCSR)CSRegisters[CSR.mstatus]).TVM && CurrentMode <= PrivilegeLevels.SupervisorMode) {
+
+                // TVM=1かつスーパーバイザモード以下の場合、satpCSRの読み書きは不正命令例外を発生させる
+                if (((StatusCSR)CSRegisters[CSR.mstatus]).TVM && CurrentMode <= PrivilegeLevels.SupervisorMode && name == CSR.satp) {
                     throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
                 }
 
@@ -546,6 +548,11 @@ namespace RV32_Register {
             PrivilegeLevels instructionLevel = (PrivilegeLevels)(((UInt32)name >> 8) & 0x3u);
             if (instructionLevel <= CurrentMode) {
 
+                // TVM=1かつスーパーバイザモード以下の場合、satpCSRの読み書きは不正命令例外を発生させる
+                if (((StatusCSR)CSRegisters[CSR.mstatus]).TVM && CurrentMode <= PrivilegeLevels.SupervisorMode && name == CSR.satp) {
+                    throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
+                }
+
                 // ユーザモードカウンタ・タイマを読み込む場合
                 // mcounteren,scounterenにビットが設定されていない場合は、
                 // 参照不可のため、不正命令例外を発行する
@@ -563,6 +570,7 @@ namespace RV32_Register {
                         }
                     }
                 }
+
                 return (UInt32)CSRegisters[name];
 
 
