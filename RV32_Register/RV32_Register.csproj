@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\ControlStatusRegisterConstants.cs" />
-    <Compile Include="Constants\PageTableEntryConstants.cs" />
+    <Compile Include="Constants\MemoryProtectionConstants.cs" />
     <Compile Include="Constants\RegisterConstants.cs" />
     <Compile Include="Exceptions\RiscvException.cs" />
     <Compile Include="MainMemoryHandler\RV32_AtomicMemoryHandler.cs" />
