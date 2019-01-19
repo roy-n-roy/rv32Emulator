@@ -132,7 +132,7 @@
     <value>Vertical</value>
   </data>
   <data name="DumpViewTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>533, 352</value>
+    <value>533, 367</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="DumpViewTextBox.TabIndex" type="System.Int32, mscorlib">
@@ -151,7 +151,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;DumpViewTextBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="BinaryInstructionDigitLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -316,7 +316,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ArgumentsGroupBox.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="Arg4Value.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -622,7 +622,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;InstructionRegisterGroupBox.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="InstructionNameLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -694,7 +694,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ProgramCounterGroupBox.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="PCValueLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -781,7 +781,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CurrentModeGroupBox.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="CurrentModeLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -859,7 +859,7 @@
     <value>NoControl</value>
   </data>
   <data name="StepExecuteButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>943, 312</value>
+    <value>943, 327</value>
   </data>
   <data name="StepExecuteButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>185, 51</value>
@@ -880,7 +880,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;StepExecuteButton.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="BinaryInstructionLabel_26_32.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1141,10 +1141,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;BinaryInstructionPanel.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="DisplayRegisterCheckBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Right</value>
+    <value>8</value>
   </data>
   <data name="DisplayCSRegisterCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1153,16 +1150,16 @@
     <value>NoControl</value>
   </data>
   <data name="DisplayCSRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 48</value>
+    <value>10, 55</value>
   </data>
   <data name="DisplayCSRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 22</value>
+    <value>170, 22</value>
   </data>
   <data name="DisplayCSRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
   <data name="DisplayCSRegisterCheckBox.Text" xml:space="preserve">
-    <value>Display Control-Status Register in a separate windows</value>
+    <value>Control-Status Registers</value>
   </data>
   <data name="&gt;&gt;DisplayCSRegisterCheckBox.Name" xml:space="preserve">
     <value>DisplayCSRegisterCheckBox</value>
@@ -1171,7 +1168,7 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;DisplayCSRegisterCheckBox.Parent" xml:space="preserve">
-    <value>DisplayRegisterCheckBox</value>
+    <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;DisplayCSRegisterCheckBox.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -1183,16 +1180,16 @@
     <value>NoControl</value>
   </data>
   <data name="DisplayFPRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 25</value>
+    <value>10, 35</value>
   </data>
   <data name="DisplayFPRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>322, 22</value>
+    <value>148, 22</value>
   </data>
   <data name="DisplayFPRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="DisplayFPRegisterCheckBox.Text" xml:space="preserve">
-    <value>Display Float-Point Register in a separate windows</value>
+    <value>Float-Point Registers</value>
   </data>
   <data name="&gt;&gt;DisplayFPRegisterCheckBox.Name" xml:space="preserve">
     <value>DisplayFPRegisterCheckBox</value>
@@ -1201,10 +1198,10 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;DisplayFPRegisterCheckBox.Parent" xml:space="preserve">
-    <value>DisplayRegisterCheckBox</value>
+    <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;DisplayFPRegisterCheckBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="DisplayIRegisterCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1213,16 +1210,16 @@
     <value>NoControl</value>
   </data>
   <data name="DisplayIRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 3</value>
+    <value>10, 15</value>
   </data>
   <data name="DisplayIRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>302, 22</value>
+    <value>128, 22</value>
   </data>
   <data name="DisplayIRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="DisplayIRegisterCheckBox.Text" xml:space="preserve">
-    <value>Display Integer Register in a separate windows</value>
+    <value>Integer Registers</value>
   </data>
   <data name="&gt;&gt;DisplayIRegisterCheckBox.Name" xml:space="preserve">
     <value>DisplayIRegisterCheckBox</value>
@@ -1231,33 +1228,129 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;DisplayIRegisterCheckBox.Parent" xml:space="preserve">
-    <value>DisplayRegisterCheckBox</value>
+    <value>groupBox1</value>
   </data>
   <data name="&gt;&gt;DisplayIRegisterCheckBox.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="DisplayRegisterCheckBox.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 9pt</value>
-  </data>
-  <data name="DisplayRegisterCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>566, 302</value>
-  </data>
-  <data name="DisplayRegisterCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 71</value>
-  </data>
-  <data name="DisplayRegisterCheckBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;DisplayRegisterCheckBox.Name" xml:space="preserve">
-    <value>DisplayRegisterCheckBox</value>
+  <metadata name="bindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
   </data>
-  <data name="&gt;&gt;DisplayRegisterCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="groupBox1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 9pt</value>
   </data>
-  <data name="&gt;&gt;DisplayRegisterCheckBox.Parent" xml:space="preserve">
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>570, 300</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>188, 83</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Display in separete window</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;DisplayRegisterCheckBox.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="RunPcPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="RunPcTextBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 14.25pt</value>
+  </data>
+  <data name="RunPcTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>15, 27</value>
+  </data>
+  <data name="RunPcTextBox.Mask" xml:space="preserve">
+    <value>\0xAAAAAAAA</value>
+  </data>
+  <data name="RunPcTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 36</value>
+  </data>
+  <data name="RunPcTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="RunPcTextBox.Text" xml:space="preserve">
+    <value>80000000</value>
+  </data>
+  <data name="&gt;&gt;RunPcTextBox.Name" xml:space="preserve">
+    <value>RunPcTextBox</value>
+  </data>
+  <data name="&gt;&gt;RunPcTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RunPcTextBox.Parent" xml:space="preserve">
+    <value>RunPcPanel</value>
+  </data>
+  <data name="&gt;&gt;RunPcTextBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="RunPcCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="RunPcCheckBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 9pt</value>
+  </data>
+  <data name="RunPcCheckBox.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="RunPcCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 7</value>
+  </data>
+  <data name="RunPcCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 22</value>
+  </data>
+  <data name="RunPcCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="RunPcCheckBox.Text" xml:space="preserve">
+    <value>PC Run to</value>
+  </data>
+  <data name="&gt;&gt;RunPcCheckBox.Name" xml:space="preserve">
+    <value>RunPcCheckBox</value>
+  </data>
+  <data name="&gt;&gt;RunPcCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RunPcCheckBox.Parent" xml:space="preserve">
+    <value>RunPcPanel</value>
+  </data>
+  <data name="&gt;&gt;RunPcCheckBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="RunPcPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>773, 314</value>
+  </data>
+  <data name="RunPcPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>164, 69</value>
+  </data>
+  <data name="RunPcPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;RunPcPanel.Name" xml:space="preserve">
+    <value>RunPcPanel</value>
+  </data>
+  <data name="&gt;&gt;RunPcPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;RunPcPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;RunPcPanel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="IntegerRegistersControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1285,7 +1378,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;IntegerRegistersControl.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="FloatPointRegistersControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1312,11 +1405,8 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;FloatPointRegistersControl.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
-  <metadata name="bindingSource1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -1324,7 +1414,10 @@
     <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1144, 376</value>
+    <value>1144, 391</value>
+  </data>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>800, 430</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Risc-V Instruction Viewer</value>

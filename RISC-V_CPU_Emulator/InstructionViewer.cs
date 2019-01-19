@@ -51,7 +51,7 @@ namespace RISC_V_CPU_Emulator {
         public InstructionViewerForm(RV32_HaedwareThread cpu) {
             this.cpu = cpu;
             string dirPath = @"..\..\..\..\riscv-tests\build\isa\";
-            string exePath = dirPath + "rv32ua-p-lrsc";
+            string exePath = dirPath + "rv32ui-v-simple";
             this.cpu.LoadProgram(exePath);
             this.cpu.registerSet.Mem.HostAccessAddress.Add(this.cpu.GetToHostAddr());
 
@@ -202,7 +202,7 @@ namespace RISC_V_CPU_Emulator {
                 string exCauseCode = ((uint)cpu.ExceptionCause).ToString("X").ToLower().PadLeft(8, '0');
                 string exCauseText = appRes.ResourceManager.GetString("ExceptionCause_" + exCauseCode) ?? "";
 
-                if (((UInt32)cpu.ExceptionCause & 0x8000_0000u) == 0u) {
+                if (((UInt32)cpu.ExceptionCause & 0x8000_0000U) == 0U) {
                     this.statusLabel.Text = appRes.StatusLabel_Text_Exception + " " + exCauseText;
                 } else {
                     this.statusLabel.Text = appRes.StatusLabel_Text_Interrupt + " " + exCauseText;
@@ -305,10 +305,10 @@ namespace RISC_V_CPU_Emulator {
             }
         }
 
-        #region イベント時呼び出しメソッド
-
-        // 実行ボタン押下時
-        private void StepExecuteButton_Click(object sender, EventArgs e) {
+        /// <summary>
+        /// 1ステップ実行、もしくは指定されたPCまで実行する
+        /// </summary>
+        private void Execute() {
 
             try {
                 RiscvInstruction boforeIns = InstConverter.GetInstruction(cpu.registerSet.IR);
@@ -317,12 +317,24 @@ namespace RISC_V_CPU_Emulator {
                 this.IntegerRegistersControl.UpdateRegisterBeforeExecute(boforeIns);
                 this.FloatPointRegistersControl.UpdateRegisterBeforeExecute(boforeIns);
 
-                // プログラムを1ステップ実行
-                while (cpu.registerSet.PC < 0x800001a0) {
-                    cpu.StepExecute();
 
+                if (this.RunPcCheckBox.Checked) {
+                    if (uint.TryParse(this.RunPcTextBox.Text.Substring(2, 8),
+                        System.Globalization.NumberStyles.HexNumber, null, out uint skipPc)) {
+                        while (cpu.registerSet.PC != skipPc) cpu.StepExecute();
+                        this.RunPcCheckBox.Checked = false;
+                    } else {
+                        MessageBox.Show(this,
+                            "16進数文字列を入力してください",
+                            "エラー",
+                            MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        this.RunPcCheckBox.Checked = false;
+                        return;
+                    }
+                } else {
+                    // プログラムを1ステップ実行
+                    cpu.StepExecute();
                 }
-                cpu.StepExecute();
 
                 RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
                 Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
@@ -346,6 +358,30 @@ namespace RISC_V_CPU_Emulator {
                     MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
                 this.StepExecuteButton.Enabled = false;
             }
+        }
+
+        #region イベント時呼び出しメソッド
+
+        // 実行ボタン押下時
+        private void StepExecuteButton_Click(object sender, EventArgs e) {
+            this.Execute();
+        }
+
+        // PCテキストボックス入力時
+        private void RunPcTextBox_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e) {
+
+            bool keyPressCheck = true;
+
+            if (('A' <= e.KeyValue && e.KeyValue <= 'F') || ('0' <= e.KeyValue && e.KeyValue <= '9') || 
+                ((int)Keys.NumPad0 <= e.KeyValue && e.KeyValue <= (int)Keys.NumPad9) || 
+                ((int)Keys.Left == e.KeyValue || (int)Keys.Right == e.KeyValue)) {
+                keyPressCheck = false;
+            } else if ((int)Keys.Enter == e.KeyValue) {
+                keyPressCheck = false;
+                this.Execute();
+            }
+
+            e.SuppressKeyPress = keyPressCheck;
         }
 
         // ウインドウリサイズ時

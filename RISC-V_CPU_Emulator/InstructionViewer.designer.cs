@@ -54,20 +54,24 @@ namespace RISC_V_CPU_Emulator {
             this.BinaryInstructionLabel_12_8 = new System.Windows.Forms.Label();
             this.BinaryInstructionLabel_1_7 = new System.Windows.Forms.Label();
             this.BinaryInstructionPanel = new System.Windows.Forms.Panel();
-            this.DisplayRegisterCheckBox = new System.Windows.Forms.Panel();
             this.DisplayCSRegisterCheckBox = new System.Windows.Forms.CheckBox();
             this.DisplayFPRegisterCheckBox = new System.Windows.Forms.CheckBox();
             this.DisplayIRegisterCheckBox = new System.Windows.Forms.CheckBox();
+            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.RunPcPanel = new System.Windows.Forms.Panel();
+            this.RunPcTextBox = new System.Windows.Forms.MaskedTextBox();
+            this.RunPcCheckBox = new System.Windows.Forms.CheckBox();
             this.IntegerRegistersControl = new RISC_V_CPU_Emulator.IntegerRegistersControl();
             this.FloatPointRegistersControl = new RISC_V_CPU_Emulator.FloatPointRegistersControl();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.ArgumentsGroupBox.SuspendLayout();
             this.InstructionRegisterGroupBox.SuspendLayout();
             this.ProgramCounterGroupBox.SuspendLayout();
             this.CurrentModeGroupBox.SuspendLayout();
             this.BinaryInstructionPanel.SuspendLayout();
-            this.DisplayRegisterCheckBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.RunPcPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // DumpViewTextBox
@@ -230,14 +234,6 @@ namespace RISC_V_CPU_Emulator {
             this.BinaryInstructionPanel.Controls.Add(this.BinaryInstructionDigitLabel);
             this.BinaryInstructionPanel.Name = "BinaryInstructionPanel";
             // 
-            // DisplayRegisterCheckBox
-            // 
-            resources.ApplyResources(this.DisplayRegisterCheckBox, "DisplayRegisterCheckBox");
-            this.DisplayRegisterCheckBox.Controls.Add(this.DisplayCSRegisterCheckBox);
-            this.DisplayRegisterCheckBox.Controls.Add(this.DisplayFPRegisterCheckBox);
-            this.DisplayRegisterCheckBox.Controls.Add(this.DisplayIRegisterCheckBox);
-            this.DisplayRegisterCheckBox.Name = "DisplayRegisterCheckBox";
-            // 
             // DisplayCSRegisterCheckBox
             // 
             resources.ApplyResources(this.DisplayCSRegisterCheckBox, "DisplayCSRegisterCheckBox");
@@ -259,6 +255,35 @@ namespace RISC_V_CPU_Emulator {
             this.DisplayIRegisterCheckBox.UseVisualStyleBackColor = true;
             this.DisplayIRegisterCheckBox.CheckedChanged += new System.EventHandler(this.DisplayIRegisterCheckBox_CheckedChanged);
             // 
+            // groupBox1
+            // 
+            resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.DisplayCSRegisterCheckBox);
+            this.groupBox1.Controls.Add(this.DisplayIRegisterCheckBox);
+            this.groupBox1.Controls.Add(this.DisplayFPRegisterCheckBox);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.TabStop = false;
+            // 
+            // RunPcPanel
+            // 
+            resources.ApplyResources(this.RunPcPanel, "RunPcPanel");
+            this.RunPcPanel.Controls.Add(this.RunPcTextBox);
+            this.RunPcPanel.Controls.Add(this.RunPcCheckBox);
+            this.RunPcPanel.Name = "RunPcPanel";
+            // 
+            // RunPcTextBox
+            // 
+            resources.ApplyResources(this.RunPcTextBox, "RunPcTextBox");
+            this.RunPcTextBox.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
+            this.RunPcTextBox.Name = "RunPcTextBox";
+            this.RunPcTextBox.KeyDown += RunPcTextBox_KeyDown;
+            // 
+            // RunPcCheckBox
+            // 
+            resources.ApplyResources(this.RunPcCheckBox, "RunPcCheckBox");
+            this.RunPcCheckBox.Name = "RunPcCheckBox";
+            this.RunPcCheckBox.UseVisualStyleBackColor = true;
+            // 
             // IntegerRegistersControl
             // 
             resources.ApplyResources(this.IntegerRegistersControl, "IntegerRegistersControl");
@@ -275,7 +300,8 @@ namespace RISC_V_CPU_Emulator {
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.DisplayRegisterCheckBox);
+            this.Controls.Add(this.RunPcPanel);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.DumpViewTextBox);
             this.Controls.Add(this.StepExecuteButton);
             this.Controls.Add(this.CurrentModeGroupBox);
@@ -299,9 +325,11 @@ namespace RISC_V_CPU_Emulator {
             this.CurrentModeGroupBox.PerformLayout();
             this.BinaryInstructionPanel.ResumeLayout(false);
             this.BinaryInstructionPanel.PerformLayout();
-            this.DisplayRegisterCheckBox.ResumeLayout(false);
-            this.DisplayRegisterCheckBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.RunPcPanel.ResumeLayout(false);
+            this.RunPcPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -336,10 +364,13 @@ namespace RISC_V_CPU_Emulator {
         private System.Windows.Forms.Panel BinaryInstructionPanel;
         private IntegerRegistersControl IntegerRegistersControl;
         private FloatPointRegistersControl FloatPointRegistersControl;
-        private System.Windows.Forms.Panel DisplayRegisterCheckBox;
         private System.Windows.Forms.CheckBox DisplayCSRegisterCheckBox;
         private System.Windows.Forms.CheckBox DisplayFPRegisterCheckBox;
         private System.Windows.Forms.CheckBox DisplayIRegisterCheckBox;
         private System.Windows.Forms.BindingSource bindingSource1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Panel RunPcPanel;
+        private System.Windows.Forms.CheckBox RunPcCheckBox;
+        private System.Windows.Forms.MaskedTextBox RunPcTextBox;
     }
 }
