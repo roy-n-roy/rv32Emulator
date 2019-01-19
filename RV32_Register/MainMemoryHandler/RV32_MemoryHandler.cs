@@ -1,4 +1,5 @@
-﻿using RV32_Register.Constants;
+﻿using ElfLoader;
+using RV32_Register.Constants;
 using RV32_Register.Exceptions;
 using System;
 using System.Collections.Generic;
@@ -59,23 +60,19 @@ namespace RV32_Register.MemoryHandler {
         public byte this[UInt32 address] {
             // メモリへのストア
             set {
-                if (address < PAddr || address >= Size - PAddr + Offset) {
-                    throw new RiscvException(RiscvExceptionCause.StoreAMOPageFault, address, reg);
-                }
-                mainMemory[address - PAddr + Offset] = value;
+                ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Write);
+                mainMemory[phy_addr] = value;
                 if (HostAccessAddress.Contains(address)) {
                     throw new HostAccessTrap(value);
                 }
             }
             // メモリからのロード
             get {
+                ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Read);
                 if (HostAccessAddress.Contains(address)) {
-                    throw new HostAccessTrap(mainMemory[address - PAddr + Offset]);
+                    throw new HostAccessTrap(mainMemory[phy_addr]);
                 }
-                if (address < PAddr || address >= Size - PAddr + Offset) {
-                    throw new RiscvException(RiscvExceptionCause.LoadPageFault, address, reg);
-                }
-                return mainMemory[address - PAddr + Offset];
+                return mainMemory[phy_addr];
             }
         }
 
@@ -88,10 +85,8 @@ namespace RV32_Register.MemoryHandler {
             if (HostAccessAddress.Contains(address)) {
                 throw new HostAccessTrap(BitConverter.ToUInt32(mainMemory, (int)(address - PAddr + Offset)));
             }
-            if (address < PAddr || address >= Size - PAddr + Offset) {
-                throw new RiscvException(RiscvExceptionCause.InstructionPageFault, address, reg);
-            }
-            return BitConverter.ToUInt32(mainMemory, (int)(address - PAddr + Offset));
+            ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Execute);
+            return BitConverter.ToUInt32(mainMemory, (int)phy_addr);
         }
 
         private protected readonly byte[] mainMemory;
@@ -142,16 +137,9 @@ namespace RV32_Register.MemoryHandler {
         /// </summary>
         public abstract void Reset();
 
-
-
         private protected UInt64 GetPhysicalAddr(UInt32 v_add, MemoryAccessMode accMode) {
 
-            SatpCSR satp = reg.CSRegisters[CSR.satp];
-
-            if (!satp.MODE) {
-                return (ulong)v_add;
-            }
-            VirtAddr32 virt_addr = v_add;
+            UInt64 phy_addr = 0u;
 
             RiscvExceptionCause pageFaultCouse;
             switch (accMode) {
@@ -167,6 +155,17 @@ namespace RV32_Register.MemoryHandler {
                 default:
                     return 0;
             }
+
+            SatpCSR satp = reg.CSRegisters[CSR.satp];
+
+            if (!satp.MODE || reg.CurrentMode == PrivilegeLevels.MachineMode) {
+                phy_addr = v_add - PAddr + Offset;
+                if (phy_addr >= Size) {
+                    throw new RiscvException(RiscvExceptionCause.LoadPageFault, v_add, reg);
+                }
+                return phy_addr;
+            }
+            VirtAddr32 virt_addr = v_add;
 
             /* 1.pte_addrをsatp：ppn×PAGESIZEとし、i = LEVELS - 1とする（Sv32の場合、PAGESIZE = 2^12、LEVELS = 2）
              */
@@ -186,7 +185,8 @@ namespace RV32_Register.MemoryHandler {
             while (i >= 0) {
 
                 pte_addr += virt_addr.VPN[i] * PteSize;
-                pte = (PageTableEntry32)BitConverter.ToUInt32(mainMemory, (int)(pte_addr - PAddr + Offset));
+                
+                pte = (PageTableEntry32)BitConverter.ToUInt32(mainMemory, (int)(pte_addr - PAddr));
 
                 if (false) {
                     // ToDo: PMA,PMPチェックの実装
@@ -195,7 +195,7 @@ namespace RV32_Register.MemoryHandler {
 
                 /* 3.pte.v = 0の場合、またはpte.r = 0かつpte.w = 1の場合、停止してページフォルト例外を発生させます。
                  */
-                if (!pte.IsValid || (((int)pte.Permission & 0b110) == 0b010)) {
+                if (!pte.IsValid || (((int)pte.Permission & 0b011) == 0b010)) {
                     throw new RiscvException(pageFaultCouse, v_add, reg);
                 }
 
@@ -230,7 +230,7 @@ namespace RV32_Register.MemoryHandler {
             bool allowUserWithSUM = reg.CurrentMode == PrivilegeLevels.SupervisorMode && status.SUM;
 
             bool allowPermission = ((byte)accMode & (byte)pte.Permission) != 0;
-            bool allowPermissionWithMXR = pte.Permission == PtPermission.ExecuteOnly && status.MXR;
+            bool allowPermissionWithMXR = accMode  == MemoryAccessMode.Read && pte.Permission == PtPermission.ExecuteOnly && status.MXR;
 
             if (!((allowUser || allowUserWithSUM) && (allowPermission || allowPermissionWithMXR))) {
                 throw new RiscvException(pageFaultCouse, v_add, reg);
@@ -249,24 +249,30 @@ namespace RV32_Register.MemoryHandler {
              * ・この更新と手順2のpteのロードはアトミックでなければなりません。
              * 特に、PTEへの介在ストアがその間に発生したと認識されることはありません。
              */
-            if (!pte.IsAccessed || (!pte.IsDarty && accMode == MemoryAccessMode.Write)) {
-                throw new RiscvException(pageFaultCouse, v_add, reg);
+            pte.IsAccessed = true;
+            if (accMode == MemoryAccessMode.Write) {
+                pte.IsDarty = true;
             }
+
+            if (false) {
+                // ToDo: PMA,PMPチェックの実装
+            }
+
+            mainMemory[pte_addr - PAddr] = BitConverter.GetBytes(pte)[0];
+
 
             /* 8.変換は成功しました。変換された物理アドレスは以下のように与えられます。
              * ・pa.pgoff = va.pgoff
              * ・i> 0の場合、これはスーパーページ変換であり、pa：ppn [i - 1：0] = va：vpn [i - 1：0]です。
              * ・pa.ppn [LEVELS - 1：i] = pte.ppn [LEVELS - 1：i]
              */
-            UInt64 phy_addr = 0u;
             phy_addr |= virt_addr.PageOffset;
             phy_addr |= (UInt64)(i > 0 ? virt_addr.VPN[i - 1] : pte.PPN[i]) << 12;
             phy_addr |= (UInt64)pte.PPN[Levels - 1] << 22;
-            return phy_addr;
+            return phy_addr + Offset;
 
 
         }
-
     }
 
     [Serializable]
