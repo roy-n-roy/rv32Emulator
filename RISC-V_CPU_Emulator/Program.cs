@@ -20,7 +20,7 @@ namespace RISC_V_CPU_Emulator {
             Application.SetCompatibleTextRenderingDefault(false);
 
 
-            byte[] mem = new byte[32 * 1024];
+            byte[] mem = new byte[128 * 1024];
 
             RV32_HaedwareThread cpu = new RV32_HaedwareThread("IAMFDC", mem);
 
