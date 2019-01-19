@@ -323,7 +323,6 @@ namespace RV32_Register {
         /// </summary>
         /// <returns>処理の成否</returns>
         public bool Mret(UInt32 insLength = 4U) {
-            PC = CSRegisters[CSR.mepc];
             StatusCSR mstatus = CSRegisters[CSR.mstatus];
 
             PrivilegeLevels priv_level = (PrivilegeLevels)mstatus.MPP;
@@ -334,6 +333,8 @@ namespace RV32_Register {
             CSRegisters[CSR.mstatus]= mstatus;
 
             CurrentMode = priv_level;
+
+            PC = CSRegisters[CSR.mepc];
 
             return true;
         }
@@ -347,7 +348,6 @@ namespace RV32_Register {
             if (((StatusCSR)CSRegisters[CSR.mstatus]).TSR && CurrentMode <= PrivilegeLevels.SupervisorMode) {
                 throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
             }
-            PC = CSRegisters[CSR.sepc];
             StatusCSR sstatus = CSRegisters[CSR.sstatus];
 
             PrivilegeLevels priv_level = sstatus.SPP ? PrivilegeLevels.SupervisorMode : PrivilegeLevels.UserMode;
@@ -359,6 +359,8 @@ namespace RV32_Register {
             CSRegisters[CSR.sstatus] = sstatus;
 
             CurrentMode = priv_level;
+
+            PC = CSRegisters[CSR.sepc];
 
             return true;
         }
@@ -372,7 +374,6 @@ namespace RV32_Register {
             if (((StatusCSR)CSRegisters[CSR.mstatus]).TSR) {
                 throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
             }
-            PC = CSRegisters[CSR.uepc];
             StatusCSR ustatus = CSRegisters[CSR.ustatus];
 
             PrivilegeLevels priv_level = PrivilegeLevels.UserMode;
@@ -382,6 +383,8 @@ namespace RV32_Register {
             CSRegisters[CSR.ustatus] =ustatus;
 
             CurrentMode = priv_level;
+
+            PC = CSRegisters[CSR.uepc];
 
             return true;
         }

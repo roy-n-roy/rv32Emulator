@@ -92,8 +92,8 @@ namespace RV32_Register.MemoryHandler {
         public readonly HashSet<UInt64> HostAccessAddress;
 
         public UInt64 Size { get => (UInt64)mainMemory.LongLength; }
-        public UInt64 PAddr { get; set; }
-        public UInt64 Offset { get; set; }
+        public UInt32 PAddr { get; set; }
+        public UInt32 Offset { get; set; }
 
         internal void SetRegisterSet(RV32_RegisterSet registerSet) {
             reg = registerSet;
@@ -157,8 +157,8 @@ namespace RV32_Register.MemoryHandler {
 
             SatpCSR satp = reg.CSRegisters[CSR.satp];
 
-            if (!satp.MODE || reg.CurrentMode == PrivilegeLevels.MachineMode) {
-                phy_addr = (v_add - PAddr + Offset) & 0xffff_ffffU;
+            if (!satp.MODE || reg.CurrentMode > PrivilegeLevels.SupervisorMode) {
+                phy_addr = v_add - PAddr + Offset;
                 if (phy_addr >= Size) {
                     throw new RiscvException(RiscvExceptionCause.LoadPageFault, v_add, reg);
                 }
