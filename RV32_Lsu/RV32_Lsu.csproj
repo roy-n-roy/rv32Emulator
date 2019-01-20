@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RV32_Lsu</RootNamespace>
     <AssemblyName>RV32_Lsu</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,7 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -44,20 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\ControlStatusRegisterConstants.cs" />
-    <Compile Include="Constants\PageTableEntryConstants.cs" />
-    <Compile Include="Constants\RegisterConstants.cs" />
-    <Compile Include="Exceptions\RiscvException.cs" />
     <Compile Include="RV32_FloatPointLsu.cs" />
-    <Compile Include="MainMemoryHandler\RV32_AtomicMemoryHandler.cs" />
-    <Compile Include="MainMemoryHandler\RV32_MemoryHandler.cs" />
     <Compile Include="RV32_AmoLsu.cs" />
     <Compile Include="RV32_LoadStoreUnit.cs" />
     <Compile Include="RV32_IntegerLsu.cs" />
-    <Compile Include="RegisterSet\RV32_ControlStatusRegisters.cs" />
-    <Compile Include="RegisterSet\RV32_RegisterSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\RV32_Register\RV32_Register.csproj">
+      <Project>{9a6be135-e566-4d40-a274-fdae529d5670}</Project>
+      <Name>RV32_Register</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>RV32_Cpu</RootNamespace>
     <AssemblyName>RV32_Cpu</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -37,7 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,7 +47,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -64,20 +64,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\InstructionConstants.cs" />
-    <Compile Include="Decoder\RV32F_Decoder.cs" />
-    <Compile Include="Decoder\RV32D_Decoder.cs" />
-    <Compile Include="Decoder\RV32C_Decoder.cs" />
-    <Compile Include="Decoder\RV32I_Decoder.cs" />
-    <Compile Include="Decoder\RV32A_Decoder.cs" />
-    <Compile Include="Decoder\RV32M_Decoder.cs" />
-    <Compile Include="Decoder\RV32_Decoder.cs" />
-    <Compile Include="InstructionConverter.cs" />
     <Compile Include="RV32_HaedwareThread.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -96,13 +84,25 @@
       <Project>{28e3a2c3-67de-4542-803b-5db07a3bc6bb}</Project>
       <Name>ElfLoader</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RISC-V_Instruction\RISC-V_Instruction.csproj">
+      <Project>{c59d98ba-b3ef-497b-9f40-ff63fa9725e2}</Project>
+      <Name>RISC-V_Instruction</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RV32_Alu\RV32_Alu.csproj">
       <Project>{28c36aee-cd6d-4185-80c9-142d86e5b585}</Project>
       <Name>RV32_Alu</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RV32_Decoder\RV32_Decoder.csproj">
+      <Project>{2533c94d-b8bc-4164-8acc-bbe8e37944a2}</Project>
+      <Name>RV32_Decoder</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RV32_Lsu\RV32_Lsu.csproj">
       <Project>{fa819d4a-5080-468f-a2b9-b80fb581cd41}</Project>
       <Name>RV32_Lsu</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RV32_Register\RV32_Register.csproj">
+      <Project>{9a6be135-e566-4d40-a274-fdae529d5670}</Project>
+      <Name>RV32_Register</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

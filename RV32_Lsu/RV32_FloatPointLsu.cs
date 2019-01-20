@@ -1,7 +1,7 @@
-﻿using RV32_Lsu.Constants;
-using RV32_Lsu.Exceptions;
-using RV32_Lsu.MemoryHandler;
-using RV32_Lsu.RegisterSet;
+﻿using RV32_Register.MemoryHandler;
+using RV32_Register;
+using RV32_Register.Constants;
+using RV32_Register.Exceptions;
 using System;
 
 namespace RV32_Lsu {
@@ -30,7 +30,7 @@ namespace RV32_Lsu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Flw(FPRegister rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
+        public bool Flw(FPRegister rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 4) && reg.IsFPAvailable()) {
                 byte[] bytes = new byte[8];
@@ -59,7 +59,7 @@ namespace RV32_Lsu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ロードする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Fld(FPRegister rd, Register rs1, Int32 offset, UInt32 insLength = 4u) {
+        public bool Fld(FPRegister rd, Register rs1, Int32 offset, UInt32 insLength = 4U) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 8) && reg.IsFPAvailable()) {
                 byte[] bytes = new byte[8];
@@ -92,7 +92,7 @@ namespace RV32_Lsu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Fsw(Register rs1, FPRegister rs2, Int32 offset, UInt32 insLength = 4u) {
+        public bool Fsw(Register rs1, FPRegister rs2, Int32 offset, UInt32 insLength = 4U) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 4) && reg.IsFPAvailable()) {
                 byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
@@ -116,7 +116,7 @@ namespace RV32_Lsu {
         /// <param name="rd">結果を格納するレジスタ番号</param>
         /// <param name="rs1">ストアする対象のアドレスのベースが格納されているレジスタ番号</param>
         /// <param name="offset">オフセット</param>
-        public bool Fsd(Register rs1, FPRegister rs2, Int32 offset, UInt32 insLength = 4u) {
+        public bool Fsd(Register rs1, FPRegister rs2, Int32 offset, UInt32 insLength = 4U) {
             UInt32 addr = (UInt32)(reg.GetValue(rs1) + offset);
             if (reg.Mem.CanOperate(addr, 8) && reg.IsFPAvailable()) {
 

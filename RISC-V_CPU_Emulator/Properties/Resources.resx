@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,9 +112,201 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DefaultLabel_BackColor" xml:space="preserve">
+    <value>Control</value>
+  </data>
+  <data name="DefaultTextBox_BackColor" xml:space="preserve">
+    <value>Window</value>
+  </data>
+  <data name="DumpTextBox_CurrentStepLine_BackColor" xml:space="preserve">
+    <value>LightPink</value>
+  </data>
+  <data name="ExceptionCause_00000000" xml:space="preserve">
+    <value>Instruction Address Misaligned Exception </value>
+  </data>
+  <data name="ExceptionCause_00000001" xml:space="preserve">
+    <value>Instruction Access Fault Exception </value>
+  </data>
+  <data name="ExceptionCause_00000002" xml:space="preserve">
+    <value>Illegal Instruction Exception </value>
+  </data>
+  <data name="ExceptionCause_00000003" xml:space="preserve">
+    <value>Breakpoint Exception </value>
+  </data>
+  <data name="ExceptionCause_00000004" xml:space="preserve">
+    <value>Load Address Misaligned Exception </value>
+  </data>
+  <data name="ExceptionCause_00000005" xml:space="preserve">
+    <value>Load Access Fault Exception </value>
+  </data>
+  <data name="ExceptionCause_00000006" xml:space="preserve">
+    <value>AMO Address Misaligned Exception </value>
+  </data>
+  <data name="ExceptionCause_00000007" xml:space="preserve">
+    <value>Store AMO AccessFault Exception </value>
+  </data>
+  <data name="ExceptionCause_00000008" xml:space="preserve">
+    <value>Environment Call From User Mode Exception </value>
+  </data>
+  <data name="ExceptionCause_00000009" xml:space="preserve">
+    <value>Environment Call From Supervisor Mode Exception </value>
+  </data>
+  <data name="ExceptionCause_0000000b" xml:space="preserve">
+    <value>Environment Call From Machine ode Exception </value>
+  </data>
+  <data name="ExceptionCause_0000000c" xml:space="preserve">
+    <value>Instruction Page Fault Exception </value>
+  </data>
+  <data name="ExceptionCause_0000000d" xml:space="preserve">
+    <value>Load Page Fault Exception </value>
+  </data>
+  <data name="ExceptionCause_0000000f" xml:space="preserve">
+    <value>Store AMO Page Fault Exception </value>
+  </data>
+  <data name="ExceptionCause_80000000" xml:space="preserve">
+    <value>User Software Interrupt </value>
+  </data>
+  <data name="ExceptionCause_80000001" xml:space="preserve">
+    <value>Supervisor Software Interrupt </value>
+  </data>
+  <data name="ExceptionCause_80000003" xml:space="preserve">
+    <value>Machine Software Interrupt </value>
+  </data>
+  <data name="ExceptionCause_80000004" xml:space="preserve">
+    <value>User Timer Interrupt </value>
+  </data>
+  <data name="ExceptionCause_80000005" xml:space="preserve">
+    <value>Supervisor Timer Interrupt </value>
+  </data>
+  <data name="ExceptionCause_80000007" xml:space="preserve">
+    <value>Machine Timer Interrupt </value>
+  </data>
+  <data name="ExceptionCause_80000008" xml:space="preserve">
+    <value>User External Interrupt </value>
+  </data>
+  <data name="ExceptionCause_80000009" xml:space="preserve">
+    <value>Supervisor External Interrupt </value>
+  </data>
+  <data name="ExceptionCause_8000000b" xml:space="preserve">
+    <value>Machine External Interrupt </value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox_ExceptionFlag_01" xml:space="preserve">
+    <value>Inexact</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox_ExceptionFlag_02" xml:space="preserve">
+    <value>Underow</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox_ExceptionFlag_04" xml:space="preserve">
+    <value>Overflow</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox_ExceptionFlag_08" xml:space="preserve">
+    <value>Divide by Zero</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox_ExceptionFlag_10" xml:space="preserve">
+    <value>Invalid Operation</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox_RoundMode_0" xml:space="preserve">
+    <value>RNE</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox_RoundMode_1" xml:space="preserve">
+    <value>RTZ</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox_RoundMode_2" xml:space="preserve">
+    <value>RDN</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox_RoundMode_3" xml:space="preserve">
+    <value>RUP</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox_RoundMode_4" xml:space="preserve">
+    <value>RMM</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox_RoundMode_7" xml:space="preserve">
+    <value>Dynamic</value>
+  </data>
+  <data name="InstructionType_A" xml:space="preserve">
+    <value>----Opcode---- -aq/rl- --------rs2-------  -------rs1-------   -Opcode-    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="InstructionType_B" xml:space="preserve">
+    <value>------Immediate------   -------rs2--------   -------rs1-------   -Opcide-   ---Immediate---    -------Opcode--------</value>
+  </data>
+  <data name="InstructionType_CSR" xml:space="preserve">
+    <value>--------------------CSR------------------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="InstructionType_FENCE" xml:space="preserve">
+    <value>-----------------------------------------------------OpCode-------------------------------------------------------------</value>
+  </data>
+  <data name="InstructionType_FMV" xml:space="preserve">
+    <value>------------------Opcode-----------------  -------rs1-------   -Opcode-    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="InstructionType_I" xml:space="preserve">
+    <value>----------------Immediate---------------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="InstructionType_J" xml:space="preserve">
+    <value>-------------------------------Immediate-------------------------------    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="InstructionType_NONE" xml:space="preserve">
+    <value>-----------------------------------------------------OpCode-------------------------------------------------------------</value>
+  </data>
+  <data name="InstructionType_R" xml:space="preserve">
+    <value>--------Opcode-------  -------rs2--------    -------rs1-------  -Opcide-    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="InstructionType_R4" xml:space="preserve">
+    <value>-------rs3------- -Op- --------rs2-------    -------rs1-------   -Opcode-    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="InstructionType_RF" xml:space="preserve">
+    <value>--------Opcode-------  -------rs2--------  -------rs1--------  ---rm---    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="InstructionType_S" xml:space="preserve">
+    <value>------Immediate------   -------rs2--------   -------rs1-------   -Opcide-   ---Immediate---    -------Opcode--------</value>
+  </data>
+  <data name="InstructionType_SHIFT" xml:space="preserve">
+    <value>------Opcode---------  ------shamt------    -------rs1-------   -Opcide-    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="InstructionType_U" xml:space="preserve">
+    <value>-------------------------------Immediate-------------------------------    ------rd--------    -------Opcode--------</value>
+  </data>
+  <data name="RegisterLabel_BackColor_frd" xml:space="preserve">
+    <value>Khaki</value>
+  </data>
+  <data name="RegisterLabel_BackColor_frs1" xml:space="preserve">
+    <value>PaleGreen</value>
+  </data>
+  <data name="RegisterLabel_BackColor_frs2" xml:space="preserve">
+    <value>PaleGreen</value>
+  </data>
+  <data name="RegisterLabel_BackColor_rd" xml:space="preserve">
+    <value>Khaki</value>
+  </data>
+  <data name="RegisterLabel_BackColor_rs1" xml:space="preserve">
+    <value>PaleGreen</value>
+  </data>
+  <data name="RegisterLabel_BackColor_rs2" xml:space="preserve">
+    <value>PaleGreen</value>
+  </data>
+  <data name="RegisterLabel_BackColor_rs3" xml:space="preserve">
+    <value>PaleGreen</value>
+  </data>
+  <data name="RegisterLabel_ForeColor_frd" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="RegisterLabel_ForeColor_rd" xml:space="preserve">
+    <value>Red</value>
+  </data>
+  <data name="StatusLabel_Text_Exception" xml:space="preserve">
+    <value>Status : </value>
+  </data>
+  <data name="StatusLabel_Text_Interrupt" xml:space="preserve">
+    <value>Status :</value>
+  </data>
+  <data name="StatusLabel_Text_Running" xml:space="preserve">
+    <value>Status : Running</value>
+  </data>
+  <data name="StatusLabel_Text_Wait" xml:space="preserve">
+    <value>Status : Waiting Interrupt</value>
+  </data>
 </root>

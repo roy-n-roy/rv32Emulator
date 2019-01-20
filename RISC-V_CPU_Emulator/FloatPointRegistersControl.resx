@@ -1,0 +1,1950 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="&gt;&gt;FloatPointRegisterLabel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel21.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="FloatPointRegisterTextBox31.Location" type="System.Drawing.Point, System.Drawing">
+    <value>426, 221</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox31.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox10.ZOrder" xml:space="preserve">
+    <value>22</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox0.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointStatusRegisterTextBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel12.ZOrder" xml:space="preserve">
+    <value>53</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="FloatPointRegisterTextBox7.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox29.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>426, 249</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox3.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel17.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel17</value>
+  </data>
+  <data name="&gt;&gt;FloatPointStatusRegisterTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterTextBox19.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterTextBox19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 221</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox31.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox31</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel17.ZOrder" xml:space="preserve">
+    <value>48</value>
+  </data>
+  <data name="FloatPointRegisterLabel31.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox24.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox24</value>
+  </data>
+  <data name="FloatPointRegisterLabel27.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterTextBox15.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterTextBox13.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterTextBox15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 109</value>
+  </data>
+  <data name="FloatPointRegisterLabel27.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="FloatPointRegisterTextBox12.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel31.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox5.ZOrder" xml:space="preserve">
+    <value>27</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox19.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="FloatPointStatusRegisterLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointStatusRegisterLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel10.ZOrder" xml:space="preserve">
+    <value>55</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel6.ZOrder" xml:space="preserve">
+    <value>59</value>
+  </data>
+  <data name="FloatPointRegisterTextBox4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 137</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox25.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox25</value>
+  </data>
+  <data name="FloatPointRegisterTextBox17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 305</value>
+  </data>
+  <data name="FloatPointRegisterTextBox12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox1.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel3.Text" xml:space="preserve">
+    <value>f3</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox0.ZOrder" xml:space="preserve">
+    <value>33</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel9.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox10.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="FloatPointRegistersGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>558, 372</value>
+  </data>
+  <data name="FloatPointRegistersGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel26.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel26</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel25.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel25</value>
+  </data>
+  <data name="FloatPointRegisterLabel4.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox3.ZOrder" xml:space="preserve">
+    <value>29</value>
+  </data>
+  <data name="FloatPointRegisterTextBox11.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel5.ZOrder" xml:space="preserve">
+    <value>60</value>
+  </data>
+  <data name="FloatPointRegisterTextBox24.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox29.Location" type="System.Drawing.Point, System.Drawing">
+    <value>426, 165</value>
+  </data>
+  <data name="FloatPointRegisterTextBox22.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterLabel24.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterTextBox5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 165</value>
+  </data>
+  <data name="FloatPointRegisterLabel3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel23.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox30.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox30</value>
+  </data>
+  <data name="FloatPointRegisterLabel24.Text" xml:space="preserve">
+    <value>f24</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox4.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel18.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel23.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterLabel31.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel15.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel15</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox4.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox4</value>
+  </data>
+  <data name="FloatPointRegisterTextBox1.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="FloatPointRegisterLabel7.Text" xml:space="preserve">
+    <value>f7</value>
+  </data>
+  <data name="FloatPointRegisterTextBox16.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox14.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox6.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox6</value>
+  </data>
+  <data name="FloatPointRegisterLabel18.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 196</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox14.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox14</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox31.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 53</value>
+  </data>
+  <data name="FloatPointRegisterLabel25.Text" xml:space="preserve">
+    <value>f25</value>
+  </data>
+  <data name="FloatPointRegisterLabel3.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel15.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 112</value>
+  </data>
+  <data name="FloatPointRegisterTextBox13.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox1.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox1</value>
+  </data>
+  <data name="FloatPointRegisterLabel1.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel12.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel3.ZOrder" xml:space="preserve">
+    <value>62</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox21.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox15.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox15.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox15</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel11.ZOrder" xml:space="preserve">
+    <value>54</value>
+  </data>
+  <data name="FloatPointRegisterLabel23.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 336</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel9.ZOrder" xml:space="preserve">
+    <value>56</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel8.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel8</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel1.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel1</value>
+  </data>
+  <data name="FloatPointRegisterLabel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 56</value>
+  </data>
+  <data name="FloatPointStatusRegisterLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 252</value>
+  </data>
+  <data name="FloatPointRegisterTextBox12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterTextBox9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel4.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox9.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel15.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox8.ZOrder" xml:space="preserve">
+    <value>24</value>
+  </data>
+  <data name="FloatPointRegisterTextBox10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel27.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel12.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel22.ZOrder" xml:space="preserve">
+    <value>43</value>
+  </data>
+  <data name="FloatPointRegisterTextBox30.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterTextBox0.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox26.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox26</value>
+  </data>
+  <data name="FloatPointRegisterLabel0.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 28</value>
+  </data>
+  <data name="FloatPointRegisterLabel8.Text" xml:space="preserve">
+    <value>f8</value>
+  </data>
+  <data name="FloatPointRegisterTextBox25.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox22.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel2.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel2</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel13.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox30.Location" type="System.Drawing.Point, System.Drawing">
+    <value>426, 193</value>
+  </data>
+  <data name="FloatPointRegisterLabel9.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterTextBox31.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel11.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel11</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox4.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterLabel25.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel25.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointStatusRegisterTextBox.Name" xml:space="preserve">
+    <value>FloatPointStatusRegisterTextBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox18.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox11.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox6.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox7.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox27.Location" type="System.Drawing.Point, System.Drawing">
+    <value>426, 109</value>
+  </data>
+  <data name="FloatPointRegisterTextBox15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel24.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel30.Text" xml:space="preserve">
+    <value>f30</value>
+  </data>
+  <data name="FloatPointRegisterTextBox20.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox28.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel30.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox30.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="FloatPointRegisterTextBox26.Location" type="System.Drawing.Point, System.Drawing">
+    <value>426, 81</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 280</value>
+  </data>
+  <data name="FloatPointRegisterLabel18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="FloatPointRegisterTextBox5.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel20.ZOrder" xml:space="preserve">
+    <value>45</value>
+  </data>
+  <data name="FloatPointRegisterLabel11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel0.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel19.Text" xml:space="preserve">
+    <value>f19</value>
+  </data>
+  <data name="FloatPointRegisterTextBox8.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterTextBox24.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel9.Size" type="System.Drawing.Size, System.Drawing">
+    <value>19, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox16.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegistersGroupBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 9pt</value>
+  </data>
+  <data name="&gt;&gt;FloatPointStatusRegisterTextBox.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox11.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox11</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox0.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="FloatPointRegisterTextBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 81</value>
+  </data>
+  <data name="FloatPointRegisterLabel20.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterLabel31.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox11.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel4.ZOrder" xml:space="preserve">
+    <value>61</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel6.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel17.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 168</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel20.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel20</value>
+  </data>
+  <data name="FloatPointRegisterLabel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>19, 18</value>
+  </data>
+  <data name="FloatPointRegisterLabel8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel29.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel21.Text" xml:space="preserve">
+    <value>f21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox18.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox4.ZOrder" xml:space="preserve">
+    <value>28</value>
+  </data>
+  <data name="FloatPointRegisterTextBox0.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterTextBox21.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 277</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox0.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox16.ZOrder" xml:space="preserve">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox16.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox16</value>
+  </data>
+  <data name="FloatPointRegistersGroupBox.Text" xml:space="preserve">
+    <value>Float-Point Register</value>
+  </data>
+  <data name="FloatPointRegisterTextBox23.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox31.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox16.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox18.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel26.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel17.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel3.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel3</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel15.ZOrder" xml:space="preserve">
+    <value>50</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel31.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel10.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox3.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox3</value>
+  </data>
+  <data name="FloatPointRegisterLabel26.Text" xml:space="preserve">
+    <value>f26</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel24.ZOrder" xml:space="preserve">
+    <value>41</value>
+  </data>
+  <data name="FloatPointRegisterTextBox13.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel2.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox17.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel23.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel23</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox6.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox1.ZOrder" xml:space="preserve">
+    <value>31</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel19.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel19</value>
+  </data>
+  <data name="FloatPointRegisterLabel5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>19, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel12.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel12</value>
+  </data>
+  <data name="FloatPointRegisterLabel27.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 112</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel20.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel14.Text" xml:space="preserve">
+    <value>f14</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel26.ZOrder" xml:space="preserve">
+    <value>39</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox24.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 333</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel24.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterLabel28.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel27.Text" xml:space="preserve">
+    <value>f27</value>
+  </data>
+  <data name="FloatPointRegisterLabel7.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel25.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel17.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel29.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterLabel10.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterLabel29.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterLabel4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>19, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox17.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel18.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointStatusRegisterLabel.ZOrder" xml:space="preserve">
+    <value>32</value>
+  </data>
+  <data name="FloatPointRegisterLabel16.Text" xml:space="preserve">
+    <value>f16</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox17.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox17</value>
+  </data>
+  <data name="FloatPointRegisterLabel15.Text" xml:space="preserve">
+    <value>f16</value>
+  </data>
+  <data name="FloatPointRegisterLabel21.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox30.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel28.Text" xml:space="preserve">
+    <value>f28</value>
+  </data>
+  <data name="FloatPointRegisterTextBox9.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterLabel5.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel30.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel30</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel26.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox25.Location" type="System.Drawing.Point, System.Drawing">
+    <value>426, 53</value>
+  </data>
+  <data name="FloatPointRegisterLabel20.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterLabel25.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel28.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel28</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox12.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox5.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel5.Text" xml:space="preserve">
+    <value>f5</value>
+  </data>
+  <data name="FloatPointRegisterLabel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>19, 18</value>
+  </data>
+  <data name="FloatPointRegisterTextBox6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 193</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox20.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox20</value>
+  </data>
+  <data name="FloatPointRegisterTextBox13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 53</value>
+  </data>
+  <data name="FloatPointRegisterTextBox21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel19.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterLabel6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox18.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel28.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel8.ZOrder" xml:space="preserve">
+    <value>57</value>
+  </data>
+  <data name="FloatPointRegisterLabel26.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;FloatPointStatusRegisterLabel.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel6.Text" xml:space="preserve">
+    <value>f6</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox25.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox21.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox28.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox14.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterTextBox28.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="FloatPointRegistersGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterTextBox23.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox21.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox12.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox12</value>
+  </data>
+  <data name="FloatPointRegisterLabel22.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel5.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel30.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 196</value>
+  </data>
+  <data name="FloatPointRegisterTextBox8.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="FloatPointRegisterLabel27.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterLabel13.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterTextBox11.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel14.ZOrder" xml:space="preserve">
+    <value>51</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel30.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel25.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel5.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel5</value>
+  </data>
+  <data name="FloatPointRegisterLabel19.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 224</value>
+  </data>
+  <data name="FloatPointRegisterLabel15.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterLabel28.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 140</value>
+  </data>
+  <data name="FloatPointRegisterLabel28.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterLabel5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox26.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="FloatPointRegisterLabel16.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel22.Text" xml:space="preserve">
+    <value>f22</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel19.ZOrder" xml:space="preserve">
+    <value>46</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox26.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox13.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox13</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox13.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel6.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel6</value>
+  </data>
+  <data name="FloatPointRegisterTextBox3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 109</value>
+  </data>
+  <data name="FloatPointRegisterLabel10.Text" xml:space="preserve">
+    <value>f10</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox9.ZOrder" xml:space="preserve">
+    <value>23</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel16.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel13.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 56</value>
+  </data>
+  <data name="FloatPointRegisterLabel11.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterTextBox17.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterLabel23.Text" xml:space="preserve">
+    <value>f23</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel11.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel25.ZOrder" xml:space="preserve">
+    <value>40</value>
+  </data>
+  <data name="FloatPointRegisterLabel19.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterTextBox28.Location" type="System.Drawing.Point, System.Drawing">
+    <value>426, 137</value>
+  </data>
+  <data name="FloatPointRegisterLabel23.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel25.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 56</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox10.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox10</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox10.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel31.Text" xml:space="preserve">
+    <value>f31</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersGroupBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel11.Text" xml:space="preserve">
+    <value>f11</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel21.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel3.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel19.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="FloatPointRegisterLabel30.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterTextBox29.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterTextBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox21.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox19.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox19</value>
+  </data>
+  <data name="FloatPointRegisterLabel29.Text" xml:space="preserve">
+    <value>f29</value>
+  </data>
+  <data name="FloatPointRegisterTextBox18.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 193</value>
+  </data>
+  <data name="FloatPointRegisterLabel5.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 168</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox24.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox27.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel28.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterTextBox26.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel27.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel24.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel24</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel16.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel16</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox28.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel30.ZOrder" xml:space="preserve">
+    <value>35</value>
+  </data>
+  <data name="FloatPointRegisterTextBox3.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterLabel26.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 84</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox19.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel25.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterTextBox27.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterTextBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox26.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox18.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox27.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox27</value>
+  </data>
+  <data name="FloatPointRegisterLabel31.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterTextBox20.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 249</value>
+  </data>
+  <data name="FloatPointRegisterLabel24.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel1.ZOrder" xml:space="preserve">
+    <value>64</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel13.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 249</value>
+  </data>
+  <data name="FloatPointRegisterLabel12.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 28</value>
+  </data>
+  <data name="FloatPointRegisterLabel17.Text" xml:space="preserve">
+    <value>f17</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel7.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel7</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox0.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel19.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel18.ZOrder" xml:space="preserve">
+    <value>47</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox19.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox9.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox9</value>
+  </data>
+  <data name="FloatPointRegisterTextBox22.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="FloatPointRegisterLabel12.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox22.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox14.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
+  <data name="FloatPointRegisterLabel16.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox25.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="FloatPointRegisterTextBox23.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel0.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel0</value>
+  </data>
+  <data name="FloatPointRegisterLabel14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="FloatPointRegisterLabel2.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel11.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersGroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox8.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox8</value>
+  </data>
+  <data name="FloatPointRegisterTextBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox20.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox27.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox23.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox23</value>
+  </data>
+  <data name="FloatPointRegisterTextBox2.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox25.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel28.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel14.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterLabel9.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>FloatPointRegistersControl</value>
+  </data>
+  <data name="FloatPointRegisterLabel11.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 336</value>
+  </data>
+  <data name="FloatPointRegisterLabel14.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel15.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox10.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel23.ZOrder" xml:space="preserve">
+    <value>42</value>
+  </data>
+  <data name="FloatPointRegisterLabel7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 224</value>
+  </data>
+  <data name="FloatPointRegisterTextBox5.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox23.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox0.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox8.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel12.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel21.ZOrder" xml:space="preserve">
+    <value>44</value>
+  </data>
+  <data name="FloatPointRegisterLabel22.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox7.ZOrder" xml:space="preserve">
+    <value>25</value>
+  </data>
+  <data name="FloatPointRegisterLabel0.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 23</value>
+  </data>
+  <data name="FloatPointRegisterLabel18.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox7.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox7</value>
+  </data>
+  <data name="FloatPointRegisterLabel28.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="FloatPointRegisterLabel10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterTextBox17.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="FloatPointRegisterLabel26.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="FloatPointRegisterTextBox9.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox20.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel21.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel2.ZOrder" xml:space="preserve">
+    <value>63</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox22.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox22</value>
+  </data>
+  <data name="FloatPointRegisterTextBox7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 140</value>
+  </data>
+  <data name="FloatPointRegisterLabel16.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel23.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox22.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterTextBox25.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterLabel12.Text" xml:space="preserve">
+    <value>f12</value>
+  </data>
+  <data name="FloatPointRegisterLabel6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>19, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox28.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox28</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel7.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox7.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 221</value>
+  </data>
+  <data name="FloatPointRegisterLabel29.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="FloatPointStatusRegisterLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegistersGroupBox.Name" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox16.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel30.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterTextBox9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 277</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox29.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox21.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel9.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel9</value>
+  </data>
+  <data name="FloatPointRegisterLabel17.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel12.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel13.Text" xml:space="preserve">
+    <value>f13</value>
+  </data>
+  <data name="FloatPointRegisterLabel14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterLabel17.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel31.ZOrder" xml:space="preserve">
+    <value>34</value>
+  </data>
+  <data name="FloatPointRegisterLabel30.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterLabel19.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterLabel0.TabIndex" type="System.Int32, mscorlib">
+    <value>22</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel21.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel21</value>
+  </data>
+  <data name="FloatPointRegisterTextBox0.Text" xml:space="preserve">
+    <value>1234.567890123456</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel16.ZOrder" xml:space="preserve">
+    <value>49</value>
+  </data>
+  <data name="FloatPointRegisterTextBox8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel9.Text" xml:space="preserve">
+    <value>f9</value>
+  </data>
+  <data name="FloatPointRegisterLabel15.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="FloatPointRegisterTextBox29.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel10.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel10</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox24.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox18.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel27.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel27</value>
+  </data>
+  <data name="FloatPointRegisterTextBox25.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel4.Text" xml:space="preserve">
+    <value>f4</value>
+  </data>
+  <data name="FloatPointRegisterLabel24.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 28</value>
+  </data>
+  <data name="FloatPointRegisterLabel31.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 224</value>
+  </data>
+  <data name="FloatPointRegisterLabel15.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel10.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="FloatPointRegisterTextBox23.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 333</value>
+  </data>
+  <data name="FloatPointRegisterLabel2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterLabel4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterTextBox29.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="FloatPointRegisterLabel22.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox2.ZOrder" xml:space="preserve">
+    <value>30</value>
+  </data>
+  <data name="FloatPointRegisterTextBox15.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox20.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox22.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 305</value>
+  </data>
+  <data name="FloatPointRegisterLabel29.Location" type="System.Drawing.Point, System.Drawing">
+    <value>376, 168</value>
+  </data>
+  <data name="FloatPointRegisterLabel6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 196</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox18.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel14.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox30.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel28.ZOrder" xml:space="preserve">
+    <value>37</value>
+  </data>
+  <data name="FloatPointRegisterTextBox14.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel14.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel14</value>
+  </data>
+  <data name="FloatPointRegisterTextBox6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox29.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox29</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel7.ZOrder" xml:space="preserve">
+    <value>58</value>
+  </data>
+  <data name="FloatPointRegisterLabel13.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel13.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel13</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel1.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel19.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel7.Size" type="System.Drawing.Size, System.Drawing">
+    <value>19, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel20.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 84</value>
+  </data>
+  <data name="FloatPointRegisterLabel22.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterTextBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterTextBox12.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel10.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel23.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
+    <value>558, 372</value>
+  </data>
+  <data name="FloatPointRegisterLabel6.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox6.ZOrder" xml:space="preserve">
+    <value>26</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox29.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox27.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel29.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel0.ZOrder" xml:space="preserve">
+    <value>65</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel22.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox30.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox12.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel15.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox2.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox2</value>
+  </data>
+  <data name="FloatPointRegisterLabel20.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterTextBox28.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterTextBox27.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox15.ZOrder" xml:space="preserve">
+    <value>17</value>
+  </data>
+  <data name="FloatPointRegisterLabel21.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterLabel22.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 308</value>
+  </data>
+  <data name="FloatPointRegisterTextBox31.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel27.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel18.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterLabel2.Text" xml:space="preserve">
+    <value>f2</value>
+  </data>
+  <data name="FloatPointRegisterTextBox3.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="FloatPointRegisterTextBox26.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel31.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel31</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel0.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox14.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 81</value>
+  </data>
+  <data name="FloatPointRegisterLabel0.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="FloatPointRegisterLabel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>19, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox17.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="FloatPointRegisterLabel8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 252</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel29.ZOrder" xml:space="preserve">
+    <value>36</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel29.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel29</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel30.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointStatusRegisterLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel22.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel22</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox30.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel18.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox5.Name" xml:space="preserve">
+    <value>FloatPointRegisterTextBox5</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox31.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox17.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 165</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel13.ZOrder" xml:space="preserve">
+    <value>52</value>
+  </data>
+  <data name="FloatPointRegisterLabel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 112</value>
+  </data>
+  <data name="FloatPointRegisterTextBox27.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterLabel29.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterTextBox1.Text" xml:space="preserve">
+    <value>0.0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel9.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox11.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterTextBox16.Location" type="System.Drawing.Point, System.Drawing">
+    <value>247, 137</value>
+  </data>
+  <data name="FloatPointRegisterLabel20.Text" xml:space="preserve">
+    <value>f20</value>
+  </data>
+  <data name="FloatPointRegisterLabel4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 140</value>
+  </data>
+  <data name="FloatPointRegisterLabel5.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox23.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox6.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterTextBox24.Location" type="System.Drawing.Point, System.Drawing">
+    <value>426, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel4.Name" xml:space="preserve">
+    <value>FloatPointRegisterLabel4</value>
+  </data>
+  <data name="FloatPointRegisterLabel3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterTextBox14.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel8.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox22.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="FloatPointRegisterLabel6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox2.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox4.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel8.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel0.Text" xml:space="preserve">
+    <value>f00/ft00</value>
+  </data>
+  <data name="FloatPointRegisterLabel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 84</value>
+  </data>
+  <data name="FloatPointRegisterLabel17.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel26.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="FloatPointRegisterLabel20.Location" type="System.Drawing.Point, System.Drawing">
+    <value>197, 252</value>
+  </data>
+  <data name="FloatPointRegisterLabel9.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 30</value>
+  </data>
+  <data name="FloatPointRegisterLabel9.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 280</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel22.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterTextBox19.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="FloatPointStatusRegisterTextBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 11.25pt</value>
+  </data>
+  <data name="FloatPointRegisterLabel18.Text" xml:space="preserve">
+    <value>f18</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox23.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="FloatPointRegisterTextBox21.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel18.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel17.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox12.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="FloatPointRegisterLabel1.Text" xml:space="preserve">
+    <value>f1</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox5.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterTextBox20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="FloatPointRegisterLabel20.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <data name="FloatPointRegisterLabel8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterTextBox24.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel27.ZOrder" xml:space="preserve">
+    <value>38</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointRegisterLabel8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>19, 18</value>
+  </data>
+  <data name="FloatPointRegisterTextBox7.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox11.ZOrder" xml:space="preserve">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel24.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="&gt;&gt;FloatPointStatusRegisterLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="FloatPointStatusRegisterLabel.Text" xml:space="preserve">
+    <value>fcsr</value>
+  </data>
+  <data name="&gt;&gt;FloatPointStatusRegisterLabel.Name" xml:space="preserve">
+    <value>FloatPointStatusRegisterLabel</value>
+  </data>
+  <data name="FloatPointRegisterLabel10.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterTextBox16.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel24.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel14.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox13.ZOrder" xml:space="preserve">
+    <value>19</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterTextBox20.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="FloatPointRegisterLabel7.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterTextBox28.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="FloatPointRegisterTextBox26.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+    <value>Right</value>
+  </data>
+  <data name="FloatPointRegisterLabel10.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 308</value>
+  </data>
+  <data name="FloatPointRegisterLabel13.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FloatPointRegisterTextBox4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>123, 25</value>
+  </data>
+  <data name="&gt;&gt;FloatPointRegisterLabel26.Parent" xml:space="preserve">
+    <value>FloatPointRegistersGroupBox</value>
+  </data>
+  <data name="FloatPointRegisterLabel21.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 18</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+</root>

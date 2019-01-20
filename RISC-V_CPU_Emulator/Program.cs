@@ -1,7 +1,7 @@
 ﻿using RV32_Cpu;
 using RV32_Lsu;
-using RV32_Lsu.Constants;
-using RV32_Lsu.MemoryHandler;
+using RV32_Register.Constants;
+using RV32_Register.MemoryHandler;
 using System;
 using System.IO;
 using System.Linq;
@@ -20,11 +20,11 @@ namespace RISC_V_CPU_Emulator {
             Application.SetCompatibleTextRenderingDefault(false);
 
 
-            byte[] mem = new byte[32 * 1024];
+            byte[] mem = new byte[128 * 1024];
 
             RV32_HaedwareThread cpu = new RV32_HaedwareThread("IAMFDC", mem);
 
-            Application.Run(new InstructionViewer(cpu));
+            Application.Run(new InstructionViewerForm(cpu));
         }
     }
 }

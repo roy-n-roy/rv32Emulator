@@ -8,10 +8,26 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>RISC_V_CPU_Emulator</RootNamespace>
     <AssemblyName>RISC-V_CPU_Emulator</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -22,6 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +48,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>RISC_V_CPU_Emulator.Program</StartupObject>
@@ -49,27 +67,83 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlStatusRegistersControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ControlStatusRegistersControl.Designer.cs">
+      <DependentUpon>ControlStatusRegistersControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FloatPointRegistersControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FloatPointRegistersControl.Designer.cs">
+      <DependentUpon>FloatPointRegistersControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="InstructionViewer.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="InstructionViewer.designer.cs">
       <DependentUpon>InstructionViewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="IntegerRegistersControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IntegerRegistersControl.Designer.cs">
+      <DependentUpon>IntegerRegistersControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisterViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegisterViewForm.Designer.cs">
+      <DependentUpon>RegisterViewForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="ControlStatusRegistersControl.resx">
+      <DependentUpon>ControlStatusRegistersControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FloatPointRegistersControl.ja-JP.resx">
+      <DependentUpon>FloatPointRegistersControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FloatPointRegistersControl.resx">
+      <DependentUpon>FloatPointRegistersControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstructionViewer.ja-JP.resx">
+      <DependentUpon>InstructionViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="InstructionViewer.resx">
       <DependentUpon>InstructionViewer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="IntegerRegistersControl.ja-JP.resx">
+      <DependentUpon>IntegerRegistersControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IntegerRegistersControl.resx">
+      <DependentUpon>IntegerRegistersControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ja-JP.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.ja-JP.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Compile Include="Properties\Resources.ja-JP.Designer.cs">
+      <DependentUpon>Resources.ja-JP.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RegisterViewForm.resx">
+      <DependentUpon>RegisterViewForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -84,6 +158,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RISC-V_Instruction\RISC-V_Instruction.csproj">
+      <Project>{c59d98ba-b3ef-497b-9f40-ff63fa9725e2}</Project>
+      <Name>RISC-V_Instruction</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RV32_Cpu\RV32_Cpu.csproj">
       <Project>{e37356ba-9757-44a2-b594-e6da496bc812}</Project>
       <Name>RV32_Cpu</Name>
@@ -92,6 +170,22 @@
       <Project>{fa819d4a-5080-468f-a2b9-b80fb581cd41}</Project>
       <Name>RV32_Lsu</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RV32_Register\RV32_Register.csproj">
+      <Project>{9a6be135-e566-4d40-a274-fdae529d5670}</Project>
+      <Name>RV32_Register</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 および x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

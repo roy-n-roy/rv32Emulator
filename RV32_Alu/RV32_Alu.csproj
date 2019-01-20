@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RV32_Alu</RootNamespace>
     <AssemblyName>RV32_Alu</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,17 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alu\RV32_DoubleFpu.cs" />
-    <Compile Include="Alu\RV32_SingleFpu.cs" />
-    <Compile Include="Alu\RV32_IntegerAlu.cs" />
-    <Compile Include="Alu\RV32_Mac.cs" />
-    <Compile Include="Alu\RV32_Calculators.cs" />
+    <Compile Include="RV32_DoubleFpu.cs" />
+    <Compile Include="RV32_SingleFpu.cs" />
+    <Compile Include="RV32_IntegerAlu.cs" />
+    <Compile Include="RV32_Mac.cs" />
+    <Compile Include="RV32_Calculators.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RV32_Lsu\RV32_Lsu.csproj">
-      <Project>{fa819d4a-5080-468f-a2b9-b80fb581cd41}</Project>
-      <Name>RV32_Lsu</Name>
+    <ProjectReference Include="..\RV32_Register\RV32_Register.csproj">
+      <Project>{9a6be135-e566-4d40-a274-fdae529d5670}</Project>
+      <Name>RV32_Register</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
