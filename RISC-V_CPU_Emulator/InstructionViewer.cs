@@ -46,19 +46,25 @@ namespace RISC_V_CPU_Emulator {
         /// <summary>通常の文字色</summary>
         internal static readonly Color DefaultTextColor = Color.FromName(appRes.ResourceManager.GetString("DefaultTextBox_ForeColor") ?? "ControlText");
 
+        private string exePath;
+
         #endregion
 
-        public InstructionViewerForm(RV32_HaedwareThread cpu) {
+        public InstructionViewerForm(RV32_HaedwareThread cpu, string programFilePath) {
             this.cpu = cpu;
-            string dirPath = @"..\..\..\..\riscv-tests\build\isa\";
-            string exePath = dirPath + "rv32ui-v-simple";
-            this.cpu.LoadProgram(exePath);
-            this.cpu.registerSet.Mem.HostAccessAddress.Add(this.cpu.GetToHostAddr());
+            this.exePath = programFilePath;
+
+            if (this.cpu.LoadProgram(this.exePath) != 0) {
+                MessageBox.Show(this,
+                    programFilePath + " : プログラムの読み込みに失敗しました",
+                    "エラー",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
 
 
             InitializeComponent();
 
-            this.DumpViewTextBox.Text = File.ReadAllText(exePath + ".dump");
+            this.DumpViewTextBox.Text = File.ReadAllText(this.exePath + ".dump");
 
             #region 表示用ラベル配列・テキストボックス配列初期化
 
@@ -356,7 +362,27 @@ namespace RISC_V_CPU_Emulator {
                     "    値 : " + t.Data["value"],
                     "実行完了",
                     MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                this.StepExecuteButton.Enabled = false;
+
+                // 初期状態に戻すため、プログラムをロードし直す。
+                if (this.cpu.LoadProgram(this.exePath) != 0) {
+                    MessageBox.Show(this,
+                        this.exePath + " : プログラムの読み込みに失敗しました",
+                        "エラー",
+                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+
+                // GUIの設定
+                RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+                Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
+
+                UpdateInstructionLabels(ins);
+                UpdateArgumentLabels(ins);
+                this.IntegerRegistersControl.UpdateRegisterData(ins, reg);
+                this.FloatPointRegistersControl.UpdateRegisterData(ins, reg);
+                UpdateStatusLabels();
+                ChangeColorDumpTextBox();
+
+                this.Update();
             }
         }
 

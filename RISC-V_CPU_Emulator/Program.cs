@@ -24,7 +24,10 @@ namespace RISC_V_CPU_Emulator {
 
             RV32_HaedwareThread cpu = new RV32_HaedwareThread("IAMFDC", mem);
 
-            Application.Run(new InstructionViewerForm(cpu));
+            string dirPath = @"..\..\..\..\riscv-tests\build\isa\";
+            string exePath = dirPath + "rv32si-p-dirty";
+
+            Application.Run(new InstructionViewerForm(cpu, exePath));
         }
     }
 }
