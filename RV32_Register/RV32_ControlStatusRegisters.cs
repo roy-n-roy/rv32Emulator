@@ -82,10 +82,30 @@ namespace RV32_Register {
             }
             set {
                 switch (name) {
-                    // sstatus,ustatus
-                    // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
+                    // mstatus,sstatus,ustatus
+                    case CSR.mstatus:
+                        // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
+                        // またstatusのMPP, SPPはサポートしている特権モードだけを格納する
+                        StatusCSR status;
+                        status = value;
+                        if ((csr[CSR.misa] & (1U << ('S' - 'A'))) == 0) {
+                            // スーパーバイザモードをサポートしていない場合
+                            status.MPP = 0b11;
+                        } else if ((csr[CSR.misa] & (1U << ('U' - 'A'))) == 0) {
+                            // ユーザモードをサポートしていない場合
+                            status.MPP = 0b01;
+                            status.SPP = true;
+                        }
+                        csr[CSR.mstatus] = status;
+                        break;
+
                     case CSR.sstatus:
-                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.SModeMask | value & StatusCSR.SModeMask;
+                        status = value;
+                        if ((csr[CSR.misa] & (1U << ('U' - 'A'))) == 0) {
+                            // ユーザモードをサポートしていない場合
+                            status.SPP = true;
+                        }
+                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.SModeMask | status & StatusCSR.SModeMask;
                         break;
 
                     case CSR.ustatus:
@@ -126,7 +146,6 @@ namespace RV32_Register {
                     // fcsrへのアクセスとして読み替える
                     case CSR.fcsr:
                         csr[CSR.fcsr] = value & (FloatCSR.FflagsMask | FloatCSR.FrmMask);
-                        StatusCSR status;
                         status = new StatusCSR { FS = 0x3 };
                         csr[CSR.mstatus] |= status;
                         break;
