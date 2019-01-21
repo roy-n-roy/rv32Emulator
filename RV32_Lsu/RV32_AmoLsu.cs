@@ -31,9 +31,22 @@ namespace RV32_Lsu {
         /// <param name="rs2">レジスタ番号</param>
         public bool LrW(Register rd, Register rs1, bool acquire, bool release, UInt32 insLength = 4U) {
             UInt32 addr = reg.GetValue(rs1);
+            if (addr % 4 != 0) {
+                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
+            }
             if (reg.Mem.CanOperate(addr, 4)) {
                 reg.Mem.Acquire(addr, 4);
-                base.Lw(rd, rs1, 0);
+                byte[] bytes = new byte[4];
+                try {
+                    bytes[0] = reg.Mem[addr + 0];
+                    bytes[1] = reg.Mem[addr + 1];
+                    bytes[2] = reg.Mem[addr + 2];
+                    bytes[3] = reg.Mem[addr + 3];
+                    reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+                } catch (RiscvException e)
+                   when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                    reg.Mem.Release(addr, 4);
+                }
             }
             reg.IncrementPc(insLength);
             return true;
@@ -48,9 +61,20 @@ namespace RV32_Lsu {
         /// <param name="rs2">レジスタ番号</param>
         public bool ScW(Register rd, Register rs1, Register rs2, bool acquire, bool release, UInt32 insLength = 4U) {
             UInt32 addr = reg.GetValue(rs1);
+            if (addr % 4 != 0) {
+                throw new RiscvException(RiscvExceptionCause.AMOAddressMisaligned, addr, reg);
+            }
             if (!reg.Mem.CanOperate(addr, 4)) {
-                base.Sw(rs1, rs2, 0);
-                reg.Mem.Release(addr);
+                byte[] bytes = BitConverter.GetBytes(reg.GetValue(rs2));
+                try {
+                    reg.Mem[addr + 0] = bytes[0];
+                    reg.Mem[addr + 1] = bytes[1];
+                    reg.Mem[addr + 2] = bytes[2];
+                    reg.Mem[addr + 3] = bytes[3];
+                } catch (RiscvException e)
+                   when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                }
+                reg.Mem.Release(addr, 4);
                 reg.SetValue(rd, 0);
             } else {
                 reg.SetValue(rd, 1);
@@ -78,23 +102,39 @@ namespace RV32_Lsu {
             }
 
             byte[] bytes = new byte[4];
-            bytes[0] = reg.Mem[addr + 0];
-            bytes[1] = reg.Mem[addr + 1];
-            bytes[2] = reg.Mem[addr + 2];
-            bytes[3] = reg.Mem[addr + 3];
+            try {
+                bytes[0] = reg.Mem[addr + 0];
+                bytes[1] = reg.Mem[addr + 1];
+                bytes[2] = reg.Mem[addr + 2];
+                bytes[3] = reg.Mem[addr + 3];
+                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             UInt32 val = BitConverter.ToUInt32(bytes, 0);
             bytes = BitConverter.GetBytes(reg.GetValue(rs2));
-            reg.SetValue(rd, val);
 
-            reg.Mem[addr + 0] = bytes[0];
-            reg.Mem[addr + 1] = bytes[1];
-            reg.Mem[addr + 2] = bytes[2];
-            reg.Mem[addr + 3] = bytes[3];
+            try {
+                reg.Mem[addr + 0] = bytes[0];
+                reg.Mem[addr + 1] = bytes[1];
+                reg.Mem[addr + 2] = bytes[2];
+                reg.Mem[addr + 3] = bytes[3];
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             if (release) {
-                reg.Mem.Release(addr);
+                reg.Mem.Release(addr, 4);
             }
+
+            reg.SetValue(rd, val);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -117,25 +157,41 @@ namespace RV32_Lsu {
             }
 
             byte[] bytes = new byte[4];
-            bytes[0] = reg.Mem[addr + 0];
-            bytes[1] = reg.Mem[addr + 1];
-            bytes[2] = reg.Mem[addr + 2];
-            bytes[3] = reg.Mem[addr + 3];
+            try {
+                bytes[0] = reg.Mem[addr + 0];
+                bytes[1] = reg.Mem[addr + 1];
+                bytes[2] = reg.Mem[addr + 2];
+                bytes[3] = reg.Mem[addr + 3];
+                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             Int32 val = BitConverter.ToInt32(bytes, 0);
-            reg.SetValue(rd, (UInt32)val);
-            val += (Int32)reg.GetValue(rs2);
+            Int32 result = val + (Int32)reg.GetValue(rs2);
 
-            bytes = BitConverter.GetBytes(val);
+            bytes = BitConverter.GetBytes(result);
 
-            reg.Mem[addr + 0] = bytes[0];
-            reg.Mem[addr + 1] = bytes[1];
-            reg.Mem[addr + 2] = bytes[2];
-            reg.Mem[addr + 3] = bytes[3];
+            try {
+                reg.Mem[addr + 0] = bytes[0];
+                reg.Mem[addr + 1] = bytes[1];
+                reg.Mem[addr + 2] = bytes[2];
+                reg.Mem[addr + 3] = bytes[3];
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             if (release) {
-                reg.Mem.Release(addr);
+                reg.Mem.Release(addr, 4);
             }
+
+            reg.SetValue(rd, (UInt32)val);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -159,24 +215,41 @@ namespace RV32_Lsu {
             }
 
             byte[] bytes = new byte[4];
-            bytes[0] = reg.Mem[addr + 0];
-            bytes[1] = reg.Mem[addr + 1];
-            bytes[2] = reg.Mem[addr + 2];
-            bytes[3] = reg.Mem[addr + 3];
+            try {
+                bytes[0] = reg.Mem[addr + 0];
+                bytes[1] = reg.Mem[addr + 1];
+                bytes[2] = reg.Mem[addr + 2];
+                bytes[3] = reg.Mem[addr + 3];
+                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             UInt32 val = BitConverter.ToUInt32(bytes, 0);
-            reg.SetValue(rd, val);
-            val ^= reg.GetValue(rs2);
+            UInt32 result = val ^ reg.GetValue(rs2);
 
-            bytes = BitConverter.GetBytes(val);
+            bytes = BitConverter.GetBytes(result);
 
-            reg.Mem[addr + 0] = bytes[0];
-            reg.Mem[addr + 1] = bytes[1];
-            reg.Mem[addr + 2] = bytes[2];
-            reg.Mem[addr + 3] = bytes[3];
-            if (release) {
-                reg.Mem.Release(addr);
+            try {
+                reg.Mem[addr + 0] = bytes[0];
+                reg.Mem[addr + 1] = bytes[1];
+                reg.Mem[addr + 2] = bytes[2];
+                reg.Mem[addr + 3] = bytes[3];
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
             }
+
+            if (release) {
+                reg.Mem.Release(addr, 4);
+            }
+
+            reg.SetValue(rd, val);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -200,25 +273,41 @@ namespace RV32_Lsu {
             }
 
             byte[] bytes = new byte[4];
-            bytes[0] = reg.Mem[addr + 0];
-            bytes[1] = reg.Mem[addr + 1];
-            bytes[2] = reg.Mem[addr + 2];
-            bytes[3] = reg.Mem[addr + 3];
+            try {
+                bytes[0] = reg.Mem[addr + 0];
+                bytes[1] = reg.Mem[addr + 1];
+                bytes[2] = reg.Mem[addr + 2];
+                bytes[3] = reg.Mem[addr + 3];
+                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             UInt32 val = BitConverter.ToUInt32(bytes, 0);
-            reg.SetValue(rd, val);
-            val &= reg.GetValue(rs2);
+            UInt32 result = val & reg.GetValue(rs2);
 
-            bytes = BitConverter.GetBytes(val);
+            bytes = BitConverter.GetBytes(result);
 
-            reg.Mem[addr + 0] = bytes[0];
-            reg.Mem[addr + 1] = bytes[1];
-            reg.Mem[addr + 2] = bytes[2];
-            reg.Mem[addr + 3] = bytes[3];
+            try {
+                reg.Mem[addr + 0] = bytes[0];
+                reg.Mem[addr + 1] = bytes[1];
+                reg.Mem[addr + 2] = bytes[2];
+                reg.Mem[addr + 3] = bytes[3];
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             if (release) {
-                reg.Mem.Release(addr);
+                reg.Mem.Release(addr, 4);
             }
+
+            reg.SetValue(rd, val);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -242,24 +331,41 @@ namespace RV32_Lsu {
             }
 
             byte[] bytes = new byte[4];
-            bytes[0] = reg.Mem[addr + 0];
-            bytes[1] = reg.Mem[addr + 1];
-            bytes[2] = reg.Mem[addr + 2];
-            bytes[3] = reg.Mem[addr + 3];
+            try {
+                bytes[0] = reg.Mem[addr + 0];
+                bytes[1] = reg.Mem[addr + 1];
+                bytes[2] = reg.Mem[addr + 2];
+                bytes[3] = reg.Mem[addr + 3];
+                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             UInt32 val = BitConverter.ToUInt32(bytes, 0);
-            reg.SetValue(rd, val);
-            val |= reg.GetValue(rs2);
+            UInt32 result = val | reg.GetValue(rs2);
 
-            bytes = BitConverter.GetBytes(val);
+            bytes = BitConverter.GetBytes(result);
 
-            reg.Mem[addr + 0] = bytes[0];
-            reg.Mem[addr + 1] = bytes[1];
-            reg.Mem[addr + 2] = bytes[2];
-            reg.Mem[addr + 3] = bytes[3];
-            if (release) {
-                reg.Mem.Release(addr);
+            try {
+                reg.Mem[addr + 0] = bytes[0];
+                reg.Mem[addr + 1] = bytes[1];
+                reg.Mem[addr + 2] = bytes[2];
+                reg.Mem[addr + 3] = bytes[3];
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
             }
+
+            if (release) {
+                reg.Mem.Release(addr, 4);
+            }
+
+            reg.SetValue(rd, val);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -283,26 +389,42 @@ namespace RV32_Lsu {
             }
 
             byte[] bytes = new byte[4];
-            bytes[0] = reg.Mem[addr + 0];
-            bytes[1] = reg.Mem[addr + 1];
-            bytes[2] = reg.Mem[addr + 2];
-            bytes[3] = reg.Mem[addr + 3];
+            try {
+                bytes[0] = reg.Mem[addr + 0];
+                bytes[1] = reg.Mem[addr + 1];
+                bytes[2] = reg.Mem[addr + 2];
+                bytes[3] = reg.Mem[addr + 3];
+                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             Int32 val = BitConverter.ToInt32(bytes, 0);
             Int32 val2 = (Int32)reg.GetValue(rs2);
-            reg.SetValue(rd, (UInt32)val);
-            val = val < val2 ? val : val2;
+            UInt32 result = (UInt32)(val < val2 ? val : val2);
 
-            bytes = BitConverter.GetBytes(val);
+            bytes = BitConverter.GetBytes(result);
 
-            reg.Mem[addr + 0] = bytes[0];
-            reg.Mem[addr + 1] = bytes[1];
-            reg.Mem[addr + 2] = bytes[2];
-            reg.Mem[addr + 3] = bytes[3];
+            try {
+                reg.Mem[addr + 0] = bytes[0];
+                reg.Mem[addr + 1] = bytes[1];
+                reg.Mem[addr + 2] = bytes[2];
+                reg.Mem[addr + 3] = bytes[3];
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             if (release) {
-                reg.Mem.Release(addr);
+                reg.Mem.Release(addr, 4);
             }
+
+            reg.SetValue(rd, (UInt32)val);
             reg.IncrementPc(insLength);
             return true;
         }
@@ -326,25 +448,39 @@ namespace RV32_Lsu {
             }
 
             byte[] bytes = new byte[4];
-            bytes[0] = reg.Mem[addr + 0];
-            bytes[1] = reg.Mem[addr + 1];
-            bytes[2] = reg.Mem[addr + 2];
-            bytes[3] = reg.Mem[addr + 3];
+            try {
+                bytes[0] = reg.Mem[addr + 0];
+                bytes[1] = reg.Mem[addr + 1];
+                bytes[2] = reg.Mem[addr + 2];
+                bytes[3] = reg.Mem[addr + 3];
+                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             Int32 val = BitConverter.ToInt32(bytes, 0);
             Int32 val2 = (Int32)reg.GetValue(rs2);
-            reg.SetValue(rd, (UInt32)val);
-            val = val > val2 ? val : val2;
+            UInt32 result = (UInt32)(val > val2 ? val : val2);
 
-            bytes = BitConverter.GetBytes(val);
+            bytes = BitConverter.GetBytes(result);
 
-            reg.Mem[addr + 0] = bytes[0];
-            reg.Mem[addr + 1] = bytes[1];
-            reg.Mem[addr + 2] = bytes[2];
-            reg.Mem[addr + 3] = bytes[3];
+            try {
+                reg.Mem[addr + 0] = bytes[0];
+                reg.Mem[addr + 1] = bytes[1];
+                reg.Mem[addr + 2] = bytes[2];
+                reg.Mem[addr + 3] = bytes[3];
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             if (release) {
-                reg.Mem.Release(addr);
+                reg.Mem.Release(addr, 4);
             }
             reg.IncrementPc(insLength);
             return true;
@@ -369,25 +505,39 @@ namespace RV32_Lsu {
             }
 
             byte[] bytes = new byte[4];
-            bytes[0] = reg.Mem[addr + 0];
-            bytes[1] = reg.Mem[addr + 1];
-            bytes[2] = reg.Mem[addr + 2];
-            bytes[3] = reg.Mem[addr + 3];
+            try {
+                bytes[0] = reg.Mem[addr + 0];
+                bytes[1] = reg.Mem[addr + 1];
+                bytes[2] = reg.Mem[addr + 2];
+                bytes[3] = reg.Mem[addr + 3];
+                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             UInt32 val = BitConverter.ToUInt32(bytes, 0);
             UInt32 val2 = reg.GetValue(rs2);
-            reg.SetValue(rd, val);
-            val = val < val2 ? val : val2;
+            UInt32 result = val < val2 ? val : val2;
 
-            bytes = BitConverter.GetBytes(val);
+            bytes = BitConverter.GetBytes(result);
 
-            reg.Mem[addr + 0] = bytes[0];
-            reg.Mem[addr + 1] = bytes[1];
-            reg.Mem[addr + 2] = bytes[2];
-            reg.Mem[addr + 3] = bytes[3];
+            try {
+                reg.Mem[addr + 0] = bytes[0];
+                reg.Mem[addr + 1] = bytes[1];
+                reg.Mem[addr + 2] = bytes[2];
+                reg.Mem[addr + 3] = bytes[3];
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             if (release) {
-                reg.Mem.Release(addr);
+                reg.Mem.Release(addr, 4);
             }
             reg.IncrementPc(insLength);
             return true;
@@ -412,26 +562,42 @@ namespace RV32_Lsu {
             }
 
             byte[] bytes = new byte[4];
-            bytes[0] = reg.Mem[addr + 0];
-            bytes[1] = reg.Mem[addr + 1];
-            bytes[2] = reg.Mem[addr + 2];
-            bytes[3] = reg.Mem[addr + 3];
+            try {
+                bytes[0] = reg.Mem[addr + 0];
+                bytes[1] = reg.Mem[addr + 1];
+                bytes[2] = reg.Mem[addr + 2];
+                bytes[3] = reg.Mem[addr + 3];
+                reg.SetValue(rd, BitConverter.ToUInt32(bytes, 0));
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.LoadPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             UInt32 val = BitConverter.ToUInt32(bytes, 0);
             UInt32 val2 = reg.GetValue(rs2);
-            reg.SetValue(rd, val);
-            val = val > val2 ? val : val2;
+            UInt32 result = val > val2 ? val : val2;
 
-            bytes = BitConverter.GetBytes(val);
+            bytes = BitConverter.GetBytes(result);
 
-            reg.Mem[addr + 0] = bytes[0];
-            reg.Mem[addr + 1] = bytes[1];
-            reg.Mem[addr + 2] = bytes[2];
-            reg.Mem[addr + 3] = bytes[3];
+            try {
+                reg.Mem[addr + 0] = bytes[0];
+                reg.Mem[addr + 1] = bytes[1];
+                reg.Mem[addr + 2] = bytes[2];
+                reg.Mem[addr + 3] = bytes[3];
+            } catch (RiscvException e)
+               when (((RiscvExceptionCause)e.Data["cause"]) == RiscvExceptionCause.StoreAMOPageFault) {
+                if (acquire) {
+                    reg.Mem.Release(addr, 4);
+                }
+            }
 
             if (release) {
-                reg.Mem.Release(addr);
+                reg.Mem.Release(addr, 4);
             }
+
+            reg.SetValue(rd, val);
             reg.IncrementPc(insLength);
             return true;
         }
