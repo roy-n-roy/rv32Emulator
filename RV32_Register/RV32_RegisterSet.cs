@@ -69,6 +69,17 @@ namespace RV32_Register {
         public UInt32 PC {
             get => programCounter;
             internal set {
+                if ((CSRegisters[CSR.misa] & (1U << ('C' - 'A'))) > 0) {
+                    // RV32Cをサポートしている場合、命令アドレスが2の倍数でない場合は不正
+                    if ((value & 0x1U) > 0) {
+                        throw new RiscvException(RiscvExceptionCause.InstructionAddressMisaligned, value, this);
+                    }
+                } else {
+                    // RV32Cをサポートしていない場合、命令アドレスが4の倍数でない場合は不正
+                    if ((value & 0x11U) > 0) {
+                        throw new RiscvException(RiscvExceptionCause.InstructionAddressMisaligned, value, this);
+                    }
+                }
                 programCounter = value;
                 // 命令レジスタのフェッチ
                 IR = Mem.FetchInstruction(value);

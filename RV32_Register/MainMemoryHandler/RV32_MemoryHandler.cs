@@ -83,17 +83,6 @@ namespace RV32_Register.MemoryHandler {
         /// <param name="addr">命令のアドレス</param>
         /// <returns>32bit長 Risc-V命令</returns>
         public UInt32 FetchInstruction(UInt32 address) {
-            if ((reg.CSRegisters[CSR.misa] & ( 1U << ('C' - 'A'))) > 0) {
-                // RV32Cをサポートしている場合、命令アドレスの末尾 1 桁が0出ない場合は不正
-                if ((address & 0x1U) > 0) {
-                    throw new RiscvException(RiscvExceptionCause.InstructionAddressMisaligned, address, reg);
-                }
-            } else {
-                // RV32Cをサポートしていない場合、命令アドレスの末尾 2 桁が0出ない場合は不正
-                if ((address & 0x11U) > 0) {
-                    throw new RiscvException(RiscvExceptionCause.InstructionAddressMisaligned, address, reg);
-                }
-            }
             ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Execute);
             if (HostAccessAddress.Contains(address)) {
                 throw new HostAccessTrap(BitConverter.ToUInt32(mainMemory, (int)phy_addr));
@@ -200,8 +189,10 @@ namespace RV32_Register.MemoryHandler {
             while (i >= 0) {
 
                 pte_addr += virt_addr.VPN[i] * PteSize;
-                
-                pte = (PageTableEntry32)BitConverter.ToUInt32(mainMemory, (int)pte_addr);
+
+                uint bbb = BitConverter.ToUInt32(mainMemory, (int)0);
+                uint aaa = BitConverter.ToUInt32(mainMemory, (int)pte_addr);
+                pte = BitConverter.ToUInt32(mainMemory, (int)pte_addr);
 
                 if (false) {
                     // ToDo: PMA,PMPチェックの実装
