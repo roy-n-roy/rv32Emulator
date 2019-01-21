@@ -44,6 +44,7 @@ namespace RV32_Register.MemoryHandler {
         /// メモリアドレスを予約する
         /// </summary>
         /// <param name="address">メモリアドレス</param>
+        /// <param name="length">予約するアドレスの範囲(バイト)</param>
         public override void Acquire(UInt64 address, Int32 length) {
             for (uint i = 0; i < length; i++) {
                 reservedAddress.Add(address + i);
@@ -54,8 +55,11 @@ namespace RV32_Register.MemoryHandler {
         /// メモリアドレスの予約を解放する
         /// </summary>
         /// <param name="address">メモリアドレス</param>
-        public override void Release(UInt64 address) {
-            reservedAddress.Remove(address);
+        /// <param name="length">解放するアドレスの範囲(バイト)</param>
+        public override void Release(UInt64 address, Int32 length) {
+            for (uint i = 0; i < length; i++) {
+                reservedAddress.Remove(address + i);
+            }
         }
 
         /// <summary>
