@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using RISC_V_Instruction;
 
 namespace RISC_V_CPU_Emulator {
-    public partial class ControlStatusRegistersControl : RegisterViewerForm.RegisterControl {
+    public partial class ControlStatusRegistersControl : UserControl, InstructionViewerForm.IRegisterControl {
 
         private BindingList<KeyValuePair<string, ulong>> csr;
 
@@ -16,10 +16,10 @@ namespace RISC_V_CPU_Emulator {
             InitializeComponent();
         }
 
-        internal override void UpdateRegisterBeforeExecute(RiscvInstruction ins) {
+        public void UpdateRegisterBeforeExecute(RiscvInstruction ins) {
         }
 
-        internal override void UpdateRegisterData(RISC_V_Instruction.RiscvInstruction ins, Dictionary<string, ulong> registers) {
+        public void UpdateRegisterData(RISC_V_Instruction.RiscvInstruction ins, Dictionary<string, ulong> registers) {
             if (this.CSRDataGrid.DataSource is null) {
                 Regex ifregex = new Regex("[fx][0-9]+$", RegexOptions.Compiled);
                 Regex cntregex = new Regex("^(m|)(cycle|time|insret|hpmcounter[0-9]+|hpmevent[0-9]+)(h|)$", RegexOptions.Compiled);
