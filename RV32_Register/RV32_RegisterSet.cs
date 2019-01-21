@@ -743,9 +743,9 @@ namespace RV32_Register {
 
             CurrentMode = PrivilegeLevels.MachineMode;
 
-            Mem.PAddr = PhysicalAddress;
+            Mem.VAddr = VirtualAddress ;
             Mem.Offset = entryOffset;
-            PC = VirtualAddress;
+            PC = PhysicalAddress - VirtualAddress;
         }
 
         /// <summary>
@@ -769,13 +769,13 @@ namespace RV32_Register {
         /// <param name="tval">例外の原因となったアドレス(ない場合は0)</param>
         public void HandleException(RiscvExceptionCause cause, UInt32 tval) {
 
-            if ((CSRegisters[CSR.medeleg] & (1u << (int)cause)) == 0U || (CSRegisters[CSR.misa] & ((1u << ('S' - 'A')) | (1u << ('U' - 'A')))) == 0U) {
+            if (CurrentMode >= PrivilegeLevels.MachineMode || (CSRegisters[CSR.medeleg] & (1u << (int)cause)) == 0U || (CSRegisters[CSR.misa] & ((1u << ('S' - 'A')) | (1u << ('U' - 'A')))) == 0U) {
                 // マシンモードより下位モードに例外トラップ委譲されていない または、 ユーザモード・スーパーバイザモードの実装がない場合
 
                 // マシンモードでトラップ
                 TrapAndSetCSR(PrivilegeLevels.MachineMode, (UInt32)cause, tval);
 
-            } else if ((CSRegisters[CSR.sedeleg] & (1u << (int)cause)) == 0U || (CSRegisters[CSR.misa] & (1u << ('U' - 'A'))) == 0U) {
+            } else if (CurrentMode >= PrivilegeLevels.SupervisorMode || (CSRegisters[CSR.sedeleg] & (1u << (int)cause)) == 0U || (CSRegisters[CSR.misa] & (1u << ('U' - 'A'))) == 0U) {
                 // スーパーバイザモード下位モードに例外トラップ委譲されていない または、 ユーザモードの実装がない場合
 
                 // スーパーバイザモードでトラップ

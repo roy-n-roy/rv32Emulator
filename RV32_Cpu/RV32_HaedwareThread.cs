@@ -170,7 +170,8 @@ namespace RV32_Cpu {
                     foreach (Elf32_Sym sh_sym in sh.sh_symtab) {
                         if (sh_sym.st_name.Equals("tohost")) {
                             //tohost_addr = sh_sym.st_value - sh.sh_addr + sh.sh_offset;
-                            tohost_addr = sh_sym.st_value;
+                            //tohost_addr = sh_sym.st_value;
+                            tohost_addr = sh.sh_offset;
                             break;
                         }
                     }
@@ -219,13 +220,13 @@ namespace RV32_Cpu {
                 ExceptionCause = (RiscvExceptionCause)e.Data["cause"];
                 ExceptionTrapValue = (uint)e.Data["tval"];
 #if DEBUG
-                if (ExceptionCause != RiscvExceptionCause.Breakpoint &&
+                    if (ExceptionCause != RiscvExceptionCause.Breakpoint &&
                     ExceptionCause != RiscvExceptionCause.EnvironmentCallFromMMode &&
                     ExceptionCause != RiscvExceptionCause.EnvironmentCallFromSMode &&
                     ExceptionCause != RiscvExceptionCause.EnvironmentCallFromUMode) {
 
                     Console.Error.WriteLine("\r\n例外発生");
-                    Console.Error.WriteLine("    PC        = 0x" + ((uint)e.Data["pc"]).ToString("X"));
+                    Console.Error.WriteLine("    PC        = 0x" + ((uint)e.Data["pc"]).ToString("X").PadLeft(8, '0'));
                     Console.Error.WriteLine("    TrapValue = 0x" + ((uint)ExceptionTrapValue).ToString("X"));
                     Console.Error.WriteLine(e.ToString());
                 }

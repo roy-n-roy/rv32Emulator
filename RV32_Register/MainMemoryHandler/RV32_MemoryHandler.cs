@@ -63,14 +63,14 @@ namespace RV32_Register.MemoryHandler {
             set {
                 ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Write);
                 mainMemory[phy_addr] = value;
-                if (HostAccessAddress.Contains(address)) {
+                if (HostAccessAddress.Contains(phy_addr)) {
                     throw new HostAccessTrap(value);
                 }
             }
             // メモリからのロード
             get {
                 ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Read);
-                if (HostAccessAddress.Contains(address)) {
+                if (HostAccessAddress.Contains(phy_addr)) {
                     throw new HostAccessTrap(mainMemory[phy_addr]);
                 }
                 return mainMemory[phy_addr];
@@ -83,10 +83,22 @@ namespace RV32_Register.MemoryHandler {
         /// <param name="addr">命令のアドレス</param>
         /// <returns>32bit長 Risc-V命令</returns>
         public UInt32 FetchInstruction(UInt32 address) {
-            if (HostAccessAddress.Contains(address)) {
-                throw new HostAccessTrap(BitConverter.ToUInt32(mainMemory, (int)(address - PAddr + Offset)));
+            if ((reg.CSRegisters[CSR.misa] & ( 1U << ('C' - 'A'))) > 0) {
+                // RV32Cをサポートしている場合、命令アドレスの末尾 1 桁が0出ない場合は不正
+                if ((address & 0x1U) > 0) {
+                    throw new RiscvException(RiscvExceptionCause.InstructionAddressMisaligned, address, reg);
+                }
+            } else {
+                // RV32Cをサポートしていない場合、命令アドレスの末尾 2 桁が0出ない場合は不正
+                if ((address & 0x11U) > 0) {
+                    throw new RiscvException(RiscvExceptionCause.InstructionAddressMisaligned, address, reg);
+                }
             }
             ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Execute);
+            if (HostAccessAddress.Contains(address)) {
+                throw new HostAccessTrap(BitConverter.ToUInt32(mainMemory, (int)phy_addr));
+            }
+
             return BitConverter.ToUInt32(mainMemory, (int)phy_addr);
         }
 
@@ -94,7 +106,7 @@ namespace RV32_Register.MemoryHandler {
         public readonly HashSet<UInt64> HostAccessAddress;
 
         public UInt64 Size { get => (UInt64)mainMemory.LongLength; }
-        public UInt32 PAddr { get; set; }
+        public UInt32 VAddr { get; set; }
         public UInt32 Offset { get; set; }
 
         internal void SetRegisterSet(RV32_RegisterSet registerSet) {
@@ -162,9 +174,9 @@ namespace RV32_Register.MemoryHandler {
             SatpCSR satp = reg.CSRegisters[CSR.satp];
 
             if (!satp.MODE || reg.CurrentMode > PrivilegeLevels.SupervisorMode) {
-                phy_addr = v_add - PAddr + Offset;
+                phy_addr = v_add + Offset;
                 if (phy_addr >= Size) {
-                    throw new RiscvException(RiscvExceptionCause.LoadPageFault, v_add, reg);
+                    throw new RiscvException(pageFaultCouse, v_add, reg);
                 }
                 return phy_addr;
             }
@@ -189,7 +201,7 @@ namespace RV32_Register.MemoryHandler {
 
                 pte_addr += virt_addr.VPN[i] * PteSize;
                 
-                pte = (PageTableEntry32)BitConverter.ToUInt32(mainMemory, (int)(pte_addr - PAddr));
+                pte = (PageTableEntry32)BitConverter.ToUInt32(mainMemory, (int)pte_addr);
 
                 if (false) {
                     // ToDo: PMA,PMPチェックの実装
@@ -211,7 +223,7 @@ namespace RV32_Register.MemoryHandler {
                 } else {
                     /* それ以外の場合、このPTEはページテーブルの次のレベルへのポインタです。
                      * ｉ ＝ ｉ － １とします。
-                     * i <0の場合、停止してページ不在例外を発生させます。
+                     * i < 0の場合、停止してページ不在例外を発生させます。
                      * それ以外の場合は、a = pte.ppn×PAGESIZEとし、手順2に進みます。
                      */
                     i--;
@@ -252,16 +264,17 @@ namespace RV32_Register.MemoryHandler {
              * ・この更新と手順2のpteのロードはアトミックでなければなりません。
              * 特に、PTEへの介在ストアがその間に発生したと認識されることはありません。
              */
-            pte.IsAccessed = true;
-            if (accMode == MemoryAccessMode.Write) {
-                pte.IsDarty = true;
+            if (!pte.IsAccessed) {
+                pte.IsAccessed = true;
+                if (accMode == MemoryAccessMode.Write) {
+                    pte.IsDarty = true;
+                }
+                mainMemory[pte_addr - VAddr] = BitConverter.GetBytes(pte)[0];
             }
 
             if (false) {
                 // ToDo: PMA,PMPチェックの実装
             }
-
-            mainMemory[pte_addr - PAddr] = BitConverter.GetBytes(pte)[0];
 
 
             /* 8.変換は成功しました。変換された物理アドレスは以下のように与えられます。
