@@ -61,10 +61,13 @@ namespace RISC_V_CPU_Emulator {
                     MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
 
-
             InitializeComponent();
 
+            // 左部Dump表示テキストボックスにDumpファイル読み込み
             this.DumpViewTextBox.Text = File.ReadAllText(this.exePath + ".dump");
+
+            // PC指定テキストボックスのキー押下時イベント登録
+            this.RunPcTextBox.KeyDown += this.RunPcTextBox_KeyDown;
 
             #region 表示用ラベル配列・テキストボックス配列初期化
 
@@ -92,10 +95,12 @@ namespace RISC_V_CPU_Emulator {
 
             #endregion
 
-
+            // RISV-V命令情報取得
             RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+            // レジスタデータ取得
             Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
 
+            // 各部品のデータ初期更新
             UpdateInstructionLabels(ins);
             UpdateArgumentLabels(ins);
             this.IntegerRegistersControl.UpdateRegisterData(ins, reg);
@@ -116,6 +121,8 @@ namespace RISC_V_CPU_Emulator {
 
             // プログラムカウンタ
             this.PCValueLabel.Text = "0x" + cpu.registerSet.PC.ToString("X").PadLeft(8, '0');
+
+            this.RunPcTextBox.Text = "0x" + cpu.registerSet.PC.ToString("X").PadLeft(8, '0');
 
             // 命令レジスタ
             this.InstructionNameLabel.Text = ins.Name;
@@ -335,11 +342,12 @@ namespace RISC_V_CPU_Emulator {
         private void Execute() {
 
             try {
-                RiscvInstruction boforeIns = InstConverter.GetInstruction(cpu.registerSet.IR);
-                ((IRegisterControl)this.irViewer?.RegisgerControl)?.UpdateRegisterBeforeExecute(boforeIns);
-                ((IRegisterControl)this.fprViewer?.RegisgerControl)?.UpdateRegisterBeforeExecute(boforeIns);
-                this.IntegerRegistersControl.UpdateRegisterBeforeExecute(boforeIns);
-                this.FloatPointRegistersControl.UpdateRegisterBeforeExecute(boforeIns);
+                RiscvInstruction ins;
+                ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+                this.IntegerRegistersControl.UpdateRegisterBeforeExecute(ins);
+                this.FloatPointRegistersControl.UpdateRegisterBeforeExecute(ins);
+                ((IRegisterControl)this.irViewer?.RegisgerControl)?.UpdateRegisterBeforeExecute(ins);
+                ((IRegisterControl)this.fprViewer?.RegisgerControl)?.UpdateRegisterBeforeExecute(ins);
 
 
                 if (this.RunPcCheckBox.Checked) {
@@ -360,7 +368,7 @@ namespace RISC_V_CPU_Emulator {
                     cpu.StepExecute();
                 }
 
-                RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+                ins = InstConverter.GetInstruction(cpu.registerSet.IR);
                 Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
 
                 UpdateInstructionLabels(ins);
@@ -370,8 +378,6 @@ namespace RISC_V_CPU_Emulator {
 
                 this.IntegerRegistersControl.UpdateRegisterData(ins, reg);
                 this.FloatPointRegistersControl.UpdateRegisterData(ins, reg);
-                ((IRegisterControl)this.irViewer?.RegisgerControl)?.UpdateRegisterBeforeExecute(boforeIns);
-                ((IRegisterControl)this.fprViewer?.RegisgerControl)?.UpdateRegisterBeforeExecute(boforeIns);
                 ((IRegisterControl)this.irViewer?.RegisgerControl)?.UpdateRegisterData(ins, reg);
                 ((IRegisterControl)this.fprViewer?.RegisgerControl)?.UpdateRegisterData(ins, reg);
                 ((IRegisterControl)this.csrViewer?.RegisgerControl)?.UpdateRegisterData(ins, reg);

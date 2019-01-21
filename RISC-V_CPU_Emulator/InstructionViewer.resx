@@ -195,129 +195,6 @@
   <data name="ArgumentsGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="&gt;&gt;Arg4Value.Name" xml:space="preserve">
-    <value>Arg4Value</value>
-  </data>
-  <data name="&gt;&gt;Arg4Value.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Arg4Value.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;Arg4Value.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;Arg4Name.Name" xml:space="preserve">
-    <value>Arg4Name</value>
-  </data>
-  <data name="&gt;&gt;Arg4Name.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Arg4Name.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;Arg4Name.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;Arg3Value.Name" xml:space="preserve">
-    <value>Arg3Value</value>
-  </data>
-  <data name="&gt;&gt;Arg3Value.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Arg3Value.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;Arg3Value.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;Arg3Name.Name" xml:space="preserve">
-    <value>Arg3Name</value>
-  </data>
-  <data name="&gt;&gt;Arg3Name.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Arg3Name.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;Arg3Name.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;Arg2Value.Name" xml:space="preserve">
-    <value>Arg2Value</value>
-  </data>
-  <data name="&gt;&gt;Arg2Value.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Arg2Value.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;Arg2Value.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;Arg2Name.Name" xml:space="preserve">
-    <value>Arg2Name</value>
-  </data>
-  <data name="&gt;&gt;Arg2Name.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Arg2Name.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;Arg2Name.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;Arg1Value.Name" xml:space="preserve">
-    <value>Arg1Value</value>
-  </data>
-  <data name="&gt;&gt;Arg1Value.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Arg1Value.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;Arg1Value.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;Arg1Name.Name" xml:space="preserve">
-    <value>Arg1Name</value>
-  </data>
-  <data name="&gt;&gt;Arg1Name.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;Arg1Name.Parent" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;Arg1Name.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="ArgumentsGroupBox.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 9pt</value>
-  </data>
-  <data name="ArgumentsGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>570, 63</value>
-  </data>
-  <data name="ArgumentsGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>310, 226</value>
-  </data>
-  <data name="ArgumentsGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="ArgumentsGroupBox.Text" xml:space="preserve">
-    <value>Arguments</value>
-  </data>
-  <data name="&gt;&gt;ArgumentsGroupBox.Name" xml:space="preserve">
-    <value>ArgumentsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;ArgumentsGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ArgumentsGroupBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ArgumentsGroupBox.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
   <data name="Arg4Value.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -582,8 +459,53 @@
   <data name="&gt;&gt;Arg1Name.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
+  <data name="ArgumentsGroupBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 9pt</value>
+  </data>
+  <data name="ArgumentsGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>570, 63</value>
+  </data>
+  <data name="ArgumentsGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>310, 226</value>
+  </data>
+  <data name="ArgumentsGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ArgumentsGroupBox.Text" xml:space="preserve">
+    <value>Arguments</value>
+  </data>
+  <data name="&gt;&gt;ArgumentsGroupBox.Name" xml:space="preserve">
+    <value>ArgumentsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;ArgumentsGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ArgumentsGroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ArgumentsGroupBox.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
   <data name="InstructionRegisterGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="InstructionNameLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="InstructionNameLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 21.75pt</value>
+  </data>
+  <data name="InstructionNameLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="InstructionNameLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 17</value>
+  </data>
+  <data name="InstructionNameLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 44</value>
+  </data>
+  <data name="InstructionNameLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;InstructionNameLabel.Name" xml:space="preserve">
     <value>InstructionNameLabel</value>
@@ -624,38 +546,29 @@
   <data name="&gt;&gt;InstructionRegisterGroupBox.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="InstructionNameLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="InstructionNameLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 21.75pt</value>
-  </data>
-  <data name="InstructionNameLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="InstructionNameLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 17</value>
-  </data>
-  <data name="InstructionNameLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 44</value>
-  </data>
-  <data name="InstructionNameLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;InstructionNameLabel.Name" xml:space="preserve">
-    <value>InstructionNameLabel</value>
-  </data>
-  <data name="&gt;&gt;InstructionNameLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;InstructionNameLabel.Parent" xml:space="preserve">
-    <value>InstructionRegisterGroupBox</value>
-  </data>
-  <data name="&gt;&gt;InstructionNameLabel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="ProgramCounterGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
+  </data>
+  <data name="PCValueLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="PCValueLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 21.75pt</value>
+  </data>
+  <data name="PCValueLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="PCValueLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 21</value>
+  </data>
+  <data name="PCValueLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 44</value>
+  </data>
+  <data name="PCValueLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="PCValueLabel.Text" xml:space="preserve">
+    <value>0x00000000</value>
   </data>
   <data name="&gt;&gt;PCValueLabel.Name" xml:space="preserve">
     <value>PCValueLabel</value>
@@ -696,92 +609,8 @@
   <data name="&gt;&gt;ProgramCounterGroupBox.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="PCValueLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="PCValueLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 21.75pt</value>
-  </data>
-  <data name="PCValueLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="PCValueLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 21</value>
-  </data>
-  <data name="PCValueLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 44</value>
-  </data>
-  <data name="PCValueLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="PCValueLabel.Text" xml:space="preserve">
-    <value>0x00000000</value>
-  </data>
-  <data name="&gt;&gt;PCValueLabel.Name" xml:space="preserve">
-    <value>PCValueLabel</value>
-  </data>
-  <data name="&gt;&gt;PCValueLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;PCValueLabel.Parent" xml:space="preserve">
-    <value>ProgramCounterGroupBox</value>
-  </data>
-  <data name="&gt;&gt;PCValueLabel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="CurrentModeGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeLabel.Name" xml:space="preserve">
-    <value>CurrentModeLabel</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeLabel.Parent" xml:space="preserve">
-    <value>CurrentModeGroupBox</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeLabel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;statusLabel.Name" xml:space="preserve">
-    <value>statusLabel</value>
-  </data>
-  <data name="&gt;&gt;statusLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;statusLabel.Parent" xml:space="preserve">
-    <value>CurrentModeGroupBox</value>
-  </data>
-  <data name="&gt;&gt;statusLabel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="CurrentModeGroupBox.Font" type="System.Drawing.Font, System.Drawing">
-    <value>メイリオ, 9pt</value>
-  </data>
-  <data name="CurrentModeGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>897, 203</value>
-  </data>
-  <data name="CurrentModeGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>231, 86</value>
-  </data>
-  <data name="CurrentModeGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="CurrentModeGroupBox.Text" xml:space="preserve">
-    <value>Current Mode</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeGroupBox.Name" xml:space="preserve">
-    <value>CurrentModeGroupBox</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeGroupBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;CurrentModeGroupBox.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <data name="CurrentModeLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -848,6 +677,33 @@
   </data>
   <data name="&gt;&gt;statusLabel.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="CurrentModeGroupBox.Font" type="System.Drawing.Font, System.Drawing">
+    <value>メイリオ, 9pt</value>
+  </data>
+  <data name="CurrentModeGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>897, 203</value>
+  </data>
+  <data name="CurrentModeGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>231, 86</value>
+  </data>
+  <data name="CurrentModeGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="CurrentModeGroupBox.Text" xml:space="preserve">
+    <value>Current Mode</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeGroupBox.Name" xml:space="preserve">
+    <value>CurrentModeGroupBox</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeGroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;CurrentModeGroupBox.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
   <data name="StepExecuteButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>

@@ -274,9 +274,7 @@ namespace RISC_V_CPU_Emulator {
             // RunPcTextBox
             // 
             resources.ApplyResources(this.RunPcTextBox, "RunPcTextBox");
-            this.RunPcTextBox.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Overwrite;
             this.RunPcTextBox.Name = "RunPcTextBox";
-            this.RunPcTextBox.KeyDown += RunPcTextBox_KeyDown;
             // 
             // RunPcCheckBox
             // 
