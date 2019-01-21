@@ -65,7 +65,7 @@ namespace RV32_Register.MemoryHandler {
         /// <summary>
         /// メモリアドレスの予約を全て解放する
         /// </summary>
-        public override void Reset() {
+        public override void ResetReservation() {
             reservedAddress.Clear();
         }
     }

@@ -49,7 +49,7 @@ namespace RV32_Register.MemoryHandler {
         /// <summary>
         /// メモリアドレスの予約を全て解放する
         /// </summary>
-        public override void Reset() {
+        public override void ResetReservation() {
         }
     }
 
@@ -138,7 +138,7 @@ namespace RV32_Register.MemoryHandler {
         /// <summary>
         /// メモリアドレスの予約を全て解放する
         /// </summary>
-        public abstract void Reset();
+        public abstract void ResetReservation();
 
         private protected UInt64 GetPhysicalAddr(UInt32 v_add, MemoryAccessMode accMode) {
 

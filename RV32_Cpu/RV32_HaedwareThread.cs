@@ -131,7 +131,8 @@ namespace RV32_Cpu {
             long fileSize = 0;
             int readBytes = 0;
 
-            registerSet.Mem.Reset();
+            registerSet.Mem.ResetReservation();
+            registerSet.Mem.HostAccessAddress.Clear();
 
             using (BinaryReader br = new BinaryReader(File.Open(objectPath, FileMode.Open))) {
                 fileSize = br.BaseStream.Length;
@@ -162,6 +163,8 @@ namespace RV32_Cpu {
                     break;
                 }
             }
+
+            ulong tohost_addr = 0;
             foreach (Elf32_Shdr sh in elf.e_shdrtab) {
                 if (sh.sh_name.Equals(".tohost")) {
                     foreach (Elf32_Sym sh_sym in sh.sh_symtab) {
@@ -175,14 +178,11 @@ namespace RV32_Cpu {
                 }
             }
 
+            registerSet.Mem.HostAccessAddress.Add(tohost_addr);
+
             registerSet.ClearAndSetPC(physAddr, virtAddr, entryOffset);
 
             return 0;
-        }
-
-        ulong tohost_addr = 0;
-        public ulong GetToHostAddr() {
-            return tohost_addr;
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace RV32_Cpu {
                 // 割り込みチェックとハンドリング
                 if (HasException) {
                     // メモリアドレスの予約開放
-                    registerSet.Mem.Reset();
+                    registerSet.Mem.ResetReservation();
 
                     // ToDo: 標準入力制御の実装
 

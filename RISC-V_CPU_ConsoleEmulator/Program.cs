@@ -42,8 +42,6 @@ namespace RISC_V_CPU_ConsoleEmulator {
                     break;
                 }
 
-                cpu.registerSet.Mem.HostAccessAddress.Add(cpu.GetToHostAddr());
-
                 string errstr = null;
                 while (true) {
                     try {
