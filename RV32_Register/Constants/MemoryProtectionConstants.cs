@@ -90,17 +90,22 @@ namespace RV32_Register.Constants {
 
     public enum PtPermission : byte {
         /// <summary>ポインタ</summary>
-        Pointer = 0b000,
+        Pointer = 0,
+
         /// <summary>読み込みのみ可(書き実行不可)</summary>
-        ReadOnly = 0b001,
-        /// <summary>読み書き可(実行不可)</summary>
-        ReadWrite = 0b011,
+        ReadOnly = MemoryAccessMode.Read,
+
+        /// <summary>読み + 書き可(実行不可)</summary>
+        ReadWrite = MemoryAccessMode.Read | MemoryAccessMode.Write,
+
         /// <summary>実行のみ可(読み書き不可)</summary>
-        ExecuteOnly = 0b100,
-        /// <summary>読み込み実行可(書き込み不可)</summary>
-        ReadExecute = 0b101,
-        /// <summary>読み書き実行可</summary>
-        ReadWriteExecute = 0b111,
+        ExecuteOnly = MemoryAccessMode.Execute,
+
+        /// <summary>読み込み + 実行可(書き込み不可)</summary>
+        ReadExecute = MemoryAccessMode.Read | MemoryAccessMode.Execute,
+
+        /// <summary>読み + 書き + 実行可</summary>
+        ReadWriteExecute = MemoryAccessMode.Read | MemoryAccessMode.Write | MemoryAccessMode.Execute,
     }
 
     [FlagsAttribute]
