@@ -207,11 +207,12 @@ namespace RV32_Register.MemoryHandler {
             }
             if (TLB.Keys.Contains(vaddr_vpn)) {
                 // ヒットした場合、キャッシュしていたアドレスにオフセットを足して返す
-                phy_addr = (TLB[vaddr_vpn] & ~0xfffUL)| vaddr.PageOffset;
+                phy_addr = (TLB[vaddr_vpn] & ~0xfffUL) | vaddr.PageOffset;
                 return phy_addr;
             }
 
-            /* 1.pte_addrをsatp：ppn×PAGESIZEとし、i = LEVELS - 1とする（Sv32の場合、PAGESIZE = 2^12、LEVELS = 2）
+            /* 1.pte_addrをsatp:ppn×PAGESIZEとし、i = LEVELS - 1とする
+             * （Sv32の場合、PAGESIZE = 2^12、LEVELS = 2）
              */
             const uint PageSize = 0x1000U;
             const int Levels = 2;
@@ -222,8 +223,7 @@ namespace RV32_Register.MemoryHandler {
 
             PageTableEntry32 pte = 0;
 
-            /* 2.アドレスpte_addr + vaにあるPTEの値をpteとします。vpn[i]×PTESIZE。（Sv32の場合、PTESIZE = 4）
-             * pteにアクセスしてPMAまたはPMPチェックに違反した場合は、アクセス例外を発生させます。
+            /* 2.pte をアドレス pte_addr + va.ppn[i]×PTESIZEにあるPTEの値とする（Sv32の場合、PTESIZE = 4）
              */
             const uint PteSize = 4U;
 
@@ -238,23 +238,22 @@ namespace RV32_Register.MemoryHandler {
                     // ToDo: PMA,PMPチェックの実装
                 }
 
-                /* 3.pte.v = 0の場合、またはpte.r = 0かつpte.w = 1の場合、停止してページフォルト例外を発生させます。
+                /* 3.pte.v = 0の場合、またはpte.r = 0かつpte.w = 1の場合、処理を停止してページフォルト例外を発生させる。
                  */
                 if (!pte.IsValid || (((int)pte.Permission & 0b011) == 0b010)) {
                     throw new RiscvException(pageFaultCouse, virt_addr, reg);
                 }
 
-                /* 4.それ以外の場合、PTEは有効です。
-                 * pte：r = 1またはpte：x = 1の場合、手順5に進みます。
+                /* 4.それ以外の場合、PTEは有効である。
+                 * pte：r = 1またはpte：x = 1の場合、手順5に進む。
                  */
                 if (pte.Permission != PtPermission.Pointer) {
                     // ループを抜けて次の手順へ
                     break;
                 } else {
-                    /* それ以外の場合、このPTEはページテーブルの次のレベルへのポインタです。
-                     * ｉ ＝ ｉ － １とします。
-                     * i < 0の場合、停止してページ不在例外を発生させます。
-                     * それ以外の場合は、pte_addr = pte.ppn×PAGESIZEとし、手順2に進みます。
+                    /* それ以外の場合、このPTEはページテーブルの次のレベルへのポインタである。
+                     * i = i + 1としする。i < 0の場合、処理を停止してページフォルト例外を発生させる。
+                     * それ以外の場合は、pte_addr = pte.ppn×PAGESIZEとして、手順2に戻る。
                      */
                     i--;
                     if (i < 0) {
@@ -268,9 +267,9 @@ namespace RV32_Register.MemoryHandler {
             }
 
             /* 5.リーフPTEが見つかりました。
-             * 現在の特権モードと、mstatusレジスタのSUMおよびMXRフィールドの値を考慮して、要求されたメモリアクセスが
-             * pte.r、pte.w、pte.x、およびpte.uビットによって許可されているかどうかを確認します。
-             * そうでない場合は、停止してページ不在例外を発生させます。
+             * 現在の特権モードと、mstatusレジスタのSUMおよびMXRフィールドの値を考慮して、
+             * 要求されたメモリアクセスが許可されているかを pte.r、pte.w、pte.x、およびpte.uビットに基づいて判定する。
+             * 許可されない場合は、処理を停止してページフォルト例外を発生させる。
              */
             StatusCSR status = reg.CSRegisters[CSR.mstatus];
             bool allowUser = pte.IsUserMode ^ (reg.CurrentMode != PrivilegeLevel.UserMode);
@@ -283,8 +282,8 @@ namespace RV32_Register.MemoryHandler {
                 throw new RiscvException(pageFaultCouse, virt_addr, reg);
             }
 
-            /* 6. i> 0かつpa.ppn [i － 1：0]≠0の場合、これは位置ずれしたスーパーページです。
-             * ページフォルト例外を停止して発生させます。
+            /* 6. i > 0かつpa.ppn[i - 1: 0]≠0の場合、整列されていないスーパーページである。
+             * 処理を停止してページフォルト例外を発生させる。
              */
             unsafe {
                 if (i > 0 && pte.PPN[i - 1] != 0) {
@@ -292,29 +291,36 @@ namespace RV32_Register.MemoryHandler {
                 }
             }
 
-            /* 7. pte.a = 0の場合、またはメモリアクセスがストアでpte.d = 0の場合、ページフォルト例外が発生するか、または、
-             * ・pte.aを1に設定し、メモリアクセスがストアの場合はpte.dも1に設定します。
-             * ・このアクセスがPMAまたはPMPチェックに違反している場合は、アクセス例外を発生させます。
-             * ・この更新と手順2のpteのロードはアトミックでなければなりません。
-             * 特に、PTEへの介在ストアがその間に発生したと認識されることはありません。
+            /* 7. pte.a = 0の場合、もしくはメモリアクセスがストアでpte.d = 0の場合は下記のどちらかを行う。
+             * ・処理を停止してページフォルト例外を発生させる。
+             * ・pte.aを1に設定し、メモリアクセスがストアの場合はpte.dも1に設定する。
+             *   なお、このアクセスがPMAまたはPMPチェックに違反している場合は、アクセス例外を発生させる。
+             *   この更新と手順2のpteのロードはアトミックでなければならない。
              */
             if (!pte.IsAccessed || (!pte.IsDarty && accMode == MemoryAccessMode.Write)) {
-                //throw new RiscvException(pageFaultCouse, virt_addr, reg);
-                pte.IsAccessed = true;
-                if (accMode == MemoryAccessMode.Write) {
-                    pte.IsDarty = true;
-                }
+                throw new RiscvException(pageFaultCouse, virt_addr, reg);
+                //pte.IsAccessed = true;
+                //if (accMode == MemoryAccessMode.Write) {
+                //    pte.IsDarty = true;
+                //}
             }
 
             if (false) {
                 // ToDo: PMA,PMPチェックの実装
             }
 
-            /* 8.変換は成功しました。変換された物理アドレスは以下のように与えられます。
+            /* 8.変換成功である。変換された物理アドレスは以下のように与えられます。
              * ・pa.pgoff = va.pgoff
-             * ・i> 0の場合、これはスーパーページ変換であり、pa：ppn [i - 1：0] = va：vpn [i - 1：0]です。
-             * ・pa.ppn [LEVELS - 1：i] = pte.ppn [LEVELS - 1：i]
+             * ・i> 0の場合、これはスーパーページ変換であり、pa:ppn[i - 1: 0] = va:vpn[i - 1: 0]である。
+             * ・あとはpa.ppn[LEVELS - 1: i] = pte.ppn[LEVELS - 1: i]である。
              */
+
+            unsafe {
+                // 物理アドレスを生成
+                phy_addr |= (UInt64)pte.PPN[Levels - 1] << 22;
+                phy_addr |= (UInt64)(i > 0 ? vaddr.VPN[i - 1] : pte.PPN[i]) << 12;
+                phy_addr |= vaddr.PageOffset;
+            }
 
             // TLBに物理アドレスの上位と PTEの下位8ビットの情報をキャッシュする
             TlbEntry32 tlb = new TlbEntry32() {
@@ -330,13 +336,7 @@ namespace RV32_Register.MemoryHandler {
             unsafe {
                 tlb.PPN[1] = pte.PPN[Levels - 1];
                 tlb.PPN[0] = i > 0 ? vaddr.VPN[i - 1] : pte.PPN[i];
-
-                // 物理アドレスを生成
-                phy_addr |= (UInt64)tlb.PPN[1] << 22;
-                phy_addr |= (UInt64)tlb.PPN[0] << 12;
-                phy_addr |= vaddr.PageOffset;
             }
-
             TLB.Add(vaddr_vpn, tlb);
 
             return phy_addr + Offset;

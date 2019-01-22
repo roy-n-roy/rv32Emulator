@@ -198,8 +198,25 @@ namespace RV32_Register.Constants {
             PhysicalMemoryProtectionConfig[] pmpcfgArray = new PhysicalMemoryProtectionConfig[16];
             int i = 0;
             foreach (uint value in values) {
-                foreach(byte b in BitConverter.GetBytes(value)) {
-                    pmpcfgArray[i++] = b;
+                foreach (byte byt in BitConverter.GetBytes(value)) {
+                    pmpcfgArray[i++] = byt;
+                    if (i >= pmpcfgArray.Length) {
+                        return pmpcfgArray;
+                    }
+                }
+            }
+            return pmpcfgArray;
+        }
+
+        public static PhysicalMemoryProtectionConfig[] GetPmpCfgs(ulong[] values) {
+            PhysicalMemoryProtectionConfig[] pmpcfgArray = new PhysicalMemoryProtectionConfig[16];
+            int i = 0;
+            foreach (uint value in values) {
+                foreach (byte byt in BitConverter.GetBytes(value)) {
+                    pmpcfgArray[i++] = byt;
+                    if (i >= pmpcfgArray.Length) {
+                        return pmpcfgArray;
+                    }
                 }
             }
             return pmpcfgArray;
