@@ -128,7 +128,7 @@ namespace RISC_V_CPU_Emulator {
             this.InstructionNameLabel.Text = ins.Name;
 
             // 実行モード
-            this.CurrentModeLabel.Text = Enum.GetName(typeof(PrivilegeLevels), cpu.registerSet.CurrentMode);
+            this.CurrentModeLabel.Text = Enum.GetName(typeof(PrivilegeLevel), cpu.registerSet.CurrentMode);
             // 2進数の命令
             int insLength = 32;
             string insStr = Convert.ToString(cpu.registerSet.IR, 2).PadLeft(insLength, '0');

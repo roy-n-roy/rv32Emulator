@@ -6,10 +6,10 @@ namespace RV32_Register.Constants {
      ************************/
 
     /// <summary>特権レベル</summary>
-    public enum PrivilegeLevels : byte {
+    public enum PrivilegeLevel : byte {
         /// <summary>ユーザモード</summary>
         UserMode = 0x0,
-        /// <summary>ハイパーバイザモード</summary>
+        /// <summary>スーパーバイザモード</summary>
         SupervisorMode = 0x1,
         /// <summary>マシンモード</summary>
         MachineMode = 0x3,
@@ -571,11 +571,11 @@ namespace RV32_Register.Constants {
     /// <summary>mstatus, sstatusなどのステータスCSRを表す構造体</summary>
     public struct StatusCSR {
         // mstatus, sstatusなどに相当するモード
-        private PrivilegeLevels mode;
-        public PrivilegeLevels Mode {
+        private PrivilegeLevel mode;
+        public PrivilegeLevel Mode {
             get => mode;
             set {
-                if (mode <= PrivilegeLevels.SupervisorMode) {
+                if (mode <= PrivilegeLevel.SupervisorMode) {
                     // sstatus, ustatusの場合は、マシンモードのみで読み取れるビットを0にする
                     TSR = false;
                     TW = false;
@@ -585,7 +585,7 @@ namespace RV32_Register.Constants {
                     MPIE = false;
                     MIE = false;
                 }
-                if (mode <= PrivilegeLevels.UserMode) {
+                if (mode <= PrivilegeLevel.UserMode) {
                     // ustatusの場合は、マシンモード、特権モードのみで読み取れるビットを0にする
                     SPP = false;
                     SPIE = false;
@@ -641,7 +641,7 @@ namespace RV32_Register.Constants {
 
         // コンストラクタ
         public StatusCSR(uint value) : this() {
-            Mode = PrivilegeLevels.MachineMode;
+            Mode = PrivilegeLevel.MachineMode;
             SD = (value & 0x80000000) > 0;
             TSR = (value & 0x00400000) > 0;
             TW = (value & 0x00200000) > 0;
@@ -687,9 +687,9 @@ namespace RV32_Register.Constants {
             value |= status.SIE ? 1U << 1 : 0U;
             value |= status.UIE ? 1U << 0 : 0U;
 
-            if (status.Mode == PrivilegeLevels.SupervisorMode) {
+            if (status.Mode == PrivilegeLevel.SupervisorMode) {
                 value &= SModeMask;
-            } else if (status.Mode == PrivilegeLevels.UserMode) {
+            } else if (status.Mode == PrivilegeLevel.UserMode) {
                 value &= UModeMask;
             }
 
@@ -700,12 +700,12 @@ namespace RV32_Register.Constants {
     /// <summary>mip, sipなどの割り込み保留CSRを表す構造体</summary>
     public struct InterruptPendingCSR {
         // mip, sipなどに相当するモード
-        private PrivilegeLevels mode;
-        public PrivilegeLevels Mode {
+        private PrivilegeLevel mode;
+        public PrivilegeLevel Mode {
             get => mode;
             set {
                 mode = value;
-                if (Mode <= PrivilegeLevels.SupervisorMode) {
+                if (Mode <= PrivilegeLevel.SupervisorMode) {
                     // ustatusの場合は、マシンモード、スーパーバイザーモードのみで読み取れるビットを0にする
                     SEIP = false;
                     STIP = false;
@@ -778,9 +778,9 @@ namespace RV32_Register.Constants {
             value |= ip.SSIP ? 1U << 1 : 0U;
             value |= ip.USIP ? 1U << 0 : 0U;
 
-            if (ip.Mode == PrivilegeLevels.SupervisorMode) {
+            if (ip.Mode == PrivilegeLevel.SupervisorMode) {
                 value &= SModeReadMask;
-            } else if (ip.Mode == PrivilegeLevels.UserMode) {
+            } else if (ip.Mode == PrivilegeLevel.UserMode) {
                 value &= UModeReadMask;
             }
             return value;
@@ -790,12 +790,12 @@ namespace RV32_Register.Constants {
     /// <summary>mip, sipなどの割り込み有効CSRを表す構造体</summary>
     public struct InterruptEnableCSR {
         // mip, sipなどに相当するモード
-        private PrivilegeLevels mode;
-        public PrivilegeLevels Mode {
+        private PrivilegeLevel mode;
+        public PrivilegeLevel Mode {
             get => mode;
             set {
                 mode = value;
-                if (Mode <= PrivilegeLevels.SupervisorMode) {
+                if (Mode <= PrivilegeLevel.SupervisorMode) {
                     // ustatusの場合は、マシンモード、スーパーバイザーモードのみで読み取れるビットを0にする
                     SEIE = false;
                     STIE = false;
@@ -863,9 +863,9 @@ namespace RV32_Register.Constants {
             value |= ie.SSIE ? 1U << 1 : 0U;
             value |= ie.USIE ? 1U << 0 : 0U;
 
-            if (ie.Mode == PrivilegeLevels.SupervisorMode) {
+            if (ie.Mode == PrivilegeLevel.SupervisorMode) {
                 value &= SModeMask;
-            } else if (ie.Mode == PrivilegeLevels.UserMode) {
+            } else if (ie.Mode == PrivilegeLevel.UserMode) {
                 value &= UModeMask;
             }
             return value;
