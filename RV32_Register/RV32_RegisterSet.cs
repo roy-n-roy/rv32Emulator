@@ -384,6 +384,10 @@ namespace RV32_Register {
         /// </summary>
         /// <returns>処理の成否</returns>
         public bool Uret(UInt32 insLength = 4U) {
+            // 'N'オプションが無効の場合は不正命令例外
+            if ((CSRegisters[CSR.misa] & (1U << ('N' - 'A'))) == 0) {
+                throw new RiscvException(RiscvExceptionCause.IllegalInstruction, PC, this);
+            }
             if (((StatusCSR)CSRegisters[CSR.mstatus]).TSR) {
                 throw new RiscvException(RiscvExceptionCause.IllegalInstruction, IR, this);
             }
