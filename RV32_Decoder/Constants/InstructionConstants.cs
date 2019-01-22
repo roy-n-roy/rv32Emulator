@@ -28,8 +28,8 @@
         miscOp = 0b0110011,
         /// <summary>同期命令</summary>
         miscMem = 0b0001111,
-        /// <summary>特権命令</summary>
-        privilege = 0b1110011,
+        /// <summary>システム命令</summary>
+        system = 0b1110011,
 
         #endregion
 
