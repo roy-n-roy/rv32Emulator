@@ -26,10 +26,10 @@ namespace RV32_Register {
                     // sstatus,ustatus
                     // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
                     case CSR.sstatus:
-                        return csr[CSR.mstatus] & StatusCSR.SModeMask;
+                        return csr[CSR.mstatus] & StatusCSR.SModeReadMask;
 
                     case CSR.ustatus:
-                        return csr[CSR.mstatus] & StatusCSR.UModeMask;
+                        return csr[CSR.mstatus] & StatusCSR.UModeReadMask;
 
                     // sip,uip
                     case CSR.sip:
@@ -96,6 +96,9 @@ namespace RV32_Register {
                             status.MPP |= 0b01;
                             status.SPP = true;
                         }
+                        // FS(浮動小数点ユニットステータス) もしくは XS(拡張ユニットステータス)が 'ダーティ(=0b11)' の場合にtrueとする
+                        status.SD = (status.FS & 0b11) == 0b11 || (status.XS & 0b11) == 0b11;
+
                         csr[CSR.mstatus] = status;
                         break;
 
@@ -105,11 +108,18 @@ namespace RV32_Register {
                             // ユーザモードをサポートしていない場合
                             status.SPP = true;
                         }
-                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.SModeMask | status & StatusCSR.SModeMask;
+                        // FS(浮動小数点ユニットステータス) もしくは XS(拡張ユニットステータス)が 'ダーティ(=0b11)' の場合にtrueとする
+                        status.SD = (status.FS & 0b11) == 0b11 || (status.XS & 0b11) == 0b11;
+
+                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.SModeWriteMask | status & StatusCSR.SModeWriteMask;
                         break;
 
                     case CSR.ustatus:
-                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.UModeMask | value & StatusCSR.UModeMask;
+                        status = value;
+                        // FS(浮動小数点ユニットステータス) もしくは XS(拡張ユニットステータス)が 'ダーティ(=0b11)' の場合にtrueとする
+                        status.SD = (status.FS & 0b11) == 0b11 || (status.XS & 0b11) == 0b11;
+
+                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.UModeWriteMask | status & StatusCSR.UModeWriteMask;
                         break;
 
                     // mip,sip,uip
