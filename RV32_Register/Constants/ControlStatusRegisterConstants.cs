@@ -570,43 +570,25 @@ namespace RV32_Register.Constants {
     #region CSR構造体定義
     /// <summary>mstatus, sstatusなどのステータスCSRを表す構造体</summary>
     public struct StatusCSR {
-        // mstatus, sstatusなどに相当するモード
-        private PrivilegeLevel mode;
-        public PrivilegeLevel Mode {
-            get => mode;
-            set {
-                if (mode <= PrivilegeLevel.SupervisorMode) {
-                    // sstatus, ustatusの場合は、マシンモードのみで読み取れるビットを0にする
-                    TSR = false;
-                    TW = false;
-                    TVM = false;
-                    MPRV = false;
-                    MPP = 0;
-                    MPIE = false;
-                    MIE = false;
-                }
-                if (mode <= PrivilegeLevel.UserMode) {
-                    // ustatusの場合は、マシンモード、特権モードのみで読み取れるビットを0にする
-                    SPP = false;
-                    SPIE = false;
-                    SIE = false;
-                }
-                mode = value;
-            }
-        }
-
         // 定数
-        /// <summary>マシンモードで読み書き可能なビット</summary>
-        public const uint MModeMask = 0b1000_0000_0111_1111_1111_1001_1011_1011U;
-        /// <summary>スーパーバイザモードで読み書き可能なビット</summary>
-        public const uint SModeMask = 0b1000_0000_0000_1101_1110_0001_0011_0011U;
-        /// <summary>ユーザモードで読み書き可能なビット</summary>
-        public const uint UModeMask = 0b1000_0000_0000_1101_1110_0000_0001_0001U;
+        /// <summary>マシンモードで読み込み可能なビット</summary>
+        public const uint MModeReadMask = 0b1000_0000_0111_1111_1111_1001_1011_1011U;
+        /// <summary>スーパーバイザモードで読み込み可能なビット</summary>
+        public const uint SModeReadMask = 0b1000_0000_0000_1101_1110_0001_0011_0011U;
+        /// <summary>ユーザモードで読み込み可能なビット</summary>
+        public const uint UModeReadMask = 0b1000_0000_0000_1101_1110_0000_0001_0001U;
+
+        /// <summary>マシンモードで書き込み可能なビット</summary>
+        public const uint MModeWriteMask = 0b0000_0000_0111_1110_0111_1001_1011_1011U;
+        /// <summary>スーパーバイザモードで書き込み可能なビット</summary>
+        public const uint SModeWriteMask = 0b0000_0000_0000_1100_0110_0001_0011_0011U;
+        /// <summary>ユーザモードで書き込み可能なビット</summary>
+        public const uint UModeWriteMask = 0b0000_0000_0000_1100_0110_0000_0001_0001U;
 
         // 変数
-        /// <summary></summary>
+        /// <summary>FSがダーティ、もしくはXSがダーティの場合にtrueとなる(Summarize Dirty)</summary>
         public bool SD { get; set; }
-        /// <summary></summary>
+        /// <summary>SRETトラップ(Trap Supervisor-Mode Return)</summary>
         public bool TSR { get; set; }
         /// <summary>タイムアウト待機 true:WFIがSmodeで実行され、制限時間内に完了しない場合不正命令例外を発生さえる</summary>
         public bool TW { get; set; }
@@ -616,32 +598,31 @@ namespace RV32_Register.Constants {
         public bool MXR { get; set; }
         /// <summary>スーパーバイザユーザメモリアクセス許可</summary>
         public bool SUM { get; set; }
-        /// <summary>権限変更</summary>
+        /// <summary>権限変更許可(Modify PRiVilege)</summary>
         public bool MPRV { get; set; }
-        /// <summary></summary>
+        /// <summary>拡張ユニットステータス(User-mode Extension unit Status)</summary>
         public byte XS { get; set; }
-        /// <summary></summary>
+        /// <summary>浮動小数点ユニットステータス(Float-point unit Status)</summary>
         public byte FS { get; set; }
-        /// <summary></summary>
+        /// <summary>マシンモード 割り込み前 特権モード(Machine-mode Previous Privilege mode)</summary>
         public byte MPP { get; set; }
-        /// <summary></summary>
+        /// <summary>スーバーバイザモード 割り込み前 特権モード(Supervisor-mode Previous Privilege mode)</summary>
         public bool SPP { get; set; }
-        /// <summary></summary>
+        /// <summary>マシンモード 割り込み前 割り込み許可(Machine-mode Previous Interrupt Enable)</summary>
         public bool MPIE { get; set; }
-        /// <summary></summary>
+        /// <summary>スーパーバイザモード 割り込み前 割り込み許可(Supervisor-mode Previous Interrupt Enable)</summary>
         public bool SPIE { get; set; }
-        /// <summary></summary>
+        /// <summary>ユーザモード 割り込み前 割り込み許可(User-mode Previous Interrupt Enable)</summary>
         public bool UPIE { get; set; }
-        /// <summary></summary>
+        /// <summary>マシンモード 割り込み許可(Machine-mode Interrupt Enable)</summary>
         public bool MIE { get; set; }
-        /// <summary></summary>
+        /// <summary>スーパーバイザ 割り込み許可(Supervisor-mode Interrupt Enable)</summary>
         public bool SIE { get; set; }
-        /// <summary></summary>
+        /// <summary>ユーザモード 割り込み許可(User-mode Interrupt Enable)</summary>
         public bool UIE { get; set; }
 
         // コンストラクタ
         public StatusCSR(uint value) : this() {
-            Mode = PrivilegeLevel.MachineMode;
             SD = (value & 0x80000000) > 0;
             TSR = (value & 0x00400000) > 0;
             TW = (value & 0x00200000) > 0;
@@ -687,32 +668,12 @@ namespace RV32_Register.Constants {
             value |= status.SIE ? 1U << 1 : 0U;
             value |= status.UIE ? 1U << 0 : 0U;
 
-            if (status.Mode == PrivilegeLevel.SupervisorMode) {
-                value &= SModeMask;
-            } else if (status.Mode == PrivilegeLevel.UserMode) {
-                value &= UModeMask;
-            }
-
             return value;
         }
     }
 
     /// <summary>mip, sipなどの割り込み保留CSRを表す構造体</summary>
     public struct InterruptPendingCSR {
-        // mip, sipなどに相当するモード
-        private PrivilegeLevel mode;
-        public PrivilegeLevel Mode {
-            get => mode;
-            set {
-                mode = value;
-                if (Mode <= PrivilegeLevel.SupervisorMode) {
-                    // ustatusの場合は、マシンモード、スーパーバイザーモードのみで読み取れるビットを0にする
-                    SEIP = false;
-                    STIP = false;
-                    SSIP = false;
-                }
-            }
-        }
         // 定数
         /// <summary>マシンモードで読み込み可能なビット</summary>
         public const uint MModeReadMask = 0b1011_0011_1011U;
@@ -778,32 +739,12 @@ namespace RV32_Register.Constants {
             value |= ip.SSIP ? 1U << 1 : 0U;
             value |= ip.USIP ? 1U << 0 : 0U;
 
-            if (ip.Mode == PrivilegeLevel.SupervisorMode) {
-                value &= SModeReadMask;
-            } else if (ip.Mode == PrivilegeLevel.UserMode) {
-                value &= UModeReadMask;
-            }
             return value;
         }
     }
 
     /// <summary>mip, sipなどの割り込み有効CSRを表す構造体</summary>
     public struct InterruptEnableCSR {
-        // mip, sipなどに相当するモード
-        private PrivilegeLevel mode;
-        public PrivilegeLevel Mode {
-            get => mode;
-            set {
-                mode = value;
-                if (Mode <= PrivilegeLevel.SupervisorMode) {
-                    // ustatusの場合は、マシンモード、スーパーバイザーモードのみで読み取れるビットを0にする
-                    SEIE = false;
-                    STIE = false;
-                    SSIE = false;
-                }
-            }
-        }
-
         // 定数
         /// <summary>マシンモードで読み書き可能なビット</summary>
         public const uint MModeMask = 0b1011_1011_1011U;
@@ -863,11 +804,6 @@ namespace RV32_Register.Constants {
             value |= ie.SSIE ? 1U << 1 : 0U;
             value |= ie.USIE ? 1U << 0 : 0U;
 
-            if (ie.Mode == PrivilegeLevel.SupervisorMode) {
-                value &= SModeMask;
-            } else if (ie.Mode == PrivilegeLevel.UserMode) {
-                value &= UModeMask;
-            }
             return value;
         }
     }
