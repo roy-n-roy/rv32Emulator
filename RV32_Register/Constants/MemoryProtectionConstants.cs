@@ -42,10 +42,10 @@ namespace RV32_Register.Constants {
     }
 
     /// <summary>Sv32モード ページテーブルエントリ(PTE)</summary>
-    public unsafe struct PageTableEntry32 {
+    public struct PageTableEntry32 {
         // 変数
         /// <summary>物理ページ番号(Physical Page Number)</summary>
-        public fixed ushort PPN[2];
+        public ushort[] PPN;
         /// <summary>書き込み済みフラグ</summary>
         public bool IsDarty { get; set; }
         /// <summary>アクセス済みフラグ</summary>
@@ -61,6 +61,7 @@ namespace RV32_Register.Constants {
 
         // コンストラクタ
         public PageTableEntry32(uint value) {
+            PPN = new ushort[2];
             PPN[1] = (ushort)((value & 0xfff0_0000U) >> 20);
             PPN[0] = (ushort)((value & 0x000f_fc00U) >> 10);
             IsDarty = (value & 0x0000_0080U) > 0;
@@ -91,13 +92,14 @@ namespace RV32_Register.Constants {
     }
 
     /// <summary>Sv32モード 32bit長 仮想アドレス</summary>
-    public unsafe struct VirtAddr32 {
+    public struct VirtAddr32 {
         /// <summary>仮想ページ番号(Virtual Page Number)</summary>
-        public fixed ushort VPN[2];
+        public ushort[] VPN;
         /// <summary>ページオフセット</summary>
         public ushort PageOffset { get; set; }
 
         public VirtAddr32(uint value) {
+            VPN = new ushort[2];
             VPN[1] = (ushort)((value & 0xffc0_0000U) >> 22);
             VPN[0] = (ushort)((value & 0x003f_f000U) >> 12);
             PageOffset = (ushort)(value & 0x0000_0fffU);
@@ -118,9 +120,9 @@ namespace RV32_Register.Constants {
     }
 
     /// <summary>Sv32モード TLBエントリ(Translation Lookaside Buffer)</summary>
-    public unsafe struct TlbEntry32 {
+    public struct TlbEntry32 {
         /// <summary>物理ページ番号(Virtual Page Number)</summary>
-        public fixed ushort PPN[2];
+        public ushort[] PPN;
         /// <summary>書き込み済みフラグ</summary>
         public bool IsDarty { get; set; }
         /// <summary>アクセス済みフラグ</summary>
@@ -137,6 +139,7 @@ namespace RV32_Register.Constants {
         public uint PteAddress { get; set; }
 
         public TlbEntry32(ulong value) {
+            PPN = new ushort[2];
             PPN[1] = (ushort)((value & 0x3_ffc0_0000UL) >> 22);
             PPN[0] = (ushort)((value & 0x0_003f_f000U) >> 12);
             IsDarty = (value & 0x0000_0080U) > 0;

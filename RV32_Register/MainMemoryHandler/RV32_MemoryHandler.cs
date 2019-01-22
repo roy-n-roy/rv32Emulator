@@ -202,9 +202,7 @@ namespace RV32_Register.MemoryHandler {
 
             // TLB検索処理
             uint vaddr_vpn = 0;
-            unsafe {
-                vaddr_vpn = (uint)vaddr.VPN[0] << 10 | (uint)vaddr.VPN[1];
-            }
+            vaddr_vpn = (uint)vaddr.VPN[0] << 10 | (uint)vaddr.VPN[1];
             if (TLB.Keys.Contains(vaddr_vpn)) {
                 // ヒットした場合、キャッシュしていたアドレスにオフセットを足して返す
                 phy_addr = (TLB[vaddr_vpn] & ~0xfffUL) | vaddr.PageOffset;
@@ -229,10 +227,8 @@ namespace RV32_Register.MemoryHandler {
 
             while (i >= 0) {
 
-                unsafe {
-                    pte_addr += vaddr.VPN[i] * PteSize;
-                }
-                pte = BitConverter.ToUInt32(mainMemory, (int)pte_addr);
+                pte_addr += vaddr.VPN[i] * PteSize;
+                pte = BitConverter.ToUInt32(mainMemory, (int)(pte_addr + Offset));
 
                 if (false) {
                     // ToDo: PMA,PMPチェックの実装
@@ -259,9 +255,7 @@ namespace RV32_Register.MemoryHandler {
                     if (i < 0) {
                         throw new RiscvException(pageFaultCouse, virt_addr, reg);
                     }
-                    unsafe {
-                        pte_addr = pte.PPN[i] * PageSize;
-                    }
+                    pte_addr = pte.PPN[i] * PageSize;
                     continue;
                 }
             }
@@ -285,10 +279,8 @@ namespace RV32_Register.MemoryHandler {
             /* 6. i > 0かつpa.ppn[i - 1: 0]≠0の場合、整列されていないスーパーページである。
              * 処理を停止してページフォルト例外を発生させる。
              */
-            unsafe {
-                if (i > 0 && pte.PPN[i - 1] != 0) {
-                    throw new RiscvException(pageFaultCouse, virt_addr, reg);
-                }
+            if (i > 0 && pte.PPN[i - 1] != 0) {
+                throw new RiscvException(pageFaultCouse, virt_addr, reg);
             }
 
             /* 7. pte.a = 0の場合、もしくはメモリアクセスがストアでpte.d = 0の場合は下記のどちらかを行う。
@@ -315,12 +307,10 @@ namespace RV32_Register.MemoryHandler {
              * ・あとはpa.ppn[LEVELS - 1: i] = pte.ppn[LEVELS - 1: i]である。
              */
 
-            unsafe {
-                // 物理アドレスを生成
-                phy_addr |= (UInt64)pte.PPN[Levels - 1] << 22;
-                phy_addr |= (UInt64)(i > 0 ? vaddr.VPN[i - 1] : pte.PPN[i]) << 12;
-                phy_addr |= vaddr.PageOffset;
-            }
+            // 物理アドレスを生成
+            phy_addr |= (UInt64)pte.PPN[Levels - 1] << 22;
+            phy_addr |= (UInt64)(i > 0 ? vaddr.VPN[i - 1] : pte.PPN[i - 1]) << 12;
+            phy_addr |= vaddr.PageOffset;
 
             // TLBに物理アドレスの上位と PTEの下位8ビットの情報をキャッシュする
             TlbEntry32 tlb = new TlbEntry32() {
@@ -333,10 +323,8 @@ namespace RV32_Register.MemoryHandler {
                 PteAddress = pte_addr
             };
 
-            unsafe {
-                tlb.PPN[1] = pte.PPN[Levels - 1];
-                tlb.PPN[0] = i > 0 ? vaddr.VPN[i - 1] : pte.PPN[i];
-            }
+            tlb.PPN[1] = pte.PPN[Levels - 1];
+            tlb.PPN[0] = i > 0 ? vaddr.VPN[i - 1] : pte.PPN[i];
             TLB.Add(vaddr_vpn, tlb);
 
             return phy_addr + Offset;
