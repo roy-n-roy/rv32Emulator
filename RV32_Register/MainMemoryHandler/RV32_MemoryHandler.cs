@@ -63,7 +63,7 @@ namespace RV32_Register.MemoryHandler {
         protected RV32_AbstractMemoryHandler(byte[] mainMemory) {
             this.mainMemory = mainMemory;
             HostTrapAddress = new HashSet<UInt64>();
-            TLB = new Dictionary<UInt32, ulong>();
+            TLB = new Dictionary<UInt32, TlbEntry32>();
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace RV32_Register.MemoryHandler {
         private protected readonly byte[] mainMemory;
 
         /// <summary>仮想アドレス変換索引バッファ(Translation Lookaside Buffer)</summary>
-        private readonly Dictionary<UInt32, ulong> TLB;
+        private readonly Dictionary<UInt32, TlbEntry32> TLB;
 
         /// <summary>メモリアクセス時にホストへ通知するアドレス</summary>
         public HashSet<UInt64> HostTrapAddress { get; }
@@ -163,7 +163,10 @@ namespace RV32_Register.MemoryHandler {
         /// <param name="vadd">仮想アドレス</param>
         /// <param name="asid">アドレス空間識別子(Address Space Identify)</param>
         public void TlbFlush(UInt32 vadd, UInt32 asid) {
-            // Todo: TLB Flush処理(メモリ書き戻し)の実装
+            foreach (TlbEntry32 tlbEnt in TLB.Values) {
+                // Todo: TLB Flush処理(メモリ書き戻し)の実装
+
+            }
         }
 
         private protected UInt64 GetPhysicalAddr(UInt32 virt_addr, MemoryAccessMode accMode) {
@@ -198,7 +201,10 @@ namespace RV32_Register.MemoryHandler {
             VirtAddr32 vaddr = virt_addr;
 
             // TLB検索処理
-            uint vaddr_vpn = (uint)vaddr.VPN[0] << 10 | (uint)vaddr.VPN[1];
+            uint vaddr_vpn = 0;
+            unsafe {
+                vaddr_vpn = (uint)vaddr.VPN[0] << 10 | (uint)vaddr.VPN[1];
+            }
             if (TLB.Keys.Contains(vaddr_vpn)) {
                 // ヒットした場合、キャッシュしていたアドレスにオフセットを足して返す
                 phy_addr = (TLB[vaddr_vpn] & ~0xfffUL)| vaddr.PageOffset;
@@ -223,8 +229,9 @@ namespace RV32_Register.MemoryHandler {
 
             while (i >= 0) {
 
-                pte_addr += vaddr.VPN[i] * PteSize;
-
+                unsafe {
+                    pte_addr += vaddr.VPN[i] * PteSize;
+                }
                 pte = BitConverter.ToUInt32(mainMemory, (int)pte_addr);
 
                 if (false) {
@@ -253,7 +260,9 @@ namespace RV32_Register.MemoryHandler {
                     if (i < 0) {
                         throw new RiscvException(pageFaultCouse, virt_addr, reg);
                     }
-                    pte_addr = pte.PPN[i] * PageSize;
+                    unsafe {
+                        pte_addr = pte.PPN[i] * PageSize;
+                    }
                     continue;
                 }
             }
@@ -277,8 +286,10 @@ namespace RV32_Register.MemoryHandler {
             /* 6. i> 0かつpa.ppn [i － 1：0]≠0の場合、これは位置ずれしたスーパーページです。
              * ページフォルト例外を停止して発生させます。
              */
-            if (i > 0 && pte.PPN[i - 1] != 0) {
-                throw new RiscvException(pageFaultCouse, virt_addr, reg);
+            unsafe {
+                if (i > 0 && pte.PPN[i - 1] != 0) {
+                    throw new RiscvException(pageFaultCouse, virt_addr, reg);
+                }
             }
 
             /* 7. pte.a = 0の場合、またはメモリアクセスがストアでpte.d = 0の場合、ページフォルト例外が発生するか、または、
@@ -288,14 +299,11 @@ namespace RV32_Register.MemoryHandler {
              * 特に、PTEへの介在ストアがその間に発生したと認識されることはありません。
              */
             if (!pte.IsAccessed || (!pte.IsDarty && accMode == MemoryAccessMode.Write)) {
-                throw new RiscvException(pageFaultCouse, virt_addr, reg);
-                //                pte.IsAccessed = true;
-                //                if (accMode == MemoryAccessMode.Write) {
-                //                    pte.IsDarty = true;
-                //                }
-                //
-                //                // ToDo: メモリへ直接保存では無く、TLBへキャッシュするよう変更
-                //                mainMemory[pte_addr - VAddr] = BitConverter.GetBytes(pte)[0];
+                //throw new RiscvException(pageFaultCouse, virt_addr, reg);
+                pte.IsAccessed = true;
+                if (accMode == MemoryAccessMode.Write) {
+                    pte.IsDarty = true;
+                }
             }
 
             if (false) {
@@ -307,16 +315,29 @@ namespace RV32_Register.MemoryHandler {
              * ・i> 0の場合、これはスーパーページ変換であり、pa：ppn [i - 1：0] = va：vpn [i - 1：0]です。
              * ・pa.ppn [LEVELS - 1：i] = pte.ppn [LEVELS - 1：i]
              */
-            phy_addr |= (UInt64)pte.PPN[Levels - 1] << 22;
-            phy_addr |= (UInt64)(i > 0 ? vaddr.VPN[i - 1] : pte.PPN[i]) << 12;
-            phy_addr |= vaddr.PageOffset;
 
             // TLBに物理アドレスの上位と PTEの下位8ビットの情報をキャッシュする
             TlbEntry32 tlb = new TlbEntry32() {
-
+                IsDarty = pte.IsDarty,
+                IsAccessed = pte.IsAccessed,
+                IsGlobal = pte.IsGlobal,
+                IsUserMode = pte.IsUserMode,
+                Permission = pte.Permission,
+                IsValid = pte.IsValid,
+                PteAddress = pte_addr
             };
 
-            TLB.Add(vaddr_vpn, (phy_addr & ~0xfffUL) | ((UInt64)pte & 0xffUL));
+            unsafe {
+                tlb.PPN[1] = pte.PPN[Levels - 1];
+                tlb.PPN[0] = i > 0 ? vaddr.VPN[i - 1] : pte.PPN[i];
+
+                // 物理アドレスを生成
+                phy_addr |= (UInt64)tlb.PPN[1] << 22;
+                phy_addr |= (UInt64)tlb.PPN[0] << 12;
+                phy_addr |= vaddr.PageOffset;
+            }
+
+            TLB.Add(vaddr_vpn, tlb);
 
             return phy_addr + Offset;
 
