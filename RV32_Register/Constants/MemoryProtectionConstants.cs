@@ -118,6 +118,57 @@ namespace RV32_Register.Constants {
         }
     }
 
+    /// <summary>Sv32モード TLBエントリ(Translation Lookaside Buffer)</summary>
+    public struct TlbEntry32 {
+        /// <summary>物理ページ番号(Virtual Page Number)</summary>
+        public ushort[] PPN { get; set; }
+        /// <summary>書き込み済みフラグ</summary>
+        public bool IsDarty { get; set; }
+        /// <summary>アクセス済みフラグ</summary>
+        public bool IsAccessed { get; set; }
+        /// <summary>グローバルフラグ</summary>
+        public bool IsGlobal { get; }
+        /// <summary>ユーザーモードアクセスフラグ</summary>
+        public bool IsUserMode { get; }
+        /// <summary>パーミッション</summary>
+        public PtPermission Permission { get; }
+        /// <summary>有効フラグ</summary>
+        public bool IsValid { get; }
+        /// <summary>ページテーブルエントリアドレス</summary>
+        public uint PteAddress { get; set; }
+
+        public TlbEntry32(ulong value) {
+            PPN = new ushort[2];
+            PPN[1] = (ushort)((value & 0x3_ffc0_0000UL) >> 22);
+            PPN[0] = (ushort)((value & 0x0_003f_f000U) >> 12);
+            IsDarty = (value & 0x0000_0080U) > 0;
+            IsAccessed = (value & 0x0000_0040U) > 0;
+            IsGlobal = (value & 0x0000_0020U) > 0;
+            IsUserMode = (value & 0x0000_0010U) > 0;
+            Permission = (PtPermission)((value & 0x0000_000eU) >> 1);
+            IsValid = (value & 0x0000_0001) > 0;
+            PteAddress = 0;
+        }
+
+        // キャスト
+        public static implicit operator TlbEntry32(ulong value) {
+            return new TlbEntry32(value);
+        }
+
+        public static implicit operator ulong(TlbEntry32 tlb) {
+            ulong value = 0;
+            value |= (tlb.PPN[1] & 0x3ffU) << 22;
+            value |= (tlb.PPN[0] & 0x3ffU) << 12;
+            value |= tlb.IsDarty ? 1U << 7 : 0U;
+            value |= tlb.IsAccessed ? 1U << 6 : 0U;
+            value |= tlb.IsGlobal ? 1U << 5 : 0U;
+            value |= tlb.IsUserMode ? 1U << 4 : 0U;
+            value |= (uint)tlb.Permission << 1;
+            value |= tlb.IsValid ? 1U << 0 : 0U;
+            return value;
+        }
+    }
+
     #endregion
 
     public struct PhysicalMemoryProtectionConfig {

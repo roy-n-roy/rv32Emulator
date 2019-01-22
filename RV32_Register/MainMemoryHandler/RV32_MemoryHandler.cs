@@ -166,7 +166,7 @@ namespace RV32_Register.MemoryHandler {
             // Todo: TLB Flush処理(メモリ書き戻し)の実装
         }
 
-        private protected UInt64 GetPhysicalAddr(UInt32 v_add, MemoryAccessMode accMode) {
+        private protected UInt64 GetPhysicalAddr(UInt32 virt_addr, MemoryAccessMode accMode) {
 
             UInt64 phy_addr = 0U;
 
@@ -188,19 +188,20 @@ namespace RV32_Register.MemoryHandler {
             SatpCSR satp = reg.CSRegisters[CSR.satp];
 
             if (!satp.MODE || reg.CurrentMode > PrivilegeLevel.SupervisorMode) {
-                phy_addr = v_add + Offset;
+                phy_addr = virt_addr + Offset;
                 if (phy_addr >= Size) {
-                    throw new RiscvException(pageFaultCouse, v_add, reg);
+                    throw new RiscvException(pageFaultCouse, virt_addr, reg);
                 }
                 return phy_addr;
             }
 
-            VirtAddr32 virt_addr = v_add;
+            VirtAddr32 vaddr = virt_addr;
 
-            // ToDo: TLB検索処理実装
-            uint vpn = (uint)virt_addr.VPN[0] << 10 | (uint)virt_addr.VPN[1];
-            if (TLB.Keys.Contains(vpn)) {
-                phy_addr = TLB[vpn] | virt_addr.PageOffset;
+            // TLB検索処理
+            uint vaddr_vpn = (uint)vaddr.VPN[0] << 10 | (uint)vaddr.VPN[1];
+            if (TLB.Keys.Contains(vaddr_vpn)) {
+                // ヒットした場合、キャッシュしていたアドレスにオフセットを足して返す
+                phy_addr = (TLB[vaddr_vpn] & ~0xfffUL)| vaddr.PageOffset;
                 return phy_addr;
             }
 
@@ -222,7 +223,7 @@ namespace RV32_Register.MemoryHandler {
 
             while (i >= 0) {
 
-                pte_addr += virt_addr.VPN[i] * PteSize;
+                pte_addr += vaddr.VPN[i] * PteSize;
 
                 pte = BitConverter.ToUInt32(mainMemory, (int)pte_addr);
 
@@ -233,7 +234,7 @@ namespace RV32_Register.MemoryHandler {
                 /* 3.pte.v = 0の場合、またはpte.r = 0かつpte.w = 1の場合、停止してページフォルト例外を発生させます。
                  */
                 if (!pte.IsValid || (((int)pte.Permission & 0b011) == 0b010)) {
-                    throw new RiscvException(pageFaultCouse, v_add, reg);
+                    throw new RiscvException(pageFaultCouse, virt_addr, reg);
                 }
 
                 /* 4.それ以外の場合、PTEは有効です。
@@ -250,7 +251,7 @@ namespace RV32_Register.MemoryHandler {
                      */
                     i--;
                     if (i < 0) {
-                        throw new RiscvException(pageFaultCouse, v_add, reg);
+                        throw new RiscvException(pageFaultCouse, virt_addr, reg);
                     }
                     pte_addr = pte.PPN[i] * PageSize;
                     continue;
@@ -270,14 +271,14 @@ namespace RV32_Register.MemoryHandler {
             bool allowPermissionWithMXR = accMode == MemoryAccessMode.Read && pte.Permission == PtPermission.ExecuteOnly && status.MXR;
 
             if (!((allowUser || allowUserWithSUM) && (allowPermission || allowPermissionWithMXR))) {
-                throw new RiscvException(pageFaultCouse, v_add, reg);
+                throw new RiscvException(pageFaultCouse, virt_addr, reg);
             }
 
             /* 6. i> 0かつpa.ppn [i － 1：0]≠0の場合、これは位置ずれしたスーパーページです。
              * ページフォルト例外を停止して発生させます。
              */
             if (i > 0 && pte.PPN[i - 1] != 0) {
-                throw new RiscvException(pageFaultCouse, v_add, reg);
+                throw new RiscvException(pageFaultCouse, virt_addr, reg);
             }
 
             /* 7. pte.a = 0の場合、またはメモリアクセスがストアでpte.d = 0の場合、ページフォルト例外が発生するか、または、
@@ -287,30 +288,35 @@ namespace RV32_Register.MemoryHandler {
              * 特に、PTEへの介在ストアがその間に発生したと認識されることはありません。
              */
             if (!pte.IsAccessed || (!pte.IsDarty && accMode == MemoryAccessMode.Write)) {
-                pte.IsAccessed = true;
-                if (accMode == MemoryAccessMode.Write) {
-                    pte.IsDarty = true;
-                }
-
-                // ToDo: メモリへ直接保存では無く、TLBへキャッシュするよう変更
-                mainMemory[pte_addr - VAddr] = BitConverter.GetBytes(pte)[0];
+                throw new RiscvException(pageFaultCouse, virt_addr, reg);
+                //                pte.IsAccessed = true;
+                //                if (accMode == MemoryAccessMode.Write) {
+                //                    pte.IsDarty = true;
+                //                }
+                //
+                //                // ToDo: メモリへ直接保存では無く、TLBへキャッシュするよう変更
+                //                mainMemory[pte_addr - VAddr] = BitConverter.GetBytes(pte)[0];
             }
 
             if (false) {
                 // ToDo: PMA,PMPチェックの実装
             }
 
-
             /* 8.変換は成功しました。変換された物理アドレスは以下のように与えられます。
              * ・pa.pgoff = va.pgoff
              * ・i> 0の場合、これはスーパーページ変換であり、pa：ppn [i - 1：0] = va：vpn [i - 1：0]です。
              * ・pa.ppn [LEVELS - 1：i] = pte.ppn [LEVELS - 1：i]
              */
-            phy_addr |= virt_addr.PageOffset;
-            phy_addr |= (UInt64)(i > 0 ? virt_addr.VPN[i - 1] : pte.PPN[i]) << 12;
             phy_addr |= (UInt64)pte.PPN[Levels - 1] << 22;
+            phy_addr |= (UInt64)(i > 0 ? vaddr.VPN[i - 1] : pte.PPN[i]) << 12;
+            phy_addr |= vaddr.PageOffset;
 
-            // ToDo: TLBへキャッシュ処理実装
+            // TLBに物理アドレスの上位と PTEの下位8ビットの情報をキャッシュする
+            TlbEntry32 tlb = new TlbEntry32() {
+
+            };
+
+            TLB.Add(vaddr_vpn, (phy_addr & ~0xfffUL) | ((UInt64)pte & 0xffUL));
 
             return phy_addr + Offset;
 
