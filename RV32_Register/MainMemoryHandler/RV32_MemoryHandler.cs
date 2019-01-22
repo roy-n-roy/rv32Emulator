@@ -91,11 +91,20 @@ namespace RV32_Register.MemoryHandler {
             return BitConverter.ToUInt32(mainMemory, (int)phy_addr);
         }
 
+        /// <summary>メインメモリ本体バイト配列</summary>
         private protected readonly byte[] mainMemory;
+
+        /// <summary>仮想アドレス変換索引バッファ(Translation Lookaside Buffer)</summary>
+        private readonly Dictionary<UInt16, UInt32> TLB;
+
+        /// <summary></summary>
         public readonly HashSet<UInt64> HostAccessAddress;
 
+        /// <summary>メインメモリサイズ</summary>
         public UInt64 Size { get => (UInt64)mainMemory.LongLength; }
+        /// <summary></summary>
         public UInt32 VAddr { get; set; }
+        /// <summary></summary>
         public UInt32 Offset { get; set; }
 
         internal void SetRegisterSet(RV32_RegisterSet registerSet) {
@@ -108,6 +117,7 @@ namespace RV32_Register.MemoryHandler {
             this.mainMemory = mainMemory;
             HostAccessAddress = new HashSet<UInt64>();
         }
+  
         /// <summary>
         /// メモリハンドラの基となったバイト配列を返す
         /// </summary>
@@ -141,6 +151,15 @@ namespace RV32_Register.MemoryHandler {
         /// </summary>
         public abstract void ResetReservation();
 
+        /// <summary>
+        /// TLBをメモリに書き戻す
+        /// </summary>
+        /// <param name="vadd">仮想アドレス</param>
+        /// <param name="asid">アドレス空間識別子(Address Space Identify)</param>
+        public void TlbFlush(UInt32 vadd, UInt32 asid) {
+            // Todo: TLB Flush処理(メモリ書き戻し)の実装
+        }
+
         private protected UInt64 GetPhysicalAddr(UInt32 v_add, MemoryAccessMode accMode) {
 
             UInt64 phy_addr = 0U;
@@ -162,13 +181,16 @@ namespace RV32_Register.MemoryHandler {
 
             SatpCSR satp = reg.CSRegisters[CSR.satp];
 
-            if (!satp.MODE || reg.CurrentMode > PrivilegeLevels.SupervisorMode) {
+            if (!satp.MODE || reg.CurrentMode > PrivilegeLevel.SupervisorMode) {
                 phy_addr = v_add + Offset;
                 if (phy_addr >= Size) {
                     throw new RiscvException(pageFaultCouse, v_add, reg);
                 }
                 return phy_addr;
             }
+
+            // ToDo: TLB検索処理実装
+
             VirtAddr32 virt_addr = v_add;
 
             /* 1.pte_addrをsatp：ppn×PAGESIZEとし、i = LEVELS - 1とする（Sv32の場合、PAGESIZE = 2^12、LEVELS = 2）
@@ -182,22 +204,20 @@ namespace RV32_Register.MemoryHandler {
 
             PageTableEntry32 pte = 0;
 
-            /* 2.アドレスpte_addr + vaにあるPTEの値をpteとします。vpn [i]×PTESIZE。 （Sv32の場合、PTESIZE = 4）
+            /* 2.アドレスpte_addr + vaにあるPTEの値をpteとします。vpn[i]×PTESIZE。（Sv32の場合、PTESIZE = 4）
              * pteにアクセスしてPMAまたはPMPチェックに違反した場合は、アクセス例外を発生させます。
              */
             const uint PteSize = 4U;
+
             while (i >= 0) {
 
                 pte_addr += virt_addr.VPN[i] * PteSize;
 
-                uint bbb = BitConverter.ToUInt32(mainMemory, (int)0);
-                uint aaa = BitConverter.ToUInt32(mainMemory, (int)pte_addr);
                 pte = BitConverter.ToUInt32(mainMemory, (int)pte_addr);
 
                 if (false) {
                     // ToDo: PMA,PMPチェックの実装
                 }
-
 
                 /* 3.pte.v = 0の場合、またはpte.r = 0かつpte.w = 1の場合、停止してページフォルト例外を発生させます。
                  */
@@ -215,7 +235,7 @@ namespace RV32_Register.MemoryHandler {
                     /* それ以外の場合、このPTEはページテーブルの次のレベルへのポインタです。
                      * ｉ ＝ ｉ － １とします。
                      * i < 0の場合、停止してページ不在例外を発生させます。
-                     * それ以外の場合は、a = pte.ppn×PAGESIZEとし、手順2に進みます。
+                     * それ以外の場合は、pte_addr = pte.ppn×PAGESIZEとし、手順2に進みます。
                      */
                     i--;
                     if (i < 0) {
@@ -232,11 +252,11 @@ namespace RV32_Register.MemoryHandler {
              * そうでない場合は、停止してページ不在例外を発生させます。
              */
             StatusCSR status = reg.CSRegisters[CSR.mstatus];
-            bool allowUser = pte.IsUserMode ^ (reg.CurrentMode != PrivilegeLevels.UserMode);
-            bool allowUserWithSUM = reg.CurrentMode == PrivilegeLevels.SupervisorMode && status.SUM;
+            bool allowUser = pte.IsUserMode ^ (reg.CurrentMode != PrivilegeLevel.UserMode);
+            bool allowUserWithSUM = reg.CurrentMode == PrivilegeLevel.SupervisorMode && status.SUM;
 
             bool allowPermission = ((byte)accMode & (byte)pte.Permission) != 0;
-            bool allowPermissionWithMXR = accMode  == MemoryAccessMode.Read && pte.Permission == PtPermission.ExecuteOnly && status.MXR;
+            bool allowPermissionWithMXR = accMode == MemoryAccessMode.Read && pte.Permission == PtPermission.ExecuteOnly && status.MXR;
 
             if (!((allowUser || allowUserWithSUM) && (allowPermission || allowPermissionWithMXR))) {
                 throw new RiscvException(pageFaultCouse, v_add, reg);
@@ -255,11 +275,13 @@ namespace RV32_Register.MemoryHandler {
              * ・この更新と手順2のpteのロードはアトミックでなければなりません。
              * 特に、PTEへの介在ストアがその間に発生したと認識されることはありません。
              */
-            if (!pte.IsAccessed) {
+            if (!pte.IsAccessed || (!pte.IsDarty && accMode == MemoryAccessMode.Write)) {
                 pte.IsAccessed = true;
                 if (accMode == MemoryAccessMode.Write) {
                     pte.IsDarty = true;
                 }
+
+                // ToDo: メモリへ直接保存では無く、TLBへキャッシュするよう変更
                 mainMemory[pte_addr - VAddr] = BitConverter.GetBytes(pte)[0];
             }
 
@@ -276,6 +298,9 @@ namespace RV32_Register.MemoryHandler {
             phy_addr |= virt_addr.PageOffset;
             phy_addr |= (UInt64)(i > 0 ? virt_addr.VPN[i - 1] : pte.PPN[i]) << 12;
             phy_addr |= (UInt64)pte.PPN[Levels - 1] << 22;
+
+            // ToDo: TLBへキャッシュ処理実装
+
             return phy_addr + Offset;
 
 

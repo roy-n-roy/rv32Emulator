@@ -10,6 +10,36 @@ namespace RV32_Register.Constants {
      *******************************************/
 
     #region ページテーブルエントリ
+    public enum PtPermission : byte {
+        /// <summary>ポインタ</summary>
+        Pointer = 0,
+
+        /// <summary>読み込みのみ可(書き実行不可)</summary>
+        ReadOnly = MemoryAccessMode.Read,
+
+        /// <summary>読み + 書き可(実行不可)</summary>
+        ReadWrite = MemoryAccessMode.Read | MemoryAccessMode.Write,
+
+        /// <summary>実行のみ可(読み書き不可)</summary>
+        ExecuteOnly = MemoryAccessMode.Execute,
+
+        /// <summary>読み込み + 実行可(書き込み不可)</summary>
+        ReadExecute = MemoryAccessMode.Read | MemoryAccessMode.Execute,
+
+        /// <summary>読み + 書き + 実行可</summary>
+        ReadWriteExecute = MemoryAccessMode.Read | MemoryAccessMode.Write | MemoryAccessMode.Execute,
+    }
+
+    [FlagsAttribute]
+    public enum MemoryAccessMode : byte {
+        /// <summary>メモリからの読み込み, ロード</summary>
+        Read = 0b001,
+        /// <summary>メモリへの書き込み, ストア</summary>
+        Write = 0b010,
+        /// <summary>メモリ上の命令実行, フェッチ</summary>
+        Execute = 0b100,
+    }
+
     /// <summary>Sv32モード ページテーブルエントリ(PTE)</summary>
     public struct PageTableEntry32 {
         // 変数
@@ -86,36 +116,6 @@ namespace RV32_Register.Constants {
             value |= (vaddr.PageOffset & 0xfffU) << 0;
             return value;
         }
-    }
-
-    public enum PtPermission : byte {
-        /// <summary>ポインタ</summary>
-        Pointer = 0,
-
-        /// <summary>読み込みのみ可(書き実行不可)</summary>
-        ReadOnly = MemoryAccessMode.Read,
-
-        /// <summary>読み + 書き可(実行不可)</summary>
-        ReadWrite = MemoryAccessMode.Read | MemoryAccessMode.Write,
-
-        /// <summary>実行のみ可(読み書き不可)</summary>
-        ExecuteOnly = MemoryAccessMode.Execute,
-
-        /// <summary>読み込み + 実行可(書き込み不可)</summary>
-        ReadExecute = MemoryAccessMode.Read | MemoryAccessMode.Execute,
-
-        /// <summary>読み + 書き + 実行可</summary>
-        ReadWriteExecute = MemoryAccessMode.Read | MemoryAccessMode.Write | MemoryAccessMode.Execute,
-    }
-
-    [FlagsAttribute]
-    public enum MemoryAccessMode : byte {
-        /// <summary>メモリからの読み込み, ロード</summary>
-        Read = 0b001,
-        /// <summary>メモリへの書き込み, ストア</summary>
-        Write = 0b010,
-        /// <summary>メモリ上の命令実行, フェッチ</summary>
-        Execute = 0b100,
     }
 
     #endregion
