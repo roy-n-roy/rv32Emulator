@@ -93,7 +93,7 @@ namespace RV32_Register {
                             status.MPP = 0b11;
                         } else if ((csr[CSR.misa] & (1U << ('U' - 'A'))) == 0) {
                             // ユーザモードをサポートしていない場合
-                            status.MPP = 0b01;
+                            status.MPP |= 0b01;
                             status.SPP = true;
                         }
                         csr[CSR.mstatus] = status;
