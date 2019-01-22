@@ -132,7 +132,7 @@ namespace RV32_Cpu {
             int readBytes = 0;
 
             registerSet.Mem.ResetReservation();
-            registerSet.Mem.HostAccessAddress.Clear();
+            registerSet.Mem.HostTrapAddress.Clear();
 
             using (BinaryReader br = new BinaryReader(File.Open(objectPath, FileMode.Open))) {
                 fileSize = br.BaseStream.Length;
@@ -179,7 +179,7 @@ namespace RV32_Cpu {
                 }
             }
 
-            registerSet.Mem.HostAccessAddress.Add(tohost_addr);
+            registerSet.Mem.HostTrapAddress.Add(tohost_addr);
 
             registerSet.ClearAndSetPC(physAddr, virtAddr, entryOffset);
 

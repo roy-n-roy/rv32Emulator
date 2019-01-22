@@ -58,19 +58,32 @@ namespace RV32_Register.MemoryHandler {
 
         private RV32_RegisterSet reg;
 
+        /// <summary>メインメモリハンドラ</summary>
+        /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
+        protected RV32_AbstractMemoryHandler(byte[] mainMemory) {
+            this.mainMemory = mainMemory;
+            HostTrapAddress = new HashSet<UInt64>();
+            TLB = new Dictionary<UInt32, ulong>();
+        }
+
+        /// <summary>
+        /// メインメモリにアクセスします
+        /// </summary>
+        /// <param name="address">メモリアドレス</param>
+        /// <returns>指定したメモリアドレスに格納されているbyte</returns>
         public byte this[UInt32 address] {
             // メモリへのストア
             set {
                 ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Write);
                 mainMemory[phy_addr] = value;
-                if (HostAccessAddress.Contains(phy_addr)) {
+                if (HostTrapAddress.Contains(phy_addr)) {
                     throw new HostAccessTrap(value);
                 }
             }
             // メモリからのロード
             get {
                 ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Read);
-                if (HostAccessAddress.Contains(phy_addr)) {
+                if (HostTrapAddress.Contains(phy_addr)) {
                     throw new HostAccessTrap(mainMemory[phy_addr]);
                 }
                 return mainMemory[phy_addr];
@@ -84,7 +97,7 @@ namespace RV32_Register.MemoryHandler {
         /// <returns>32bit長 Risc-V命令</returns>
         public UInt32 FetchInstruction(UInt32 address) {
             ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Execute);
-            if (HostAccessAddress.Contains(address)) {
+            if (HostTrapAddress.Contains(phy_addr)) {
                 throw new HostAccessTrap(BitConverter.ToUInt32(mainMemory, (int)phy_addr));
             }
 
@@ -95,29 +108,22 @@ namespace RV32_Register.MemoryHandler {
         private protected readonly byte[] mainMemory;
 
         /// <summary>仮想アドレス変換索引バッファ(Translation Lookaside Buffer)</summary>
-        private readonly Dictionary<UInt16, UInt32> TLB;
+        private readonly Dictionary<UInt32, ulong> TLB;
 
-        /// <summary></summary>
-        public readonly HashSet<UInt64> HostAccessAddress;
+        /// <summary>メモリアクセス時にホストへ通知するアドレス</summary>
+        public HashSet<UInt64> HostTrapAddress { get; }
 
         /// <summary>メインメモリサイズ</summary>
         public UInt64 Size { get => (UInt64)mainMemory.LongLength; }
-        /// <summary></summary>
+        /// <summary>仮想メモリ開始アドレス</summary>
         public UInt32 VAddr { get; set; }
-        /// <summary></summary>
-        public UInt32 Offset { get; set; }
+        /// <summary>物理メモリアクセス時のオフセット</summary>
+        internal UInt32 Offset { get; set; }
 
         internal void SetRegisterSet(RV32_RegisterSet registerSet) {
             reg = registerSet;
         }
 
-        /// <summary>メインメモリハンドラ</summary>
-        /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
-        protected RV32_AbstractMemoryHandler(byte[] mainMemory) {
-            this.mainMemory = mainMemory;
-            HostAccessAddress = new HashSet<UInt64>();
-        }
-  
         /// <summary>
         /// メモリハンドラの基となったバイト配列を返す
         /// </summary>
@@ -189,9 +195,14 @@ namespace RV32_Register.MemoryHandler {
                 return phy_addr;
             }
 
-            // ToDo: TLB検索処理実装
-
             VirtAddr32 virt_addr = v_add;
+
+            // ToDo: TLB検索処理実装
+            uint vpn = (uint)virt_addr.VPN[0] << 10 | (uint)virt_addr.VPN[1];
+            if (TLB.Keys.Contains(vpn)) {
+                phy_addr = TLB[vpn] | virt_addr.PageOffset;
+                return phy_addr;
+            }
 
             /* 1.pte_addrをsatp：ppn×PAGESIZEとし、i = LEVELS - 1とする（Sv32の場合、PAGESIZE = 2^12、LEVELS = 2）
              */
