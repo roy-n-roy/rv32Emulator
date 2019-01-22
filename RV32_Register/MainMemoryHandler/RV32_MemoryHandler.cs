@@ -117,7 +117,7 @@ namespace RV32_Register.MemoryHandler {
             this.mainMemory = mainMemory;
             HostAccessAddress = new HashSet<UInt64>();
         }
-  
+
         /// <summary>
         /// メモリハンドラの基となったバイト配列を返す
         /// </summary>
@@ -211,8 +211,9 @@ namespace RV32_Register.MemoryHandler {
 
             while (i >= 0) {
 
-                pte_addr += virt_addr.VPN[i] * PteSize;
-
+                unsafe {
+                    pte_addr += virt_addr.VPN[i] * PteSize;
+                }
                 pte = BitConverter.ToUInt32(mainMemory, (int)pte_addr);
 
                 if (false) {
@@ -241,7 +242,9 @@ namespace RV32_Register.MemoryHandler {
                     if (i < 0) {
                         throw new RiscvException(pageFaultCouse, v_add, reg);
                     }
-                    pte_addr = pte.PPN[i] * PageSize;
+                    unsafe {
+                        pte_addr = pte.PPN[i] * PageSize;
+                    }
                     continue;
                 }
             }
@@ -265,8 +268,10 @@ namespace RV32_Register.MemoryHandler {
             /* 6. i> 0かつpa.ppn [i － 1：0]≠0の場合、これは位置ずれしたスーパーページです。
              * ページフォルト例外を停止して発生させます。
              */
-            if (i > 0 && pte.PPN[i - 1] != 0) {
-                throw new RiscvException(pageFaultCouse, v_add, reg);
+            unsafe {
+                if (i > 0 && pte.PPN[i - 1] != 0) {
+                    throw new RiscvException(pageFaultCouse, v_add, reg);
+                }
             }
 
             /* 7. pte.a = 0の場合、またはメモリアクセスがストアでpte.d = 0の場合、ページフォルト例外が発生するか、または、
@@ -295,10 +300,11 @@ namespace RV32_Register.MemoryHandler {
              * ・i> 0の場合、これはスーパーページ変換であり、pa：ppn [i - 1：0] = va：vpn [i - 1：0]です。
              * ・pa.ppn [LEVELS - 1：i] = pte.ppn [LEVELS - 1：i]
              */
-            phy_addr |= virt_addr.PageOffset;
-            phy_addr |= (UInt64)(i > 0 ? virt_addr.VPN[i - 1] : pte.PPN[i]) << 12;
-            phy_addr |= (UInt64)pte.PPN[Levels - 1] << 22;
-
+            unsafe {
+                phy_addr |= virt_addr.PageOffset;
+                phy_addr |= (UInt64)(i > 0 ? virt_addr.VPN[i - 1] : pte.PPN[i]) << 12;
+                phy_addr |= (UInt64)pte.PPN[Levels - 1] << 22;
+            }
             // ToDo: TLBへキャッシュ処理実装
 
             return phy_addr + Offset;
