@@ -62,7 +62,8 @@ namespace RV32_Register.MemoryHandler {
         /// <param name="mainMemory">基となるメインメモリのバイト配列</param>
         protected RV32_AbstractMemoryHandler(byte[] mainMemory) {
             this.mainMemory = mainMemory;
-            HostTrapAddress = new HashSet<UInt64>();
+            ToHostTrapAddress = new HashSet<UInt64>();
+            FromHostTrapAddress = new HashSet<UInt64>();
             TLB = new Dictionary<UInt32, TlbEntry32>();
         }
 
@@ -76,14 +77,17 @@ namespace RV32_Register.MemoryHandler {
             set {
                 ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Write);
                 mainMemory[phy_addr] = value;
-                if (HostTrapAddress.Contains(phy_addr)) {
+                if (ToHostTrapAddress.Contains(phy_addr)) {
                     throw new HostAccessTrap(value);
+                } else if (FromHostTrapAddress.Contains(phy_addr)) {
+                    // 外部割り込みを有効にする
+                    reg.CSRegisters.Eip = 0xb00U;
                 }
             }
             // メモリからのロード
             get {
                 ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Read);
-                if (HostTrapAddress.Contains(phy_addr)) {
+                if (ToHostTrapAddress.Contains(phy_addr)) {
                     throw new HostAccessTrap(mainMemory[phy_addr]);
                 }
                 return mainMemory[phy_addr];
@@ -97,7 +101,7 @@ namespace RV32_Register.MemoryHandler {
         /// <returns>32bit長 Risc-V命令</returns>
         public UInt32 FetchInstruction(UInt32 address) {
             ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Execute);
-            if (HostTrapAddress.Contains(phy_addr)) {
+            if (ToHostTrapAddress.Contains(phy_addr)) {
                 throw new HostAccessTrap(BitConverter.ToUInt32(mainMemory, (int)phy_addr));
             }
 
@@ -110,15 +114,18 @@ namespace RV32_Register.MemoryHandler {
         /// <summary>仮想アドレス変換索引バッファ(Translation Lookaside Buffer)</summary>
         private readonly Dictionary<UInt32, TlbEntry32> TLB;
 
-        /// <summary>メモリアクセス時にホストへ通知するアドレス</summary>
-        public HashSet<UInt64> HostTrapAddress { get; }
-
         /// <summary>メインメモリサイズ</summary>
         public UInt64 Size { get => (UInt64)mainMemory.LongLength; }
+
         /// <summary>仮想メモリ開始アドレス</summary>
-        public UInt32 VAddr { get; set; }
+        public UInt32 EntryVirtAddr { get; set; }
         /// <summary>物理メモリアクセス時のオフセット</summary>
         internal UInt32 Offset { get; set; }
+
+        /// <summary>メモリアクセス時にホストへ通知するアドレス</summary>
+        internal HashSet<UInt64> ToHostTrapAddress { get; }
+        /// <summary>ホストからの外部割り込み時にアクセスするアドレス</summary>
+        internal HashSet<UInt64> FromHostTrapAddress { get; }
 
         internal void SetRegisterSet(RV32_RegisterSet registerSet) {
             reg = registerSet;
@@ -233,6 +240,7 @@ namespace RV32_Register.MemoryHandler {
                 if (false) {
                     // ToDo: PMA,PMPチェックの実装
                 }
+
 
                 /* 3.pte.v = 0の場合、またはpte.r = 0かつpte.w = 1の場合、処理を停止してページフォルト例外を発生させる。
                  */
