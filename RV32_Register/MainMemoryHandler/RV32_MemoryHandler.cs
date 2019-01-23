@@ -205,7 +205,7 @@ namespace RV32_Register.MemoryHandler {
                 return phy_addr;
             }
 
-            VirtAddr32 vaddr = virt_addr;
+            VirtAddr32 vaddr = virt_addr - EntryVirtAddr;
 
             // TLB検索処理
             uint vaddr_vpn = 0;
@@ -335,7 +335,7 @@ namespace RV32_Register.MemoryHandler {
             tlb.PPN[0] = i > 0 ? vaddr.VPN[i - 1] : pte.PPN[i];
             TLB.Add(vaddr_vpn, tlb);
 
-            return phy_addr + Offset;
+            return phy_addr + Offset - EntryVirtAddr;
 
 
         }
