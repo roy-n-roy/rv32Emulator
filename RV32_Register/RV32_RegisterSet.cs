@@ -754,16 +754,52 @@ namespace RV32_Register {
         /// <summary>
         /// レジスタを全てクリアし、エントリポイントをPCに設定する
         /// </summary>
-        public void ClearAndSetPC(UInt32 PhysicalAddress, UInt32 VirtualAddress, UInt32 entryOffset) {
+        public void ClearAndSetPC(UInt32 entryVirtualAddress, UInt32 entryOffset) {
             Registers.Select(r => Registers[r.Key] = 0);
             CSRegisters.Select(c => CSRegisters[c.Key] = 0);
 
             CurrentMode = PrivilegeLevel.MachineMode;
 
-            Mem.VAddr = VirtualAddress ;
-            Mem.Offset = entryOffset;
-            PC = PhysicalAddress - VirtualAddress;
+            Mem.EntryVirtAddr = entryVirtualAddress;
+            PC = entryOffset;
         }
+
+        /// <summary>
+        /// ホストへの通知、あるいはホストからの割り込みに使用するアドレスを設定する
+        /// </summary>
+        /// <param name="isToHost">ホストへの通知に使用するアドレスか</param>
+        /// <param name="trapAddress">アドレス</param>
+        public void AddHostTrapAddress(bool isToHost, UInt64 trapAddress) {
+            if (isToHost) {
+                Mem.ToHostTrapAddress.Add(trapAddress);
+            } else {
+                Mem.FromHostTrapAddress.Add(trapAddress);
+            }
+        }
+
+        /// <summary>
+        /// ホストへの通知、あるいはホストからの割り込みに使用するアドレスを削除する
+        /// </summary>
+        /// <param name="isToHost">ホストへの通知に使用するアドレスか</param>
+        /// <param name="trapAddress">アドレス</param>
+        public void RemoveHostTrapAddress(bool isToHost, UInt64 trapAddress) {
+            if (isToHost) {
+                Mem.ToHostTrapAddress.Remove(trapAddress);
+            } else {
+                Mem.FromHostTrapAddress.Remove(trapAddress);
+            }
+        }
+
+        /// <summary>
+        /// ホストへの通知、あるいはホストからの割り込みに使用するアドレスを全て削除する
+        /// </summary>
+        /// <param name="isToHost">ホストへの通知に使用するアドレスか</param>
+        /// <param name="trapAddress">アドレス</param>
+        public void ClearHostTrapAddress() {
+            Mem.ToHostTrapAddress.Clear();
+            Mem.FromHostTrapAddress.Clear();
+        }
+
 
         /// <summary>
         /// <para>整数レジスタ、浮動小数点レジスタ、コントロール・ステータスレジスタを結合したDictionary型データを取得します。</para>
@@ -777,31 +813,6 @@ namespace RV32_Register {
             Dictionary<string, ulong> fltReg = FPRegisters.ToDictionary(f => "f" + ((int)f.Key), f => (ulong)f.Value);
             Dictionary<string, ulong> csrReg = CSRegisters.ToDictionary(c => Enum.GetName(typeof(CSR), c.Key), c => (ulong)c.Value);
             return intReg.Concat(fltReg).Concat(csrReg).ToDictionary(r => r.Key, r => r.Value);
-        }
-
-        /// <summary>
-        /// 例外発生時のCSR処理を行う
-        /// </summary>
-        /// <param name="cause">例外の原因</param>
-        /// <param name="tval">例外の原因となったアドレス(ない場合は0)</param>
-        public void HandleException(RiscvExceptionCause cause, UInt32 tval) {
-
-            if (CurrentMode >= PrivilegeLevel.MachineMode || (CSRegisters[CSR.medeleg] & (1u << (int)cause)) == 0U || (CSRegisters[CSR.misa] & ((1u << ('S' - 'A')) | (1u << ('U' - 'A')))) == 0U) {
-                // マシンモードより下位モードに例外トラップ委譲されていない または、 ユーザモード・スーパーバイザモードの実装がない場合
-
-                // マシンモードでトラップ
-                TrapAndSetCSR(PrivilegeLevel.MachineMode, (UInt32)cause, tval);
-
-            } else if (CurrentMode >= PrivilegeLevel.SupervisorMode || (CSRegisters[CSR.sedeleg] & (1u << (int)cause)) == 0U || (CSRegisters[CSR.misa] & (1u << ('U' - 'A'))) == 0U) {
-                // スーパーバイザモード下位モードに例外トラップ委譲されていない または、 ユーザモードの実装がない場合
-
-                // スーパーバイザモードでトラップ
-                TrapAndSetCSR(PrivilegeLevel.SupervisorMode, (UInt32)cause, tval);
-
-            } else {
-                // ユーザモードでトラップ
-                TrapAndSetCSR(PrivilegeLevel.UserMode, (UInt32)cause, tval);
-            }
         }
 
         /// <summary>
@@ -925,6 +936,31 @@ namespace RV32_Register {
             IsWaitMode = false;
             WaitTimer = 0;
             return (true, cause);
+        }
+
+        /// <summary>
+        /// 例外発生時のCSR処理を行う
+        /// </summary>
+        /// <param name="cause">例外の原因</param>
+        /// <param name="tval">例外の原因となったアドレス(ない場合は0)</param>
+        internal void HandleException(RiscvExceptionCause cause, UInt32 tval) {
+
+            if (CurrentMode >= PrivilegeLevel.MachineMode || (CSRegisters[CSR.medeleg] & (1u << (int)cause)) == 0U || (CSRegisters[CSR.misa] & ((1u << ('S' - 'A')) | (1u << ('U' - 'A')))) == 0U) {
+                // マシンモードより下位モードに例外トラップ委譲されていない または、 ユーザモード・スーパーバイザモードの実装がない場合
+
+                // マシンモードでトラップ
+                TrapAndSetCSR(PrivilegeLevel.MachineMode, (UInt32)cause, tval);
+
+            } else if (CurrentMode >= PrivilegeLevel.SupervisorMode || (CSRegisters[CSR.sedeleg] & (1u << (int)cause)) == 0U || (CSRegisters[CSR.misa] & (1u << ('U' - 'A'))) == 0U) {
+                // スーパーバイザモード下位モードに例外トラップ委譲されていない または、 ユーザモードの実装がない場合
+
+                // スーパーバイザモードでトラップ
+                TrapAndSetCSR(PrivilegeLevel.SupervisorMode, (UInt32)cause, tval);
+
+            } else {
+                // ユーザモードでトラップ
+                TrapAndSetCSR(PrivilegeLevel.UserMode, (UInt32)cause, tval);
+            }
         }
 
         /// <summary>

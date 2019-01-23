@@ -241,7 +241,7 @@ namespace RISC_V_CPU_Emulator {
             int startIdx = t.IndexOf("\n" + pc);
             if (startIdx < 0) {
                 // 見つからなかったら仮想アドレス相当でも検索
-                pc = ((cpu.registerSet.PC + cpu.registerSet.Mem.VAddr).ToString("X").PadLeft(8, '0') + ":").ToLower();
+                pc = ((cpu.registerSet.PC + cpu.registerSet.Mem.EntryVirtAddr).ToString("X").PadLeft(8, '0') + ":").ToLower();
                 startIdx = t.IndexOf("\n" + pc);
             }
 

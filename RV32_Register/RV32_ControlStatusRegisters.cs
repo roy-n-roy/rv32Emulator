@@ -12,7 +12,8 @@ namespace RV32_Register {
 
         private Dictionary<CSR, UInt32> csr;
 
-        public UInt32 Misa { get => csr[CSR.misa]; set => csr[CSR.misa] = value; }
+        internal UInt32 Misa { get => csr[CSR.misa]; set => csr[CSR.misa] = value; }
+        internal UInt32 Eip { get => csr[CSR.mie] & 0xb00U; set => csr[CSR.mie] |= value & 0xb00U; }
 
         public RV32_ControlStatusRegisters(IDictionary<CSR, UInt32> dictionary) {
             csr = new Dictionary<CSR, uint>(dictionary);
