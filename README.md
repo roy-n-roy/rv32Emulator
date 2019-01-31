@@ -6,7 +6,10 @@ RV32標準汎用ISA (=RV32IMAFD) の実装を目標としています。
 
 
 ## 使用ソフトウェア
-  C# 7.2 および .NET Framework 4.6.1
+  C# 7.3 および .NET Framework 4.7
+
+## 動作画面
+  (https://github.com/roy-n-roy/rv32Emulator/blob/master/images/main_windows.png?raw=true)
 
 ## ライセンス
   BSD 3-Clause License
