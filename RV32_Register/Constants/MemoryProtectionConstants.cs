@@ -122,7 +122,7 @@ namespace RV32_Register.Constants {
     /// <summary>Sv32モード TLBエントリ(Translation Lookaside Buffer)</summary>
     public struct TlbEntry32 {
         /// <summary>物理ページ番号(Virtual Page Number)</summary>
-        public ushort[] PPN;
+        public ushort[] PPN { get; set; }
         /// <summary>書き込み済みフラグ</summary>
         public bool IsDarty { get; set; }
         /// <summary>アクセス済みフラグ</summary>
@@ -172,16 +172,23 @@ namespace RV32_Register.Constants {
 
     #endregion
 
+    public enum AddressMatchingMode : byte {
+        Off = 0,
+        Tor = 1,
+        Na4 = 2,
+        NaPot = 3,
+    }
+
     public struct PhysicalMemoryProtectionConfig {
         public bool IsLockingMode { get; }
-        public byte AddressMatchingMode { get; }
-        public byte Permission { get; }
+        public AddressMatchingMode AddressMatchingMode { get; }
+        public MemoryAccessMode Permission { get; }
 
         // コンストラクタ
         public PhysicalMemoryProtectionConfig(byte value) {
             IsLockingMode = (value & 0x80) > 0;
-            AddressMatchingMode = (byte)((value & 0x18) >> 3);
-            Permission = (byte)(value & 0x03);
+            AddressMatchingMode = (AddressMatchingMode)((value & 0x18) >> 3);
+            Permission = (MemoryAccessMode)(value & 0x07);
         }
 
         // キャスト
@@ -192,16 +199,16 @@ namespace RV32_Register.Constants {
         public static implicit operator byte(PhysicalMemoryProtectionConfig pmpcfg) {
             byte value = 0;
             value |= (byte)(pmpcfg.IsLockingMode ? 0x80 : 0);
-            value |= (byte)((pmpcfg.AddressMatchingMode & 0x02) << 3);
-            value |= (byte)(pmpcfg.Permission & 0x03);
+            value |= (byte)(((byte)pmpcfg.AddressMatchingMode & 0x03) << 3);
+            value |= (byte)((byte)pmpcfg.Permission & 0x07);
             return value;
         }
 
-        public static PhysicalMemoryProtectionConfig[] GetPmpCfgs(uint[] values) {
+        public static PhysicalMemoryProtectionConfig[] GetPmpCfgs(uint pmpcfg0, uint pmpcfg1, uint pmpcfg2, uint pmpcfg3) {
             PhysicalMemoryProtectionConfig[] pmpcfgArray = new PhysicalMemoryProtectionConfig[16];
             int i = 0;
-            foreach (uint value in values) {
-                foreach (byte byt in BitConverter.GetBytes(value)) {
+            foreach (uint pmpcfg in new uint[] { pmpcfg0, pmpcfg1, pmpcfg2, pmpcfg3 }) {
+                foreach (byte byt in BitConverter.GetBytes(pmpcfg)) {
                     pmpcfgArray[i++] = byt;
                     if (i >= pmpcfgArray.Length) {
                         return pmpcfgArray;
@@ -211,11 +218,11 @@ namespace RV32_Register.Constants {
             return pmpcfgArray;
         }
 
-        public static PhysicalMemoryProtectionConfig[] GetPmpCfgs(ulong[] values) {
+        public static PhysicalMemoryProtectionConfig[] GetPmpCfgs(ulong pmpcfg0, ulong pmpcfg2) {
             PhysicalMemoryProtectionConfig[] pmpcfgArray = new PhysicalMemoryProtectionConfig[16];
             int i = 0;
-            foreach (uint value in values) {
-                foreach (byte byt in BitConverter.GetBytes(value)) {
+            foreach (ulong pmpcfg in new ulong[] { pmpcfg0, pmpcfg2 }) {
+                foreach (byte byt in BitConverter.GetBytes(pmpcfg)) {
                     pmpcfgArray[i++] = byt;
                     if (i >= pmpcfgArray.Length) {
                         return pmpcfgArray;

@@ -76,17 +76,19 @@ namespace RV32_Register.MemoryHandler {
             // メモリへのストア
             set {
                 ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Write);
+                CheckPmp(phy_addr, MemoryAccessMode.Write);
                 mainMemory[phy_addr] = value;
                 if (ToHostTrapAddress.Contains(phy_addr)) {
                     throw new HostAccessTrap(value);
                 } else if (FromHostTrapAddress.Contains(phy_addr)) {
-                    // 外部割り込みを有効にする
-                    reg.CSRegisters.Eip = 0xb00U;
+                    // 外部割り込みを有効/無効にする
+                    reg.CSRegisters.Eip ^= 0xb00U;
                 }
             }
             // メモリからのロード
             get {
                 ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Read);
+                CheckPmp(phy_addr, MemoryAccessMode.Read);
                 if (ToHostTrapAddress.Contains(phy_addr)) {
                     throw new HostAccessTrap(mainMemory[phy_addr]);
                 }
@@ -101,6 +103,7 @@ namespace RV32_Register.MemoryHandler {
         /// <returns>32bit長 Risc-V命令</returns>
         public UInt32 FetchInstruction(UInt32 address) {
             ulong phy_addr = GetPhysicalAddr(address, MemoryAccessMode.Execute);
+            CheckPmp(phy_addr, MemoryAccessMode.Execute);
             if (ToHostTrapAddress.Contains(phy_addr)) {
                 throw new HostAccessTrap(BitConverter.ToUInt32(mainMemory, (int)phy_addr));
             }
@@ -235,12 +238,11 @@ namespace RV32_Register.MemoryHandler {
             while (i >= 0) {
 
                 pte_addr += vaddr.VPN[i] * PteSize;
+
+                // ToDo: PMA,PMPチェックの実装
+                CheckPmp(pte_addr + Offset, accMode);
+
                 pte = BitConverter.ToUInt32(mainMemory, (int)(pte_addr + Offset));
-
-                if (false) {
-                    // ToDo: PMA,PMPチェックの実装
-                }
-
 
                 /* 3.pte.v = 0の場合、またはpte.r = 0かつpte.w = 1の場合、処理を停止してページフォルト例外を発生させる。
                  */
@@ -303,11 +305,10 @@ namespace RV32_Register.MemoryHandler {
                 //if (accMode == MemoryAccessMode.Write) {
                 //    pte.IsDarty = true;
                 //}
+                // ToDo: PMA,PMPチェックの実装
+                //CheckPmp(pte_addr + Offset, accMode);
             }
 
-            if (false) {
-                // ToDo: PMA,PMPチェックの実装
-            }
 
             /* 8.変換成功である。変換された物理アドレスは以下のように与えられます。
              * ・pa.pgoff = va.pgoff
@@ -321,7 +322,7 @@ namespace RV32_Register.MemoryHandler {
             phy_addr |= vaddr.PageOffset;
 
             // TLBに物理アドレスの上位と PTEの下位8ビットの情報をキャッシュする
-            TlbEntry32 tlb = new TlbEntry32() {
+            TlbEntry32 tlb = new TlbEntry32(0) {
                 IsDarty = pte.IsDarty,
                 IsAccessed = pte.IsAccessed,
                 IsGlobal = pte.IsGlobal,
@@ -340,11 +341,84 @@ namespace RV32_Register.MemoryHandler {
 
         }
 
-        private bool CheckPMP() {
+        private void CheckPmp(UInt64 addr, MemoryAccessMode accessMode) {
+            PhysicalMemoryProtectionConfig[] pmpcfg;
+            pmpcfg = PhysicalMemoryProtectionConfig.GetPmpCfgs(
+                reg.CSRegisters[CSR.pmpcfg0],
+                reg.CSRegisters[CSR.pmpcfg1],
+                reg.CSRegisters[CSR.pmpcfg2],
+                reg.CSRegisters[CSR.pmpcfg3]);
 
-            return false;
+            RiscvExceptionCause accessFaultCause;
+            switch (accessMode) {
+                case MemoryAccessMode.Execute:
+                    accessFaultCause = RiscvExceptionCause.InstructionAccessFault;
+                    break;
+                case MemoryAccessMode.Write:
+                    accessFaultCause = RiscvExceptionCause.StoreAMOAccessFault;
+                    break;
+                case MemoryAccessMode.Read:
+                    accessFaultCause = RiscvExceptionCause.LoadAccessFault;
+                    break;
+                default:
+                    return;
+            }
+
+            int i = 0;
+            bool match = false;
+            for (; i < pmpcfg.Length; i++) {
+                if (pmpcfg[i].AddressMatchingMode == AddressMatchingMode.Off) {
+                    continue;
+
+                } else if (pmpcfg[i].AddressMatchingMode == AddressMatchingMode.Tor) {
+                    if ((i > 0 || reg.CSRegisters[(CSR)((int)CSR.pmpaddr0 + i - 1)] <= (UInt32)(addr >> 2)) &&
+                        reg.CSRegisters[(CSR)((int)CSR.pmpaddr0 + i)] > (UInt32)(addr >> 2)) {
+                        match = true;
+                        break;
+                    }
+                    continue;
+
+                } else if (pmpcfg[i].AddressMatchingMode == AddressMatchingMode.Na4) {
+                    if (reg.CSRegisters[(CSR)((int)CSR.pmpaddr0 + i)] == (UInt32)(addr >> 2)) {
+                        match = true;
+                        break;
+                    }
+                    continue;
+
+                } else if (pmpcfg[i].AddressMatchingMode == AddressMatchingMode.NaPot) {
+                    int j = 0;
+                    UInt32 mask = 0U;
+                    while (i < 32) {
+                        mask |= 1U << j++;
+                        if ((reg.CSRegisters[(CSR)((int)CSR.pmpaddr0 + i)] & mask) != mask) {
+                            break;
+                        }
+                    }
+                    mask = ~mask;
+                    if ((reg.CSRegisters[(CSR)((int)CSR.pmpaddr0 + i)] & mask) == ((UInt32)(addr >> 2) & mask)) {
+                        match = true;
+                        break;
+                    }
+                    continue;
+
+                }
+            }
+
+            if (match) {
+                if (!pmpcfg[i].IsLockingMode && reg.CurrentMode == PrivilegeLevel.MachineMode) {
+                    return;
+                }
+                else if ((pmpcfg[i].Permission & accessMode) > 0) {
+                    return;
+                }
+                throw new RiscvException(accessFaultCause, (UInt32)addr, reg);
+            } else {
+                if (reg.CurrentMode == PrivilegeLevel.MachineMode) {
+                    return;
+                }
+                throw new RiscvException(accessFaultCause, (UInt32)addr, reg);
+            }
         }
-
     }
 
     [Serializable]
