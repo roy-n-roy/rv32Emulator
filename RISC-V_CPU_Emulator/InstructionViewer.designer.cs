@@ -64,6 +64,7 @@ namespace RISC_V_CPU_Emulator {
             this.RunPcCheckBox = new System.Windows.Forms.CheckBox();
             this.IntegerRegistersControl = new RISC_V_CPU_Emulator.IntegerRegistersControl();
             this.FloatPointRegistersControl = new RISC_V_CPU_Emulator.FloatPointRegistersControl();
+            this.label1 = new System.Windows.Forms.Label();
             this.ArgumentsGroupBox.SuspendLayout();
             this.InstructionRegisterGroupBox.SuspendLayout();
             this.ProgramCounterGroupBox.SuspendLayout();
@@ -294,10 +295,16 @@ namespace RISC_V_CPU_Emulator {
             this.FloatPointRegistersControl.Name = "FloatPointRegistersControl";
             this.FloatPointRegistersControl.TabStop = false;
             // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
             // InstructionViewerForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.RunPcPanel);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.DumpViewTextBox);
@@ -329,6 +336,7 @@ namespace RISC_V_CPU_Emulator {
             this.RunPcPanel.ResumeLayout(false);
             this.RunPcPanel.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -370,5 +378,6 @@ namespace RISC_V_CPU_Emulator {
         private System.Windows.Forms.Panel RunPcPanel;
         private System.Windows.Forms.CheckBox RunPcCheckBox;
         private System.Windows.Forms.MaskedTextBox RunPcTextBox;
+        private System.Windows.Forms.Label label1;
     }
 }
