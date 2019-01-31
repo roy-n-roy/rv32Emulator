@@ -10,6 +10,10 @@ RV32標準汎用ISA (=RV32IMAFD) の実装を目標としています。
 ## 動作イメージ
   ![main window](https://github.com/roy-n-roy/rv32Emulator/blob/master/images/main_windows.png?raw=true)
 
+## ビルド
+cd rv32Emulator  
+X:\Path\To\MSBuild.exe RV32Emulator.sln /t:RISC-V_CPU_Emulator /p:Configuration=Release
+
 ## ライセンス
   BSD 3-Clause License
 
