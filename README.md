@@ -1,7 +1,7 @@
 # rv32Emulator
 [![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](https://github.com/roy-n-roy/rv32Emulator/blob/master/LICENSE)
 
-RISC-V 32bit ISAを備えた、CPUエミュレーターです。 
+RISC-V 32bit ISAを備える、学習を目的としたCPUエミュレーターです。  
 RV32標準汎用ISA (=RV32IMAFD) の実装を目標としています。
 
 ## 使用ソフトウェア
