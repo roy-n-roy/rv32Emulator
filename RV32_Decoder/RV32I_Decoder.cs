@@ -225,7 +225,6 @@ namespace RV32_Decoder {
                     }
                     break;
 
-
                 case Opcode.miscMem: // 同期命令
                     switch (funct3) {
                         case Funct3.fence: // fence命令
@@ -237,11 +236,13 @@ namespace RV32_Decoder {
                             break;
                     }
                     break;
-                case Opcode.privilege: // 特権命令
+
+                case Opcode.system: // システム命令
                     switch (funct3) {
                         case Funct3.privilege: // 特権命令
                             if (rd == 0 && funct7 == Funct7.sfenceVma) {
                                 result = Decoder.Reg.SfenceVma(rs1, rs2);
+
                             } else if (rd == 0 && rs1 == 0) {
                                 Funct12 funct12 = (Funct12)(ins[4] | (ins[5] << 5) | (ins[6] << 11)); ;
                                 switch (funct12) {
@@ -269,7 +270,6 @@ namespace RV32_Decoder {
                                         result = Decoder.Reg.Wfi();
                                         break;
                                 }
-
                             }
                             break;
 

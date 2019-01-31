@@ -46,19 +46,28 @@ namespace RISC_V_CPU_Emulator {
         /// <summary>通常の文字色</summary>
         internal static readonly Color DefaultTextColor = Color.FromName(appRes.ResourceManager.GetString("DefaultTextBox_ForeColor") ?? "ControlText");
 
+        private string exePath;
+
         #endregion
 
-        public InstructionViewerForm(RV32_HaedwareThread cpu) {
+        public InstructionViewerForm(RV32_HaedwareThread cpu, string programFilePath) {
             this.cpu = cpu;
-            string dirPath = @"..\..\..\..\riscv-tests\build\isa\";
-            string exePath = dirPath + "rv32ui-v-simple";
-            this.cpu.LoadProgram(exePath);
-            this.cpu.registerSet.Mem.HostAccessAddress.Add(this.cpu.GetToHostAddr());
+            this.exePath = programFilePath;
 
+            if (this.cpu.LoadProgram(this.exePath) != 0) {
+                MessageBox.Show(this,
+                    programFilePath + " : プログラムの読み込みに失敗しました",
+                    "エラー",
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
 
             InitializeComponent();
 
-            this.DumpViewTextBox.Text = File.ReadAllText(exePath + ".dump");
+            // 左部Dump表示テキストボックスにDumpファイル読み込み
+            this.DumpViewTextBox.Text = File.ReadAllText(this.exePath + ".dump");
+
+            // PC指定テキストボックスのキー押下時イベント登録
+            this.RunPcTextBox.KeyDown += this.RunPcTextBox_KeyDown;
 
             #region 表示用ラベル配列・テキストボックス配列初期化
 
@@ -86,10 +95,12 @@ namespace RISC_V_CPU_Emulator {
 
             #endregion
 
-
+            // RISV-V命令情報取得
             RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+            // レジスタデータ取得
             Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
 
+            // 各部品のデータ初期更新
             UpdateInstructionLabels(ins);
             UpdateArgumentLabels(ins);
             this.IntegerRegistersControl.UpdateRegisterData(ins, reg);
@@ -111,11 +122,13 @@ namespace RISC_V_CPU_Emulator {
             // プログラムカウンタ
             this.PCValueLabel.Text = "0x" + cpu.registerSet.PC.ToString("X").PadLeft(8, '0');
 
+            this.RunPcTextBox.Text = "0x" + cpu.registerSet.PC.ToString("X").PadLeft(8, '0');
+
             // 命令レジスタ
             this.InstructionNameLabel.Text = ins.Name;
 
             // 実行モード
-            this.CurrentModeLabel.Text = Enum.GetName(typeof(PrivilegeLevels), cpu.registerSet.CurrentMode);
+            this.CurrentModeLabel.Text = Enum.GetName(typeof(PrivilegeLevel), cpu.registerSet.CurrentMode);
             // 2進数の命令
             int insLength = 32;
             string insStr = Convert.ToString(cpu.registerSet.IR, 2).PadLeft(insLength, '0');
@@ -224,22 +237,40 @@ namespace RISC_V_CPU_Emulator {
 
             string pc = (cpu.registerSet.PC.ToString("X").PadLeft(8, '0') + ":").ToLower();
 
-            int startIdx = t.IndexOf("\n" + pc) + 1;
-            if (startIdx < 1) return;
+            // PCの値でテキストから行頭で一致する箇所を検索
+            int startIdx = t.IndexOf("\n" + pc);
+            if (startIdx < 0) {
+                // 見つからなかったら仮想アドレス相当でも検索
+                pc = ((cpu.registerSet.PC + cpu.registerSet.Mem.EntryVirtAddr).ToString("X").PadLeft(8, '0') + ":").ToLower();
+                startIdx = t.IndexOf("\n" + pc);
+            }
 
+            // 見つからない場合は、そのまま終了
+            if (startIdx < 0) return;
+
+            // 見つかった場合は、改行コード(\n)の分インデックスを1文字分ずらす
+            startIdx++;
+
+            // 該当行の長さを取得 (次の\nまでの長さを取得)
             int startLineCount = (startIdx - t.Substring(0, startIdx).Replace("\n", "").Length);
 
             int length = t.IndexOf("\n", startIdx) - startIdx;
             if (length <= 0) return;
 
+            // 対象行を選択状態にする
             dump.Select(0, t.Length);
             dump.SelectionBackColor = DefaultTextBoxBackColor;
 
+            // リソースファイルから色指定を取得
             Color color = Color.FromName(appRes.ResourceManager.GetString("DumpTextBox_CurrentStepLine_BackColor") ?? "");
+
+            // 取得出来なかった場合は、黒になるので、黒背景になるばあいはなにもしない
             if (color != Color.Black) {
                 dump.Select(startIdx, length);
                 dump.SelectionBackColor = color;
             }
+
+            // 一つまえの行までスクロールして戻る (見映え的によさげだから)
             dump.Select(startIdx - 1, 1);
             dump.ScrollToCaret();
         }
@@ -311,11 +342,12 @@ namespace RISC_V_CPU_Emulator {
         private void Execute() {
 
             try {
-                RiscvInstruction boforeIns = InstConverter.GetInstruction(cpu.registerSet.IR);
-                this.irViewer?.RegisgerControl.UpdateRegisterBeforeExecute(boforeIns);
-                this.fprViewer?.RegisgerControl.UpdateRegisterBeforeExecute(boforeIns);
-                this.IntegerRegistersControl.UpdateRegisterBeforeExecute(boforeIns);
-                this.FloatPointRegistersControl.UpdateRegisterBeforeExecute(boforeIns);
+                RiscvInstruction ins;
+                ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+                this.IntegerRegistersControl.UpdateRegisterBeforeExecute(ins);
+                this.FloatPointRegistersControl.UpdateRegisterBeforeExecute(ins);
+                ((IRegisterControl)this.irViewer?.RegisgerControl)?.UpdateRegisterBeforeExecute(ins);
+                ((IRegisterControl)this.fprViewer?.RegisgerControl)?.UpdateRegisterBeforeExecute(ins);
 
 
                 if (this.RunPcCheckBox.Checked) {
@@ -336,7 +368,7 @@ namespace RISC_V_CPU_Emulator {
                     cpu.StepExecute();
                 }
 
-                RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+                ins = InstConverter.GetInstruction(cpu.registerSet.IR);
                 Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
 
                 UpdateInstructionLabels(ins);
@@ -346,9 +378,9 @@ namespace RISC_V_CPU_Emulator {
 
                 this.IntegerRegistersControl.UpdateRegisterData(ins, reg);
                 this.FloatPointRegistersControl.UpdateRegisterData(ins, reg);
-                this.irViewer?.RegisgerControl.UpdateRegisterData(ins, reg);
-                this.fprViewer?.RegisgerControl.UpdateRegisterData(ins, reg);
-                this.csrViewer?.RegisgerControl.UpdateRegisterData(ins, reg);
+                ((IRegisterControl)this.irViewer?.RegisgerControl)?.UpdateRegisterData(ins, reg);
+                ((IRegisterControl)this.fprViewer?.RegisgerControl)?.UpdateRegisterData(ins, reg);
+                ((IRegisterControl)this.csrViewer?.RegisgerControl)?.UpdateRegisterData(ins, reg);
 
             } catch (HostAccessTrap t) {
                 MessageBox.Show(this,
@@ -356,7 +388,27 @@ namespace RISC_V_CPU_Emulator {
                     "    値 : " + t.Data["value"],
                     "実行完了",
                     MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                this.StepExecuteButton.Enabled = false;
+
+                // 初期状態に戻すため、プログラムをロードし直す。
+                if (this.cpu.LoadProgram(this.exePath) != 0) {
+                    MessageBox.Show(this,
+                        this.exePath + " : プログラムの読み込みに失敗しました",
+                        "エラー",
+                        MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+
+                // GUIの設定
+                RiscvInstruction ins = InstConverter.GetInstruction(cpu.registerSet.IR);
+                Dictionary<string, ulong> reg = cpu.registerSet.GetAllRegisterData();
+
+                UpdateInstructionLabels(ins);
+                UpdateArgumentLabels(ins);
+                this.IntegerRegistersControl.UpdateRegisterData(ins, reg);
+                this.FloatPointRegistersControl.UpdateRegisterData(ins, reg);
+                UpdateStatusLabels();
+                ChangeColorDumpTextBox();
+
+                this.Update();
             }
         }
 
@@ -411,7 +463,7 @@ namespace RISC_V_CPU_Emulator {
                 this.irViewer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
                 this.irViewer.ResumeLayout(false);
 
-                this.irViewer.RegisgerControl.UpdateRegisterData(ins, reg);
+                ((IRegisterControl)this.irViewer.RegisgerControl)?.UpdateRegisterData(ins, reg);
                 this.irViewer.FormClosed += IrViewer_FormClosed;
                 this.irViewer.Show();
                 this.IntegerRegistersControl.Visible = false;
@@ -442,7 +494,7 @@ namespace RISC_V_CPU_Emulator {
                 this.fprViewer.AutoSizeMode = AutoSizeMode.GrowAndShrink;
                 this.fprViewer.ResumeLayout(false);
 
-                this.fprViewer.RegisgerControl.UpdateRegisterData(ins, reg);
+                ((IRegisterControl)this.fprViewer.RegisgerControl)?.UpdateRegisterData(ins, reg);
                 this.fprViewer.FormClosed += FprViewer_FormClosed;
                 this.fprViewer.Show();
                 this.FloatPointRegistersControl.Visible = false;
@@ -478,7 +530,7 @@ namespace RISC_V_CPU_Emulator {
 
                 this.csrViewer.ResumeLayout(false);
 
-                this.csrViewer.RegisgerControl.UpdateRegisterData(ins, reg);
+                ((IRegisterControl)this.csrViewer.RegisgerControl)?.UpdateRegisterData(ins, reg);
                 this.csrViewer.FormClosed += CsrViewer_FormClosed;
                 this.csrViewer.Show();
             } else {
@@ -505,5 +557,10 @@ namespace RISC_V_CPU_Emulator {
         }
 
         #endregion
+
+        internal interface IRegisterControl {
+            void UpdateRegisterData(RiscvInstruction ins, Dictionary<string, ulong> registers);
+            void UpdateRegisterBeforeExecute(RiscvInstruction ins);
+        }
     }
 }

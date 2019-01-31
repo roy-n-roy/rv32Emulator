@@ -15,11 +15,6 @@ namespace RISC_V_CPU_Emulator {
             InitializeComponent();
         }
 
-        internal RegisterControl RegisgerControl;
-
-        public abstract class RegisterControl : UserControl {
-            internal abstract void UpdateRegisterData(RiscvInstruction ins, Dictionary<string, ulong> registers);
-            internal abstract void UpdateRegisterBeforeExecute(RiscvInstruction ins);
-        }
+        internal UserControl RegisgerControl;
     }
 }

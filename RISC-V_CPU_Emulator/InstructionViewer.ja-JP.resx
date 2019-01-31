@@ -126,9 +126,6 @@
   <data name="ProgramCounterGroupBox.Text" xml:space="preserve">
     <value>プログラムカウンタ</value>
   </data>
-  <data name="CurrentModeGroupBox.Text" xml:space="preserve">
-    <value>実行モード</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="CurrentModeLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>175, 31</value>
@@ -141,6 +138,9 @@
   </data>
   <data name="statusLabel.Text" xml:space="preserve">
     <value>ステータス : 実行中</value>
+  </data>
+  <data name="CurrentModeGroupBox.Text" xml:space="preserve">
+    <value>実行モード</value>
   </data>
   <data name="StepExecuteButton.Text" xml:space="preserve">
     <value>ス テ ッ プ 実 行</value>
@@ -172,8 +172,10 @@
   <data name="RunPcCheckBox.Text" xml:space="preserve">
     <value>PCが下記になるまで実行</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>56, 18</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>次の命令</value>
   </data>
 </root>

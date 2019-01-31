@@ -7,7 +7,6 @@ using RV32_Register.Constants;
 using RV32_Register.Exceptions;
 using RV32_Register.MemoryHandler;
 using System;
-using System.IO;
 
 namespace RV32_Cpu {
     public class RV32_HaedwareThread {
@@ -128,61 +127,57 @@ namespace RV32_Cpu {
         /// <returns>正常時:0, 異常時:0以外</returns>
         public int LoadProgram(string objectPath) {
 
-            long fileSize = 0;
-            int readBytes = 0;
+            registerSet.Mem.ResetReservation();
+            registerSet.ClearHostTrapAddress();
 
-            registerSet.Mem.Reset();
-
-            using (BinaryReader br = new BinaryReader(File.Open(objectPath, FileMode.Open))) {
-                fileSize = br.BaseStream.Length;
-                readBytes = br.Read(registerSet.Mem.GetBytes(), 0, (int)fileSize);
-            }
-
-            if (fileSize == 0 || fileSize != readBytes) {
-                Console.WriteLine(Path.GetFileName(objectPath) + " 実行ファイルの読み込みの失敗しました");
-                return -1;
-            }
-
-            Elf32_Header elf = (Elf32_Header)registerSet.Mem.GetBytes();
+            Elf32_Header elf = new Elf32_Header(objectPath);
 
             if (elf.e_type != ElfType.ET_EXEC) {
-                Console.WriteLine(Path.GetFileName(objectPath) + " 実行可能ファイルではありません");
+                Console.WriteLine(System.IO.Path.GetFileName(objectPath) + " 実行可能ファイルではありません");
                 return -1;
             }
 
+            (byte[] mem, int offset) = elf.GetRelocatedMemory();
+
+            if (mem is null || mem.Length == 0) {
+                Console.WriteLine(System.IO.Path.GetFileName(objectPath) + " 実行ファイルの読み込みの失敗しました");
+                return -1;
+            }
+
+            mem.CopyTo(registerSet.Mem.GetBytes(), 0);
+            mem = null;
+
             UInt32 entryOffset = 0,
-                      virtAddr = 0,
-                      physAddr = 0;
+                     entryAddr = elf.e_entry;
 
             foreach (Elf32_Phdr ph in elf.e_phdrtab) {
                 if ((ph.p_flags & 0x1) > 0) {
-                    entryOffset = ph.p_offset;
-                    virtAddr = ph.p_vaddr;
-                    physAddr = ph.p_paddr;
+                    entryOffset = (uint)((ph.p_paddr - elf.e_entry) - offset);
                     break;
                 }
             }
+
+            ulong tohost_addr = 0, fromhost_addr = 0;
             foreach (Elf32_Shdr sh in elf.e_shdrtab) {
                 if (sh.sh_name.Equals(".tohost")) {
                     foreach (Elf32_Sym sh_sym in sh.sh_symtab) {
                         if (sh_sym.st_name.Equals("tohost")) {
-                            //tohost_addr = sh_sym.st_value - sh.sh_addr + sh.sh_offset;
-                            tohost_addr = sh_sym.st_value;
-                            break;
+                            tohost_addr = (uint)(sh_sym.st_value - elf.e_entry - offset);
+                        }else if (sh_sym.st_name.Equals("fromhost")) {
+                            fromhost_addr = (uint)(sh_sym.st_value - elf.e_entry - offset);
                         }
+                        if (tohost_addr != 0 && fromhost_addr != 0) break;
                     }
-                    if (tohost_addr != 0) break;
+                    if (tohost_addr != 0 && fromhost_addr != 0) break;
                 }
             }
 
-            registerSet.ClearAndSetPC(physAddr, virtAddr, entryOffset);
+            registerSet.AddHostTrapAddress(true, tohost_addr);
+            registerSet.AddHostTrapAddress(false, fromhost_addr);
+
+            registerSet.ClearAndSetPC(elf.e_entry, entryOffset);
 
             return 0;
-        }
-
-        ulong tohost_addr = 0;
-        public ulong GetToHostAddr() {
-            return tohost_addr;
         }
 
         /// <summary>
@@ -204,7 +199,7 @@ namespace RV32_Cpu {
                 // 割り込みチェックとハンドリング
                 if (HasException) {
                     // メモリアドレスの予約開放
-                    registerSet.Mem.Reset();
+                    registerSet.Mem.ResetReservation();
 
                     // ToDo: 標準入力制御の実装
 
@@ -219,13 +214,13 @@ namespace RV32_Cpu {
                 ExceptionCause = (RiscvExceptionCause)e.Data["cause"];
                 ExceptionTrapValue = (uint)e.Data["tval"];
 #if DEBUG
-                if (ExceptionCause != RiscvExceptionCause.Breakpoint &&
+                    if (ExceptionCause != RiscvExceptionCause.Breakpoint &&
                     ExceptionCause != RiscvExceptionCause.EnvironmentCallFromMMode &&
                     ExceptionCause != RiscvExceptionCause.EnvironmentCallFromSMode &&
                     ExceptionCause != RiscvExceptionCause.EnvironmentCallFromUMode) {
 
                     Console.Error.WriteLine("\r\n例外発生");
-                    Console.Error.WriteLine("    PC        = 0x" + ((uint)e.Data["pc"]).ToString("X"));
+                    Console.Error.WriteLine("    PC        = 0x" + ((uint)e.Data["pc"]).ToString("X").PadLeft(8, '0'));
                     Console.Error.WriteLine("    TrapValue = 0x" + ((uint)ExceptionTrapValue).ToString("X"));
                     Console.Error.WriteLine(e.ToString());
                 }

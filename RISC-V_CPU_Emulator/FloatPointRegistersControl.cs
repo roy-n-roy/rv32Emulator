@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using appRes = global::RISC_V_CPU_Emulator.Properties.Resources;
 
 namespace RISC_V_CPU_Emulator {
-    public partial class FloatPointRegistersControl : RegisterViewerForm.RegisterControl {
+    public partial class FloatPointRegistersControl : UserControl, InstructionViewerForm.IRegisterControl {
 
         /// <summary></summary>
         private readonly Label[] FloatPointRegisterLabels;
@@ -59,19 +59,17 @@ namespace RISC_V_CPU_Emulator {
         /// 前回の実行時に書き換えられたレジスタ値テキストボックスの文字色を変更する
         /// </summary>
         /// <param name="ins"></param>
-        internal override void UpdateRegisterBeforeExecute(RiscvInstruction ins) {
-
-            InstructionViewerForm parent = ((InstructionViewerForm)this.Parent);
+        public void UpdateRegisterBeforeExecute(RiscvInstruction ins) {
 
             // テキストボックスの文字色を黒に戻す
             for (int i = 0; i < 16; i++) {
                 FloatPointRegisterTextBoxes[i].ForeColor = global::RISC_V_CPU_Emulator.InstructionViewerForm.DefaultTextColor;
             }
 
-            // 
+            // 前回の実行時のrdレジスタの文字色を変更する
             foreach (string key in ins.Arguments.Keys) {
                 TextBox target = null;
-                                    // 浮動小数点レジスタ名
+                // 浮動小数点レジスタ名
                 if (key.Equals("frd")) {
                     target = FloatPointRegisterTextBoxes[(int)ins.Arguments[key]];
                 }
@@ -87,7 +85,7 @@ namespace RISC_V_CPU_Emulator {
         /// <summary>
         /// レジスタ値テキストボックスを更新する
         /// </summary>
-        internal override void UpdateRegisterData(RiscvInstruction ins, Dictionary<string, ulong> registers) {
+        public void UpdateRegisterData(RiscvInstruction ins, Dictionary<string, ulong> registers) {
 
             // テキストボックスの値を更新する
             for (int i = 0; i < 32; i++) {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -156,116 +157,171 @@ namespace ElfLoader {
         /// <summary>シンボルテーブル</summary>
         public Elf32_Sym[] e_symtab;
 
+        /// <summary>シンボルテーブル</summary>
+        public string ProgramFilePath;
+
         /// <summary>ELFヘッダ情報</summary>
-        public Elf32_Header(byte[] bytes) : this() {
-            int ptr = 0;
-            e_ident = new char[16];
+        public Elf32_Header(string ProgramFilePath) : this() {
 
-            byte[] ehBytes = new byte[52];
-            Array.Copy(bytes, ehBytes, 52);
+            this.ProgramFilePath = ProgramFilePath;
 
+            long fileSize = 0;
+            using (BinaryReader br = new BinaryReader(File.Open(this.ProgramFilePath, FileMode.Open))) {
+                int ptr = 0;
+                e_ident = new char[16];
 
-            foreach (byte b in ehBytes.Take(16)) {
-                e_ident[ptr++] = (char)b;
-            }
+                byte[] ehBytes = new byte[52];
 
-            ei_class = (ElfIdClass)e_ident[4];
-            ei_data = (ElfIdData)e_ident[5];
+                fileSize = br.BaseStream.Length;
+                br.Read(ehBytes, 0, ehBytes.Length);
 
-            e_type = (ElfType)BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
-            e_machine = (ElfMachine)BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
-            e_version = (ElfVersion)BitConverter.ToUInt32(ehBytes, ptr); ptr += 4;
-            e_entry = BitConverter.ToUInt32(ehBytes, ptr); ptr += 4;
-            e_phoff = BitConverter.ToUInt32(ehBytes, ptr); ptr += 4;
-            e_shoff = BitConverter.ToUInt32(ehBytes, ptr); ptr += 4;
-            e_flags = BitConverter.ToUInt32(ehBytes, ptr); ptr += 4;
-            e_ehsize = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
-            e_phentsize = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
-            e_phnum = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
-            e_shentsize = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
-            e_shnum = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
-            e_shstrndx = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
-
-            // セクションヘッダテーブル
-            e_shdrtab = new Elf32_Shdr[e_shnum];
-            for (int i = 0; i < e_shnum; i++) {
-                byte[] e_sh = new byte[e_shentsize];
-                Array.Copy(bytes, (int)(e_shoff + (e_shentsize * i)), e_sh, 0, e_shentsize);
-                e_shdrtab[i] = new Elf32_Shdr(e_sh);
-            }
-
-
-            char[] sh_strtab = null;
-            // セクションヘッダ名文字列テーブルを検索
-            Encoding enc = Encoding.ASCII;
-            foreach (Elf32_Shdr shdr in e_shdrtab) {
-                if (shdr.sh_type == ShType.SHT_STRTAB) {
-                    sh_strtab = enc.GetChars(bytes.Skip((int)shdr.sh_offset).Take((int)shdr.sh_size).ToArray());
-
-                    if (new string(sh_strtab.Skip((int)shdr.sh_nameidx).TakeWhile(c => c != '\0').ToArray()).Equals(".shstrtab")) {
-                        break;
-                    }
-                    sh_strtab = null;
+                foreach (byte b in ehBytes.Take(16)) {
+                    e_ident[ptr++] = (char)b;
                 }
-            }
 
-            // 各セクションテーブルにセクション名を付与
-            if (sh_strtab != null) { 
-                for (int i = 0; i < e_shdrtab.Length; i++) {
-                    e_shdrtab[i].sh_name = new string(sh_strtab.Skip((int)e_shdrtab[i].sh_nameidx).TakeWhile(c => c != '\0').ToArray());
+                ei_class = (ElfIdClass)e_ident[4];
+                ei_data = (ElfIdData)e_ident[5];
+
+                e_type = (ElfType)BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
+                e_machine = (ElfMachine)BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
+                e_version = (ElfVersion)BitConverter.ToUInt32(ehBytes, ptr); ptr += 4;
+                e_entry = BitConverter.ToUInt32(ehBytes, ptr); ptr += 4;
+                e_phoff = BitConverter.ToUInt32(ehBytes, ptr); ptr += 4;
+                e_shoff = BitConverter.ToUInt32(ehBytes, ptr); ptr += 4;
+                e_flags = BitConverter.ToUInt32(ehBytes, ptr); ptr += 4;
+                e_ehsize = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
+                e_phentsize = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
+                e_phnum = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
+                e_shentsize = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
+                e_shnum = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
+                e_shstrndx = BitConverter.ToUInt16(ehBytes, ptr); ptr += 2;
+
+                ehBytes = null;
+
+                // プログラムヘッダテーブル
+                if (e_phoff != br.BaseStream.Position) {
+                    // 現在のファイル内の位置が e_phoff と違っている場合は、e_phoff までシークする
+                    br.BaseStream.Seek(e_phoff, SeekOrigin.Begin);
                 }
-            }
+                e_phdrtab = new Elf32_Phdr[e_phnum];
+                for (int i = 0; i < e_phnum; i++) {
+                    byte[] e_ph = new byte[e_phentsize];
+                    br.Read(e_ph, 0, e_ph.Length);
+                    e_phdrtab[i] = new Elf32_Phdr(e_ph);
+                }
 
-            // シンボルテーブル
-            foreach (Elf32_Shdr shdr in e_shdrtab) {
-                if (shdr.sh_type == ShType.SHT_SYMTAB) {
+                // セクションヘッダテーブル
+                if (e_shoff != br.BaseStream.Position) {
+                    // 現在のファイル内の位置が e_shoff と違っている場合は、e_shoff までシークする
+                    br.BaseStream.Seek(e_shoff, SeekOrigin.Begin);
+                }
+                e_shdrtab = new Elf32_Shdr[e_shnum];
+                for (int i = 0; i < e_shnum; i++) {
+                    byte[] e_sh = new byte[e_shentsize];
+                    br.Read(e_sh, 0, e_sh.Length);
+                    e_shdrtab[i] = new Elf32_Shdr(e_sh);
+                    e_sh = null;
+                }
 
-                    // シンボル名文字列テーブル
-                    char[] sym_strtab = null;
-                    foreach (Elf32_Shdr shdr_strtab in e_shdrtab) {
-                        if (shdr_strtab.sh_name.Equals(".strtab")) {
-                            sym_strtab = enc.GetChars(bytes.Skip((int)shdr_strtab.sh_offset).Take((int)shdr_strtab.sh_size).ToArray());
+                char[] sh_strtab = null;
+                // セクションヘッダ名文字列テーブルを検索
+                Encoding enc = Encoding.ASCII;
+                foreach (Elf32_Shdr shdr in e_shdrtab) {
+                    if (shdr.sh_type == ShType.SHT_STRTAB) {
+                        sh_strtab = new char[shdr.sh_size];
+                        if (shdr.sh_offset != br.BaseStream.Position) {
+                            // 現在のファイル内の位置が sh_offset と違っている場合は、sh_offset までシークする
+                            br.BaseStream.Seek(shdr.sh_offset, SeekOrigin.Begin);
                         }
-                        
-                    }
+                        br.Read(sh_strtab, 0, sh_strtab.Length);
 
-                    // シンボルを各セクションにひもづけ
-                    List<Elf32_Sym> symtab = new List<Elf32_Sym>();
-                    for (int i = 0; i < shdr.sh_size / shdr.sh_entsize; i++) {
-                        byte[] e_sym = new byte[shdr.sh_entsize];
-                        Array.Copy(bytes, (shdr.sh_offset + (shdr.sh_entsize * i)), e_sym, 0, shdr.sh_entsize);
-                        symtab.Add(new Elf32_Sym(e_sym, sym_strtab));
+                        // 読み出したセクションヘッダ名文字列テーブルで自信のセクションヘッダ名をチェック
+                        if (new string(sh_strtab.Skip((int)shdr.sh_nameidx).TakeWhile(c => c != '\0').ToArray()).Equals(".shstrtab")) {
+                            break;
+                        }
+                        sh_strtab = null;
                     }
+                }
 
-                    List<Elf32_Sym> l = new List<Elf32_Sym>();
+                // 各セクションテーブルにセクション名(string)を付与
+                if (sh_strtab != null) {
                     for (int i = 0; i < e_shdrtab.Length; i++) {
-                        for (int j = 0; j < symtab.Count(); j++) {
-                            if (symtab[j].st_shndx == i) {
-                                l.Add(symtab[j]);
-                                symtab.RemoveAt(j--);
-                            }
-                        }
-                        e_shdrtab[i].sh_symtab = l.ToArray();
-                        l.Clear();
+                        e_shdrtab[i].sh_name = new string(sh_strtab.Skip((int)e_shdrtab[i].sh_nameidx).TakeWhile(c => c != '\0').ToArray());
                     }
-                    e_symtab = symtab.ToArray();
+                }
+
+                // シンボルテーブル
+                foreach (Elf32_Shdr shdr in e_shdrtab) {
+                    if (shdr.sh_type == ShType.SHT_SYMTAB) {
+
+                        // シンボル名文字列テーブル
+                        char[] sym_strtab = null;
+                        foreach (Elf32_Shdr shdr_strtab in e_shdrtab) {
+                            if (shdr_strtab.sh_name.Equals(".strtab")) {
+                                sym_strtab = new char[shdr_strtab.sh_size];
+                                br.BaseStream.Seek(shdr_strtab.sh_offset, SeekOrigin.Begin);
+                                br.Read(sym_strtab, 0, sym_strtab.Length);
+                            }
+
+                        }
+
+                        // シンボルを作成
+                        List<Elf32_Sym> symtab = new List<Elf32_Sym>();
+                        br.BaseStream.Seek(shdr.sh_offset, SeekOrigin.Begin);
+                        for (int i = 0; i < shdr.sh_size / shdr.sh_entsize; i++) {
+                            byte[] e_sym = new byte[shdr.sh_entsize];
+                            br.Read(e_sym, 0, e_sym.Length);
+                            symtab.Add(new Elf32_Sym(e_sym, sym_strtab));
+                        }
+                        sym_strtab = null;
+
+                        // 作成したシンボルのうち、セクションに紐付くものは紐付け
+                        List<Elf32_Sym> l = new List<Elf32_Sym>();
+                        for (int i = 0; i < e_shdrtab.Length; i++) {
+                            for (int j = 0; j < symtab.Count(); j++) {
+                                if (symtab[j].st_shndx == i) {
+                                    l.Add(symtab[j]);
+                                    symtab.RemoveAt(j--);
+                                }
+                            }
+                            e_shdrtab[i].sh_symtab = l.ToArray();
+                            l.Clear();
+                        }
+                        e_symtab = symtab.ToArray();
+                        symtab = null;
+                    }
+                }
+            }
+        }
+
+        public (byte[], int) GetRelocatedMemory() {
+
+            long maxAddr = -1L, minAddr = -1L;
+            
+            foreach (Elf32_Shdr sh in e_shdrtab) {
+                if((sh.sh_flags & (ShFlag.SHF_WRITE | ShFlag.SHF_ALLOC | ShFlag.SHF_EXECINSTR)) > 0) {
+                    if (maxAddr == -1 || maxAddr < (sh.sh_addr + sh.sh_size)) {
+                        maxAddr = sh.sh_addr - e_entry + sh.sh_size;
+                    }
+                    if (minAddr == -1 || minAddr > sh.sh_addr) {
+                        minAddr = sh.sh_addr - e_entry;
+                    }
                 }
             }
 
-            // プログラムヘッダテーブル
-            e_phdrtab = new Elf32_Phdr[e_phnum];
-            for (int i = 0; i < e_phnum; i++) {
-                byte[] e_ph = new byte[e_phentsize];
-                Array.Copy(bytes, (int)(e_phoff + (e_phentsize * i)), e_ph, 0, e_phentsize);
-                e_phdrtab[i] = new Elf32_Phdr(e_ph);
+            byte[] memory = new byte[maxAddr - minAddr];
+
+            using (BinaryReader br = new BinaryReader(File.Open(this.ProgramFilePath, FileMode.Open))) {
+                foreach (Elf32_Shdr sh in e_shdrtab) {
+                    if ((sh.sh_flags & (ShFlag.SHF_WRITE | ShFlag.SHF_ALLOC | ShFlag.SHF_EXECINSTR)) > 0 && sh.sh_type == ShType.SHT_PROGBITS) {
+                        br.BaseStream.Seek(sh.sh_offset, SeekOrigin.Begin);
+                        br.Read(memory, (int)(sh.sh_addr - e_entry), (int)sh.sh_size);
+                    }
+                }
             }
+
+            return (memory, (int)minAddr);
         }
-
-        public static explicit operator Elf32_Header(byte[] bytes) {
-            return new Elf32_Header(bytes);
-        }
-
-
     }
 
     #region 定数定義

@@ -12,7 +12,8 @@ namespace RV32_Register {
 
         private Dictionary<CSR, UInt32> csr;
 
-        public UInt32 Misa { get => csr[CSR.misa]; set => csr[CSR.misa] = value; }
+        internal UInt32 Misa { get => csr[CSR.misa]; set => csr[CSR.misa] = value; }
+        internal UInt32 Eip { get => csr[CSR.mie] & 0xb00U; set => csr[CSR.mie] |= value & 0xb00U; }
 
         public RV32_ControlStatusRegisters(IDictionary<CSR, UInt32> dictionary) {
             csr = new Dictionary<CSR, uint>(dictionary);
@@ -26,10 +27,10 @@ namespace RV32_Register {
                     // sstatus,ustatus
                     // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
                     case CSR.sstatus:
-                        return csr[CSR.mstatus] & StatusCSR.SModeMask;
+                        return csr[CSR.mstatus] & StatusCSR.SModeReadMask;
 
                     case CSR.ustatus:
-                        return csr[CSR.mstatus] & StatusCSR.UModeMask;
+                        return csr[CSR.mstatus] & StatusCSR.UModeReadMask;
 
                     // sip,uip
                     case CSR.sip:
@@ -82,14 +83,44 @@ namespace RV32_Register {
             }
             set {
                 switch (name) {
-                    // sstatus,ustatus
-                    // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
+                    // mstatus,sstatus,ustatus
+                    case CSR.mstatus:
+                        // 一部の下位レベルCSRへのアクセスは、制限された上位レベルCSRへのアクセスとして読み替える
+                        // またstatusのMPP, SPPはサポートしている特権モードだけを格納する
+                        StatusCSR status;
+                        status = value;
+                        if ((csr[CSR.misa] & (1U << ('S' - 'A'))) == 0) {
+                            // スーパーバイザモードをサポートしていない場合
+                            status.MPP = 0b11;
+                        } else if ((csr[CSR.misa] & (1U << ('U' - 'A'))) == 0) {
+                            // ユーザモードをサポートしていない場合
+                            status.MPP |= 0b01;
+                            status.SPP = true;
+                        }
+                        // FS(浮動小数点ユニットステータス) もしくは XS(拡張ユニットステータス)が 'ダーティ(=0b11)' の場合にtrueとする
+                        status.SD = (status.FS & 0b11) == 0b11 || (status.XS & 0b11) == 0b11;
+
+                        csr[CSR.mstatus] = status;
+                        break;
+
                     case CSR.sstatus:
-                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.SModeMask | value & StatusCSR.SModeMask;
+                        status = value;
+                        if ((csr[CSR.misa] & (1U << ('U' - 'A'))) == 0) {
+                            // ユーザモードをサポートしていない場合
+                            status.SPP = true;
+                        }
+                        // FS(浮動小数点ユニットステータス) もしくは XS(拡張ユニットステータス)が 'ダーティ(=0b11)' の場合にtrueとする
+                        status.SD = (status.FS & 0b11) == 0b11 || (status.XS & 0b11) == 0b11;
+
+                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.SModeWriteMask | status & StatusCSR.SModeWriteMask;
                         break;
 
                     case CSR.ustatus:
-                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.UModeMask | value & StatusCSR.UModeMask;
+                        status = value;
+                        // FS(浮動小数点ユニットステータス) もしくは XS(拡張ユニットステータス)が 'ダーティ(=0b11)' の場合にtrueとする
+                        status.SD = (status.FS & 0b11) == 0b11 || (status.XS & 0b11) == 0b11;
+
+                        csr[CSR.mstatus] = csr[CSR.mstatus] & ~StatusCSR.UModeWriteMask | status & StatusCSR.UModeWriteMask;
                         break;
 
                     // mip,sip,uip
@@ -126,7 +157,6 @@ namespace RV32_Register {
                     // fcsrへのアクセスとして読み替える
                     case CSR.fcsr:
                         csr[CSR.fcsr] = value & (FloatCSR.FflagsMask | FloatCSR.FrmMask);
-                        StatusCSR status;
                         status = new StatusCSR { FS = 0x3 };
                         csr[CSR.mstatus] |= status;
                         break;

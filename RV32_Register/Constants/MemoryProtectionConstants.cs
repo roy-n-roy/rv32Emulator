@@ -10,11 +10,42 @@ namespace RV32_Register.Constants {
      *******************************************/
 
     #region ページテーブルエントリ
+    
+    public enum PtPermission : byte {
+        /// <summary>ポインタ</summary>
+        Pointer = 0,
+
+        /// <summary>読み込みのみ可(書き実行不可)</summary>
+        ReadOnly = MemoryAccessMode.Read,
+
+        /// <summary>読み + 書き可(実行不可)</summary>
+        ReadWrite = MemoryAccessMode.Read | MemoryAccessMode.Write,
+
+        /// <summary>実行のみ可(読み書き不可)</summary>
+        ExecuteOnly = MemoryAccessMode.Execute,
+
+        /// <summary>読み込み + 実行可(書き込み不可)</summary>
+        ReadExecute = MemoryAccessMode.Read | MemoryAccessMode.Execute,
+
+        /// <summary>読み + 書き + 実行可</summary>
+        ReadWriteExecute = MemoryAccessMode.Read | MemoryAccessMode.Write | MemoryAccessMode.Execute,
+    }
+
+    [FlagsAttribute]
+    public enum MemoryAccessMode : byte {
+        /// <summary>メモリからの読み込み, ロード</summary>
+        Read = 0b001,
+        /// <summary>メモリへの書き込み, ストア</summary>
+        Write = 0b010,
+        /// <summary>メモリ上の命令実行, フェッチ</summary>
+        Execute = 0b100,
+    }
+
     /// <summary>Sv32モード ページテーブルエントリ(PTE)</summary>
     public struct PageTableEntry32 {
         // 変数
         /// <summary>物理ページ番号(Physical Page Number)</summary>
-        public ushort[] PPN { get; }
+        public ushort[] PPN;
         /// <summary>書き込み済みフラグ</summary>
         public bool IsDarty { get; set; }
         /// <summary>アクセス済みフラグ</summary>
@@ -63,7 +94,7 @@ namespace RV32_Register.Constants {
     /// <summary>Sv32モード 32bit長 仮想アドレス</summary>
     public struct VirtAddr32 {
         /// <summary>仮想ページ番号(Virtual Page Number)</summary>
-        public ushort[] VPN { get; set; }
+        public ushort[] VPN;
         /// <summary>ページオフセット</summary>
         public ushort PageOffset { get; set; }
 
@@ -88,43 +119,76 @@ namespace RV32_Register.Constants {
         }
     }
 
-    public enum PtPermission : byte {
-        /// <summary>ポインタ</summary>
-        Pointer = 0b000,
-        /// <summary>読み込みのみ可(書き実行不可)</summary>
-        ReadOnly = 0b001,
-        /// <summary>読み書き可(実行不可)</summary>
-        ReadWrite = 0b011,
-        /// <summary>実行のみ可(読み書き不可)</summary>
-        ExecuteOnly = 0b100,
-        /// <summary>読み込み実行可(書き込み不可)</summary>
-        ReadExecute = 0b101,
-        /// <summary>読み書き実行可</summary>
-        ReadWriteExecute = 0b111,
-    }
+    /// <summary>Sv32モード TLBエントリ(Translation Lookaside Buffer)</summary>
+    public struct TlbEntry32 {
+        /// <summary>物理ページ番号(Virtual Page Number)</summary>
+        public ushort[] PPN { get; set; }
+        /// <summary>書き込み済みフラグ</summary>
+        public bool IsDarty { get; set; }
+        /// <summary>アクセス済みフラグ</summary>
+        public bool IsAccessed { get; set; }
+        /// <summary>グローバルフラグ</summary>
+        public bool IsGlobal { get; set; }
+        /// <summary>ユーザーモードアクセスフラグ</summary>
+        public bool IsUserMode { get; set; }
+        /// <summary>パーミッション</summary>
+        public PtPermission Permission { get; set; }
+        /// <summary>有効フラグ</summary>
+        public bool IsValid { get; set; }
+        /// <summary>ページテーブルエントリアドレス</summary>
+        public uint PteAddress { get; set; }
 
-    [FlagsAttribute]
-    public enum MemoryAccessMode : byte {
-        /// <summary>メモリからの読み込み, ロード</summary>
-        Read = 0b001,
-        /// <summary>メモリへの書き込み, ストア</summary>
-        Write = 0b010,
-        /// <summary>メモリ上の命令実行, フェッチ</summary>
-        Execute = 0b100,
+        public TlbEntry32(ulong value) {
+            PPN = new ushort[2];
+            PPN[1] = (ushort)((value & 0x3_ffc0_0000UL) >> 22);
+            PPN[0] = (ushort)((value & 0x0_003f_f000U) >> 12);
+            IsDarty = (value & 0x0000_0080U) > 0;
+            IsAccessed = (value & 0x0000_0040U) > 0;
+            IsGlobal = (value & 0x0000_0020U) > 0;
+            IsUserMode = (value & 0x0000_0010U) > 0;
+            Permission = (PtPermission)((value & 0x0000_000eU) >> 1);
+            IsValid = (value & 0x0000_0001) > 0;
+            PteAddress = 0;
+        }
+
+        // キャスト
+        public static implicit operator TlbEntry32(ulong value) {
+            return new TlbEntry32(value);
+        }
+
+        public static implicit operator ulong(TlbEntry32 tlb) {
+            ulong value = 0;
+            value |= (tlb.PPN[1] & 0x3ffU) << 22;
+            value |= (tlb.PPN[0] & 0x3ffU) << 12;
+            value |= tlb.IsDarty ? 1U << 7 : 0U;
+            value |= tlb.IsAccessed ? 1U << 6 : 0U;
+            value |= tlb.IsGlobal ? 1U << 5 : 0U;
+            value |= tlb.IsUserMode ? 1U << 4 : 0U;
+            value |= (uint)tlb.Permission << 1;
+            value |= tlb.IsValid ? 1U << 0 : 0U;
+            return value;
+        }
     }
 
     #endregion
 
+    public enum AddressMatchingMode : byte {
+        Off = 0,
+        Tor = 1,
+        Na4 = 2,
+        NaPot = 3,
+    }
+
     public struct PhysicalMemoryProtectionConfig {
         public bool IsLockingMode { get; }
-        public byte AddressMatchingMode { get; }
-        public byte Permission { get; }
+        public AddressMatchingMode AddressMatchingMode { get; }
+        public MemoryAccessMode Permission { get; }
 
         // コンストラクタ
         public PhysicalMemoryProtectionConfig(byte value) {
             IsLockingMode = (value & 0x80) > 0;
-            AddressMatchingMode = (byte)((value & 0x18) >> 3);
-            Permission = (byte)(value & 0x03);
+            AddressMatchingMode = (AddressMatchingMode)((value & 0x18) >> 3);
+            Permission = (MemoryAccessMode)(value & 0x07);
         }
 
         // キャスト
@@ -135,17 +199,34 @@ namespace RV32_Register.Constants {
         public static implicit operator byte(PhysicalMemoryProtectionConfig pmpcfg) {
             byte value = 0;
             value |= (byte)(pmpcfg.IsLockingMode ? 0x80 : 0);
-            value |= (byte)((pmpcfg.AddressMatchingMode & 0x02) << 3);
-            value |= (byte)(pmpcfg.Permission & 0x03);
+            value |= (byte)(((byte)pmpcfg.AddressMatchingMode & 0x03) << 3);
+            value |= (byte)((byte)pmpcfg.Permission & 0x07);
             return value;
         }
 
-        public static PhysicalMemoryProtectionConfig[] GetPmpCfgs(uint[] values) {
+        public static PhysicalMemoryProtectionConfig[] GetPmpCfgs(uint pmpcfg0, uint pmpcfg1, uint pmpcfg2, uint pmpcfg3) {
             PhysicalMemoryProtectionConfig[] pmpcfgArray = new PhysicalMemoryProtectionConfig[16];
             int i = 0;
-            foreach (uint value in values) {
-                foreach(byte b in BitConverter.GetBytes(value)) {
-                    pmpcfgArray[i++] = b;
+            foreach (uint pmpcfg in new uint[] { pmpcfg0, pmpcfg1, pmpcfg2, pmpcfg3 }) {
+                foreach (byte byt in BitConverter.GetBytes(pmpcfg)) {
+                    pmpcfgArray[i++] = byt;
+                    if (i >= pmpcfgArray.Length) {
+                        return pmpcfgArray;
+                    }
+                }
+            }
+            return pmpcfgArray;
+        }
+
+        public static PhysicalMemoryProtectionConfig[] GetPmpCfgs(ulong pmpcfg0, ulong pmpcfg2) {
+            PhysicalMemoryProtectionConfig[] pmpcfgArray = new PhysicalMemoryProtectionConfig[16];
+            int i = 0;
+            foreach (ulong pmpcfg in new ulong[] { pmpcfg0, pmpcfg2 }) {
+                foreach (byte byt in BitConverter.GetBytes(pmpcfg)) {
+                    pmpcfgArray[i++] = byt;
+                    if (i >= pmpcfgArray.Length) {
+                        return pmpcfgArray;
+                    }
                 }
             }
             return pmpcfgArray;
